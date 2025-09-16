@@ -13,10 +13,6 @@ def analyze_csv(file_path):
         # Read the CSV file using pandas
         data = pd.read_csv(file_path)
         print(f"Successfully loaded {file_path}")
-        print("First 5 rows of the data:")
-        print(data.head())
-        print("-" * 30)
-
         # Define the specific columns to be analyzed
         target_columns = [
             "[Call Test][Voice or Video Call][Duration]Traffic Duration (LoggingTool)(sec)",
@@ -46,6 +42,52 @@ def analyze_csv(file_path):
                     print("No valid data available for this column after dropping NaNs.")
             else:
                 print(f"\nColumn '{column}' not found in the CSV file.")
+        
+        print("-" * 30)
+
+        # Count INVITE occurrences in '[Packet Data][SIP]Request Method'
+        invite_column_name = "[Packet Data][SIP]Request Method"
+        if invite_column_name in data.columns:
+            invite_count = data[invite_column_name].str.contains("INVITE", na=False).sum()
+            print(f"\n--- Count of 'INVITE' in column: {invite_column_name} ---")
+            print(f"Total INVITEs: {invite_count}")
+        else:
+            print(f"\nColumn '{invite_column_name}' not found in the CSV file.")
+
+        print("-" * 30)
+
+        # Count "Success initation"
+        method_col = "[Packet Data][SIP]200 OK - Method"
+        status_col = "[Packet Data][SIP]Status"
+        success_initiation_count = 0 # Default to 0
+        
+        if method_col in data.columns and status_col in data.columns:
+            # Filter rows where method is 'INVITE' and status contains '200 OK'
+            success_initiation_df = data[
+                (data[method_col] == 'INVITE') & 
+                (data[status_col].str.contains('200 OK', na=False))
+            ]
+            success_initiation_count = len(success_initiation_df)
+            print("\n--- Success Initiation Count ---")
+            print(f"Success initation: {success_initiation_count}")
+        else:
+            print("\n--- Success Initiation Count ---")
+            print("Required columns for 'Success initation' not found.")
+
+        print("-" * 30)
+
+        # Calculate and display Success Rate
+        if 'invite_count' in locals() and invite_count > 0:
+            fail_count = invite_count - success_initiation_count
+            success_rate = (success_initiation_count / invite_count) * 100
+            fail_rate = (fail_count / invite_count) * 100
+            print("\n--- Call Failure/Success Metrics ---")
+            print(f"Fail Count: {fail_count}")
+            print(f"Success rate: {success_rate:.1f}%")
+            print(f"Fail rate: {fail_rate:.1f}%")
+        else:
+            print("\n--- Call Failure/Success Metrics ---")
+            print("Cannot calculate metrics (Total INVITEs is zero or not calculated).")
 
     except FileNotFoundError:
         print(f"Error: The file at {file_path} was not found.")
