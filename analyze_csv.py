@@ -135,11 +135,14 @@ def _calculate_fail_count(data):
     Calculates and displays the Tool Fail Count for '[Event] Voice Call Event'.
     """
     event_column_name = "[Event] Voice Call Event"
-    fail_result_string = "[Tool] Voice - Call Result : Orig. Fail" # Reverted to full string
+    fail_result_string = "Orig. Fail"
     tool_fail_count = 0
 
     if event_column_name in data.columns:
-        tool_fail_count = data[event_column_name].astype(str).str.contains(fail_result_string, na=False).sum()
+        for value in data[event_column_name]:
+            if isinstance(value, str) and fail_result_string in value:
+                tool_fail_count += 1
+
         print(f"\n--- Tool Fail Count for '{event_column_name}' ---")
         print(f"Occurrences of '{fail_result_string}': {tool_fail_count}")
     else:
