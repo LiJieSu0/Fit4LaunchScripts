@@ -6,7 +6,7 @@ import sys
 #603 decline remove form total
 #No service calculate
 
-def _calculate_statistical_analysis(data):
+def _calculate_statistical_analysis(data): #setup time and duration
     """
     Calculates statistical data for numeric columns and returns the mean setup time.
     """
@@ -60,18 +60,32 @@ def _count_invite_occurrences(data):
 
 def _count_success_initiation(data):
     """
-    Counts "Success initiation" based on SIP INVITE and 200 OK.
+    Counts "Success initiation" based on SIP INVITE and 200 OK, or 'Voice' calls with 'Complete' or 'Etc.' results.
     """
     method_col = "[Packet Data] [SIP] 200 OK - Method"
     status_col = "[Packet Data] [SIP] Status"
+    call_type_col = "[Call Test] Call Type"
+    call_result_col = "[Call Test] Call Result"
     success_initiation_count = 0
     
-    if method_col in data.columns and status_col in data.columns:
-        success_initiation_df = data[
-            (data[method_col].astype(str) == 'INVITE') &
-            (data[status_col].astype(str).str.contains('200 OK', na=False))
-        ]
-        success_initiation_count = len(success_initiation_df)
+    if all(col in data.columns for col in [method_col, status_col, call_type_col, call_result_col]):
+        # Condition 1: SIP INVITE and 200 OK
+        # sip_success_indices = data[
+        #     (data[method_col].astype(str) == 'INVITE') &
+        #     (data[status_col].astype(str).str.contains('200 OK', na=False))
+        # ].index.tolist()
+
+        # Condition 2: Call Type is 'Voice' and Call Result is 'Complete' or 'Etc.'
+        voice_complete_etc_indices = data[
+            (data[call_type_col].astype(str) == 'Voice') &
+            ((data[call_result_col].astype(str) == 'Complete') | (data[call_result_col].astype(str) == 'Etc.'))
+        ].index.tolist()
+        
+        # Combine indices and get unique count to avoid double counting if an event satisfies both conditions
+       
+        combined_indices = list(set( voice_complete_etc_indices))
+        success_initiation_count = len(combined_indices)
+        
         print("\n--- Success Initiation Count ---")
         print(f"Success initation: {success_initiation_count}")
     else:
@@ -103,9 +117,10 @@ def _calculate_call_failure_success_metrics(invite_count, success_initiation_cou
 
 def _calculate_network_type_counts(data):
     """
-    Calculates and displays Network Type counts for Voice Calls.
+    Calculates and displays Network Type counts for Voice Calls with 'Complete' result.
     """
     call_type_header_col = "[Call Test] Call Type"
+    call_result_col = "[Call Test] Call Result"
     call_middle_network_col = "[Call Test] Call Middle Network"
     network_type_counts = {
         "VoNR": 0,
@@ -115,11 +130,14 @@ def _calculate_network_type_counts(data):
         "Unknown": 0
     }
 
-    if call_type_header_col in data.columns and call_middle_network_col in data.columns:
-        voice_calls = data[data[call_type_header_col].astype(str) == 'Voice'].copy()
+    if all(col in data.columns for col in [call_type_header_col, call_result_col, call_middle_network_col]):
+        voice_complete_or_etc_calls = data[
+            (data[call_type_header_col].astype(str) == 'Voice') &
+            ((data[call_result_col].astype(str) == 'Complete') | (data[call_result_col].astype(str) == 'Etc.'))
+        ].copy()
 
-        if not voice_calls.empty:
-            for index, row in voice_calls.iterrows():
+        if not voice_complete_or_etc_calls.empty:
+            for index, row in voice_complete_or_etc_calls.iterrows():
                 network_info = str(row[call_middle_network_col])
                 if "VoNR" in network_info:
                     network_type_counts["VoNR"] += 1
@@ -130,13 +148,13 @@ def _calculate_network_type_counts(data):
                 else:
                     network_type_counts["Unknown"] += 1
             
-            print("\n--- Network Type Counts (for Voice Calls) ---")
+            print("\n--- Network Type Counts (for Voice Calls with Complete or Etc. Result) ---")
             for network_type, count in network_type_counts.items():
                 print(f"{network_type}: {count}")
         else:
-            print(f"No 'Voice' calls found in column '{call_type_header_col}'.")
+            print(f"No 'Voice' calls with 'Complete' or 'Etc.' result found.")
     else:
-        print(f"Required columns for Network Type calculation ('{call_type_header_col}' or '{call_middle_network_col}') not found.")
+        print(f"Required columns for Network Type calculation ('{call_type_header_col}', '{call_result_col}' or '{call_middle_network_col}') not found.")
     print("-" * 30)
     return network_type_counts
 
@@ -180,42 +198,42 @@ def no_service_failed(data):
     ].index.tolist()
 
     for fail_index in fail_events_indices:
-        http_download_index = -1
-        # Search upwards for 'HTTP Download'
-        for k in range(fail_index - 1, -1, -1): # Iterate backwards from fail_index - 1 to 0
-            if str(data.loc[k, call_type_col]) == 'HTTP Download':
-                http_download_index = k
+        voice_start_index = -1
+        # Search upwards for the previous 'Voice' call
+        for k in range(fail_index - 1, -1, -1):
+            if str(data.loc[k, call_type_col]) == 'Voice':
+                voice_start_index = k
                 break
         
-        # If an 'HTTP Download' is found before the 'Orig. Fail'
-        if http_download_index != -1:
-            print(f"\n--- Interval found: HTTP Download at Row {http_download_index}, Orig. Fail at Row {fail_index} ---")
+        # If a preceding 'Voice' call is found
+        if voice_start_index != -1:
+            # print(f"\n--- Interval found: Voice Call at Row {voice_start_index}, Orig. Fail at Row {fail_index} ---")
             
             found_in_interval = False
-            # Check for '603 Declined' within the interval [http_download_index, fail_index]
-            for j in range(http_download_index, fail_index + 1):
+            # Check for '603 Declined' within the interval [voice_start_index, fail_index]
+            for j in range(voice_start_index, fail_index + 1):
                 if "603 Declined" in str(data.loc[j, sip_status_col]):
                     declined_count += 1
                     found_in_interval = True
-                    print(f"  Found '603 Declined' at row {j}")
+                    # print(f"  Found '603 Declined' at row {j}")
                     break # Found 603 Declined, move to next fail event
             
             # Only check for 'No Service' if '603 Declined' was not found
             if not found_in_interval:
-                for j in range(http_download_index, fail_index + 1):
+                for j in range(voice_start_index, fail_index + 1):
                     if str(data.loc[j, serving_network_col]) == 'No Service':
                         no_service_count += 1
                         print(f"  Found 'No Service' at row {j}")
                         break # Found No Service, move to next fail event
         else:
-            print(f"\n--- Orig. Fail at Row {fail_index} but no preceding 'HTTP Download' found. Skipping. ---")
+            print(f"\n--- Orig. Fail at Row {fail_index} but no preceding 'Voice' call found. Skipping. ---")
     print("\n--- No Service and 603 Declined Counts after Failed Voice Calls ---")
     print(f"Total No Service occurrences after failed voice calls: {no_service_count}")
     print(f"Total 603 Declined occurrences after failed voice calls: {declined_count}")
     print("-" * 30)
     return no_service_count, declined_count
 
-def analyze_csv(file_path):
+def analyze_csv(file_path): #main
     """
     Reads a CSV file, calculates, and returns statistical data.
 
