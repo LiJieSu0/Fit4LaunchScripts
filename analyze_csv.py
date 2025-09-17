@@ -115,9 +115,10 @@ def _calculate_call_failure_success_metrics(invite_count, success_initiation_cou
     print("-" * 30)
     return fail_count, success_rate, fail_rate
 
-def _calculate_network_type_counts(data):
+def _calculate_network_type_counts(data, no_service_failed_count=0):
     """
-    Calculates and displays Network Type counts for Voice Calls with 'Complete' result.
+    Calculates and displays Network Type counts for Voice Calls with 'Complete' or 'Etc.' result,
+    and incorporates 'No Service' counts from failed calls.
     """
     call_type_header_col = "[Call Test] Call Type"
     call_result_col = "[Call Test] Call Result"
@@ -126,7 +127,7 @@ def _calculate_network_type_counts(data):
         "VoNR": 0,
         "VoLTE": 0,
         "EPSFB": 0,
-        "No Service":0,
+        "No Service": no_service_failed_count, # Initialize with count from no_service_failed
         "Unknown": 0
     }
 
@@ -145,6 +146,7 @@ def _calculate_network_type_counts(data):
                     network_type_counts["VoLTE"] += 1
                 elif "EPSFB" in network_info:
                     network_type_counts["EPSFB"] += 1
+                # No need to increment "No Service" here, as it's handled by no_service_failed_count
                 else:
                     network_type_counts["Unknown"] += 1
             
@@ -233,6 +235,36 @@ def no_service_failed(data):
     print("-" * 30)
     return no_service_count, declined_count
 
+def _calculate_failed_details(failed_attempts, no_service_count):
+    """
+    Calculates detailed breakdown of failed attempts.
+    """
+    access_timeout = 0 # Not yet defined
+    voicemail = 0      # Not yet defined
+    busy = 0           # Not yet defined
+    
+    unreachable = failed_attempts - no_service_count - access_timeout - voicemail - busy
+    if unreachable < 0:
+        unreachable = 0 # Ensure non-negative
+
+    print("\n--- Failed Call Details ---")
+    print(f"Failed Attempts: {failed_attempts}")
+    print(f"No Service: {no_service_count}")
+    print(f"Access Timeout: {access_timeout}")
+    print(f"Voicemail: {voicemail}")
+    print(f"Busy: {busy}")
+    print(f"Unreachable: {unreachable}")
+    print("-" * 30)
+    
+    return {
+        "Failed Attempts": failed_attempts,
+        "No Service": no_service_count,
+        "Access Timeout": access_timeout,
+        "Voicemail": voicemail,
+        "Busy": busy,
+        "Unreachable": unreachable
+    }
+
 def analyze_csv(file_path): #main
     """
     Reads a CSV file, calculates, and returns statistical data.
@@ -273,8 +305,15 @@ def analyze_csv(file_path): #main
         metrics["Successful Initiations (%)"] = round(success_rate, 2)
         metrics["Failed Initiations (%)"] = round(fail_rate, 2)
 
-        _calculate_network_type_counts(data)
-        no_service_failed(data)
+        no_service_count_from_failed, declined_count_from_failed = no_service_failed(data)
+        
+        # Update network_type_counts with the 'No Service' count from no_service_failed
+        network_type_counts = _calculate_network_type_counts(data, no_service_count_from_failed)
+
+        # Calculate failed details
+        failed_details = _calculate_failed_details(metrics["Failed Initiations"], network_type_counts["No Service"])
+        # You might want to add these details to the metrics dictionary as well
+        metrics.update(failed_details)
 
     except FileNotFoundError:
         print(f"Error: The file at {file_path} was not found.")
