@@ -171,6 +171,13 @@ if __name__ == "__main__":
         print("Please ensure 'HTTP' or 'UDP' is present in the file path.")
         sys.exit(1)
 
+    # Determine device type (DUT/REF) from filename
+    device_type_detected = "Unknown"
+    if "dut" in file_name:
+        device_type_detected = "DUT"
+    elif "ref" in file_name:
+        device_type_detected = "REF"
+
     print(f"\nDetected analysis direction: {analysis_direction_detected}, and protocol type: {protocol_type_detected}.")
 
     if protocol_type_detected == "HTTP":
@@ -205,3 +212,5 @@ if __name__ == "__main__":
             column_to_analyze = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
             print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
             analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
+
+    print(f"\nDevice Type: {device_type_detected}") # Print at the end
