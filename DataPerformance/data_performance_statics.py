@@ -31,10 +31,55 @@ def _calculate_statistics(data_series, column_name):
     
     return stats
 
-def analyze_data_throughput(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str):
+def _process_intervals(filtered_data, column_name, event_col_name, start_event_str, end_event_str, print_intervals=True):
     """
-    Reads a data throughput CSV file, identifies intervals based on start/end event markers,
-    calculates average for each, and then performs statistics on these averages.
+    Helper function to process intervals and return a series of averages.
+    """
+    started_indices = filtered_data[filtered_data[event_col_name].astype(str).str.contains(start_event_str, na=False)].index
+    ended_indices = filtered_data[filtered_data[event_col_name].astype(str).str.contains(end_event_str, na=False)].index
+
+    if started_indices.empty or ended_indices.empty:
+        print(f"\nWarning: Could not find both '{start_event_str}' and '{end_event_str}' events in '{event_col_name}'. Cannot calculate interval averages.")
+        print(f"Proceeding with full dataset for {column_name} analysis (this will calculate overall statistics, not statistics of averages).")
+        overall_data = filtered_data[column_name].dropna()
+        return pd.Series(overall_data) # Return series of overall data for statistics
+
+    interval_averages = []
+    current_start_idx = -1
+
+    for i in range(len(filtered_data)):
+        event = str(filtered_data.loc[i, event_col_name])
+        
+        if start_event_str in event:
+            current_start_idx = i
+        elif end_event_str in event and current_start_idx != -1:
+            end_idx = i
+            
+            interval_data = filtered_data.loc[current_start_idx : end_idx, column_name].dropna()
+            
+            if not interval_data.empty:
+                interval_avg = interval_data.mean()
+                interval_averages.append(interval_avg)
+                unit = "Mbps" if "Throughput" in column_name else ("ms" if "Jitter" in column_name else "")
+                if print_intervals:
+                    print(f"Interval from row {current_start_idx} to {end_idx}: Average {column_name} = {interval_avg:.2f} {unit}")
+            else:
+                if print_intervals:
+                    print(f"Interval from row {current_start_idx} to {end_idx}: No valid {column_name} data.")
+            
+            current_start_idx = -1 # Reset for the next interval
+    
+    if not interval_averages:
+        print(f"\nNo valid '{start_event_str}' to '{end_event_str}' intervals with {column_name} data found.")
+        return pd.Series([]) # Return empty series
+
+    return pd.Series(interval_averages)
+
+
+def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str):
+    """
+    Reads a data CSV file, identifies intervals, calculates average throughput for each,
+    and then performs full statistics on these averages.
     """
     try:
         data = pd.read_csv(file_path)
@@ -48,79 +93,50 @@ def analyze_data_throughput(file_path, column_name_to_analyze, event_col_name, s
             return
         
         filtered_data = data.copy()
+        averages_series = _process_intervals(filtered_data, column_name_to_analyze, event_col_name, start_event_str, end_event_str, print_intervals=True)
 
-        started_indices = filtered_data[filtered_data[event_col_name].astype(str).str.contains(start_event_str, na=False)].index
-        ended_indices = filtered_data[filtered_data[event_col_name].astype(str).str.contains(end_event_str, na=False)].index
-
-        if started_indices.empty or ended_indices.empty:
-            print(f"\nWarning: Could not find both '{start_event_str}' and '{end_event_str}' events in '{event_col_name}'. Cannot calculate interval averages.")
-            print(f"Proceeding with full dataset for {column_name_to_analyze} analysis (this will calculate overall statistics, not statistics of averages).")
-            overall_data = filtered_data[column_name_to_analyze].dropna()
-            if column_name_to_analyze == "[Call Test] [iPerf] [Throughput] DL Jitter":
-                if not overall_data.empty:
-                    mean_val = overall_data.mean()
-                    print(f"\n--- Statistical Analysis of Overall {column_name_to_analyze} ---")
-                    print(f"Mean: {mean_val:.2f}")
-                else:
-                    print(f"\nNo valid data found to calculate mean for '{column_name_to_analyze}'.")
-            else:
-                _calculate_statistics(overall_data, column_name_to_analyze)
-            return
-        
-        interval_averages = []
-        current_start_idx = -1
-
-        for i in range(len(filtered_data)):
-            event = str(filtered_data.loc[i, event_col_name])
-            
-            if start_event_str in event:
-                current_start_idx = i
-            elif end_event_str in event and current_start_idx != -1:
-                end_idx = i
-                
-                interval_data = filtered_data.loc[current_start_idx : end_idx, column_name_to_analyze].dropna()
-                
-                if not interval_data.empty:
-                    interval_avg = interval_data.mean()
-                    interval_averages.append(interval_avg)
-                    # Add unit based on column name
-                    unit = "Mbps" if "Throughput" in column_name_to_analyze else "" # Default unit
-                    if "Jitter" in column_name_to_analyze:
-                        unit = "ms" # Assuming Jitter is in milliseconds
-                    
-                    # Conditional print for intervals
-                    if column_name_to_analyze != "[Call Test] [iPerf] [Throughput] DL Jitter":
-                        print(f"Interval from row {current_start_idx} to {end_idx}: Average {column_name_to_analyze} = {interval_avg:.2f} {unit}")
-                else:
-                    if column_name_to_analyze != "[Call Test] [iPerf] [Throughput] DL Jitter":
-                        print(f"Interval from row {current_start_idx} to {end_idx}: No valid {column_name_to_analyze} data.")
-                
-                current_start_idx = -1 # Reset for the next interval
-
-        if not interval_averages:
-            print(f"\nNo valid '{start_event_str}' to '{end_event_str}' intervals with {column_name_to_analyze} data found.")
-            return
-
-        averages_series = pd.Series(interval_averages)
-        
-        # Conditional print for number of intervals
-        if column_name_to_analyze != "[Call Test] [iPerf] [Throughput] DL Jitter":
+        if not averages_series.empty:
             print(f"\nNumber of intervals with valid average {column_name_to_analyze}: {len(averages_series)}")
-        
-        if column_name_to_analyze == "[Call Test] [iPerf] [Throughput] DL Jitter":
-            if not averages_series.empty:
-                mean_val = averages_series.mean()
-                print(f"\n--- Statistical Analysis of Average {column_name_to_analyze} ---")
-                print(f"Mean of Averages: {mean_val:.2f} ms") # Assuming Jitter is in milliseconds
-            else:
-                print(f"\nNo valid data found to calculate mean for '{column_name_to_analyze}'.")
-        else:
             _calculate_statistics(averages_series, column_name_to_analyze)
+        else:
+            print(f"\nNo valid data found for {column_name_to_analyze} analysis.")
 
     except FileNotFoundError:
         print(f"Error: The file at {file_path} was not found.")
     except Exception as e:
         print(f"An error occurred: {e}")
+
+def analyze_jitter(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str):
+    """
+    Reads a data CSV file, identifies intervals, calculates average jitter for each,
+    and then reports only the mean of these averages.
+    """
+    try:
+        data = pd.read_csv(file_path)
+        print(f"Successfully loaded {file_path}")
+
+        if column_name_to_analyze not in data.columns:
+            print(f"\nError: Column '{column_name_to_analyze}' not found in the CSV file.")
+            return
+        if event_col_name not in data.columns:
+            print(f"\nError: Event column '{event_col_name}' not found in the CSV file.")
+            return
+        
+        filtered_data = data.copy()
+        averages_series = _process_intervals(filtered_data, column_name_to_analyze, event_col_name, start_event_str, end_event_str, print_intervals=False)
+
+        if not averages_series.empty:
+            mean_val = averages_series.mean()
+            print(f"\n--- Statistical Analysis of Average {column_name_to_analyze} ---")
+            print(f"Mean of Averages: {mean_val:.2f} ms")
+        else:
+            print(f"\nNo valid data found to calculate mean for '{column_name_to_analyze}'.")
+
+    except FileNotFoundError:
+        print(f"Error: The file at {file_path} was not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Analyze data performance statistics from a CSV file.")
@@ -163,12 +179,12 @@ if __name__ == "__main__":
             column_to_analyze = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
             start_event = "Download Started"
             end_event = "Download Ended"
-            analyze_data_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
+            analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
         elif analysis_direction_detected == "UL":
             column_to_analyze = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
             start_event = "Upload Started"
             end_event = "Upload Ended"
-            analyze_data_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
+            analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
     elif protocol_type_detected == "UDP":
         event_col = "[Event] [Data call test detail events] IPERF Call Event"
         start_event = "IPERF_T_Start"
@@ -178,14 +194,14 @@ if __name__ == "__main__":
             # Analyze Throughput
             column_to_analyze_throughput = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
             print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
-            analyze_data_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
+            analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
 
             # Analyze Jitter
             column_to_analyze_jitter = "[Call Test] [iPerf] [Throughput] DL Jitter"
             print(f"\n--- Performing Jitter Analysis for {analysis_direction_detected} UDP ---")
-            analyze_data_throughput(file_path, column_to_analyze_jitter, event_col, start_event, end_event)
+            analyze_jitter(file_path, column_to_analyze_jitter, event_col, start_event, end_event)
         elif analysis_direction_detected == "UL":
             # For UL UDP, only throughput is requested
             column_to_analyze = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
             print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
-            analyze_data_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
+            analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
