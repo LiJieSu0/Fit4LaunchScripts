@@ -103,25 +103,35 @@ def analyze_data_throughput(file_path, throughput_col_name, start_event_str, end
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 1:
         file_path = sys.argv[1]
-        analysis_type = sys.argv[2].upper() # "DL" or "UL"
+        
+        # Determine analysis type from filename
+        file_name = file_path.lower()
+        throughput_col = None
+        start_event = None
+        end_event = None
+        analysis_type_detected = None
 
-        if analysis_type == "DL":
-            throughput_col = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
-            start_event = "Download Started"
-            end_event = "Download Ended"
-        elif analysis_type == "UL":
+        if "ul" in file_name:
+            analysis_type_detected = "UL"
             throughput_col = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
             start_event = "Upload Started"
             end_event = "Upload Ended"
+        elif "dl" in file_name:
+            analysis_type_detected = "DL"
+            throughput_col = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
+            start_event = "Download Started"
+            end_event = "Download Ended"
         else:
-            print("Invalid analysis type. Please specify 'DL' or 'UL'.")
-            print("Usage: python Scripts/DataPerformance/data_performance_statics.py <path_to_your_csv_file> <analysis_type>")
+            print("Could not determine analysis type (UL/DL) from the filename.")
+            print("Please ensure 'UL' or 'DL' is present in the file path.")
+            print("Usage: python Scripts/DataPerformance/data_performance_statics.py <path_to_your_csv_file>")
             sys.exit(1)
         
+        print(f"\nDetected analysis type: {analysis_type_detected} based on filename.")
         analyze_data_throughput(file_path, throughput_col, start_event, end_event)
     else:
-        print("Please provide the path to the CSV file and analysis type as command-line arguments.")
-        print("Usage: python Scripts/DataPerformance/data_performance_statics.py <path_to_your_csv_file> <analysis_type>")
+        print("Please provide the path to the CSV file as a command-line argument.")
+        print("Usage: python Scripts/DataPerformance/data_performance_statics.py <path_to_your_csv_file>")
         sys.exit(1)
