@@ -274,7 +274,7 @@ def analyze_csv(file_path): #main
     Returns:
         dict: A dictionary containing the analyzed metrics.
     """
-    metrics = {
+    table1_metrics = {
         "Device": "N/A", # Placeholder
         "Connection Attempts": 0,
         "Mean Setup Time (s)": 0.0,
@@ -285,49 +285,67 @@ def analyze_csv(file_path): #main
         "P - Value": 1.0 # Placeholder
     }
 
+    table2_metrics = {
+        "Failed Attempts": 0,
+        "No Service": 0,
+        "Access Timeout": 0,
+        "Voicemail": 0,
+        "Busy": 0,
+        "Unreachable": 0,
+        "VoNR": 0,
+        "VoLTE": 0,
+        "EPSFB": 0,
+        "Unknown": 0
+    }
+
     try:
         data = pd.read_csv(file_path)
         print(f"Successfully loaded {file_path}")
 
         mean_setup_time = _calculate_statistical_analysis(data)
         if mean_setup_time is not None:
-            metrics["Mean Setup Time (s)"] = round(mean_setup_time, 2)
+            table1_metrics["Mean Setup Time (s)"] = round(mean_setup_time, 2)
 
         invite_count = _count_invite_occurrences(data) - remove_from_total_count(data)
-        metrics["Connection Attempts"] = invite_count
+        table1_metrics["Connection Attempts"] = invite_count
         print(f"\n--- Invite_count '{invite_count}' ---")
 
         success_initiation_count = _count_success_initiation(data)
-        metrics["Successful Initiations"] = success_initiation_count
+        table1_metrics["Successful Initiations"] = success_initiation_count
 
         fail_count, success_rate, fail_rate = _calculate_call_failure_success_metrics(invite_count, success_initiation_count)
-        metrics["Failed Initiations"] = fail_count
-        metrics["Successful Initiations (%)"] = round(success_rate, 2)
-        metrics["Failed Initiations (%)"] = round(fail_rate, 2)
+        table1_metrics["Failed Initiations"] = fail_count
+        table1_metrics["Successful Initiations (%)"] = round(success_rate, 2)
+        table1_metrics["Failed Initiations (%)"] = round(fail_rate, 2)
 
         no_service_count_from_failed, declined_count_from_failed = no_service_failed(data)
         
-        # Update network_type_counts with the 'No Service' count from no_service_failed
         network_type_counts = _calculate_network_type_counts(data, no_service_count_from_failed)
+        table2_metrics["VoNR"] = network_type_counts["VoNR"]
+        table2_metrics["VoLTE"] = network_type_counts["VoLTE"]
+        table2_metrics["EPSFB"] = network_type_counts["EPSFB"]
+        table2_metrics["No Service"] = network_type_counts["No Service"]
+        table2_metrics["Unknown"] = network_type_counts["Unknown"]
 
-        # Calculate failed details
-        failed_details = _calculate_failed_details(metrics["Failed Initiations"], network_type_counts["No Service"])
-        # You might want to add these details to the metrics dictionary as well
-        metrics.update(failed_details)
+        failed_details = _calculate_failed_details(table1_metrics["Failed Initiations"], network_type_counts["No Service"])
+        table2_metrics.update(failed_details)
 
     except FileNotFoundError:
         print(f"Error: The file at {file_path} was not found.")
     except Exception as e:
         print(f"An error occurred: {e}")
     
-    return metrics
+    return table1_metrics, table2_metrics
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         file_path = sys.argv[1]
-        result_metrics = analyze_csv(file_path)
-        print("\n--- Analysis Results ---")
-        for key, value in result_metrics.items():
+        table1_metrics, table2_metrics = analyze_csv(file_path)
+        print("\n--- Table 1 Analysis Results ---")
+        for key, value in table1_metrics.items():
+            print(f"{key}: {value}")
+        print("\n--- Table 2 Analysis Results ---")
+        for key, value in table2_metrics.items():
             print(f"{key}: {value}")
     else:
         print("Please provide the path to the CSV file as a command-line argument.")
