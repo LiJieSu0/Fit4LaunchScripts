@@ -150,6 +150,25 @@ def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start
         print(f"An error occurred: {e}")
         return None
 
+def evaluate_performance(overall_avg_tput_dut, overall_avg_tput_ref):
+    """
+    Evaluates performance based on DUT and REF throughput.
+    Returns one of "Excellent", "Pass", "Marginal Fail", "Fail".
+    """
+    if overall_avg_tput_ref == 0:
+        return "Cannot evaluate: Reference throughput is zero."
+
+    if overall_avg_tput_dut > 1.1 * overall_avg_tput_ref:
+        return "Excellent"
+    elif 0.9 * overall_avg_tput_ref <= overall_avg_tput_dut <= 1.1 * overall_avg_tput_ref:
+        return "Pass"
+    elif 0.8 * overall_avg_tput_ref <= overall_avg_tput_dut < 0.9 * overall_avg_tput_ref:
+        return "Marginal Fail"
+    elif overall_avg_tput_dut < 0.8 * overall_avg_tput_ref:
+        return "Fail"
+    else:
+        return "Unknown" # Should not happen with the above conditions
+
 # The main block is removed as its functionality will be handled by run_all_data_analysis.py
 # if __name__ == "__main__":
 #     parser = argparse.ArgumentParser(description="Analyze data performance statistics from a CSV file.")

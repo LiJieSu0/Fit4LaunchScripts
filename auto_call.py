@@ -1,16 +1,24 @@
 import subprocess
 import time
 import threading
+import sys
+
+# Global event to signal threads to stop
+stop_event = threading.Event()
 
 def run_adb_command(device_serial, command):
     """Executes an ADB command for a specific device."""
     full_command = f"adb -s {device_serial} {command}"
     try:
-        result = subprocess.run(full_command, shell=True, capture_output=True, text=True, check=True)
+        # Add a timeout to subprocess calls to prevent indefinite blocking
+        result = subprocess.run(full_command, shell=True, capture_output=True, text=True, check=True, timeout=60) 
         print(f"Device {device_serial}: {command} -> {result.stdout.strip()}")
         return result.stdout.strip()
     except subprocess.CalledProcessError as e:
         print(f"Error on device {device_serial} with command '{command}': {e.stderr.strip()}")
+        return None
+    except subprocess.TimeoutExpired:
+        print(f"Command timed out for device {device_serial}: '{command}'")
         return None
     except Exception as e:
         print(f"An unexpected error occurred for device {device_serial} with command '{command}': {e}")
@@ -34,6 +42,10 @@ def make_call(device_serial, phone_number, call_duration, wait_time_after_hangup
     """Performs a series of calls on a single device."""
     print(f"Starting call sequence on device: {device_serial}")
     for i in range(num_calls):
+        if stop_event.is_set():
+            print(f"Device {device_serial}: Interruption signal received. Stopping call sequence.")
+            break
+
         print(f"Device {device_serial}: Call {i+1}/{num_calls}")
         
         # Dial the number
@@ -43,7 +55,11 @@ def make_call(device_serial, phone_number, call_duration, wait_time_after_hangup
             continue
         
         print(f"Device {device_serial}: Calling {phone_number} for {call_duration} seconds...")
-        time.sleep(call_duration)
+        # Use stop_event.wait() for interruptible sleep
+        if stop_event.wait(call_duration):
+            print(f"Device {device_serial}: Interruption signal received during call. Hanging up and stopping.")
+            run_adb_command(device_serial, "shell input keyevent KEYCODE_ENDCALL") # Attempt to hang up
+            break
         
         # Hang up
         hangup_command = "shell input keyevent KEYCODE_ENDCALL"
@@ -53,13 +69,15 @@ def make_call(device_serial, phone_number, call_duration, wait_time_after_hangup
         
         print(f"Device {device_serial}: Call sequence step completed. Waiting for {wait_time_after_hangup} seconds before next call.")
         if i < num_calls - 1: # Don't wait after the last call
-            time.sleep(wait_time_after_hangup)
+            if stop_event.wait(wait_time_after_hangup):
+                print(f"Device {device_serial}: Interruption signal received during wait. Stopping.")
+                break
     print(f"Finished call sequence on device: {device_serial}")
 
 def main():
     # --- User-defined parameters ---
     PHONE_NUMBER = "922"  # The phone number to dial
-    CALL_DURATION = 45          # Duration of each call in seconds
+    CALL_DURATION = 50          # Duration of each call in seconds
     WAIT_TIME_AFTER_HANGUP = 5  # Wait time after hanging up before redialing in seconds
     NUM_CALLS = 300               # Number of calls to make per device
     
@@ -68,9 +86,8 @@ def main():
     # You can specify up to 8 devices as requested.
     SPECIFIC_DEVICES = [
         "BS88523AA1430400069", # Replace with your actual device serial
-        "BS88532AA1533100678", # Replace with your actual device serial
+        "BS88532AA1533100678", 
     ] 
-    # -----------------------------
 
     all_connected_devices = get_connected_devices()
     if not all_connected_devices:
@@ -100,10 +117,16 @@ def main():
         threads.append(thread)
         thread.start()
 
-    for thread in threads:
-        thread.join()
-
-    print("All parallel dialing tasks completed.")
+    try:
+        while any(thread.is_alive() for thread in threads):
+            time.sleep(1) # Keep main thread alive to catch KeyboardInterrupt
+    except KeyboardInterrupt:
+        print("\nMain thread: KeyboardInterrupt received. Signaling all threads to stop.")
+        stop_event.set() # Signal all threads to stop
+    finally:
+        for thread in threads:
+            thread.join() # Wait for all threads to finish
+        print("All parallel dialing tasks completed or interrupted gracefully.")
 
 if __name__ == "__main__":
     main()
