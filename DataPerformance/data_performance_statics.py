@@ -1,6 +1,7 @@
 import pandas as pd
 import sys
 import argparse
+import os
 
 def _calculate_statistics(data_series, column_name):
     """
@@ -141,10 +142,16 @@ def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start
 
         if not overall_error_ratio_data.empty:
             mean_val = overall_error_ratio_data.mean()
+            max_val = overall_error_ratio_data.max()
+            count_val = overall_error_ratio_data.count()
             print(f"\n--- Statistical Analysis of Overall {column_name_to_analyze} ---")
             print(f"Mean: {mean_val:.2f} %") # Assuming Error Ratio is a percentage
+            print(f"Maximum: {max_val:.2f} %")
+            print(f"Count: {count_val}")
+            max_val_index = overall_error_ratio_data.idxmax()
+            print(f"Maximum value found at original row index: {max_val_index}")
         else:
-            print(f"\nNo valid data found to calculate mean for '{column_name_to_analyze}'.")
+            print(f"\nNo valid data found to calculate statistics for '{column_name_to_analyze}'.")
 
     except FileNotFoundError:
         print(f"Error: The file at {file_path} was not found.")
@@ -159,7 +166,8 @@ if __name__ == "__main__":
     file_path = args.file_path
 
     # Determine analysis direction from filename
-    file_name = file_path.lower()
+    # Extract only the filename from the full path
+    file_name = os.path.basename(file_path).lower()
     event_col = None
     start_event = None
     end_event = None
@@ -185,6 +193,17 @@ if __name__ == "__main__":
         print("Please ensure 'HTTP' or 'UDP' is present in the file path.")
         sys.exit(1)
 
+    # Determine network type (5G/LTE) from filename
+    network_type_detected = None
+    if "5g" in file_name:
+        network_type_detected = "5G"
+    elif "lte" in file_name: # Assuming LTE if not 5G and "lte" is present
+        network_type_detected = "LTE"
+    else:
+        print("Could not determine network type (5G/LTE) from the filename.")
+        print("Please ensure '5G' or 'LTE' is present in the file path.")
+        sys.exit(1)
+
     # Determine device type (DUT/REF) from filename
     device_type_detected = "Unknown"
     if "dut" in file_name:
@@ -192,17 +211,20 @@ if __name__ == "__main__":
     elif "ref" in file_name:
         device_type_detected = "REF"
 
-    print(f"\nDetected analysis direction: {analysis_direction_detected}, and protocol type: {protocol_type_detected}.")
+    print(f"\nDetected analysis direction: {analysis_direction_detected}, protocol type: {protocol_type_detected}, and network type: {network_type_detected}.")
 
     if protocol_type_detected == "HTTP":
         event_col = "[Call Test] [HTTP Transfer] HTTP Transfer Call Event"
         if analysis_direction_detected == "DL":
-            column_to_analyze = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
+            if network_type_detected == "5G":
+                column_to_analyze = "[Call Test] [Throughput] Application DL TP"
+            else: # Default to LTE if not 5G
+                column_to_analyze = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
             start_event = "Download Started"
             end_event = "Download Ended"
             analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
         elif analysis_direction_detected == "UL":
-            column_to_analyze = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
+            column_to_analyze = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)" # Assuming same for 5G/LTE UL for now
             start_event = "Upload Started"
             end_event = "Upload Ended"
             analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
@@ -213,7 +235,10 @@ if __name__ == "__main__":
 
         if analysis_direction_detected == "DL":
             # Analyze Throughput
-            column_to_analyze_throughput = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
+            if network_type_detected == "5G":
+                column_to_analyze_throughput = "[Call Test] [Throughput] Application DL TP"
+            else: # Default to LTE if not 5G
+                column_to_analyze_throughput = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
             print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
             analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
 
@@ -229,7 +254,7 @@ if __name__ == "__main__":
 
         elif analysis_direction_detected == "UL":
             # Analyze Throughput
-            column_to_analyze_throughput = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
+            column_to_analyze_throughput = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)" # Assuming same for 5G/LTE UL for now
             print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
             analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
 
