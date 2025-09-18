@@ -150,24 +150,35 @@ def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start
         print(f"An error occurred: {e}")
         return None
 
-def evaluate_performance(overall_avg_tput_dut, overall_avg_tput_ref):
+def evaluate_performance(dut_value, ref_value, metric_type):
     """
-    Evaluates performance based on DUT and REF throughput.
+    Evaluates performance based on DUT and REF values for a given metric type.
     Returns one of "Excellent", "Pass", "Marginal Fail", "Fail".
     """
-    if overall_avg_tput_ref == 0:
-        return "Cannot evaluate: Reference throughput is zero."
+    if ref_value == 0:
+        return "Cannot evaluate: Reference value is zero."
 
-    if overall_avg_tput_dut > 1.1 * overall_avg_tput_ref:
-        return "Excellent"
-    elif 0.9 * overall_avg_tput_ref <= overall_avg_tput_dut <= 1.1 * overall_avg_tput_ref:
-        return "Pass"
-    elif 0.8 * overall_avg_tput_ref <= overall_avg_tput_dut < 0.9 * overall_avg_tput_ref:
-        return "Marginal Fail"
-    elif overall_avg_tput_dut < 0.8 * overall_avg_tput_ref:
-        return "Fail"
-    else:
-        return "Unknown" # Should not happen with the above conditions
+    if metric_type == "throughput":
+        if dut_value > 1.1 * ref_value:
+            return "Excellent"
+        elif 0.9 * ref_value <= dut_value <= 1.1 * ref_value:
+            return "Pass"
+        elif 0.8 * ref_value <= dut_value < 0.9 * ref_value:
+            return "Marginal Fail"
+        elif dut_value < 0.8 * ref_value:
+            return "Fail"
+    elif metric_type == "jitter":
+        # Jitter criteria (lower is better)
+        if dut_value < 0.9 * ref_value:
+            return "Excellent"
+        elif (0.9 * ref_value <= dut_value <= 1.1 * ref_value) or (dut_value < 10):
+            return "Pass"
+        elif 1.1 * ref_value < dut_value <= 1.20 * ref_value: # Corrected condition based on clarification
+            return "Marginal Fail"
+        elif dut_value > 1.20 * ref_value:
+            return "Fail"
+    
+    return "Unknown" # Should not happen with the above conditions
 
 # The main block is removed as its functionality will be handled by run_all_data_analysis.py
 # if __name__ == "__main__":
