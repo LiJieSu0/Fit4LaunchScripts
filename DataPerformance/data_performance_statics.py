@@ -76,8 +76,7 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
                 if not interval_data.empty:
                     interval_avg = interval_data.mean()
                     interval_averages.append(interval_avg)
-                    unit = "Mbps" if "Throughput" in column_name_to_analyze else "" # Default unit for throughput
-                    print(f"Interval from row {current_start_idx} to {end_idx}: Average {column_name_to_analyze} = {interval_avg:.2f} {unit}")
+                    # Removed: print(f"Interval from row {current_start_idx} to {end_idx}: Average {column_name_to_analyze} = {interval_avg:.2f} {unit}")
                 else:
                     print(f"Interval from row {current_start_idx} to {end_idx}: No valid {column_name_to_analyze} data.")
                 
@@ -89,7 +88,7 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
 
         averages_series = pd.Series(interval_averages)
         
-        print(f"\nNumber of intervals with valid average {column_name_to_analyze}: {len(averages_series)}")
+        # Removed: print(f"\nNumber of intervals with valid average {column_name_to_analyze}: {len(averages_series)}")
         
         _calculate_statistics(averages_series, column_name_to_analyze)
 
@@ -104,7 +103,6 @@ def analyze_jitter(file_path, column_name_to_analyze, event_col_name, start_even
     """
     try:
         data = pd.read_csv(file_path)
-        print(f"Successfully loaded {file_path}")
 
         if column_name_to_analyze not in data.columns:
             print(f"\nError: Column '{column_name_to_analyze}' not found in the CSV file.")
@@ -131,7 +129,6 @@ def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start
     """
     try:
         data = pd.read_csv(file_path)
-        print(f"Successfully loaded {file_path}")
 
         if column_name_to_analyze not in data.columns:
             print(f"\nError: Column '{column_name_to_analyze}' not found in the CSV file.")
@@ -142,14 +139,14 @@ def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start
 
         if not overall_error_ratio_data.empty:
             mean_val = overall_error_ratio_data.mean()
-            max_val = overall_error_ratio_data.max()
-            count_val = overall_error_ratio_data.count()
+            # Removed: max_val = overall_error_ratio_data.max()
+            # Removed: count_val = overall_error_ratio_data.count()
             print(f"\n--- Statistical Analysis of Overall {column_name_to_analyze} ---")
             print(f"Mean: {mean_val:.2f} %") # Assuming Error Ratio is a percentage
-            print(f"Maximum: {max_val:.2f} %")
-            print(f"Count: {count_val}")
-            max_val_index = overall_error_ratio_data.idxmax()
-            print(f"Maximum value found at original row index: {max_val_index}")
+            # Removed: print(f"Maximum: {max_val:.2f} %")
+            # Removed: print(f"Count: {count_val}")
+            # Removed: max_val_index = overall_error_ratio_data.idxmax()
+            # Removed: print(f"Maximum value found at original row index: {max_val_index}")
         else:
             print(f"\nNo valid data found to calculate statistics for '{column_name_to_analyze}'.")
 
