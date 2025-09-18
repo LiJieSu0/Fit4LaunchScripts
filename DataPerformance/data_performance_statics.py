@@ -177,6 +177,16 @@ def evaluate_performance(dut_value, ref_value, metric_type):
             return "Marginal Fail"
         elif dut_value > 1.20 * ref_value:
             return "Fail"
+    elif metric_type == "ping_rtt":
+        # Ping RTT criteria (lower is better)
+        if dut_value < 0.9 * ref_value:
+            return "Excellent"
+        elif 0.9 * ref_value <= dut_value <= 1.1 * ref_value:
+            return "Pass"
+        elif 1.1 * ref_value < dut_value <= 1.20 * ref_value:
+            return "Marginal Fail"
+        elif dut_value > 1.20 * ref_value:
+            return "Fail"
     
     return "Unknown" # Should not happen with the above conditions
 

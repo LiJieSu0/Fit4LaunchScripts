@@ -18,11 +18,21 @@ from pdf_report_generator import create_pdf_report # Import the PDF generation f
 # Import the analysis functions from data_performance_statics.py
 # Assuming data_performance_statics.py is in the same directory
 import data_performance_statics
+import ping_statics # Import the ping_statics module
 
-def run_analysis_on_file(file_path):
+def run_analysis_on_file(file_path, analysis_type="data_performance"):
     """
     Runs the analysis script on a single CSV file and returns the collected statistics.
+    The analysis_type parameter determines which type of analysis to perform.
     """
+    if analysis_type == "ping":
+        print(f"--- Analyzing Ping file: {file_path} ---")
+        ping_stats = ping_statics.calculate_ping_statistics(file_path)
+        if ping_stats:
+            return {"Ping RTT": ping_stats}
+        return None
+
+    # Existing data performance analysis logic
     file_name = os.path.basename(file_path).lower()
     event_col = None
     start_event = None
@@ -125,47 +135,72 @@ def run_analysis_on_file(file_path):
     
     return all_stats
 
-# Removed create_pdf_report function as it's now in pdf_report_generator.py
+    # Removed create_pdf_report function as it's now in pdf_report_generator.py
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    # analysis_script_path is no longer needed as data_performance_statics is imported directly
     
-    base_data_dir = os.path.join("RawData", "DataPerformance") # Updated base directory
+    base_raw_data_dir = "RawData"
+    data_performance_dir = os.path.join(base_raw_data_dir, "DataPerformance")
+    ping_data_dir = os.path.join(base_raw_data_dir, "Ping")
     
-    if not os.path.isdir(base_data_dir):
-        print(f"Error: Base data directory not found at {base_data_dir}")
-        sys.exit(1)
-
     all_collected_results = {}
 
-    # Dynamically discover case directories (e.g., TC91-1, TC94-1)
-    case_dirs = [d for d in os.listdir(base_data_dir) if os.path.isdir(os.path.join(base_data_dir, d))]
-    
-    for case_dir_name in case_dirs:
-        full_case_dir_path = os.path.join(base_data_dir, case_dir_name)
+    # --- Process DataPerformance folder ---
+    if os.path.isdir(data_performance_dir):
+        print(f"\n{'='*100}\nProcessing Data Performance data in: {data_performance_dir}\n{'='*100}")
+        case_dirs = [d for d in os.listdir(data_performance_dir) if os.path.isdir(os.path.join(data_performance_dir, d))]
         
-        # Dynamically discover protocol directories (e.g., HTTP, UDP) within each case directory
-        protocol_dirs = [d for d in os.listdir(full_case_dir_path) if os.path.isdir(os.path.join(full_case_dir_path, d))]
+        for case_dir_name in case_dirs:
+            full_case_dir_path = os.path.join(data_performance_dir, case_dir_name)
+            protocol_dirs = [d for d in os.listdir(full_case_dir_path) if os.path.isdir(os.path.join(full_case_dir_path, d))]
 
-        for protocol_dir_name in protocol_dirs:
-            full_protocol_dir_path = os.path.join(full_case_dir_path, protocol_dir_name)
-            print(f"\n{'='*100}\nProcessing data in: {full_protocol_dir_path}\n{'='*100}")
+            for protocol_dir_name in protocol_dirs:
+                full_protocol_dir_path = os.path.join(full_case_dir_path, protocol_dir_name)
+                print(f"\nProcessing data in: {full_protocol_dir_path}")
+                
+                subdir_results = {}
+                for file in os.listdir(full_protocol_dir_path):
+                    if file.lower().endswith(".csv"):
+                        csv_file_path = os.path.join(full_protocol_dir_path, file)
+                        stats = run_analysis_on_file(csv_file_path, analysis_type="data_performance")
+                        if stats:
+                            device_type = stats.get("Device Type")
+                            if device_type:
+                                subdir_results[device_type] = stats
+                
+                descriptive_key = f"Data Performance - {case_dir_name} - {protocol_dir_name}"
+                all_collected_results[descriptive_key] = subdir_results
+    else:
+        print(f"Warning: Data Performance directory not found at {data_performance_dir}. Skipping.")
+
+    # --- Process Ping folder ---
+    if os.path.isdir(ping_data_dir):
+        print(f"\n{'='*100}\nProcessing Ping data in: {ping_data_dir}\n{'='*100}")
+        ping_test_dirs = [d for d in os.listdir(ping_data_dir) if os.path.isdir(os.path.join(ping_data_dir, d))]
+
+        for test_dir_name in ping_test_dirs:
+            full_test_dir_path = os.path.join(ping_data_dir, test_dir_name)
+            print(f"\nProcessing Ping test: {full_test_dir_path}")
             
-            subdir_results = {}
-            for file in os.listdir(full_protocol_dir_path):
+            ping_subdir_results = {}
+            for file in os.listdir(full_test_dir_path):
                 if file.lower().endswith(".csv"):
-                    csv_file_path = os.path.join(full_protocol_dir_path, file)
-                    print(f"--- Analyzing file: {csv_file_path} ---")
-                    stats = run_analysis_on_file(csv_file_path)
+                    csv_file_path = os.path.join(full_test_dir_path, file)
+                    stats = run_analysis_on_file(csv_file_path, analysis_type="ping")
                     if stats:
-                        device_type = stats.get("Device Type")
-                        if device_type:
-                            subdir_results[device_type] = stats
+                        file_name_lower = os.path.basename(csv_file_path).lower()
+                        device_type = "Unknown"
+                        if "dut" in file_name_lower:
+                            device_type = "DUT"
+                        elif "ref" in file_name_lower:
+                            device_type = "REF"
+                        ping_subdir_results[device_type] = stats
             
-            # Create a descriptive key for the results (e.g., "TC91-1 - Multi Stream HTTP Download for 30 seconds_Good")
-            descriptive_key = f"{case_dir_name} - {protocol_dir_name}"
-            all_collected_results[descriptive_key] = subdir_results
+            descriptive_key = f"Ping - {test_dir_name}"
+            all_collected_results[descriptive_key] = ping_subdir_results
+    else:
+        print(f"Warning: Ping data directory not found at {ping_data_dir}. Skipping.")
         
     if all_collected_results:
         create_pdf_report(all_collected_results)
