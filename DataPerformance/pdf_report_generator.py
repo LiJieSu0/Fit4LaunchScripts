@@ -70,9 +70,13 @@ def create_pdf_report(all_results, output_filename="Data_Performance_Report.pdf"
                     additional_styles.append(('BACKGROUND', (2, current_row_idx), (2, current_row_idx), result_color))
                     additional_styles.append(('BACKGROUND', (3, current_row_idx), (3, current_row_idx), result_color))
                     
-                    table_data.append(["", "Standard Deviation", f"{dut_metric_stats.get('Standard Deviation', 'N/A'):.2f}", f"{ref_metric_stats.get('Standard Deviation', 'N/A'):.2f}"])
-                    table_data.append(["", "Minimum", f"{dut_metric_stats.get('Minimum', 'N/A'):.2f}", f"{ref_metric_stats.get('Minimum', 'N/A'):.2f}"])
-                    table_data.append(["", "Maximum", f"{dut_metric_stats.get('Maximum', 'N/A'):.2f}", f"{ref_metric_stats.get('Maximum', 'N/A'):.2f}"])
+                    # Helper to format numbers or return 'N/A'
+                    def format_stat_value(val):
+                        return f"{val:.2f}" if isinstance(val, (int, float)) else 'N/A'
+
+                    table_data.append(["", "Standard Deviation", format_stat_value(dut_metric_stats.get('Standard Deviation')), format_stat_value(ref_metric_stats.get('Standard Deviation'))])
+                    table_data.append(["", "Minimum", format_stat_value(dut_metric_stats.get('Minimum')), format_stat_value(ref_metric_stats.get('Minimum'))])
+                    table_data.append(["", "Maximum", format_stat_value(dut_metric_stats.get('Maximum')), format_stat_value(ref_metric_stats.get('Maximum'))])
                 # Handle Jitter (Mean)
                 elif metric == "Jitter":
                     dut_mean_jitter = dut_metric_stats.get('Mean')

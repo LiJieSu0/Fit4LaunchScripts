@@ -180,114 +180,126 @@ def evaluate_performance(dut_value, ref_value, metric_type):
     
     return "Unknown" # Should not happen with the above conditions
 
-# The main block is removed as its functionality will be handled by run_all_data_analysis.py
-# if __name__ == "__main__":
-#     parser = argparse.ArgumentParser(description="Analyze data performance statistics from a CSV file.")
-#     parser.add_argument("file_path", help="Path to the CSV file.")
-#     args = parser.parse_args()
-#     file_path = args.file_path
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Analyze data performance statistics from a CSV file.")
+    parser.add_argument("file_path", help="Path to the CSV file.")
+    args = parser.parse_args()
+    file_path = args.file_path
 
-#     # Determine analysis direction from filename
-#     # Extract only the filename from the full path
-#     file_name = os.path.basename(file_path).lower()
-#     event_col = None
-#     start_event = None
-#     end_event = None
-#     analysis_direction_detected = None
+    # Determine analysis direction from filename
+    # Extract only the filename from the full path
+    file_name = os.path.basename(file_path).lower()
+    event_col = None
+    start_event = None
+    end_event = None
+    analysis_direction_detected = None
 
-#     if "ul" in file_name:
-#         analysis_direction_detected = "UL"
-#     elif "dl" in file_name:
-#         analysis_direction_detected = "DL"
-#     else:
-#         print("Could not determine analysis direction (UL/DL) from the filename.")
-#         print("Please ensure 'UL' or 'DL' is present in the file path.")
-#         sys.exit(1)
+    if "ul" in file_name:
+        analysis_direction_detected = "UL"
+    elif "dl" in file_name:
+        analysis_direction_detected = "DL"
+    else:
+        print("Could not determine analysis direction (UL/DL) from the filename.")
+        print("Please ensure 'UL' or 'DL' is present in the file path.")
+        sys.exit(1)
     
-#     # Determine protocol type from filename
-#     protocol_type_detected = None
-#     if "http" in file_name:
-#         protocol_type_detected = "HTTP"
-#     elif "udp" in file_name:
-#         protocol_type_detected = "UDP"
-#     else:
-#         print("Could not determine protocol type (HTTP/UDP) from the filename.")
-#         print("Please ensure 'HTTP' or 'UDP' is present in the file path.")
-#         sys.exit(1)
+    # Determine protocol type from filename
+    protocol_type_detected = None
+    if "http" in file_name:
+        protocol_type_detected = "HTTP"
+    elif "udp" in file_name:
+        protocol_type_detected = "UDP"
+    else:
+        print("Could not determine protocol type (HTTP/UDP) from the filename.")
+        print("Please ensure 'HTTP' or 'UDP' is present in the file path.")
+        sys.exit(1)
 
-#     # Determine network type (5G/LTE) from filename
-#     network_type_detected = None
-#     if "5g" in file_name:
-#         network_type_detected = "5G"
-#     elif "lte" in file_name: # Assuming LTE if not 5G and "lte" is present
-#         network_type_detected = "LTE"
-#     else:
-#         print("Could not determine network type (5G/LTE) from the filename.")
-#         print("Please ensure '5G' or 'LTE' is present in the file path.")
-#         sys.exit(1)
+    # Determine network type (5G/LTE) from filename
+    network_type_detected = None
+    if "5g" in file_name:
+        network_type_detected = "5G"
+    elif "lte" in file_name: # Assuming LTE if not 5G and "lte" is present
+        network_type_detected = "LTE"
+    else:
+        print("Could not determine network type (5G/LTE) from the filename.")
+        print("Please ensure '5G' or 'LTE' is present in the file path.")
+        sys.exit(1)
 
-#     # Determine device type (DUT/REF) from filename
-#     device_type_detected = "Unknown"
-#     if "dut" in file_name:
-#         device_type_detected = "DUT"
-#     elif "ref" in file_name:
-#         device_type_detected = "REF"
+    # Determine device type (DUT/REF) from filename
+    device_type_detected = "Unknown"
+    if "dut" in file_name:
+        device_type_detected = "DUT"
+    elif "ref" in file_name:
+        device_type_detected = "REF"
 
-#     print(f"\nDetected analysis direction: {analysis_direction_detected}, protocol type: {protocol_type_detected}, and network type: {network_type_detected}.")
+    print(f"\nDetected analysis direction: {analysis_direction_detected}, protocol type: {protocol_type_detected}, and network type: {network_type_detected}.")
 
-#     if protocol_type_detected == "HTTP":
-#         event_col = "[Call Test] [HTTP Transfer] HTTP Transfer Call Event"
-#         if analysis_direction_detected == "DL":
-#             if network_type_detected == "5G":
-#                 column_to_analyze = "[Call Test] [Throughput] Application DL TP"
-#             else: # Default to LTE if not 5G
-#                 column_to_analyze = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
-#             start_event = "Download Started"
-#             end_event = "Download Ended"
-#             analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
-#         elif analysis_direction_detected == "UL":
-#             column_to_analyze = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)" # Assuming same for 5G/LTE UL for now
-#             start_event = "Upload Started"
-#             end_event = "Upload Ended"
-#             analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
-#     elif protocol_type_detected == "UDP":
-#         event_col = "[Event] [Data call test detail events] IPERF Call Event"
-#         start_event = "IPERF_T_Start"
-#         end_event = "IPERF_T_End"
+    if protocol_type_detected == "HTTP":
+        event_col = "[Call Test] [HTTP Transfer] HTTP Transfer Call Event"
+        if analysis_direction_detected == "DL":
+            if network_type_detected == "5G":
+                column_to_analyze = "[Call Test] [Throughput] Application DL TP"
+            else: # Default to LTE if not 5G
+                column_to_analyze = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
+            start_event = "Download Started"
+            end_event = "Download Ended"
+            print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} HTTP ---")
+            stats = analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
+            print(f"Throughput Stats: {stats}")
+        elif analysis_direction_detected == "UL":
+            if network_type_detected == "5G":
+                column_to_analyze = "[Call Test] [Throughput] Application UL TP" # Assuming this is the 5G UL TP column
+            else: # Default to LTE if not 5G
+                column_to_analyze = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
+            start_event = "Upload Started"
+            end_event = "Upload Ended"
+            print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} HTTP ---")
+            stats = analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
+            print(f"Throughput Stats: {stats}")
+    elif protocol_type_detected == "UDP":
+        event_col = "[Event] [Data call test detail events] IPERF Call Event"
+        start_event = "IPERF_T_Start"
+        end_event = "IPERF_T_End"
 
-#         if analysis_direction_detected == "DL":
-#             # Analyze Throughput
-#             if network_type_detected == "5G":
-#                 column_to_analyze_throughput = "[Call Test] [Throughput] Application DL TP"
-#             else: # Default to LTE if not 5G
-#                 column_to_analyze_throughput = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
-#             # print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
-#             analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
+        if analysis_direction_detected == "DL":
+            # Analyze Throughput
+            if network_type_detected == "5G":
+                column_to_analyze_throughput = "[Call Test] [Throughput] Application DL TP"
+            else: # Default to LTE if not 5G
+                column_to_analyze_throughput = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
+            print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
+            stats = analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
+            print(f"Throughput Stats: {stats}")
 
-#             # Analyze Jitter
-#             column_to_analyze_jitter = "[Call Test] [iPerf] [Throughput] DL Jitter"
-#             # print(f"\n--- Performing Jitter Analysis for {analysis_direction_detected} UDP ---")
-#             analyze_jitter(file_path, column_to_analyze_jitter, event_col, start_event, end_event)
+            # Analyze Jitter
+            column_to_analyze_jitter = "[Call Test] [iPerf] [Throughput] DL Jitter"
+            print(f"\n--- Performing Jitter Analysis for {analysis_direction_detected} UDP ---")
+            stats = analyze_jitter(file_path, column_to_analyze_jitter, event_col, start_event, end_event)
+            print(f"Jitter Stats: {stats}")
 
-#             # Analyze DL Error Ratio
-#             column_to_analyze_dl_error_ratio = "[Call Test] [iPerf] [Throughput] DL Error Ratio"
-#             # print(f"\n--- Performing DL Error Ratio Analysis for {analysis_direction_detected} UDP ---")
-#             analyze_error_ratio(file_path, column_to_analyze_dl_error_ratio, event_col, start_event, end_event)
+            # Analyze DL Error Ratio
+            column_to_analyze_dl_error_ratio = "[Call Test] [iPerf] [Throughput] DL Error Ratio"
+            print(f"\n--- Performing DL Error Ratio Analysis for {analysis_direction_detected} UDP ---")
+            stats = analyze_error_ratio(file_path, column_to_analyze_dl_error_ratio, event_col, start_event, end_event)
+            print(f"Error Ratio Stats: {stats}")
 
-#         elif analysis_direction_detected == "UL":
-#             # Analyze Throughput
-#             column_to_analyze_throughput = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)" # Assuming same for 5G/LTE UL for now
-#             # print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
-#             analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
+        elif analysis_direction_detected == "UL":
+            # Analyze Throughput
+            column_to_analyze_throughput = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)" # Assuming same for 5G/LTE UL for now
+            print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
+            stats = analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
+            print(f"Throughput Stats: {stats}")
 
-#             # Analyze UL Jitter
-#             column_to_analyze_ul_jitter = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Jitter"
-#             # print(f"\n--- Performing UL Jitter Analysis for {analysis_direction_detected} UDP ---")
-#             analyze_jitter(file_path, column_to_analyze_ul_jitter, event_col, start_event, end_event)
+            # Analyze UL Jitter
+            column_to_analyze_ul_jitter = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Jitter"
+            print(f"\n--- Performing UL Jitter Analysis for {analysis_direction_detected} UDP ---")
+            stats = analyze_jitter(file_path, column_to_analyze_ul_jitter, event_col, start_event, end_event)
+            print(f"Jitter Stats: {stats}")
 
-#             # Analyze UL Error Ratio
-#             column_to_analyze_ul_error_ratio = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Error Ratio"
-#             # print(f"\n--- Performing UL Error Ratio Analysis for {analysis_direction_detected} UDP ---")
-#             analyze_error_ratio(file_path, column_to_analyze_ul_error_ratio, event_col, start_event, end_event)
+            # Analyze UL Error Ratio
+            column_to_analyze_ul_error_ratio = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Error Ratio"
+            print(f"\n--- Performing UL Error Ratio Analysis for {analysis_direction_detected} UDP ---")
+            stats = analyze_error_ratio(file_path, column_to_analyze_ul_error_ratio, event_col, start_event, end_event)
+            print(f"Error Ratio Stats: {stats}")
 
-#     print(f"\nDevice Type: {device_type_detected}") # Print at the end
+    print(f"\nDevice Type: {device_type_detected}") # Print at the end

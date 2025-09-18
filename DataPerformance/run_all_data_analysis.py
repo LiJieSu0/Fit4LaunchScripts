@@ -52,6 +52,11 @@ def run_analysis_on_file(file_path):
     elif "ref" in file_name:
         device_type_detected = "REF"
 
+    print(f"DEBUG: file_name: {file_name}")
+    print(f"DEBUG: analysis_direction_detected: {analysis_direction_detected}")
+    print(f"DEBUG: protocol_type_detected: {protocol_type_detected}")
+    print(f"DEBUG: network_type_detected: {network_type_detected}")
+
     if not analysis_direction_detected or not protocol_type_detected or not network_type_detected:
         print(f"Warning: Could not fully determine analysis parameters from filename: {file_name}. Skipping.")
         return None
@@ -72,7 +77,10 @@ def run_analysis_on_file(file_path):
             if throughput_stats:
                 all_stats["Throughput"] = throughput_stats
         elif analysis_direction_detected == "UL":
-            column_to_analyze = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
+            if network_type_detected == "5G":
+                column_to_analyze = "[Call Test] [Throughput] Application UL TP" # Assuming this is the 5G UL TP column
+            else: # Default to LTE if not 5G
+                column_to_analyze = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
             start_event = "Upload Started"
             end_event = "Upload Ended"
             throughput_stats = data_performance_statics.analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
@@ -123,41 +131,42 @@ if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
     # analysis_script_path is no longer needed as data_performance_statics is imported directly
     
-    base_data_dir = os.path.join("RawData", "TC91-1")
+    base_data_dir = os.path.join("RawData", "DataPerformance") # Updated base directory
     
-    subdirectories = [
-        "UDP Download Task at 400 Mbps for 10 seconds",
-        "UDP Download Task at 200 Mbps for 10 seconds",
-        "Multi Stream HTTP Download for 30 seconds_Good",
-        "Single Stream HTTP Download for 60 seconds_Good"
-    ]
-
-    # No need to check for analysis_script_path existence as data_performance_statics is imported directly
     if not os.path.isdir(base_data_dir):
         print(f"Error: Base data directory not found at {base_data_dir}")
         sys.exit(1)
 
     all_collected_results = {}
 
-    for subdir in subdirectories:
-        full_subdir_path = os.path.join(base_data_dir, subdir)
-        if os.path.isdir(full_subdir_path):
-            print(f"\n{'='*100}\nProcessing data in: {full_subdir_path}\n{'='*100}")
+    # Dynamically discover case directories (e.g., TC91-1, TC94-1)
+    case_dirs = [d for d in os.listdir(base_data_dir) if os.path.isdir(os.path.join(base_data_dir, d))]
+    
+    for case_dir_name in case_dirs:
+        full_case_dir_path = os.path.join(base_data_dir, case_dir_name)
+        
+        # Dynamically discover protocol directories (e.g., HTTP, UDP) within each case directory
+        protocol_dirs = [d for d in os.listdir(full_case_dir_path) if os.path.isdir(os.path.join(full_case_dir_path, d))]
+
+        for protocol_dir_name in protocol_dirs:
+            full_protocol_dir_path = os.path.join(full_case_dir_path, protocol_dir_name)
+            print(f"\n{'='*100}\nProcessing data in: {full_protocol_dir_path}\n{'='*100}")
             
             subdir_results = {}
-            for file in os.listdir(full_subdir_path):
+            for file in os.listdir(full_protocol_dir_path):
                 if file.lower().endswith(".csv"):
-                    csv_file_path = os.path.join(full_subdir_path, file)
+                    csv_file_path = os.path.join(full_protocol_dir_path, file)
                     print(f"--- Analyzing file: {csv_file_path} ---")
                     stats = run_analysis_on_file(csv_file_path)
                     if stats:
                         device_type = stats.get("Device Type")
                         if device_type:
                             subdir_results[device_type] = stats
-            all_collected_results[subdir] = subdir_results
-        else:
-            print(f"Warning: Subdirectory not found: {full_subdir_path}")
-    
+            
+            # Create a descriptive key for the results (e.g., "TC91-1 - Multi Stream HTTP Download for 30 seconds_Good")
+            descriptive_key = f"{case_dir_name} - {protocol_dir_name}"
+            all_collected_results[descriptive_key] = subdir_results
+        
     if all_collected_results:
         create_pdf_report(all_collected_results)
     else:
