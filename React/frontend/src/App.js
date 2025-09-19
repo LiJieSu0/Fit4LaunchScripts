@@ -116,11 +116,10 @@ function App() {
 
   return (
     <div className="container mx-auto p-4 main-content"> {/* Add a class for easier targeting in CSS */}
-      <h1 className="text-4xl font-bold text-center my-8">Data Performance Analysis Report</h1>
-      <h2 className="text-2xl font-semibold text-center mb-10">Comparison of DUT and REF Devices</h2>
+      {/* Removed main report titles as per user request */}
 
       {Object.entries(allResults).map(([subdirName, results]) => (
-        <div key={subdirName} className="report-section"> {/* New wrapper div */}
+        <div key={subdirName} className="report-section">
           <h3 className="text-xl font-bold mb-4 text-gray-800">{subdirName}</h3>
           {renderStatisticsTable(subdirName, results, subdirName.startsWith("Ping -"))}
         </div>

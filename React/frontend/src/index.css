@@ -39,6 +39,8 @@ p {
 table {
   width: 100%;
   border-collapse: collapse;
+  page-break-inside: avoid; /* Prevent table content from splitting across pages */
+  margin-top: 10px; /* Add margin to push table down from h3 */
 }
 
 th, td {
@@ -69,40 +71,58 @@ th {
 }
 
 @media print {
+  html {
+    padding-top: 0 !important; /* Ensure no html padding */
+  }
+
   body {
-    margin: 0;
-    padding-top: 80px; /* Reduced padding to bring the main title closer to the header */
-    -webkit-print-color-adjust: exact; /* Ensures background colors and images are printed */
-    print-color-adjust: exact;
-    min-height: 100vh; /* Ensure body takes full viewport height for proper page breaks */
+    margin: 0 !important;
+    padding-top: 150px !important; /* Large padding to clear fixed header on every page */
+    -webkit-print-color-adjust: exact !important; /* Ensures background colors and images are printed */
+    print-color-adjust: exact !important;
+    min-height: 100vh !important; /* Ensure body takes full viewport height for proper page breaks */
   }
 
   .print-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #fff; /* Ensure header background is white */
-    z-index: 1000; /* Ensure header is above other content */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Keep shadow for visual separation */
+    position: fixed !important; /* Revert to fixed for header on every page */
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    background-color: #fff !important; /* Ensure header background is white */
+    z-index: 1000 !important; /* Ensure header is above other content */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important; /* Keep shadow for visual separation */
+    padding-bottom: 10px !important; /* Add some space below the header content */
+    border-bottom: 1px solid #eee !important; /* Optional: a subtle line below header */
+  }
+
+  /* Remove any conflicting margins/paddings from main-content */
+  .main-content {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* Ensure h1, h2, h3 have no top margin, relying on body padding */
+  h1, h2, h3 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
 
   /* Force page break before each report section (title + table) */
   .report-section {
-    page-break-before: always;
-    page-break-inside: avoid; /* Ensure the section itself doesn't break in the middle */
-    /* Removed margin-top to eliminate extra space between header and table title */
+    page-break-before: always !important;
+    page-break-inside: avoid !important; /* Ensure the section itself doesn't break in the middle */
+    margin-top: 120px !important; /* Add margin to push report section down from the top of the page, even within body padding */
   }
 
-  /* Ensure the first report section doesn't have a page break before it and no top margin */
+  /* Ensure the first report section doesn't have a page break before it */
   .main-content > .report-section:first-of-type {
-    page-break-before: auto;
-    margin-top: 0; /* No top margin for the first section */
+    page-break-before: auto !important;
+    margin-top: 0 !important; /* No top margin for the first section */
   }
 
   /* Ensure headers are not split across pages */
   h1, h2, h3 {
-    page-break-after: avoid;
-    page-break-inside: avoid;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
   }
 }
