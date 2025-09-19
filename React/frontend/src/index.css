@@ -71,6 +71,7 @@ th {
 @media print {
   body {
     margin: 0;
+    padding-top: 80px; /* Reduced padding to bring the main title closer to the header */
     -webkit-print-color-adjust: exact; /* Ensures background colors and images are printed */
     print-color-adjust: exact;
     min-height: 100vh; /* Ensure body takes full viewport height for proper page breaks */
@@ -86,8 +87,22 @@ th {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Keep shadow for visual separation */
   }
 
-  /* Add padding to the content to prevent it from being hidden behind the fixed header */
-  .main-content {
-    padding-top: 120px; /* Adjust this value based on your header's height */
+  /* Force page break before each report section (title + table) */
+  .report-section {
+    page-break-before: always;
+    page-break-inside: avoid; /* Ensure the section itself doesn't break in the middle */
+    /* Removed margin-top to eliminate extra space between header and table title */
+  }
+
+  /* Ensure the first report section doesn't have a page break before it and no top margin */
+  .main-content > .report-section:first-of-type {
+    page-break-before: auto;
+    margin-top: 0; /* No top margin for the first section */
+  }
+
+  /* Ensure headers are not split across pages */
+  h1, h2, h3 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
   }
 }

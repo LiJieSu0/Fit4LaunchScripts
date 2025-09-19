@@ -51,7 +51,7 @@ function App() {
     };
 
     return (
-      <div className="overflow-x-auto mb-6">
+      <div className="overflow-x-auto mb-6 table-container">
         <table className="min-w-full border border-table-grid">
           <thead>
             <tr className="bg-table-header-bg text-table-header-text font-bold">
@@ -120,7 +120,7 @@ function App() {
       <h2 className="text-2xl font-semibold text-center mb-10">Comparison of DUT and REF Devices</h2>
 
       {Object.entries(allResults).map(([subdirName, results]) => (
-        <div key={subdirName}>
+        <div key={subdirName} className="report-section"> {/* New wrapper div */}
           <h3 className="text-xl font-bold mb-4 text-gray-800">{subdirName}</h3>
           {renderStatisticsTable(subdirName, results, subdirName.startsWith("Ping -"))}
         </div>
