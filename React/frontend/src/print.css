@@ -70,4 +70,21 @@
   .table-container, .BarChart-container {
     page-break-inside: avoid !important;
   }
+
+  /* Layout for table and chart within the same section */
+  .table-chart-container {
+    display: flex !important;
+    flex-direction: column !important; /* Stack table and chart vertically */
+    align-items: flex-start !important; /* Align items to the left */
+    gap: 20px !important; /* Add some space between table and chart */
+  }
+
+  .table-container {
+    width: 100% !important; /* Table takes full width */
+  }
+
+  .BarChart-container {
+    width: auto !important; /* Chart takes its natural width */
+    margin-left: 0 !important; /* Ensure it's aligned to the left */
+  }
 }

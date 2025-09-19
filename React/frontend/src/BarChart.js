@@ -138,7 +138,7 @@ const BarChart = ({ testCaseData, testCaseName }) => {
   }, [testCaseData, testCaseName]);
 
   return (
-    <div className="BarChart-container" style={{ maxWidth: '400px', margin: 'auto' }}>
+    <div className="BarChart-container" style={{ maxWidth: '400px' }}> {/* Removed margin: 'auto' */}
       <canvas ref={chartRef}></canvas>
     </div>
   );

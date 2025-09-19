@@ -58,8 +58,8 @@ function App() {
             <tr className="bg-table-header-bg text-table-header-text font-bold">
               <th className="py-2 px-4 border border-table-grid">Metric</th>
               <th className="py-2 px-4 border border-table-grid">Statistic</th>
-              <th className="py-2 px-4 border border-table-grid">DUT Value</th>
-              <th className="py-2 px-4 border border-table-grid">REF Value</th>
+              <th className="py-2 px-4 border border-table-grid">DUT Value (Mbps)</th>
+              <th className="py-2 px-4 border border-table-grid">REF Value (Mbps)</th>
             </tr>
           </thead>
           <tbody>
@@ -125,10 +125,12 @@ function App() {
           {/* Render Statistics Table and Bar Chart within a single report-section */}
           <div key={subdirName} className="report-section">
             <h3 className="text-xl font-bold mb-4 text-gray-800">{subdirName}</h3>
-            {renderStatisticsTable(subdirName, results, subdirName.startsWith("Ping -"))}
-            {!subdirName.startsWith("Ping -") && (
-              <BarChart testCaseData={results} testCaseName={subdirName} />
-            )}
+            <div className="table-chart-container"> {/* New container for table and chart */}
+              {renderStatisticsTable(subdirName, results, subdirName.startsWith("Ping -"))}
+              {!subdirName.startsWith("Ping -") && (
+                <BarChart testCaseData={results} testCaseName={subdirName} />
+              )}
+            </div>
           </div>
         </React.Fragment>
       ))}
