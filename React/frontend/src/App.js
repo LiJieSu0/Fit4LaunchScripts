@@ -120,7 +120,7 @@ function App() {
       <h2 className="text-2xl font-semibold text-center mb-10">Comparison of DUT and REF Devices</h2>
 
       {Object.entries(allResults).map(([subdirName, results]) => (
-        <div key={subdirName} className="mb-12 p-6 bg-gray-50 rounded-lg shadow-md">
+        <div key={subdirName}>
           <h3 className="text-xl font-bold mb-4 text-gray-800">{subdirName}</h3>
           {renderStatisticsTable(subdirName, results, subdirName.startsWith("Ping -"))}
         </div>
