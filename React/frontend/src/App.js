@@ -1,5 +1,6 @@
 import React from 'react';
 import allResults from './data_analysis_results.json';
+import BarChart from './BarChart';
 
 function App() {
   const renderStatisticsTable = (title, data, isPing = false) => {
@@ -118,6 +119,8 @@ function App() {
     <div className="container mx-auto p-4 main-content"> {/* Add a class for easier targeting in CSS */}
       <h1 className="text-4xl font-bold text-center my-8">Data Performance Analysis Report</h1>
       <h2 className="text-2xl font-semibold text-center mb-10">Comparison of DUT and REF Devices</h2>
+
+      <BarChart />
 
       {Object.entries(allResults).map(([subdirName, results]) => (
         <div key={subdirName} className="report-section">
