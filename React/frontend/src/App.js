@@ -85,6 +85,14 @@ function App() {
 
                   const unit = (metric === "Jitter" || metric === "Ping RTT") ? "ms" : (metric === "Error Ratio" ? "%" : "");
 
+                  // Check if both DUT and REF values are null/undefined/NaN
+                  const isDutNA = typeof dutValue !== 'number';
+                  const isRefNA = typeof refValue !== 'number';
+
+                  if (isDutNA && isRefNA) {
+                    return null; // Do not render this row if both are N/A
+                  }
+
                   return (
                     <tr key={`${metric}-${stat}`} className="bg-table-body-bg">
                       <td className="py-2 px-4 border border-table-grid text-center">{rowMetric}</td>
