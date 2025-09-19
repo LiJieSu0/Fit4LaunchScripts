@@ -122,17 +122,14 @@ function App() {
 
       {Object.entries(allResults).map(([subdirName, results]) => (
         <React.Fragment key={subdirName}>
-          {/* Render Statistics Table */}
+          {/* Render Statistics Table and Bar Chart within a single report-section */}
           <div key={subdirName} className="report-section">
             <h3 className="text-xl font-bold mb-4 text-gray-800">{subdirName}</h3>
             {renderStatisticsTable(subdirName, results, subdirName.startsWith("Ping -"))}
-          </div>
-          {/* Render Bar Chart for Data Performance results */}
-          {!subdirName.startsWith("Ping -") && (
-            <div className="report-section">
+            {!subdirName.startsWith("Ping -") && (
               <BarChart testCaseData={results} testCaseName={subdirName} />
-            </div>
-          )}
+            )}
+          </div>
         </React.Fragment>
       ))}
     </div>

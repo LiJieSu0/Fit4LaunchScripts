@@ -65,4 +65,9 @@
     page-break-after: avoid !important;
     page-break-inside: avoid !important;
   }
+
+  /* Ensure tables and charts are not split across pages */
+  .table-container, .BarChart-container {
+    page-break-inside: avoid !important;
+  }
 }
