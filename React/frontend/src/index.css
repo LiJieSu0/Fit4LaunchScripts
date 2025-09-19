@@ -76,7 +76,7 @@ th {
   }
 
   body {
-    margin: 20px !important;
+    margin: 10px !important;
     padding-top: 120px !important; /* Padding to clear fixed header on every page */
     -webkit-print-color-adjust: exact !important; /* Ensures background colors and images are printed */
     print-color-adjust: exact !important;
@@ -88,9 +88,9 @@ th {
     top: 0 !important;
     left: 0 !important;
     width: 100% !important;
-    background-color: #fff !important; /* Ensure header background is white */
+    background-color: #f0f0f0 !important; /* Ensure header background matches main content */
     z-index: 1000 !important; /* Ensure header is above other content */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important; /* Keep shadow for visual separation */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important; /* Increase shadow thickness for print */
     padding-bottom: 10px !important; /* Add some space below the header content */
     border-bottom: 1px solid #eee !important; /* Optional: a subtle line below header */
   }
@@ -122,7 +122,7 @@ th {
   .report-section {
     page-break-before: always !important;
     page-break-inside: avoid !important; /* Ensure the section itself doesn't break in the middle */
-    margin-top: 150px !important; /* Default margin for report sections on new pages */
+    margin-top: 130px !important; /* Default margin for report sections on new pages */
   }
 
   /* Ensure the first report section doesn't have a page break before it and has a specific top margin */

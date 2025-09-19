@@ -2,7 +2,7 @@ import React from 'react';
 
 function Header() {
   return (
-    <header className="bg-white shadow-md print-header">
+    <header className="bg-[#f0f0f0] shadow-lg print-header">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -16,7 +16,6 @@ function Header() {
             <img src="/ATMCL-logo.png" alt="ATMCL" className="h-10" /> {/* Placeholder for ATMCL logo on the right */}
           </div>
         </div>
-        <div className="mt-4 h-1 bg-blue-700"></div> {/* Blue line */}
       </div>
     </header>
   );
