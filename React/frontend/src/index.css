@@ -76,8 +76,8 @@ th {
   }
 
   body {
-    margin: 0 !important;
-    padding-top: 150px !important; /* Large padding to clear fixed header on every page */
+    margin: 20px !important;
+    padding-top: 120px !important; /* Padding to clear fixed header on every page */
     -webkit-print-color-adjust: exact !important; /* Ensures background colors and images are printed */
     print-color-adjust: exact !important;
     min-height: 100vh !important; /* Ensure body takes full viewport height for proper page breaks */
@@ -101,23 +101,34 @@ th {
     padding-top: 0 !important;
   }
 
-  /* Ensure h1, h2, h3 have no top margin, relying on body padding */
-  h1, h2, h3 {
+  /* Ensure h1, h2 have appropriate margins */
+  h1 {
     margin-top: 0 !important;
-    margin-bottom: 0 !important;
+    margin-bottom: 20px !important;
+  }
+
+  h2 {
+    margin-top: 0 !important;
+    margin-bottom: 30px !important;
+  }
+
+  /* Ensure h3 has no top margin, relying on body padding, and a bottom margin for spacing before table */
+  h3 {
+    margin-top: 0 !important;
+    margin-bottom: 10px !important;
   }
 
   /* Force page break before each report section (title + table) */
   .report-section {
     page-break-before: always !important;
     page-break-inside: avoid !important; /* Ensure the section itself doesn't break in the middle */
-    margin-top: 120px !important; /* Add margin to push report section down from the top of the page, even within body padding */
+    margin-top: 150px !important; /* Default margin for report sections on new pages */
   }
 
-  /* Ensure the first report section doesn't have a page break before it */
+  /* Ensure the first report section doesn't have a page break before it and has a specific top margin */
   .main-content > .report-section:first-of-type {
     page-break-before: auto !important;
-    margin-top: 0 !important; /* No top margin for the first section */
+    margin-top: 40px !important; /* Specific margin for the first report section */
   }
 
   /* Ensure headers are not split across pages */

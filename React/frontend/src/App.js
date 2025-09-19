@@ -116,7 +116,8 @@ function App() {
 
   return (
     <div className="container mx-auto p-4 main-content"> {/* Add a class for easier targeting in CSS */}
-      {/* Removed main report titles as per user request */}
+      <h1 className="text-4xl font-bold text-center my-8">Data Performance Analysis Report</h1>
+      <h2 className="text-2xl font-semibold text-center mb-10">Comparison of DUT and REF Devices</h2>
 
       {Object.entries(allResults).map(([subdirName, results]) => (
         <div key={subdirName} className="report-section">
