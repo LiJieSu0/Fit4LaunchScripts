@@ -115,8 +115,7 @@ const BarChart = ({ testCaseData, testCaseName }) => {
           },
           x: {
             title: {
-              display: true,
-              text: 'Device'
+              display: false // Removed 'Device' label
             }
           }
         }
