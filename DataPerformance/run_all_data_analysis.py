@@ -2,6 +2,7 @@ import os
 import subprocess
 import sys
 import pandas as pd
+import json # Import the json module
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
@@ -203,6 +204,12 @@ if __name__ == "__main__":
         print(f"Warning: Ping data directory not found at {ping_data_dir}. Skipping.")
         
     if all_collected_results:
+        # Output results to a JSON file for the React app
+        json_output_path = os.path.join("frontend", "src", "data_analysis_results.json") # Changed path to be inside src
+        with open(json_output_path, 'w', encoding='utf-8') as f:
+            json.dump(all_collected_results, f, ensure_ascii=False, indent=4)
+        print(f"\nJSON data generated: {json_output_path}")
+
         create_pdf_report(all_collected_results)
     else:
         print("No data collected to generate a report.")

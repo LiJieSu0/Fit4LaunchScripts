@@ -1,0 +1,177 @@
+{
+    "Data Performance - TC91-1 - Multi Stream HTTP Download for 30 seconds_Good": {
+        "DUT": {
+            "Device Type": "DUT",
+            "Analysis Direction": "DL",
+            "Protocol Type": "HTTP",
+            "Network Type": "5G",
+            "Throughput": {
+                "Mean": 328.8901588076993,
+                "Standard Deviation": 50.420425711545775,
+                "Minimum": 234.49244827586207,
+                "Maximum": 421.7220357142857
+            }
+        },
+        "REF": {
+            "Device Type": "REF",
+            "Analysis Direction": "DL",
+            "Protocol Type": "HTTP",
+            "Network Type": "5G",
+            "Throughput": {
+                "Mean": 355.998198678161,
+                "Standard Deviation": 43.60764899719354,
+                "Minimum": 245.15096551724136,
+                "Maximum": 404.731724137931
+            }
+        }
+    },
+    "Data Performance - TC91-1 - Single Stream HTTP Download for 60 seconds_Good": {
+        "DUT": {
+            "Device Type": "DUT",
+            "Analysis Direction": "DL",
+            "Protocol Type": "HTTP",
+            "Network Type": "5G",
+            "Throughput": {
+                "Mean": 100.32791254683318,
+                "Standard Deviation": 40.821308375985495,
+                "Minimum": 39.63266101694915,
+                "Maximum": 194.10638596491225
+            }
+        },
+        "REF": {
+            "Device Type": "REF",
+            "Analysis Direction": "DL",
+            "Protocol Type": "HTTP",
+            "Network Type": "5G",
+            "Throughput": {
+                "Mean": 111.50643389830506,
+                "Standard Deviation": 44.89691113910125,
+                "Minimum": 3.614949152542373,
+                "Maximum": 178.36510169491524
+            }
+        }
+    },
+    "Data Performance - TC91-1 - UDP Download Task at 200 Mbps for 10 seconds": {
+        "DUT": {
+            "Device Type": "DUT",
+            "Analysis Direction": "DL",
+            "Protocol Type": "UDP",
+            "Network Type": "5G",
+            "Throughput": {
+                "Mean": 185.80255000000002,
+                "Standard Deviation": 1.9083581952209734,
+                "Minimum": 181.87688888888889,
+                "Maximum": 189.73055555555553
+            },
+            "Jitter": {
+                "Mean": 0.068015
+            },
+            "Error Ratio": {
+                "Mean": 8.327370515
+            }
+        },
+        "REF": {
+            "Device Type": "REF",
+            "Analysis Direction": "DL",
+            "Protocol Type": "UDP",
+            "Network Type": "5G",
+            "Throughput": {
+                "Mean": 185.00699375,
+                "Standard Deviation": 4.231471478853403,
+                "Minimum": 176.01544444444443,
+                "Maximum": 191.45822222222222
+            },
+            "Jitter": {
+                "Mean": 0.071065
+            },
+            "Error Ratio": {
+                "Mean": 8.214285895
+            }
+        }
+    },
+    "Data Performance - TC91-1 - UDP Download Task at 400 Mbps for 10 seconds": {
+        "DUT": {
+            "Device Type": "DUT",
+            "Analysis Direction": "DL",
+            "Protocol Type": "UDP",
+            "Network Type": "5G",
+            "Throughput": {
+                "Mean": 216.9148555555556,
+                "Standard Deviation": 8.165432273110689,
+                "Minimum": 203.81533333333334,
+                "Maximum": 234.43166666666664
+            },
+            "Jitter": {
+                "Mean": 0.062775
+            },
+            "Error Ratio": {
+                "Mean": 45.43014160999999
+            }
+        },
+        "REF": {
+            "Device Type": "REF",
+            "Analysis Direction": "DL",
+            "Protocol Type": "UDP",
+            "Network Type": "5G",
+            "Throughput": {
+                "Mean": 228.49895555555548,
+                "Standard Deviation": 12.757458395286747,
+                "Minimum": 196.17355555555557,
+                "Maximum": 247.84266666666664
+            },
+            "Jitter": {
+                "Mean": 0.07609500000000001
+            },
+            "Error Ratio": {
+                "Mean": 41.063454275000005
+            }
+        }
+    },
+    "Data Performance - TC94-1 - Multi Stream HTTP Upload for 30 seconds": {
+        "DUT": {
+            "Device Type": "DUT",
+            "Analysis Direction": "UL",
+            "Protocol Type": "HTTP",
+            "Network Type": "5G",
+            "Throughput": {
+                "Mean": 70.97597856321839,
+                "Standard Deviation": 20.37393826321746,
+                "Minimum": 54.34317241379311,
+                "Maximum": 109.63213793103448
+            }
+        },
+        "REF": {
+            "Device Type": "REF",
+            "Analysis Direction": "UL",
+            "Protocol Type": "HTTP",
+            "Network Type": "5G",
+            "Throughput": {
+                "Mean": 76.52050816091953,
+                "Standard Deviation": 20.71241467628486,
+                "Minimum": 57.05631034482758,
+                "Maximum": 117.33016666666667
+            }
+        }
+    },
+    "Data Performance - TC94-1 - Single Stream HTTP Upload of a 15 MB file": {},
+    "Data Performance - TC94-1 - UDP Upload Task at 10 Mbps for 10 seconds": {},
+    "Data Performance - TC94-1 - UDP Upload Task at 20 Mbps for 10 seconds": {},
+    "Ping - 25x64 bytes PING (ICMP)": {
+        "DUT": {
+            "Ping RTT": {
+                "min": 33.0,
+                "max": 247.0,
+                "avg": 54.758,
+                "std_dev": 20.119966752563197
+            }
+        },
+        "REF": {
+            "Ping RTT": {
+                "min": 29.0,
+                "max": 433.0,
+                "avg": 42.744,
+                "std_dev": 29.2929790434924
+            }
+        }
+    }
+}

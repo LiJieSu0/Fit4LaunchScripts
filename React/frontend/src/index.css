@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for the report to match PDF */
+body {
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif; /* Using Helvetica as per PDF, with fallbacks */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f0f0f0; /* A light background for the overall page */
+}
+
+h1 {
+  font-size: 2.5rem; /* Larger for h1 */
+  font-weight: bold;
+  color: #333;
+}
+
+h2 {
+  font-size: 1.75rem; /* Larger for h2 */
+  font-weight: 600;
+  color: #444;
+}
+
+h3 {
+  font-size: 1.25rem; /* Larger for h3 */
+  font-weight: bold;
+  color: #555;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* Table specific styles, some will be overridden by Tailwind classes in App.js */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px 12px;
+  border: 1px solid var(--table-grid, #000000); /* Use CSS variable for grid color */
+  text-align: center;
+}
+
+th {
+  background-color: var(--table-header-bg, #808080);
+  color: var(--table-header-text, #F5F5F5);
+  font-weight: bold;
+}
+
+/* Define CSS variables for custom colors from tailwind.config.js for use in index.css if needed */
+/* These are primarily for reference or if specific elements need non-Tailwind styling */
+:root {
+  --performance-excellent: #FF00FF;
+  --performance-pass: #99FA99;
+  --performance-marginal-fail: #FFFF00;
+  --performance-fail: #FF0000;
+  --performance-cannot-evaluate: #D3D3D3;
+  --performance-unknown: #D3D3D3;
+  --table-header-bg: #808080;
+  --table-header-text: #F5F5F5;
+  --table-body-bg: #F5F5DC;
+  --table-grid: #000000;
+}
