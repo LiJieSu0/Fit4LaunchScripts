@@ -67,3 +67,27 @@ th {
   --table-body-bg: #F5F5DC;
   --table-grid: #000000;
 }
+
+@media print {
+  body {
+    margin: 0;
+    -webkit-print-color-adjust: exact; /* Ensures background colors and images are printed */
+    print-color-adjust: exact;
+    min-height: 100vh; /* Ensure body takes full viewport height for proper page breaks */
+  }
+
+  .print-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff; /* Ensure header background is white */
+    z-index: 1000; /* Ensure header is above other content */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Keep shadow for visual separation */
+  }
+
+  /* Add padding to the content to prevent it from being hidden behind the fixed header */
+  .main-content {
+    padding-top: 120px; /* Adjust this value based on your header's height */
+  }
+}
