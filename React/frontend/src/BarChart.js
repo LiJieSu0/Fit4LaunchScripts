@@ -1,5 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
+import ChartDataLabels from 'chartjs-plugin-datalabels'; // 確保導入插件
+
+// 註冊插件
+Chart.register(ChartDataLabels);
 
 const BarChart = ({ testCaseData, testCaseName }) => {
   const chartRef = useRef(null);
@@ -70,13 +74,28 @@ const BarChart = ({ testCaseData, testCaseName }) => {
           padding: {
             left: 10,
             right: 10,
-            top: 10,
+            top: 20, // 增加頂部 padding 確保數值有空間
             bottom: 10
           }
         },
         plugins: {
           title: {
-            display: false // 移除標題，將 display 設為 false
+            display: false // 保持移除標題
+          },
+          legend: {
+            display: true // 保持圖例顯示
+          },
+          datalabels: {
+            anchor: 'end', // 數值顯示在柱子頂部
+            align: 'top', // 數值在上方
+            color: 'black', // 數值顏色
+            font: {
+              weight: 'bold', // 數值字體加粗
+              size: 12 // 設置字體大小
+            },
+            formatter: (value) => (value > 0 ? value.toFixed(2) : ''), // 僅在數值大於0時顯示
+            display: true, // 確保顯示數據標籤
+            clamp: true // 防止標籤超出圖表範圍
           }
         },
         scales: {
@@ -105,6 +124,11 @@ const BarChart = ({ testCaseData, testCaseName }) => {
     };
 
     chartInstance.current = new Chart(ctx, config);
+
+    // 診斷：檢查是否成功創建圖表
+    if (!chartInstance.current) {
+      console.error('Chart instance failed to create');
+    }
 
     return () => {
       if (chartInstance.current) {
