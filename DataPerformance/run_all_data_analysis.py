@@ -141,71 +141,78 @@ def run_analysis_on_file(file_path, analysis_type="data_performance"):
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
     
-    base_raw_data_dir = "RawData"
-    data_performance_dir = os.path.join(base_raw_data_dir, "DataPerformance")
-    ping_data_dir = os.path.join(base_raw_data_dir, "Ping")
+    base_raw_data_dir = "Raw Data" # Changed to "Raw Data" as per user's path
+    
+    # Define a list of directories to process, along with their analysis type
+    # This list can be easily extended for future additions
+    directories_to_process = [
+        {"path": os.path.join(base_raw_data_dir, "5G AUTO DP"), "analysis_type": "data_performance"},
+        {"path": os.path.join(base_raw_data_dir, "5G NSA DP"), "analysis_type": "data_performance"},
+        # Add other directories here as needed, e.g.:
+        # {"path": os.path.join(base_raw_data_dir, "Call Performance"), "analysis_type": "call_performance"},
+        # {"path": os.path.join(base_raw_data_dir, "Ping"), "analysis_type": "ping"},
+    ]
     
     all_collected_results = {}
+    all_csv_files_processed = [] # New list to collect all CSV file paths
 
-    # --- Process DataPerformance folder ---
-    if os.path.isdir(data_performance_dir):
-        print(f"\n{'='*100}\nProcessing Data Performance data in: {data_performance_dir}\n{'='*100}")
-        case_dirs = [d for d in os.listdir(data_performance_dir) if os.path.isdir(os.path.join(data_performance_dir, d))]
+    for dir_info in directories_to_process:
+        current_dir_path = dir_info["path"]
+        analysis_type_for_dir = dir_info["analysis_type"]
         
-        for case_dir_name in case_dirs:
-            full_case_dir_path = os.path.join(data_performance_dir, case_dir_name)
-            protocol_dirs = [d for d in os.listdir(full_case_dir_path) if os.path.isdir(os.path.join(full_case_dir_path, d))]
-
-            for protocol_dir_name in protocol_dirs:
-                full_protocol_dir_path = os.path.join(full_case_dir_path, protocol_dir_name)
-                print(f"\nProcessing data in: {full_protocol_dir_path}")
-                
-                subdir_results = {}
-                for file in os.listdir(full_protocol_dir_path):
+        if os.path.isdir(current_dir_path):
+            print(f"\n{'='*100}\nProcessing {analysis_type_for_dir.replace('_', ' ').title()} data in: {current_dir_path}\n{'='*100}")
+            
+            # Walk through the directory to find all CSV files recursively
+            for root, _, files in os.walk(current_dir_path):
+                for file in files:
                     if file.lower().endswith(".csv"):
-                        csv_file_path = os.path.join(full_protocol_dir_path, file)
-                        stats = run_analysis_on_file(csv_file_path, analysis_type="data_performance")
+                        csv_file_path = os.path.join(root, file)
+                        all_csv_files_processed.append(csv_file_path) # Collect the file path
+                        
+                        stats = run_analysis_on_file(csv_file_path, analysis_type=analysis_type_for_dir)
+                        
                         if stats:
-                            device_type = stats.get("Device Type")
-                            if device_type:
-                                subdir_results[device_type] = stats
-                
-                descriptive_key = f"Data Performance - {case_dir_name} - {protocol_dir_name}"
-                all_collected_results[descriptive_key] = subdir_results
-    else:
-        print(f"Warning: Data Performance directory not found at {data_performance_dir}. Skipping.")
-
-    # --- Process Ping folder ---
-    if os.path.isdir(ping_data_dir):
-        print(f"\n{'='*100}\nProcessing Ping data in: {ping_data_dir}\n{'='*100}")
-        ping_test_dirs = [d for d in os.listdir(ping_data_dir) if os.path.isdir(os.path.join(ping_data_dir, d))]
-
-        for test_dir_name in ping_test_dirs:
-            full_test_dir_path = os.path.join(ping_data_dir, test_dir_name)
-            print(f"\nProcessing Ping test: {full_test_dir_path}")
+                            # Determine a descriptive key for the results
+                            relative_path = os.path.relpath(root, current_dir_path)
+                            key_prefix = f"{analysis_type_for_dir.replace('_', ' ').title()} - {relative_path}" if relative_path != "." else analysis_type_for_dir.replace('_', ' ').title()
+                            
+                            device_type = stats.get("Device Type", "Unknown")
+                            descriptive_key = f"{key_prefix} - {os.path.basename(file).replace('.csv', '')}"
+                            
+                            # Store results, ensuring unique keys
+                            if descriptive_key in all_collected_results:
+                                # If key exists, append or merge. For simplicity, let's just overwrite for now
+                                # or create a more specific key if needed.
+                                # For now, let's make it more specific by including device type in the key
+                                all_collected_results[f"{descriptive_key} ({device_type})"] = stats
+                            else:
+                                all_collected_results[descriptive_key] = stats
+        else:
+            print(f"Warning: Directory not found at {current_dir_path}. Skipping.")
+    
+    # Print the collected list of CSV files
+    if all_csv_files_processed:
+        print("\n--- CSV files with their immediate parent directories: ---")
+        # Sort the list for consistent output
+        sorted_csv_files = sorted(all_csv_files_processed)
+        for csv_file_path in sorted_csv_files:
+            file_name = os.path.basename(csv_file_path)
+            immediate_parent_dir = os.path.basename(os.path.dirname(csv_file_path))
+            grandparent_dir = os.path.basename(os.path.dirname(os.path.dirname(csv_file_path)))
             
-            ping_subdir_results = {}
-            for file in os.listdir(full_test_dir_path):
-                if file.lower().endswith(".csv"):
-                    csv_file_path = os.path.join(full_test_dir_path, file)
-                    stats = run_analysis_on_file(csv_file_path, analysis_type="ping")
-                    if stats:
-                        file_name_lower = os.path.basename(csv_file_path).lower()
-                        device_type = "Unknown"
-                        if "dut" in file_name_lower:
-                            device_type = "DUT"
-                        elif "ref" in file_name_lower:
-                            device_type = "REF"
-                        ping_subdir_results[device_type] = stats
-            
-            descriptive_key = f"Ping - {test_dir_name}"
-            all_collected_results[descriptive_key] = ping_subdir_results
+            # Construct the path with two parent levels and the filename
+            # Handle cases where there might not be two parent levels (e.g., file directly under base_raw_data_dir)
+            if grandparent_dir and grandparent_dir != base_raw_data_dir: # Ensure it's not the base "Raw Data" directory itself
+                print(f"- {grandparent_dir}\\{immediate_parent_dir}\\{file_name}")
+            else:
+                print(f"- {immediate_parent_dir}\\{file_name}")
     else:
-        print(f"Warning: Ping data directory not found at {ping_data_dir}. Skipping.")
-        
+        print("\nNo CSV files were found in the specified directories.")
+
     if all_collected_results:
         # Output results to a JSON file for the React app
-        json_output_path = os.path.join("frontend", "src", "data_analysis_results.json") # Changed path to be inside src
+        json_output_path = os.path.join("Scripts", "React", "frontend", "src", "data_analysis_results.json")
         with open(json_output_path, 'w', encoding='utf-8') as f:
             json.dump(all_collected_results, f, ensure_ascii=False, indent=4)
         print(f"\nJSON data generated: {json_output_path}")
