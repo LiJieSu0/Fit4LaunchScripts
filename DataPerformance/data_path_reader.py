@@ -30,7 +30,7 @@ def get_csv_file_paths(base_raw_data_dir, directories_config):
             
     return sorted(all_csv_files)
 
-def print_csv_paths_with_two_parents(csv_file_paths, base_raw_data_dir):
+def write_csv_paths_with_two_parents(csv_file_paths, base_raw_data_dir):
     """
     Prints each CSV file's name along with its two parent directories.
     
@@ -92,4 +92,4 @@ if __name__ == "__main__":
         print("Dummy CSV files created for testing.")
 
     csv_files = get_csv_file_paths(base_dir, config)
-    write_csv_paths_to_txt(csv_files, base_dir) # Call the modified function
+    write_csv_paths_with_two_parents(csv_files, base_dir) # Call the modified function

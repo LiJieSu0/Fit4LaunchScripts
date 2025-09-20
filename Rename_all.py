@@ -1,5 +1,6 @@
 import os
 import re
+from DataPerformance.data_path_reader import get_csv_file_paths
 
 def remove_timestamp_from_filename(filename):
     """
@@ -13,17 +14,29 @@ def remove_timestamp_from_filename(filename):
     return new_filename
 
 if __name__ == "__main__":
-    root_dir = "Raw Data/"  # Specify the root directory to start renaming from
+    base_dir = "Raw Data"
+    config = [
+        {"path": "5G AUTO DP", "analysis_type": "data_performance"},
+        {"path": "5G NSA DP", "analysis_type": "data_performance"},
+        {"path": "Call Performance", "analysis_type": "call_performance"},
+    ]
 
-    for dirpath, dirnames, filenames in os.walk(root_dir):
-        for filename in filenames:
-            if re.search(r"_\d{8}_\d{6}_", filename):  # Check if the filename contains a timestamp
-                original_filepath = os.path.join(dirpath, filename)
-                new_filename = remove_timestamp_from_filename(filename)
-                new_filepath = os.path.join(dirpath, new_filename)
+    csv_files_to_rename = get_csv_file_paths(base_dir, config)
 
-                try:
-                    os.rename(original_filepath, new_filepath)
-                    print(f"Renamed: {original_filepath} -> {new_filepath}")
-                except OSError as e:
-                    print(f"Error renaming {original_filepath}: {e}")
+    for original_filepath in csv_files_to_rename:
+        # Extract just the filename from the full path
+        dirpath, filename = os.path.split(original_filepath)
+
+        if re.search(r"_\d{8}_\d{6}_", filename):  # Check if the filename contains a timestamp
+            new_filename = remove_timestamp_from_filename(filename)
+            new_filepath = os.path.join(dirpath, new_filename)
+
+            if os.path.exists(new_filepath) and original_filepath != new_filepath:
+                print(f"Skipping rename for {original_filepath}: Target file {new_filepath} already exists.")
+                continue # Skip this file to avoid collision
+            
+            try:
+                os.rename(original_filepath, new_filepath)
+                print(f"Renamed: {original_filepath} -> {new_filepath}")
+            except OSError as e:
+                print(f"Error renaming {original_filepath}: {e}")
