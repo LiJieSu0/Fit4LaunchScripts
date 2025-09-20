@@ -39,39 +39,45 @@ def print_csv_paths_with_two_parents(csv_file_paths, base_raw_data_dir):
         base_raw_data_dir (str): The base directory to consider for relative paths.
     """
     if csv_file_paths:
-        print("\n--- CSV files with their two parent directories: ---")
-        for csv_file_path in csv_file_paths:
-            # Make path relative to base_raw_data_dir first for consistent output
-            relative_path = os.path.relpath(csv_file_path, base_raw_data_dir)
-            
-            # Split the relative path into components
-            path_components = relative_path.split(os.sep)
-            
-            # Get the filename
-            file_name = path_components[-1]
-            
-            # Get the immediate parent directory name
-            immediate_parent_dir = path_components[-2] if len(path_components) >= 2 else ""
-            
-            # Get the grandparent directory name
-            grandparent_dir = path_components[-3] if len(path_components) >= 3 else ""
-            
-            # Construct the desired output string
-            if grandparent_dir:
-                print(f"- {grandparent_dir}\\{immediate_parent_dir}\\{file_name}")
-            elif immediate_parent_dir:
-                print(f"- {immediate_parent_dir}\\{file_name}")
-            else:
-                print(f"- {file_name}")
+        output_file_path = "processed_paths.txt"
+        with open(output_file_path, 'w', encoding='utf-8') as f:
+            f.write("--- CSV files with their two parent directories: ---\n")
+            # Sort the list for consistent output
+            sorted_csv_files = sorted(csv_file_paths)
+            for csv_file_path in sorted_csv_files:
+                # Make path relative to base_raw_data_dir first for consistent output
+                relative_path = os.path.relpath(csv_file_path, base_raw_data_dir)
+                
+                # Split the relative path into components
+                path_components = relative_path.split(os.sep)
+                
+                # Get the filename
+                file_name = path_components[-1]
+                
+                # Get the immediate parent directory name
+                immediate_parent_dir = path_components[-2] if len(path_components) >= 2 else ""
+                
+                # Get the grandparent directory name
+                grandparent_dir = path_components[-3] if len(path_components) >= 3 else ""
+                
+                # Construct the desired output string
+                if grandparent_dir:
+                    f.write(f"- {grandparent_dir}\\{immediate_parent_dir}\\{file_name}\n")
+                elif immediate_parent_dir:
+                    f.write(f"- {immediate_parent_dir}\\{file_name}\n")
+                else:
+                    f.write(f"- {file_name}\n")
+        print(f"\nSuccessfully wrote processed CSV paths to {output_file_path}")
     else:
         print("\nNo CSV files were found in the specified directories.")
+        print("No processed_paths.txt file was generated.")
 
 if __name__ == "__main__":
     # Example usage (for testing the script independently)
     base_dir = "Raw Data"
     config = [
-        {"path": os.path.join(base_dir, "5G AUTO DP"), "analysis_type": "data_performance"},
-        {"path": os.path.join(base_dir, "5G NSA DP"), "analysis_type": "data_performance"},
+        {"path": "5G AUTO DP", "analysis_type": "data_performance"},
+        {"path": "5G NSA DP", "analysis_type": "data_performance"},
     ]
     
     # Ensure the base_dir exists for testing
@@ -86,4 +92,4 @@ if __name__ == "__main__":
         print("Dummy CSV files created for testing.")
 
     csv_files = get_csv_file_paths(base_dir, config)
-    print_csv_paths_with_two_parents(csv_files, base_dir)
+    write_csv_paths_to_txt(csv_files, base_dir) # Call the modified function

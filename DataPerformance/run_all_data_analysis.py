@@ -191,8 +191,8 @@ if __name__ == "__main__":
             else:
                 all_collected_results[descriptive_key] = stats
     
-    # Print the collected list of CSV files using the new data_path_reader script
-    data_path_reader.print_csv_paths_with_two_parents(all_csv_files_processed, base_raw_data_dir)
+    # Write the collected list of CSV files to a TXT file using the new data_path_reader script
+    data_path_reader.print_csv_paths_with_two_parents(all_csv_files_processed, base_raw_data_dir) # Function name remains, but behavior changed
 
     if all_collected_results:
         # Output results to a JSON file for the React app
