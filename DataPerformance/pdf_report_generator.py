@@ -5,7 +5,6 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 from reportlab.lib.units import inch
 import data_performance_statics
-import ping_statics # Import ping_statics for its evaluation logic if needed
 
 def create_pdf_report(all_results, output_filename="Data_Performance_Report.pdf"):
     doc = SimpleDocTemplate(output_filename, pagesize=letter)

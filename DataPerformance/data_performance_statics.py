@@ -204,13 +204,19 @@ if __name__ == "__main__":
     end_event = None
     analysis_direction_detected = None
 
-    if "ul" in file_name:
-        analysis_direction_detected = "UL"
-    elif "dl" in file_name:
+    print(f"Debugging filename: {file_name}") # Debug print
+
+    if "download" in file_name:
         analysis_direction_detected = "DL"
+    elif "upload" in file_name:
+        analysis_direction_detected = "UL"
+    elif "dl" in file_name: # Fallback for "dl" if "download" not present
+        analysis_direction_detected = "DL"
+    elif "ul" in file_name: # Fallback for "ul" if "upload" not present
+        analysis_direction_detected = "UL"
     else:
         print("Could not determine analysis direction (UL/DL) from the filename.")
-        print("Please ensure 'UL' or 'DL' is present in the file path.")
+        print("Please ensure 'UL' or 'DL' or 'Upload' or 'Download' is present in the file path.")
         sys.exit(1)
     
     # Determine protocol type from filename
@@ -228,11 +234,9 @@ if __name__ == "__main__":
     network_type_detected = None
     if "5g" in file_name:
         network_type_detected = "5G"
-    elif "lte" in file_name: # Assuming LTE if not 5G and "lte" is present
-        network_type_detected = "LTE"
     else:
-        print("Could not determine network type (5G/LTE) from the filename.")
-        print("Please ensure '5G' or 'LTE' is present in the file path.")
+        print("Could not determine network type (5G) from the filename.")
+        print("Please ensure '5G' is present in the file path, as only 5G analysis is supported.")
         sys.exit(1)
 
     # Determine device type (DUT/REF) from filename
@@ -247,20 +251,14 @@ if __name__ == "__main__":
     if protocol_type_detected == "HTTP":
         event_col = "[Call Test] [HTTP Transfer] HTTP Transfer Call Event"
         if analysis_direction_detected == "DL":
-            if network_type_detected == "5G":
-                column_to_analyze = "[Call Test] [Throughput] Application DL TP"
-            else: # Default to LTE if not 5G
-                column_to_analyze = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
+            column_to_analyze = "[Call Test] [Throughput] Application DL TP"
             start_event = "Download Started"
             end_event = "Download Ended"
             print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} HTTP ---")
             stats = analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
             print(f"Throughput Stats: {stats}")
         elif analysis_direction_detected == "UL":
-            if network_type_detected == "5G":
-                column_to_analyze = "[Call Test] [Throughput] Application UL TP" # Assuming this is the 5G UL TP column
-            else: # Default to LTE if not 5G
-                column_to_analyze = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
+            column_to_analyze = "[Call Test] [Throughput] Application UL TP"
             start_event = "Upload Started"
             end_event = "Upload Ended"
             print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} HTTP ---")
@@ -273,10 +271,7 @@ if __name__ == "__main__":
 
         if analysis_direction_detected == "DL":
             # Analyze Throughput
-            if network_type_detected == "5G":
-                column_to_analyze_throughput = "[Call Test] [Throughput] Application DL TP"
-            else: # Default to LTE if not 5G
-                column_to_analyze_throughput = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
+            column_to_analyze_throughput = "[Call Test] [Throughput] Application DL TP"
             print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
             stats = analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
             print(f"Throughput Stats: {stats}")
@@ -295,7 +290,7 @@ if __name__ == "__main__":
 
         elif analysis_direction_detected == "UL":
             # Analyze Throughput
-            column_to_analyze_throughput = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)" # Assuming same for 5G/LTE UL for now
+            column_to_analyze_throughput = "[Call Test] [Throughput] Application UL TP" # Changed to 5G UL TP column
             print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
             stats = analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
             print(f"Throughput Stats: {stats}")
@@ -312,4 +307,4 @@ if __name__ == "__main__":
             stats = analyze_error_ratio(file_path, column_to_analyze_ul_error_ratio, event_col, start_event, end_event)
             print(f"Error Ratio Stats: {stats}")
 
-    print(f"\nDevice Type: {device_type_detected}") # Print at the end
+    print(f"\nDevice Type: {device_type_detected}")
