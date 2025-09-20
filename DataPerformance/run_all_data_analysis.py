@@ -20,6 +20,7 @@ from pdf_report_generator import create_pdf_report # Import the PDF generation f
 # Assuming data_performance_statics.py is in the same directory
 import data_performance_statics
 import ping_statics # Import the ping_statics module
+import data_path_reader # Import the new path reader script
 
 def run_analysis_on_file(file_path, analysis_type="data_performance"):
     """
@@ -144,71 +145,54 @@ if __name__ == "__main__":
     base_raw_data_dir = "Raw Data" # Changed to "Raw Data" as per user's path
     
     # Define a list of directories to process, along with their analysis type
+    # These paths are relative to base_raw_data_dir
     # This list can be easily extended for future additions
     directories_to_process = [
-        {"path": os.path.join(base_raw_data_dir, "5G AUTO DP"), "analysis_type": "data_performance"},
-        {"path": os.path.join(base_raw_data_dir, "5G NSA DP"), "analysis_type": "data_performance"},
+        {"path": "5G AUTO DP", "analysis_type": "data_performance"},
+        {"path": "5G NSA DP", "analysis_type": "data_performance"},
         # Add other directories here as needed, e.g.:
-        # {"path": os.path.join(base_raw_data_dir, "Call Performance"), "analysis_type": "call_performance"},
-        # {"path": os.path.join(base_raw_data_dir, "Ping"), "analysis_type": "ping"},
+        # {"path": "Call Performance", "analysis_type": "call_performance"},
+        # {"path": "Ping", "analysis_type": "ping"},
     ]
     
     all_collected_results = {}
-    all_csv_files_processed = [] # New list to collect all CSV file paths
-
-    for dir_info in directories_to_process:
-        current_dir_path = dir_info["path"]
-        analysis_type_for_dir = dir_info["analysis_type"]
-        
-        if os.path.isdir(current_dir_path):
-            print(f"\n{'='*100}\nProcessing {analysis_type_for_dir.replace('_', ' ').title()} data in: {current_dir_path}\n{'='*100}")
-            
-            # Walk through the directory to find all CSV files recursively
-            for root, _, files in os.walk(current_dir_path):
-                for file in files:
-                    if file.lower().endswith(".csv"):
-                        csv_file_path = os.path.join(root, file)
-                        all_csv_files_processed.append(csv_file_path) # Collect the file path
-                        
-                        stats = run_analysis_on_file(csv_file_path, analysis_type=analysis_type_for_dir)
-                        
-                        if stats:
-                            # Determine a descriptive key for the results
-                            relative_path = os.path.relpath(root, current_dir_path)
-                            key_prefix = f"{analysis_type_for_dir.replace('_', ' ').title()} - {relative_path}" if relative_path != "." else analysis_type_for_dir.replace('_', ' ').title()
-                            
-                            device_type = stats.get("Device Type", "Unknown")
-                            descriptive_key = f"{key_prefix} - {os.path.basename(file).replace('.csv', '')}"
-                            
-                            # Store results, ensuring unique keys
-                            if descriptive_key in all_collected_results:
-                                # If key exists, append or merge. For simplicity, let's just overwrite for now
-                                # or create a more specific key if needed.
-                                # For now, let's make it more specific by including device type in the key
-                                all_collected_results[f"{descriptive_key} ({device_type})"] = stats
-                            else:
-                                all_collected_results[descriptive_key] = stats
-        else:
-            print(f"Warning: Directory not found at {current_dir_path}. Skipping.")
     
-    # Print the collected list of CSV files
-    if all_csv_files_processed:
-        print("\n--- CSV files with their immediate parent directories: ---")
-        # Sort the list for consistent output
-        sorted_csv_files = sorted(all_csv_files_processed)
-        for csv_file_path in sorted_csv_files:
-            file_name = os.path.basename(csv_file_path)
-            immediate_parent_dir = os.path.basename(os.path.dirname(csv_file_path))
-            grandparent_dir = os.path.basename(os.path.dirname(os.path.dirname(csv_file_path)))
+    # Get all CSV file paths using the new data_path_reader script
+    all_csv_files_processed = data_path_reader.get_csv_file_paths(base_raw_data_dir, directories_to_process)
+
+    # Now iterate through the collected files for analysis
+    for csv_file_path in all_csv_files_processed:
+        # Determine analysis type based on the file path or configuration if needed
+        # For now, we'll assume all files from the configured directories are 'data_performance'
+        # This part might need more sophisticated logic if different subdirectories require different analysis_types
+        analysis_type_for_file = "data_performance" # Default to data_performance for now
+
+        # A more robust way would be to pass the analysis_type from data_path_reader if it were configured per file
+        # For simplicity, we'll infer it or use a default.
+        # If the original directories_to_process had a more granular type, we'd need to pass that through.
+        # For now, let's try to infer from the path if it's a ping file
+        if "ping" in csv_file_path.lower():
+            analysis_type_for_file = "ping"
+
+        stats = run_analysis_on_file(csv_file_path, analysis_type=analysis_type_for_file)
+        
+        if stats:
+            # Determine a descriptive key for the results
+            # We need to get the relative path from base_raw_data_dir for the key
+            relative_path_from_base = os.path.relpath(os.path.dirname(csv_file_path), base_raw_data_dir)
+            key_prefix = f"{analysis_type_for_file.replace('_', ' ').title()} - {relative_path_from_base}" if relative_path_from_base != "." else analysis_type_for_file.replace('_', ' ').title()
             
-            # Construct the path with two parent levels and the filename
-            # Handle cases where there might not be two parent levels (e.g., file directly under base_raw_data_dir)
-            if grandparent_dir and grandparent_dir != base_raw_data_dir: # Ensure it's not the base "Raw Data" directory itself
-                print(f"- {grandparent_dir}\\{immediate_parent_dir}\\{file_name}")
+            device_type = stats.get("Device Type", "Unknown")
+            descriptive_key = f"{key_prefix} - {os.path.basename(csv_file_path).replace('.csv', '')}"
+            
+            # Store results, ensuring unique keys
+            if descriptive_key in all_collected_results:
+                all_collected_results[f"{descriptive_key} ({device_type})"] = stats
             else:
-                print(f"- {immediate_parent_dir}\\{file_name}")
-    else:
-        print("\nNo CSV files were found in the specified directories.")
+                all_collected_results[descriptive_key] = stats
+    
+    # Print the collected list of CSV files using the new data_path_reader script
+    data_path_reader.print_csv_paths_with_two_parents(all_csv_files_processed, base_raw_data_dir)
 
     if all_collected_results:
         # Output results to a JSON file for the React app

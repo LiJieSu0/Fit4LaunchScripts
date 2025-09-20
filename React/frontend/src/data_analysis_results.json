@@ -1,5 +1,5 @@
 {
-    "Data Performance - 5G Auto Data Test Stationary Location 1 DL\\Multi Stream HTTP Download for 30 seconds_Good - dut_5G auto_MS HTTP DL_Good": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 DL\\Multi Stream HTTP Download for 30 seconds_Good - dut_5G auto_MS HTTP DL_Good": {
         "Device Type": "DUT",
         "Analysis Direction": "DL",
         "Protocol Type": "HTTP",
@@ -11,7 +11,7 @@
             "Maximum": 421.7220357142857
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 1 DL\\Multi Stream HTTP Download for 30 seconds_Good - ref_5G auto_MS HTTP DL_Good": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 DL\\Multi Stream HTTP Download for 30 seconds_Good - ref_5G auto_MS HTTP DL_Good": {
         "Device Type": "REF",
         "Analysis Direction": "DL",
         "Protocol Type": "HTTP",
@@ -23,7 +23,7 @@
             "Maximum": 404.731724137931
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 1 DL\\Single Stream HTTP Download for 60 seconds_Good - dut_5G auto_SS HTTP DL_Good": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 DL\\Single Stream HTTP Download for 60 seconds_Good - dut_5G auto_SS HTTP DL_Good": {
         "Device Type": "DUT",
         "Analysis Direction": "DL",
         "Protocol Type": "HTTP",
@@ -35,7 +35,7 @@
             "Maximum": 194.10638596491225
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 1 DL\\Single Stream HTTP Download for 60 seconds_Good - ref_5G auto_SS HTTP DL_Good": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 DL\\Single Stream HTTP Download for 60 seconds_Good - ref_5G auto_SS HTTP DL_Good": {
         "Device Type": "REF",
         "Analysis Direction": "DL",
         "Protocol Type": "HTTP",
@@ -47,7 +47,7 @@
             "Maximum": 178.36510169491524
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 1 DL\\UDP Download Task at 200 Mbps for 10 seconds - dut_5G auto_UDP DL 200M 10sec_Good": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 DL\\UDP Download Task at 200 Mbps for 10 seconds - dut_5G auto_UDP DL 200M 10sec_Good": {
         "Device Type": "DUT",
         "Analysis Direction": "DL",
         "Protocol Type": "UDP",
@@ -65,7 +65,7 @@
             "Mean": 8.327370515
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 1 DL\\UDP Download Task at 200 Mbps for 10 seconds - ref_5G auto_UDP DL 200M 10sec_Good": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 DL\\UDP Download Task at 200 Mbps for 10 seconds - ref_5G auto_UDP DL 200M 10sec_Good": {
         "Device Type": "REF",
         "Analysis Direction": "DL",
         "Protocol Type": "UDP",
@@ -83,7 +83,7 @@
             "Mean": 8.214285895
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 1 DL\\UDP Download Task at 400 Mbps for 10 seconds - dut_5G auto_UDP DL 400M 10sec_Good": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 DL\\UDP Download Task at 400 Mbps for 10 seconds - dut_5G auto_UDP DL 400M 10sec_Good": {
         "Device Type": "DUT",
         "Analysis Direction": "DL",
         "Protocol Type": "UDP",
@@ -101,7 +101,7 @@
             "Mean": 45.43014160999999
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 1 DL\\UDP Download Task at 400 Mbps for 10 seconds - ref_5G auto_UDP DL 400M 10sec_Good": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 DL\\UDP Download Task at 400 Mbps for 10 seconds - ref_5G auto_UDP DL 400M 10sec_Good": {
         "Device Type": "REF",
         "Analysis Direction": "DL",
         "Protocol Type": "UDP",
@@ -119,7 +119,23 @@
             "Mean": 41.063454275000005
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 1 UL\\Multi Stream HTTP Upload for 30 seconds - _20250911_132459_CH01_TMO-dut_5G auto_Multi Stream HTTP Upload for 30 seconds_Good Coverage_DA Test": {
+    "Ping - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 UL\\25x64 bytes PING (ICMP) - _20250911_141537_CH01_TMO-dut_5G auto_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
+        "Ping RTT": {
+            "min": 33.0,
+            "max": 247.0,
+            "avg": 54.758,
+            "std_dev": 20.119966752563197
+        }
+    },
+    "Ping - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 UL\\25x64 bytes PING (ICMP) - _20250911_141537_CH02_TMO-ref_5G auto_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
+        "Ping RTT": {
+            "min": 29.0,
+            "max": 433.0,
+            "avg": 42.744,
+            "std_dev": 29.2929790434924
+        }
+    },
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 UL\\Multi Stream HTTP Upload for 30 seconds - _20250911_132459_CH01_TMO-dut_5G auto_Multi Stream HTTP Upload for 30 seconds_Good Coverage_DA Test": {
         "Device Type": "DUT",
         "Analysis Direction": "UL",
         "Protocol Type": "HTTP",
@@ -131,7 +147,7 @@
             "Maximum": 109.63213793103448
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 1 UL\\Multi Stream HTTP Upload for 30 seconds - _20250911_132459_CH02_TMO-ref_5G auto_Multi Stream HTTP Upload for 30 seconds_Good Coverage_DA Test": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 UL\\Multi Stream HTTP Upload for 30 seconds - _20250911_132459_CH02_TMO-ref_5G auto_Multi Stream HTTP Upload for 30 seconds_Good Coverage_DA Test": {
         "Device Type": "REF",
         "Analysis Direction": "UL",
         "Protocol Type": "HTTP",
@@ -143,19 +159,35 @@
             "Maximum": 117.33016666666667
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 2 DL\\5G auto_Multi Stream HTTP Download for 30 seconds_moderate - dut_5G auto_Multi Stream HTTP Download for 30 seconds": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 2 DL\\5G auto_Multi Stream HTTP Download for 30 seconds_moderate - dut_5G auto_Multi Stream HTTP Download for 30 seconds": {
         "Device Type": "DUT",
         "Analysis Direction": "UL",
         "Protocol Type": "HTTP",
         "Network Type": "5G"
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 2 DL\\5G auto_Multi Stream HTTP Download for 30 seconds_moderate - ref_5G auto_Multi Stream HTTP Download for 30 seconds": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 2 DL\\5G auto_Multi Stream HTTP Download for 30 seconds_moderate - ref_5G auto_Multi Stream HTTP Download for 30 seconds": {
         "Device Type": "REF",
         "Analysis Direction": "UL",
         "Protocol Type": "HTTP",
         "Network Type": "5G"
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 2 UL\\5G auto_Multi Stream HTTP Upload for 30 seconds_moderate - _20250911_105817_CH01_TMO_5G auto_Multi Stream HTTP Upload for 30 seconds_DUT_": {
+    "Ping - 5G AUTO DP\\5G Auto Data Test Stationary Location 2 UL\\5G auto_25x64 bytes PING_moderate - _20250910_143333_CH01_TMO_5G auto_25x64 bytes PING_DUT_": {
+        "Ping RTT": {
+            "min": 35.0,
+            "max": 308.0,
+            "avg": 87.1,
+            "std_dev": 45.42678930292945
+        }
+    },
+    "Ping - 5G AUTO DP\\5G Auto Data Test Stationary Location 2 UL\\5G auto_25x64 bytes PING_moderate - _20250910_143333_CH02_TMO_5G auto_25x64 bytes PING_REF_": {
+        "Ping RTT": {
+            "min": 30.0,
+            "max": 642.0,
+            "avg": 56.484,
+            "std_dev": 50.5930138467773
+        }
+    },
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 2 UL\\5G auto_Multi Stream HTTP Upload for 30 seconds_moderate - _20250911_105817_CH01_TMO_5G auto_Multi Stream HTTP Upload for 30 seconds_DUT_": {
         "Device Type": "DUT",
         "Analysis Direction": "UL",
         "Protocol Type": "HTTP",
@@ -167,7 +199,7 @@
             "Maximum": 10.991586206896551
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 2 UL\\5G auto_Multi Stream HTTP Upload for 30 seconds_moderate - _20250911_105817_CH02_TMO_5G auto_Multi Stream HTTP Upload for 30 seconds_REF_": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 2 UL\\5G auto_Multi Stream HTTP Upload for 30 seconds_moderate - _20250911_105817_CH02_TMO_5G auto_Multi Stream HTTP Upload for 30 seconds_REF_": {
         "Device Type": "REF",
         "Analysis Direction": "UL",
         "Protocol Type": "HTTP",
@@ -179,19 +211,35 @@
             "Maximum": 25.057999999999996
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 3 DL\\Multi Stream HTTP Download for 30 seconds - _20250911_153412_CH01_TMO-dut_5G auto_Multi Stream HTTP Download for 30 seconds_Poor Coverage_DA Test": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 DL\\Multi Stream HTTP Download for 30 seconds - _20250911_153412_CH01_TMO-dut_5G auto_Multi Stream HTTP Download for 30 seconds_Poor Coverage_DA Test": {
         "Device Type": "DUT",
         "Analysis Direction": "UL",
         "Protocol Type": "HTTP",
         "Network Type": "5G"
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 3 DL\\Multi Stream HTTP Download for 30 seconds - _20250911_153412_CH02_TMO-ref_5G auto_Multi Stream HTTP Download for 30 seconds_Poor Coverage_DA Test": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 DL\\Multi Stream HTTP Download for 30 seconds - _20250911_153412_CH02_TMO-ref_5G auto_Multi Stream HTTP Download for 30 seconds_Poor Coverage_DA Test": {
         "Device Type": "REF",
         "Analysis Direction": "UL",
         "Protocol Type": "HTTP",
         "Network Type": "5G"
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 3 UL\\Multi Stream HTTP Upload for 30 seconds - dut_5g auto_Multi Stream HTTP Upload for 30 seconds_poor Coverage_DA Test": {
+    "Ping - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 UL\\25x64 bytes PING (ICMP) - dut_5g auto_25x64 bytes PING (ICMP)_poor Coverage_DA Test": {
+        "Ping RTT": {
+            "min": 35.0,
+            "max": 357.0,
+            "avg": 55.118,
+            "std_dev": 25.52118213318008
+        }
+    },
+    "Ping - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 UL\\25x64 bytes PING (ICMP) - ref_5g auto_25x64 bytes PING (ICMP)_poor Coverage_DA Test": {
+        "Ping RTT": {
+            "min": 30.0,
+            "max": 319.0,
+            "avg": 41.1,
+            "std_dev": 25.560921764343433
+        }
+    },
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 UL\\Multi Stream HTTP Upload for 30 seconds - dut_5g auto_Multi Stream HTTP Upload for 30 seconds_poor Coverage_DA Test": {
         "Device Type": "DUT",
         "Analysis Direction": "UL",
         "Protocol Type": "HTTP",
@@ -203,7 +251,7 @@
             "Maximum": 21.727310344827586
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 3 UL\\Multi Stream HTTP Upload for 30 seconds - ref_5g auto_Multi Stream HTTP Upload for 30 seconds_poor Coverage_DA Test": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 UL\\Multi Stream HTTP Upload for 30 seconds - ref_5g auto_Multi Stream HTTP Upload for 30 seconds_poor Coverage_DA Test": {
         "Device Type": "REF",
         "Analysis Direction": "UL",
         "Protocol Type": "HTTP",
@@ -215,7 +263,7 @@
             "Maximum": 26.034482758620687
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 3 UL\\UDP Upload Task at 20 Mbps for 10 seconds - dut_5g_UDP_UL_Task at 20M for 10sec_Poor": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 UL\\UDP Upload Task at 20 Mbps for 10 seconds - dut_5g_UDP_UL_Task at 20M for 10sec_Poor": {
         "Device Type": "DUT",
         "Analysis Direction": "UL",
         "Protocol Type": "UDP",
@@ -227,7 +275,7 @@
             "Mean": 0.0
         }
     },
-    "Data Performance - 5G Auto Data Test Stationary Location 3 UL\\UDP Upload Task at 20 Mbps for 10 seconds - ref_5g_UDP_UL_Task at 20M for 10sec_Poor": {
+    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 UL\\UDP Upload Task at 20 Mbps for 10 seconds - ref_5g_UDP_UL_Task at 20M for 10sec_Poor": {
         "Device Type": "REF",
         "Analysis Direction": "UL",
         "Protocol Type": "UDP",
@@ -239,13 +287,29 @@
             "Mean": 12.42561985
         }
     },
-    "Data Performance - 5G NSA Data Test Stationary Poor RF UL\\Multi Stream HTTP Upload for 30 seconds - _20250914_132338_CH01_TMO-dut_5G NSA_Multi Stream HTTP Upload for 30 seconds_Poor Coverage_DA Test": {
+    "Ping - 5G NSA DP\\5G NSA Data Test Stationary Poor RF UL\\25x64 bytes PING (ICMP) - _20250914_145203_CH01_TMO-dut_5G NSA_25x64 bytes PING (ICMP)_Poor Coverage_DA Test": {
+        "Ping RTT": {
+            "min": null,
+            "max": null,
+            "avg": null,
+            "std_dev": null
+        }
+    },
+    "Ping - 5G NSA DP\\5G NSA Data Test Stationary Poor RF UL\\25x64 bytes PING (ICMP) - _20250914_145203_CH02_TMO-ref_5G NSA_25x64 bytes PING (ICMP)_Poor Coverage_DA Test": {
+        "Ping RTT": {
+            "min": null,
+            "max": null,
+            "avg": null,
+            "std_dev": null
+        }
+    },
+    "Data Performance - 5G NSA DP\\5G NSA Data Test Stationary Poor RF UL\\Multi Stream HTTP Upload for 30 seconds - _20250914_132338_CH01_TMO-dut_5G NSA_Multi Stream HTTP Upload for 30 seconds_Poor Coverage_DA Test": {
         "Device Type": "DUT",
         "Analysis Direction": "UL",
         "Protocol Type": "HTTP",
         "Network Type": "5G"
     },
-    "Data Performance - 5G NSA Data Test Stationary Poor RF UL\\Multi Stream HTTP Upload for 30 seconds - _20250914_132338_CH02_TMO-ref_5G NSA_UDP UMulti Stream HTTP Upload for 30 second_Poor Coverage_DA Test": {
+    "Data Performance - 5G NSA DP\\5G NSA Data Test Stationary Poor RF UL\\Multi Stream HTTP Upload for 30 seconds - _20250914_132338_CH02_TMO-ref_5G NSA_UDP UMulti Stream HTTP Upload for 30 second_Poor Coverage_DA Test": {
         "Device Type": "REF",
         "Analysis Direction": "UL",
         "Protocol Type": "HTTP",
