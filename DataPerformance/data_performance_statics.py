@@ -27,6 +27,7 @@ def _calculate_statistics(data_series, column_name):
     return stats
 
 def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str):
+    num_intervals = 0 # Initialize interval count
     """
     Reads a data CSV file, identifies intervals based on start/end event markers,
     calculates average throughput for each, and then performs full statistics on these averages.
@@ -81,7 +82,11 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
 
         averages_series = pd.Series(interval_averages)
         
-        return _calculate_statistics(averages_series, column_name_to_analyze)
+        # Get statistics and add interval count
+        stats = _calculate_statistics(averages_series, column_name_to_analyze)
+        if stats:
+            stats["Number of Intervals"] = len(interval_averages)
+        return stats
 
     except FileNotFoundError:
         print(f"Error: The file at {file_path} was not found.")
@@ -257,6 +262,8 @@ if __name__ == "__main__":
             print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} HTTP ---")
             stats = analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
             print(f"Throughput Stats: {stats}")
+            if stats and "Number of Intervals" in stats:
+                print(f"Number of Intervals: {stats['Number of Intervals']}")
         elif analysis_direction_detected == "UL":
             column_to_analyze = "[Call Test] [Throughput] Application UL TP"
             start_event = "Upload Started"
@@ -264,6 +271,8 @@ if __name__ == "__main__":
             print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} HTTP ---")
             stats = analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
             print(f"Throughput Stats: {stats}")
+            if stats and "Number of Intervals" in stats:
+                print(f"Number of Intervals: {stats['Number of Intervals']}")
     elif protocol_type_detected == "UDP":
         event_col = "[Event] [Data call test detail events] IPERF Call Event"
         start_event = "IPERF_T_Start"
@@ -275,6 +284,8 @@ if __name__ == "__main__":
             print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
             stats = analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
             print(f"Throughput Stats: {stats}")
+            if stats and "Number of Intervals" in stats:
+                print(f"Number of Intervals: {stats['Number of Intervals']}")
 
             # Analyze Jitter
             column_to_analyze_jitter = "[Call Test] [iPerf] [Throughput] DL Jitter"
@@ -294,6 +305,8 @@ if __name__ == "__main__":
             print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
             stats = analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
             print(f"Throughput Stats: {stats}")
+            if stats and "Number of Intervals" in stats:
+                print(f"Number of Intervals: {stats['Number of Intervals']}")
 
             # Analyze UL Jitter
             column_to_analyze_ul_jitter = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Jitter"
