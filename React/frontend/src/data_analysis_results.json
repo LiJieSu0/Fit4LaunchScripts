@@ -659,6 +659,25 @@
     },
     "5G NSA DP": {
         "5G NSA Data Test Drive": {
+            "UDP DL DUT1_Data Test Drive": {
+                "Device Type": "DUT",
+                "Analysis Direction": "DL",
+                "Protocol Type": "UDP",
+                "Network Type": "5G",
+                "Throughput": {
+                    "Mean": 9.939965508230989,
+                    "Standard Deviation": 0.22374730101271928,
+                    "Minimum": 8.89470786516854,
+                    "Maximum": 10.001943820224719,
+                    "Number of Intervals": 43
+                },
+                "Jitter": {
+                    "Mean": 1.6926885964912284
+                },
+                "Error Ratio": {
+                    "Mean": 1.0425411406088754
+                }
+            },
             "UDP DL REF1_Data Test Drive": {
                 "Device Type": "REF",
                 "Analysis Direction": "DL",

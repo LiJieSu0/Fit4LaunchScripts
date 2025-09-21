@@ -41,7 +41,9 @@ def _determine_analysis_parameters(file_path):
         params["analysis_direction_detected"] = "UL"
     
     # Determine protocol type from filename
-    if "http" in file_name:
+    if "web page" in file_name:
+        params["protocol_type_detected"] = "WEB_PAGE"
+    elif "http" in file_name:
         params["protocol_type_detected"] = "HTTP"
     elif "udp" in file_name:
         params["protocol_type_detected"] = "UDP"
@@ -58,8 +60,12 @@ def _determine_analysis_parameters(file_path):
         params["device_type_detected"] = "REF"
 
     # If essential parameters are not detected, return None
-    if not params["analysis_direction_detected"] or not params["protocol_type_detected"] or not params["network_type_detected"]:
+    # For WEB_PAGE, analysis_direction_detected is not strictly necessary as it's a single metric
+    if params["protocol_type_detected"] != "WEB_PAGE" and (not params["analysis_direction_detected"] or not params["protocol_type_detected"] or not params["network_type_detected"]):
         return None
+    elif params["protocol_type_detected"] == "WEB_PAGE" and (not params["protocol_type_detected"] or not params["network_type_detected"]):
+        return None
+
 
     if params["protocol_type_detected"] == "HTTP":
         params["event_col"] = "[Call Test] [HTTP Transfer] HTTP Transfer Call Event"
@@ -89,6 +95,11 @@ def _determine_analysis_parameters(file_path):
             params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application UL TP" if params["network_type_detected"] == "5G" else "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
             params["column_to_analyze_ul_jitter"] = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Jitter"
             params["column_to_analyze_ul_error_ratio"] = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Error Ratio"
+    elif params["protocol_type_detected"] == "WEB_PAGE":
+        params["event_col"] = "[Event] [Data call test detail events] HTTP Call Event"
+        params["start_event"] = "HTTP Traffic Start"
+        params["end_event"] = "HTTP Traffic End"
+        params["column_to_analyze_total_duration"] = "[Call Test] [HTTP] Total duration"
     # print(f"DEBUG: _determine_analysis_parameters returning: {params}") # Removed as per user request
     return params
 
@@ -278,6 +289,80 @@ def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start
         print(f"An error occurred: {e}")
         return None
 
+def analyze_web_page_load_time(file_path, event_col_name, start_event_str, end_event_str, duration_col_name):
+    """
+    Reads a data CSV file, identifies web page load time intervals based on start/end event markers,
+    extracts total duration for each, and calculates statistics (count, average, max, min, std dev).
+    Returns a dictionary of statistics or None.
+    """
+    try:
+        data = pd.read_csv(file_path)
+
+        if duration_col_name not in data.columns:
+            print(f"\nError: Duration column '{duration_col_name}' not found in the CSV file.")
+            print(f"Available columns: {data.columns.tolist()}")
+            return None
+        if event_col_name not in data.columns:
+            print(f"\nError: Event column '{event_col_name}' not found in the CSV file.")
+            print(f"Available columns: {data.columns.tolist()}")
+            return None
+        
+        filtered_data = data.copy()
+
+        started_indices = filtered_data[filtered_data[event_col_name].astype(str).str.contains(start_event_str, na=False)].index
+        ended_indices = filtered_data[filtered_data[event_col_name].astype(str).str.contains(end_event_str, na=False)].index
+
+        if started_indices.empty or ended_indices.empty:
+            print(f"\nWarning: Could not find both '{start_event_str}' and '{end_event_str}' events in '{event_col_name}'. Cannot calculate web page load time intervals.")
+            return None
+        
+        total_durations = []
+        current_start_idx = -1
+        
+        # Find all start and end event indices
+        start_events = filtered_data[filtered_data[event_col_name].astype(str).str.contains(start_event_str, na=False)].index
+        end_events = filtered_data[filtered_data[event_col_name].astype(str).str.contains(end_event_str, na=False)].index
+        timeout_idle_events = filtered_data[filtered_data[event_col_name].astype(str).str.contains("TIMEOUT_Idle", na=False)].index
+
+        # Match start, end, and then find the duration after TIMEOUT_Idle
+        for start_idx in start_events:
+            # Find the first end event after this start event
+            relevant_end_events = end_events[end_events > start_idx]
+            if not relevant_end_events.empty:
+                end_idx = relevant_end_events[0]
+
+                # Find the first TIMEOUT_Idle event after this end event
+                relevant_timeout_idle = timeout_idle_events[timeout_idle_events > end_idx]
+                if not relevant_timeout_idle.empty:
+                    timeout_idx = relevant_timeout_idle[0]
+                    
+                    # The duration value is on the row immediately after TIMEOUT_Idle
+                    # Check if timeout_idx + 1 is a valid index
+                    if timeout_idx + 1 < len(filtered_data):
+                        duration_row_idx = timeout_idx + 1
+                        duration_val = filtered_data.loc[duration_row_idx, duration_col_name]
+                        
+                        if pd.notna(duration_val): # Check if the value is not NaN
+                            total_durations.append(duration_val)
+        
+        if not total_durations:
+            print(f"\nNo valid '{start_event_str}' to '{end_event_str}' intervals with '{duration_col_name}' data found after 'TIMEOUT_Idle' events.")
+            return None
+
+        durations_series = pd.Series(total_durations)
+        
+        stats = _calculate_statistics(durations_series, duration_col_name)
+        if stats:
+            stats["Number of Intervals"] = len(total_durations)
+        return stats
+
+    except FileNotFoundError:
+        print(f"Error: The file at {file_path} was not found.")
+        return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
 def evaluate_performance(dut_value, ref_value, metric_type):
     """
     Evaluates performance based on DUT and REF values for a given metric type.
@@ -338,7 +423,9 @@ if __name__ == "__main__":
         print(f"Error: Could not determine analysis parameters for {file_path}. Exiting.")
         sys.exit(1)
 
-    print(f"\nDetected analysis direction: {params['analysis_direction_detected']}, protocol type: {params['protocol_type_detected']}, and network type: {params['network_type_detected']}.")
+    print(f"\nDetected protocol type: {params['protocol_type_detected']}, and network type: {params['network_type_detected']}.")
+    if params["analysis_direction_detected"]:
+        print(f"Detected analysis direction: {params['analysis_direction_detected']}.")
 
     if params["protocol_type_detected"] == "HTTP":
         if params["analysis_direction_detected"] == "DL":
@@ -389,5 +476,11 @@ if __name__ == "__main__":
             print(f"\n--- Performing UL Error Ratio Analysis for {params['analysis_direction_detected']} UDP ---")
             stats = analyze_error_ratio(file_path, params["column_to_analyze_ul_error_ratio"], params["event_col"], params["start_event"], params["end_event"])
             print(f"Error Ratio Stats: {stats}")
+    elif params["protocol_type_detected"] == "WEB_PAGE":
+        print(f"\n--- Performing Web Page Load Time Analysis ---")
+        stats = analyze_web_page_load_time(file_path, params["event_col"], params["start_event"], params["end_event"], params["column_to_analyze_total_duration"])
+        print(f"Web Page Load Time Stats: {stats}")
+        if stats and "Number of Intervals" in stats:
+            print(f"Number of Intervals: {stats['Number of Intervals']}")
 
     print(f"\nDevice Type: {params['device_type_detected']}")
