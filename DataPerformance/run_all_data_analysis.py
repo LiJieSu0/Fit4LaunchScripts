@@ -40,6 +40,8 @@ if __name__ == "__main__":
     ]
     
     all_collected_results = {}
+    invalid_data_files = [] # Initialize a list to store paths of files with invalid data
+    valid_data_files = [] # Initialize a list to store paths of files with valid data
     
     # Get all CSV file paths using the new data_path_reader script
     all_csv_files_processed = data_path_reader.get_csv_file_paths(base_raw_data_dir, directories_to_process)
@@ -52,6 +54,7 @@ if __name__ == "__main__":
             analysis_type_for_file = "ping"
 
         stats = None # Initialize stats for each file
+        current_file_has_invalid_data = False # Flag for the current file
 
         if analysis_type_for_file == "ping":
             print(f"--- Analyzing Ping file: {csv_file_path} ---")
@@ -64,6 +67,7 @@ if __name__ == "__main__":
             if params is None:
                 file_name = os.path.basename(csv_file_path).lower()
                 print(f"Warning: Could not fully determine analysis parameters from filename: {file_name}. Skipping.")
+                current_file_has_invalid_data = True # Mark as invalid if parameters cannot be determined
                 stats = None # Ensure stats is None if skipping
             else:
                 all_file_stats = {}
@@ -77,39 +81,78 @@ if __name__ == "__main__":
                         throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
                         if throughput_stats:
                             all_file_stats["Throughput"] = throughput_stats
+                        else:
+                            current_file_has_invalid_data = True
                     elif params["analysis_direction_detected"] == "UL":
                         throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
                         if throughput_stats:
                             all_file_stats["Throughput"] = throughput_stats
+                        else:
+                            current_file_has_invalid_data = True
                 elif params["protocol_type_detected"] == "UDP":
                     if params["analysis_direction_detected"] == "DL":
                         throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
                         if throughput_stats:
                             all_file_stats["Throughput"] = throughput_stats
+                        else:
+                            current_file_has_invalid_data = True
 
                         jitter_stats = data_performance_statics.analyze_jitter(csv_file_path, params["column_to_analyze_jitter"], params["event_col"], params["start_event"], params["end_event"])
                         if jitter_stats:
                             all_file_stats["Jitter"] = jitter_stats
+                        else:
+                            current_file_has_invalid_data = True
 
                         error_ratio_stats = data_performance_statics.analyze_error_ratio(csv_file_path, params["column_to_analyze_error_ratio"], params["event_col"], params["start_event"], params["end_event"])
                         if error_ratio_stats:
                             all_file_stats["Error Ratio"] = error_ratio_stats
+                        else:
+                            current_file_has_invalid_data = True
 
                     elif params["analysis_direction_detected"] == "UL":
                         throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
                         if throughput_stats:
                             all_file_stats["Throughput"] = throughput_stats
+                        else:
+                            current_file_has_invalid_data = True
 
                         jitter_stats = data_performance_statics.analyze_jitter(csv_file_path, params["column_to_analyze_ul_jitter"], params["event_col"], params["start_event"], params["end_event"])
                         if jitter_stats:
                             all_file_stats["Jitter"] = jitter_stats
+                        else:
+                            current_file_has_invalid_data = True
 
                         error_ratio_stats = data_performance_statics.analyze_error_ratio(csv_file_path, params["column_to_analyze_ul_error_ratio"], params["event_col"], params["start_event"], params["end_event"])
                         if error_ratio_stats:
                             all_file_stats["Error Ratio"] = error_ratio_stats
+                        else:
+                            current_file_has_invalid_data = True
                 stats = all_file_stats # Assign collected stats to the 'stats' variable
         
-        if stats:
+        # Check for NA/null values in the collected stats or if analysis failed
+        if current_file_has_invalid_data or not stats: # If analysis failed or marked as invalid earlier
+            invalid_data_files.append(csv_file_path)
+            print(f"Invalid data detected or analysis skipped for: {csv_file_path}. Added to invalid_data_files.")
+        elif stats: # Only process if stats are valid and not marked as invalid
+            has_na_or_none_in_stats = False
+            for key, value in stats.items():
+                if isinstance(value, dict):
+                    for sub_key, sub_value in value.items():
+                        if pd.isna(sub_value) or sub_value is None:
+                            has_na_or_none_in_stats = True
+                            break
+                elif pd.isna(value) or value is None:
+                    has_na_or_none_in_stats = True
+                if has_na_or_none_in_stats:
+                    break
+            
+            if has_na_or_none_in_stats:
+                invalid_data_files.append(csv_file_path)
+                print(f"NA/None values detected in stats for: {csv_file_path}. Added to invalid_data_files.")
+            else:
+                valid_data_files.append(csv_file_path) # Add to valid files if no invalid data found
+                print(f"Valid data detected for: {csv_file_path}. Added to valid_data_files.")
+
             # Determine a descriptive key for the results
             # We need to get the relative path from base_raw_data_dir for the key
             relative_path_from_base = os.path.relpath(os.path.dirname(csv_file_path), base_raw_data_dir)
@@ -126,6 +169,28 @@ if __name__ == "__main__":
     
     # Write the collected list of CSV files to a TXT file using the new data_path_reader script
     data_path_reader.write_csv_paths_with_two_parents(all_csv_files_processed, base_raw_data_dir) # Function name remains, but behavior changed
+
+    # Write invalid data file paths to a text file
+    print(f"invalid_data_files content: {invalid_data_files}") # Debug print
+    if invalid_data_files:
+        invalid_output_path = os.path.join(script_dir, "invalid_data_paths.txt")
+        with open(invalid_output_path, 'w', encoding='utf-8') as f:
+            for path in invalid_data_files:
+                f.write(f"{path}\n")
+        print(f"\nInvalid data file paths written to: {invalid_output_path}")
+    else:
+        print("\nNo invalid data files found.")
+
+    # Write valid data file paths to a text file
+    print(f"valid_data_files content: {valid_data_files}") # Debug print
+    if valid_data_files:
+        valid_output_path = os.path.join(script_dir, "valid_data_paths.txt")
+        with open(valid_output_path, 'w', encoding='utf-8') as f:
+            for path in valid_data_files:
+                f.write(f"{path}\n")
+        print(f"\nValid data file paths written to: {valid_output_path}")
+    else:
+        print("\nNo valid data files found.")
 
     if all_collected_results:
         # Output results to a JSON file for the React app

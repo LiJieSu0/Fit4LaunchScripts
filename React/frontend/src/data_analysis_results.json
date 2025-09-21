@@ -169,30 +169,6 @@
             "Number of Intervals": 20
         }
     },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 UL\\Single Stream HTTP Upload of a 15 MB file - _CH01_TMO-dut_5G auto_Single Stream HTTP Upload of a 15 MB file_Good Coverage_DA Test": {
-        "Device Type": "DUT",
-        "Analysis Direction": "UL",
-        "Protocol Type": "HTTP",
-        "Network Type": "5G"
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 UL\\Single Stream HTTP Upload of a 15 MB file - _CH02_TMO-ref_5G auto_Single Stream HTTP Upload of a 15 MB file_Good Coverage_DA Test": {
-        "Device Type": "REF",
-        "Analysis Direction": "UL",
-        "Protocol Type": "HTTP",
-        "Network Type": "5G"
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 UL\\UDP Upload Task at 10 Mbps for 10 seconds - _CH01_TMO-dut_5G auto_UDP Upload Task at 10 Mbps for 10 seconds_Good Coverage_DA Test": {
-        "Device Type": "DUT",
-        "Analysis Direction": "UL",
-        "Protocol Type": "UDP",
-        "Network Type": "5G",
-        "Jitter": {
-            "Mean": 1.6668500000000002
-        },
-        "Error Ratio": {
-            "Mean": 0.0
-        }
-    },
     "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 UL\\UDP Upload Task at 10 Mbps for 10 seconds - _CH02_TMO-ref_5G auto_UDP Upload Task at 10 Mbps for 10 seconds_Good Coverage_DA Test": {
         "Device Type": "REF",
         "Analysis Direction": "UL",
@@ -207,18 +183,6 @@
         },
         "Jitter": {
             "Mean": 1.8633
-        },
-        "Error Ratio": {
-            "Mean": 0.0
-        }
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 1 UL\\UDP Upload Task at 20 Mbps for 10 seconds - _CH01_TMO-dut_5G auto_UDP Upload Task at 20 Mbps for 10 seconds_Good Coverage_DA Test": {
-        "Device Type": "DUT",
-        "Analysis Direction": "UL",
-        "Protocol Type": "UDP",
-        "Network Type": "5G",
-        "Jitter": {
-            "Mean": 0.9315000000000001
         },
         "Error Ratio": {
             "Mean": 0.0
@@ -242,18 +206,6 @@
         "Error Ratio": {
             "Mean": 0.0037983500000000003
         }
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 2 DL\\5G auto_Multi Stream HTTP Download for 30 seconds_moderate - dut_5G auto_Multi Stream HTTP Download for 30 seconds": {
-        "Device Type": "DUT",
-        "Analysis Direction": "UL",
-        "Protocol Type": "HTTP",
-        "Network Type": "5G"
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 2 DL\\5G auto_Multi Stream HTTP Download for 30 seconds_moderate - ref_5G auto_Multi Stream HTTP Download for 30 seconds": {
-        "Device Type": "REF",
-        "Analysis Direction": "UL",
-        "Protocol Type": "HTTP",
-        "Network Type": "5G"
     },
     "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 2 DL\\5G auto_Single Stream HTTP Download for 60 seconds_moderate - dut_5G auto_Single Stream HTTP Download for 60 seconds": {
         "Device Type": "DUT",
@@ -398,66 +350,6 @@
             "Maximum": 25.057999999999996,
             "Number of Intervals": 20
         }
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 2 UL\\5G auto_UDP Upload Task at 10 Mbps for 10 seconds_moderate - dut_5G auto_UDP Upload Task at 10 Mbps for 10 seconds": {
-        "Device Type": "DUT",
-        "Analysis Direction": "UL",
-        "Protocol Type": "UDP",
-        "Network Type": "5G",
-        "Jitter": {
-            "Mean": 5.9156
-        },
-        "Error Ratio": {
-            "Mean": 19.882063849999998
-        }
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 2 UL\\5G auto_UDP Upload Task at 10 Mbps for 10 seconds_moderate - ref_5G auto_UDP Upload Task at 10 Mbps for 10 seconds": {
-        "Device Type": "REF",
-        "Analysis Direction": "UL",
-        "Protocol Type": "UDP",
-        "Network Type": "5G",
-        "Jitter": {
-            "Mean": 28.07985
-        },
-        "Error Ratio": {
-            "Mean": 58.58955895000001
-        }
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 2 UL\\5G auto_UDP Upload Task at 20 Mbps for 10 seconds_moderate - dut_5G auto_UDP Upload Task at 20 Mbps for 10 seconds": {
-        "Device Type": "DUT",
-        "Analysis Direction": "UL",
-        "Protocol Type": "UDP",
-        "Network Type": "5G",
-        "Jitter": {
-            "Mean": 17.481599999999997
-        },
-        "Error Ratio": {
-            "Mean": 56.80739755
-        }
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 2 UL\\5G auto_UDP Upload Task at 20 Mbps for 10 seconds_moderate - ref_5G auto_UDP Upload Task at 20 Mbps for 10 seconds": {
-        "Device Type": "REF",
-        "Analysis Direction": "UL",
-        "Protocol Type": "UDP",
-        "Network Type": "5G",
-        "Jitter": {
-            "Mean": 26.832136363636366
-        },
-        "Error Ratio": {
-            "Mean": 86.14968665
-        }
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 DL\\Multi Stream HTTP Download for 30 seconds - _CH01_TMO-dut_5G auto_Multi Stream HTTP Download for 30 seconds_Poor Coverage_DA Test": {
-        "Device Type": "DUT",
-        "Analysis Direction": "UL",
-        "Protocol Type": "HTTP",
-        "Network Type": "5G"
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 DL\\Multi Stream HTTP Download for 30 seconds - _CH02_TMO-ref_5G auto_Multi Stream HTTP Download for 30 seconds_Poor Coverage_DA Test": {
-        "Device Type": "REF",
-        "Analysis Direction": "UL",
-        "Protocol Type": "HTTP",
-        "Network Type": "5G"
     },
     "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 DL\\Single Stream HTTP Download for 60 seconds - dut_5G auto_Single Stream HTTP Download for 60 seconds_Poor": {
         "Device Type": "DUT",
@@ -629,54 +521,6 @@
             "Number of Intervals": 20
         }
     },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 UL\\UDP Upload Task at 10 Mbps for 10 seconds - _CH01_TMO-dut_5G auto_UDP Upload Task at 10 Mbps for 10 seconds_Poor Coverage_DA Test": {
-        "Device Type": "DUT",
-        "Analysis Direction": "UL",
-        "Protocol Type": "UDP",
-        "Network Type": "5G",
-        "Jitter": {
-            "Mean": 1.5752499999999998
-        },
-        "Error Ratio": {
-            "Mean": 0.0121584
-        }
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 UL\\UDP Upload Task at 10 Mbps for 10 seconds - _CH02_TMO-ref_5G auto_UDP Upload Task at 10 Mbps for 10 seconds_Poor Coverage_DA Test": {
-        "Device Type": "REF",
-        "Analysis Direction": "UL",
-        "Protocol Type": "UDP",
-        "Network Type": "5G",
-        "Jitter": {
-            "Mean": 1.66735
-        },
-        "Error Ratio": {
-            "Mean": 11.5288995
-        }
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 UL\\UDP Upload Task at 20 Mbps for 10 seconds - dut_5g_UDP_UL_Task at 20M for 10sec_Poor": {
-        "Device Type": "DUT",
-        "Analysis Direction": "UL",
-        "Protocol Type": "UDP",
-        "Network Type": "5G",
-        "Jitter": {
-            "Mean": 0.6757
-        },
-        "Error Ratio": {
-            "Mean": 0.0
-        }
-    },
-    "Data Performance - 5G AUTO DP\\5G Auto Data Test Stationary Location 3 UL\\UDP Upload Task at 20 Mbps for 10 seconds - ref_5g_UDP_UL_Task at 20M for 10sec_Poor": {
-        "Device Type": "REF",
-        "Analysis Direction": "UL",
-        "Protocol Type": "UDP",
-        "Network Type": "5G",
-        "Jitter": {
-            "Mean": 0.8088000000000001
-        },
-        "Error Ratio": {
-            "Mean": 12.42561985
-        }
-    },
     "Data Performance - 5G NSA DP\\5G NSA Data Test Stationary Poor RF DL\\____UDP Download Task at 200 Mbps for 10 seconds - _20250914_163335_CH01_TMO-dut_5G NSA_UDP Download Task at 200 Mbps for 10 seconds_Poor Coverage_DA Test": {
         "Device Type": "DUT",
         "Analysis Direction": "DL",
@@ -756,29 +600,5 @@
             "Maximum": 20.06631034482758,
             "Number of Intervals": 20
         }
-    },
-    "Data Performance - 5G NSA DP\\5G NSA Data Test Stationary Poor RF UL\\Single Stream HTTP Upload of a 15 MB file - _CH01_TMO-dut_5G NSA_Single Stream HTTP Upload of a 15 MB file_Poor Coverage_DA Test": {
-        "Device Type": "DUT",
-        "Analysis Direction": "UL",
-        "Protocol Type": "HTTP",
-        "Network Type": "5G"
-    },
-    "Data Performance - 5G NSA DP\\5G NSA Data Test Stationary Poor RF UL\\Single Stream HTTP Upload of a 15 MB file - _CH02_TMO-ref_5G NSA_Single Stream HTTP Upload of a 15 MB file_Poor Coverage_DA Test": {
-        "Device Type": "REF",
-        "Analysis Direction": "UL",
-        "Protocol Type": "HTTP",
-        "Network Type": "5G"
-    },
-    "Data Performance - 5G NSA DP\\5G NSA Data Test Stationary Poor RF UL\\UDP Upload Task at 20 Mbps for 10 seconds - _CH01_TMO-dut_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_Poor Coverage_DA Test": {
-        "Device Type": "DUT",
-        "Analysis Direction": "UL",
-        "Protocol Type": "UDP",
-        "Network Type": "5G"
-    },
-    "Data Performance - 5G NSA DP\\5G NSA Data Test Stationary Poor RF UL\\UDP Upload Task at 20 Mbps for 10 seconds - _CH02_TMO-ref_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_Poor Coverage_DA Test": {
-        "Device Type": "REF",
-        "Analysis Direction": "UL",
-        "Protocol Type": "UDP",
-        "Network Type": "5G"
     }
 }

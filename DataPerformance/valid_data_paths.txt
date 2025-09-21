@@ -1,0 +1,42 @@
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 DL\Multi Stream HTTP Download for 30 seconds_Good\dut_5G auto_MS HTTP DL_Good.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 DL\Multi Stream HTTP Download for 30 seconds_Good\ref_5G auto_MS HTTP DL_Good.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 DL\Single Stream HTTP Download for 60 seconds_Good\dut_5G auto_SS HTTP DL_Good.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 DL\Single Stream HTTP Download for 60 seconds_Good\ref_5G auto_SS HTTP DL_Good.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 DL\UDP Download Task at 200 Mbps for 10 seconds\dut_5G auto_UDP DL 200M 10sec_Good.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 DL\UDP Download Task at 200 Mbps for 10 seconds\ref_5G auto_UDP DL 200M 10sec_Good.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 DL\UDP Download Task at 400 Mbps for 10 seconds\dut_5G auto_UDP DL 400M 10sec_Good.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 DL\UDP Download Task at 400 Mbps for 10 seconds\ref_5G auto_UDP DL 400M 10sec_Good.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 UL\25x64 bytes PING (ICMP)\_CH01_TMO-dut_5G auto_25x64 bytes PING (ICMP)_Good Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 UL\25x64 bytes PING (ICMP)\_CH02_TMO-ref_5G auto_25x64 bytes PING (ICMP)_Good Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 UL\Multi Stream HTTP Upload for 30 seconds\_CH01_TMO-dut_5G auto_Multi Stream HTTP Upload for 30 seconds_Good Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 UL\Multi Stream HTTP Upload for 30 seconds\_CH02_TMO-ref_5G auto_Multi Stream HTTP Upload for 30 seconds_Good Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 UL\UDP Upload Task at 10 Mbps for 10 seconds\_CH02_TMO-ref_5G auto_UDP Upload Task at 10 Mbps for 10 seconds_Good Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 UL\UDP Upload Task at 20 Mbps for 10 seconds\_CH02_TMO-ref_5G auto_UDP Upload Task at 20 Mbps for 10 seconds_Good Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 2 DL\5G auto_Single Stream HTTP Download for 60 seconds_moderate\dut_5G auto_Single Stream HTTP Download for 60 seconds.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 2 DL\5G auto_Single Stream HTTP Download for 60 seconds_moderate\ref_5G auto_Single Stream HTTP Download for 60 seconds.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 2 DL\5G auto_UDP Download Task at 200 Mbps for 10 seconds_moderate\dut_5G auto_UDP Download Task at 200 Mbps for 10.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 2 DL\5G auto_UDP Download Task at 200 Mbps for 10 seconds_moderate\ref_5G auto_UDP Download Task at 200 Mbps for 10.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 2 DL\5G auto_UDP Download Task at 400 Mbps for 10 seconds_moderate\dut_5G auto_UDP Download Task at 400 Mbps for 10 seconds.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 2 DL\5G auto_UDP Download Task at 400 Mbps for 10 seconds_moderate\ref_5G auto_UDP Download Task at 400 Mbps for 10 seconds.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 2 UL\5G auto_25x64 bytes PING_moderate\_CH01_TMO_5G auto_25x64 bytes PING_DUT_.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 2 UL\5G auto_25x64 bytes PING_moderate\_CH02_TMO_5G auto_25x64 bytes PING_REF_.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 2 UL\5G auto_Multi Stream HTTP Upload for 30 seconds_moderate\_CH01_TMO_5G auto_Multi Stream HTTP Upload for 30 seconds_DUT_.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 2 UL\5G auto_Multi Stream HTTP Upload for 30 seconds_moderate\_CH02_TMO_5G auto_Multi Stream HTTP Upload for 30 seconds_REF_.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 DL\Single Stream HTTP Download for 60 seconds\dut_5G auto_Single Stream HTTP Download for 60 seconds_Poor.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 DL\Single Stream HTTP Download for 60 seconds\ref_5G auto_Single Stream HTTP Download for 60 seconds_Poor.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 DL\UDP Download Task at 200 Mbps for 10 seconds\dut_5G auto_UDP Download Task at 200 Mbps for 10 seconds_Poor Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 DL\UDP Download Task at 200 Mbps for 10 seconds\ref_5G auto_UDP Download Task at 200 Mbps for 10 seconds_Poor Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 DL\UDP Download Task at 400 Mbps for 10 seconds\dut_5G auto_UDP Download Task at 400 Mbps for 10 seconds_Poor Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 DL\UDP Download Task at 400 Mbps for 10 seconds\ref_5G auto_UDP Download Task at 400 Mbps for 10 seconds_Poor Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 UL\25x64 bytes PING (ICMP)\dut_5g auto_25x64 bytes PING (ICMP)_poor Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 UL\25x64 bytes PING (ICMP)\ref_5g auto_25x64 bytes PING (ICMP)_poor Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 UL\Multi Stream HTTP Upload for 30 seconds\dut_5g auto_Multi Stream HTTP Upload for 30 seconds_poor Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 UL\Multi Stream HTTP Upload for 30 seconds\ref_5g auto_Multi Stream HTTP Upload for 30 seconds_poor Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 UL\Single Stream HTTP Upload of a 15 MB file\dut_5g auto_Single Stream HTTP Upload of a 15 MB file_poor Coverage_DA Test.csv
+Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 UL\Single Stream HTTP Upload of a 15 MB file\ref_5g auto_Single Stream HTTP Upload of a 15 MB file_poor Coverage_DA Test.csv
+Raw Data\5G NSA DP\5G NSA Data Test Stationary Poor RF DL\____UDP Download Task at 200 Mbps for 10 seconds\_20250914_163335_CH01_TMO-dut_5G NSA_UDP Download Task at 200 Mbps for 10 seconds_Poor Coverage_DA Test.csv
+Raw Data\5G NSA DP\5G NSA Data Test Stationary Poor RF DL\____UDP Download Task at 200 Mbps for 10 seconds\_CH01_TMO-dut_5G NSA_UDP Download Task at 200 Mbps for 10 seconds_Poor Coverage_DA Test.csv
+Raw Data\5G NSA DP\5G NSA Data Test Stationary Poor RF UL\25x64 bytes PING (ICMP)\_CH01_TMO-dut_5G NSA_25x64 bytes PING (ICMP)_Poor Coverage_DA Test.csv
+Raw Data\5G NSA DP\5G NSA Data Test Stationary Poor RF UL\25x64 bytes PING (ICMP)\_CH02_TMO-ref_5G NSA_25x64 bytes PING (ICMP)_Poor Coverage_DA Test.csv
+Raw Data\5G NSA DP\5G NSA Data Test Stationary Poor RF UL\Multi Stream HTTP Upload for 30 seconds\_CH01_TMO-dut_5G NSA_Multi Stream HTTP Upload for 30 seconds_Poor Coverage_DA Test.csv
+Raw Data\5G NSA DP\5G NSA Data Test Stationary Poor RF UL\Multi Stream HTTP Upload for 30 seconds\_CH02_TMO-ref_5G NSA_UDP UMulti Stream HTTP Upload for 30 second_Poor Coverage_DA Test.csv
