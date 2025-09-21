@@ -19,125 +19,9 @@ from pdf_report_generator import create_pdf_report # Import the PDF generation f
 # Import the analysis functions from data_performance_statics.py
 # Assuming data_performance_statics.py is in the same directory
 import data_performance_statics
+from data_performance_statics import _determine_analysis_parameters # Import the new helper function
 import ping_statics # Import the ping_statics module
 import data_path_reader # Import the new path reader script
-
-def run_analysis_on_file(file_path, analysis_type="data_performance"):
-    """
-    Runs the analysis script on a single CSV file and returns the collected statistics.
-    The analysis_type parameter determines which type of analysis to perform.
-    """
-    if analysis_type == "ping":
-        print(f"--- Analyzing Ping file: {file_path} ---")
-        ping_stats = ping_statics.calculate_ping_statistics(file_path)
-        if ping_stats:
-            return {"Ping RTT": ping_stats}
-        return None
-
-    # Existing data performance analysis logic
-    file_name = os.path.basename(file_path).lower()
-    event_col = None
-    start_event = None
-    end_event = None
-    analysis_direction_detected = None
-    protocol_type_detected = None
-    network_type_detected = None
-    device_type_detected = "Unknown"
-
-    if "ul" in file_name:
-        analysis_direction_detected = "UL"
-    elif "dl" in file_name:
-        analysis_direction_detected = "DL"
-    
-    if "http" in file_name:
-        protocol_type_detected = "HTTP"
-    elif "udp" in file_name:
-        protocol_type_detected = "UDP"
-    
-    if "5g" in file_name:
-        network_type_detected = "5G"
-    elif "lte" in file_name:
-        network_type_detected = "LTE"
-
-    if "dut" in file_name:
-        device_type_detected = "DUT"
-    elif "ref" in file_name:
-        device_type_detected = "REF"
-
-    print(f"DEBUG: file_name: {file_name}")
-    print(f"DEBUG: analysis_direction_detected: {analysis_direction_detected}")
-    print(f"DEBUG: protocol_type_detected: {protocol_type_detected}")
-    print(f"DEBUG: network_type_detected: {network_type_detected}")
-
-    if not analysis_direction_detected or not protocol_type_detected or not network_type_detected:
-        print(f"Warning: Could not fully determine analysis parameters from filename: {file_name}. Skipping.")
-        return None
-
-    all_stats = {}
-    all_stats["Device Type"] = device_type_detected
-    all_stats["Analysis Direction"] = analysis_direction_detected
-    all_stats["Protocol Type"] = protocol_type_detected
-    all_stats["Network Type"] = network_type_detected
-
-    if protocol_type_detected == "HTTP":
-        event_col = "[Call Test] [HTTP Transfer] HTTP Transfer Call Event"
-        if analysis_direction_detected == "DL":
-            column_to_analyze = "[Call Test] [Throughput] Application DL TP" if network_type_detected == "5G" else "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
-            start_event = "Download Started"
-            end_event = "Download Ended"
-            throughput_stats = data_performance_statics.analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
-            if throughput_stats:
-                all_stats["Throughput"] = throughput_stats
-        elif analysis_direction_detected == "UL":
-            if network_type_detected == "5G":
-                column_to_analyze = "[Call Test] [Throughput] Application UL TP" # Assuming this is the 5G UL TP column
-            else: # Default to LTE if not 5G
-                column_to_analyze = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
-            start_event = "Upload Started"
-            end_event = "Upload Ended"
-            throughput_stats = data_performance_statics.analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
-            if throughput_stats:
-                all_stats["Throughput"] = throughput_stats
-    elif protocol_type_detected == "UDP":
-        event_col = "[Event] [Data call test detail events] IPERF Call Event"
-        start_event = "IPERF_T_Start"
-        end_event = "IPERF_T_End"
-
-        if analysis_direction_detected == "DL":
-            column_to_analyze_throughput = "[Call Test] [Throughput] Application DL TP" if network_type_detected == "5G" else "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
-            throughput_stats = data_performance_statics.analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
-            if throughput_stats:
-                all_stats["Throughput"] = throughput_stats
-
-            column_to_analyze_jitter = "[Call Test] [iPerf] [Throughput] DL Jitter"
-            jitter_stats = data_performance_statics.analyze_jitter(file_path, column_to_analyze_jitter, event_col, start_event, end_event)
-            if jitter_stats:
-                all_stats["Jitter"] = jitter_stats
-
-            column_to_analyze_dl_error_ratio = "[Call Test] [iPerf] [Throughput] DL Error Ratio"
-            error_ratio_stats = data_performance_statics.analyze_error_ratio(file_path, column_to_analyze_dl_error_ratio, event_col, start_event, end_event)
-            if error_ratio_stats:
-                all_stats["Error Ratio"] = error_ratio_stats
-
-        elif analysis_direction_detected == "UL":
-            column_to_analyze_throughput = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
-            throughput_stats = data_performance_statics.analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
-            if throughput_stats:
-                all_stats["Throughput"] = throughput_stats
-
-            column_to_analyze_ul_jitter = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Jitter"
-            jitter_stats = data_performance_statics.analyze_jitter(file_path, column_to_analyze_ul_jitter, event_col, start_event, end_event)
-            if jitter_stats:
-                all_stats["Jitter"] = jitter_stats
-
-            column_to_analyze_ul_error_ratio = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Error Ratio"
-            error_ratio_stats = data_performance_statics.analyze_error_ratio(file_path, column_to_analyze_ul_error_ratio, event_col, start_event, end_event)
-            if error_ratio_stats:
-                all_stats["Error Ratio"] = error_ratio_stats
-    
-    return all_stats
-
-    # Removed create_pdf_report function as it's now in pdf_report_generator.py
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -163,18 +47,67 @@ if __name__ == "__main__":
     # Now iterate through the collected files for analysis
     for csv_file_path in all_csv_files_processed:
         # Determine analysis type based on the file path or configuration if needed
-        # For now, we'll assume all files from the configured directories are 'data_performance'
-        # This part might need more sophisticated logic if different subdirectories require different analysis_types
-        analysis_type_for_file = "data_performance" # Default to data_performance for now
-
-        # A more robust way would be to pass the analysis_type from data_path_reader if it were configured per file
-        # For simplicity, we'll infer it or use a default.
-        # If the original directories_to_process had a more granular type, we'd need to pass that through.
-        # For now, let's try to infer from the path if it's a ping file
+        analysis_type_for_file = "data_performance"
         if "ping" in csv_file_path.lower():
             analysis_type_for_file = "ping"
 
-        stats = run_analysis_on_file(csv_file_path, analysis_type=analysis_type_for_file)
+        stats = None # Initialize stats for each file
+
+        if analysis_type_for_file == "ping":
+            print(f"--- Analyzing Ping file: {csv_file_path} ---")
+            ping_stats_result = ping_statics.calculate_ping_statistics(csv_file_path)
+            if ping_stats_result:
+                stats = {"Ping RTT": ping_stats_result}
+        else: # data_performance analysis
+            params = _determine_analysis_parameters(csv_file_path)
+
+            if params is None:
+                file_name = os.path.basename(csv_file_path).lower()
+                print(f"Warning: Could not fully determine analysis parameters from filename: {file_name}. Skipping.")
+                stats = None # Ensure stats is None if skipping
+            else:
+                all_file_stats = {}
+                all_file_stats["Device Type"] = params["device_type_detected"]
+                all_file_stats["Analysis Direction"] = params["analysis_direction_detected"]
+                all_file_stats["Protocol Type"] = params["protocol_type_detected"]
+                all_file_stats["Network Type"] = params["network_type_detected"]
+
+                if params["protocol_type_detected"] == "HTTP":
+                    if params["analysis_direction_detected"] == "DL":
+                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
+                        if throughput_stats:
+                            all_file_stats["Throughput"] = throughput_stats
+                    elif params["analysis_direction_detected"] == "UL":
+                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
+                        if throughput_stats:
+                            all_file_stats["Throughput"] = throughput_stats
+                elif params["protocol_type_detected"] == "UDP":
+                    if params["analysis_direction_detected"] == "DL":
+                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
+                        if throughput_stats:
+                            all_file_stats["Throughput"] = throughput_stats
+
+                        jitter_stats = data_performance_statics.analyze_jitter(csv_file_path, params["column_to_analyze_jitter"], params["event_col"], params["start_event"], params["end_event"])
+                        if jitter_stats:
+                            all_file_stats["Jitter"] = jitter_stats
+
+                        error_ratio_stats = data_performance_statics.analyze_error_ratio(csv_file_path, params["column_to_analyze_error_ratio"], params["event_col"], params["start_event"], params["end_event"])
+                        if error_ratio_stats:
+                            all_file_stats["Error Ratio"] = error_ratio_stats
+
+                    elif params["analysis_direction_detected"] == "UL":
+                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
+                        if throughput_stats:
+                            all_file_stats["Throughput"] = throughput_stats
+
+                        jitter_stats = data_performance_statics.analyze_jitter(csv_file_path, params["column_to_analyze_ul_jitter"], params["event_col"], params["start_event"], params["end_event"])
+                        if jitter_stats:
+                            all_file_stats["Jitter"] = jitter_stats
+
+                        error_ratio_stats = data_performance_statics.analyze_error_ratio(csv_file_path, params["column_to_analyze_ul_error_ratio"], params["event_col"], params["start_event"], params["end_event"])
+                        if error_ratio_stats:
+                            all_file_stats["Error Ratio"] = error_ratio_stats
+                stats = all_file_stats # Assign collected stats to the 'stats' variable
         
         if stats:
             # Determine a descriptive key for the results

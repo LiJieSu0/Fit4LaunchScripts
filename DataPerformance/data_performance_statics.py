@@ -3,6 +3,86 @@ import sys
 import argparse
 import os
 
+def _determine_analysis_parameters(file_path):
+    """
+    Determines analysis parameters (direction, protocol, network, device, column names, event strings)
+    from the filename.
+    Returns a dictionary of parameters or None if essential parameters cannot be determined.
+    """
+    file_name = os.path.basename(file_path).lower()
+    
+    params = {
+        "event_col": None,
+        "start_event": None,
+        "end_event": None,
+        "analysis_direction_detected": None,
+        "protocol_type_detected": None,
+        "network_type_detected": None,
+        "device_type_detected": "Unknown",
+        "column_to_analyze_throughput": None,
+        "column_to_analyze_jitter": None,
+        "column_to_analyze_error_ratio": None,
+        "column_to_analyze_ul_jitter": None,
+        "column_to_analyze_ul_error_ratio": None,
+    }
+
+    # Determine analysis direction from filename
+    if "ul" in file_name:
+        params["analysis_direction_detected"] = "UL"
+    elif "dl" in file_name:
+        params["analysis_direction_detected"] = "DL"
+    elif "download" in file_name:
+        params["analysis_direction_detected"] = "DL"
+    elif "upload" in file_name:
+        params["analysis_direction_detected"] = "UL"
+    
+    # Determine protocol type from filename
+    if "http" in file_name:
+        params["protocol_type_detected"] = "HTTP"
+    elif "udp" in file_name:
+        params["protocol_type_detected"] = "UDP"
+    
+    # Determine network type (5G/LTE) from filename
+    if "5g" in file_name:
+        params["network_type_detected"] = "5G"
+    elif "lte" in file_name:
+        params["network_type_detected"] = "LTE"
+
+    if "dut" in file_name:
+        params["device_type_detected"] = "DUT"
+    elif "ref" in file_name:
+        params["device_type_detected"] = "REF"
+
+    # If essential parameters are not detected, return None
+    if not params["analysis_direction_detected"] or not params["protocol_type_detected"] or not params["network_type_detected"]:
+        return None
+
+    if params["protocol_type_detected"] == "HTTP":
+        params["event_col"] = "[Call Test] [HTTP Transfer] HTTP Transfer Call Event"
+        if params["analysis_direction_detected"] == "DL":
+            params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application DL TP" if params["network_type_detected"] == "5G" else "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
+            params["start_event"] = "Download Started"
+            params["end_event"] = "Download Ended"
+        elif params["analysis_direction_detected"] == "UL":
+            params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application UL TP" if params["network_type_detected"] == "5G" else "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
+            params["start_event"] = "Upload Started"
+            params["end_event"] = "Upload Ended"
+    elif params["protocol_type_detected"] == "UDP":
+        params["event_col"] = "[Event] [Data call test detail events] IPERF Call Event"
+        params["start_event"] = "IPERF_T_Start"
+        params["end_event"] = "IPERF_T_End"
+
+        if params["analysis_direction_detected"] == "DL":
+            params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application DL TP" if params["network_type_detected"] == "5G" else "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
+            params["column_to_analyze_jitter"] = "[Call Test] [iPerf] [Throughput] DL Jitter"
+            params["column_to_analyze_error_ratio"] = "[Call Test] [iPerf] [Throughput] DL Error Ratio"
+        elif params["analysis_direction_detected"] == "UL":
+            params["column_to_analyze_throughput"] = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
+            params["column_to_analyze_ul_jitter"] = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Jitter"
+            params["column_to_analyze_ul_error_ratio"] = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Error Ratio"
+    
+    return params
+
 def _calculate_statistics(data_series, column_name):
     """
     Calculates statistical data for a given pandas Series.
@@ -209,115 +289,62 @@ if __name__ == "__main__":
     end_event = None
     analysis_direction_detected = None
 
-    print(f"Debugging filename: {file_name}") # Debug print
+    params = _determine_analysis_parameters(file_path)
 
-    if "download" in file_name:
-        analysis_direction_detected = "DL"
-    elif "upload" in file_name:
-        analysis_direction_detected = "UL"
-    elif "dl" in file_name: # Fallback for "dl" if "download" not present
-        analysis_direction_detected = "DL"
-    elif "ul" in file_name: # Fallback for "ul" if "upload" not present
-        analysis_direction_detected = "UL"
-    else:
-        print("Could not determine analysis direction (UL/DL) from the filename.")
-        print("Please ensure 'UL' or 'DL' or 'Upload' or 'Download' is present in the file path.")
-        sys.exit(1)
-    
-    # Determine protocol type from filename
-    protocol_type_detected = None
-    if "http" in file_name:
-        protocol_type_detected = "HTTP"
-    elif "udp" in file_name:
-        protocol_type_detected = "UDP"
-    else:
-        print("Could not determine protocol type (HTTP/UDP) from the filename.")
-        print("Please ensure 'HTTP' or 'UDP' is present in the file path.")
+    if params is None:
+        print(f"Error: Could not determine analysis parameters for {file_path}. Exiting.")
         sys.exit(1)
 
-    # Determine network type (5G/LTE) from filename
-    network_type_detected = None
-    if "5g" in file_name:
-        network_type_detected = "5G"
-    else:
-        print("Could not determine network type (5G) from the filename.")
-        print("Please ensure '5G' is present in the file path, as only 5G analysis is supported.")
-        sys.exit(1)
+    print(f"\nDetected analysis direction: {params['analysis_direction_detected']}, protocol type: {params['protocol_type_detected']}, and network type: {params['network_type_detected']}.")
 
-    # Determine device type (DUT/REF) from filename
-    device_type_detected = "Unknown"
-    if "dut" in file_name:
-        device_type_detected = "DUT"
-    elif "ref" in file_name:
-        device_type_detected = "REF"
-
-    print(f"\nDetected analysis direction: {analysis_direction_detected}, protocol type: {protocol_type_detected}, and network type: {network_type_detected}.")
-
-    if protocol_type_detected == "HTTP":
-        event_col = "[Call Test] [HTTP Transfer] HTTP Transfer Call Event"
-        if analysis_direction_detected == "DL":
-            column_to_analyze = "[Call Test] [Throughput] Application DL TP"
-            start_event = "Download Started"
-            end_event = "Download Ended"
-            print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} HTTP ---")
-            stats = analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
+    if params["protocol_type_detected"] == "HTTP":
+        if params["analysis_direction_detected"] == "DL":
+            print(f"\n--- Performing Throughput Analysis for {params['analysis_direction_detected']} HTTP ---")
+            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
             print(f"Throughput Stats: {stats}")
             if stats and "Number of Intervals" in stats:
                 print(f"Number of Intervals: {stats['Number of Intervals']}")
-        elif analysis_direction_detected == "UL":
-            column_to_analyze = "[Call Test] [Throughput] Application UL TP"
-            start_event = "Upload Started"
-            end_event = "Upload Ended"
-            print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} HTTP ---")
-            stats = analyze_throughput(file_path, column_to_analyze, event_col, start_event, end_event)
+        elif params["analysis_direction_detected"] == "UL":
+            print(f"\n--- Performing Throughput Analysis for {params['analysis_direction_detected']} HTTP ---")
+            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
             print(f"Throughput Stats: {stats}")
             if stats and "Number of Intervals" in stats:
                 print(f"Number of Intervals: {stats['Number of Intervals']}")
-    elif protocol_type_detected == "UDP":
-        event_col = "[Event] [Data call test detail events] IPERF Call Event"
-        start_event = "IPERF_T_Start"
-        end_event = "IPERF_T_End"
-
-        if analysis_direction_detected == "DL":
+    elif params["protocol_type_detected"] == "UDP":
+        if params["analysis_direction_detected"] == "DL":
             # Analyze Throughput
-            column_to_analyze_throughput = "[Call Test] [Throughput] Application DL TP"
-            print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
-            stats = analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
+            print(f"\n--- Performing Throughput Analysis for {params['analysis_direction_detected']} UDP ---")
+            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
             print(f"Throughput Stats: {stats}")
             if stats and "Number of Intervals" in stats:
                 print(f"Number of Intervals: {stats['Number of Intervals']}")
 
             # Analyze Jitter
-            column_to_analyze_jitter = "[Call Test] [iPerf] [Throughput] DL Jitter"
-            print(f"\n--- Performing Jitter Analysis for {analysis_direction_detected} UDP ---")
-            stats = analyze_jitter(file_path, column_to_analyze_jitter, event_col, start_event, end_event)
+            print(f"\n--- Performing Jitter Analysis for {params['analysis_direction_detected']} UDP ---")
+            stats = analyze_jitter(file_path, params["column_to_analyze_jitter"], params["event_col"], params["start_event"], params["end_event"])
             print(f"Jitter Stats: {stats}")
 
             # Analyze DL Error Ratio
-            column_to_analyze_dl_error_ratio = "[Call Test] [iPerf] [Throughput] DL Error Ratio"
-            print(f"\n--- Performing DL Error Ratio Analysis for {analysis_direction_detected} UDP ---")
-            stats = analyze_error_ratio(file_path, column_to_analyze_dl_error_ratio, event_col, start_event, end_event)
+            print(f"\n--- Performing DL Error Ratio Analysis for {params['analysis_direction_detected']} UDP ---")
+            stats = analyze_error_ratio(file_path, params["column_to_analyze_error_ratio"], params["event_col"], params["start_event"], params["end_event"])
             print(f"Error Ratio Stats: {stats}")
 
-        elif analysis_direction_detected == "UL":
+        elif params["analysis_direction_detected"] == "UL":
             # Analyze Throughput
-            column_to_analyze_throughput = "[Call Test] [Throughput] Application UL TP" # Changed to 5G UL TP column
-            print(f"\n--- Performing Throughput Analysis for {analysis_direction_detected} UDP ---")
-            stats = analyze_throughput(file_path, column_to_analyze_throughput, event_col, start_event, end_event)
+            print(f"\n--- Performing Throughput Analysis for {params['analysis_direction_detected']} UDP ---")
+            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
             print(f"Throughput Stats: {stats}")
             if stats and "Number of Intervals" in stats:
                 print(f"Number of Intervals: {stats['Number of Intervals']}")
 
             # Analyze UL Jitter
-            column_to_analyze_ul_jitter = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Jitter"
-            print(f"\n--- Performing UL Jitter Analysis for {analysis_direction_detected} UDP ---")
-            stats = analyze_jitter(file_path, column_to_analyze_ul_jitter, event_col, start_event, end_event)
+            print(f"\n--- Performing UL Jitter Analysis for {params['analysis_direction_detected']} UDP ---")
+            stats = analyze_jitter(file_path, params["column_to_analyze_ul_jitter"], params["event_col"], params["start_event"], params["end_event"])
             print(f"Jitter Stats: {stats}")
 
             # Analyze UL Error Ratio
-            column_to_analyze_ul_error_ratio = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Error Ratio"
-            print(f"\n--- Performing UL Error Ratio Analysis for {analysis_direction_detected} UDP ---")
-            stats = analyze_error_ratio(file_path, column_to_analyze_ul_error_ratio, event_col, start_event, end_event)
+            print(f"\n--- Performing UL Error Ratio Analysis for {params['analysis_direction_detected']} UDP ---")
+            stats = analyze_error_ratio(file_path, params["column_to_analyze_ul_error_ratio"], params["event_col"], params["start_event"], params["end_event"])
             print(f"Error Ratio Stats: {stats}")
 
-    print(f"\nDevice Type: {device_type_detected}")
+    print(f"\nDevice Type: {params['device_type_detected']}")

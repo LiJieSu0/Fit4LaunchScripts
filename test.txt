@@ -1,1 +1,336 @@
-Skipping rename for Raw Data\5G NSA DP\5G NSA Data Test Stationary Poor RF DL\____UDP Download Task at 200 Mbps for 10 seconds\_20250914_163335_CH01_TMO-dut_5G NSA_UDP Download Task at 200 Mbps for 10 seconds_Poor Coverage_DA Test.csv: Target file Raw Data\5G NSA DP\5G NSA Data Test Stationary Poor RF DL\____UDP Download Task at 200 Mbps for 10 seconds\_CH01_TMO-dut_5G NSA_UDP Download Task at 200 Mbps for 10 seconds_Poor Coverage_DA Test.csv already exists.
+DEBUG: file_name: dut udp dl.csv
+DEBUG: analysis_direction_detected: DL
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: None
+Warning: Could not fully determine analysis parameters from filename: dut udp dl.csv. Skipping.
+DEBUG: file_name: ref udp dl.csv
+DEBUG: analysis_direction_detected: DL
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: None
+Warning: Could not fully determine analysis parameters from filename: ref udp dl.csv. Skipping.
+DEBUG: file_name: dut_5g auto_ms http dl_good.csv
+DEBUG: analysis_direction_detected: DL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: ref_5g auto_ms http dl_good.csv
+DEBUG: analysis_direction_detected: DL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: dut_5g auto_ss http dl_good.csv
+DEBUG: analysis_direction_detected: DL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: ref_5g auto_ss http dl_good.csv
+DEBUG: analysis_direction_detected: DL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: dut_5g auto_udp dl 200m 10sec_good.csv
+DEBUG: analysis_direction_detected: DL
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: ref_5g auto_udp dl 200m 10sec_good.csv
+DEBUG: analysis_direction_detected: DL
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: dut_5g auto_udp dl 400m 10sec_good.csv
+DEBUG: analysis_direction_detected: DL
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: ref_5g auto_udp dl 400m 10sec_good.csv
+DEBUG: analysis_direction_detected: DL
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+--- Analyzing Ping file: Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 UL\25x64 bytes PING (ICMP)\_CH01_TMO-dut_5G auto_25x64 bytes PING (ICMP)_Good Coverage_DA Test.csv ---
+--- Analyzing Ping file: Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 1 UL\25x64 bytes PING (ICMP)\_CH02_TMO-ref_5G auto_25x64 bytes PING (ICMP)_Good Coverage_DA Test.csv ---
+DEBUG: file_name: _ch01_tmo-dut_5g auto_multi stream http upload for 30 seconds_good coverage_da test.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: _ch02_tmo-ref_5g auto_multi stream http upload for 30 seconds_good coverage_da test.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: _ch01_tmo-dut_5g auto_single stream http upload of a 15 mb file_good coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch01_tmo-dut_5g auto_single stream http upload of a 15 mb file_good coverage_da test.csv. Skipping.
+DEBUG: file_name: _ch02_tmo-ref_5g auto_single stream http upload of a 15 mb file_good coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch02_tmo-ref_5g auto_single stream http upload of a 15 mb file_good coverage_da test.csv. Skipping.
+DEBUG: file_name: _ch01_tmo-dut_5g auto_udp upload task at 10 mbps for 10 seconds_good coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch01_tmo-dut_5g auto_udp upload task at 10 mbps for 10 seconds_good coverage_da test.csv. Skipping.
+DEBUG: file_name: _ch02_tmo-ref_5g auto_udp upload task at 10 mbps for 10 seconds_good coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch02_tmo-ref_5g auto_udp upload task at 10 mbps for 10 seconds_good coverage_da test.csv. Skipping.
+DEBUG: file_name: _ch01_tmo-dut_5g auto_udp upload task at 20 mbps for 10 seconds_good coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch01_tmo-dut_5g auto_udp upload task at 20 mbps for 10 seconds_good coverage_da test.csv. Skipping.
+DEBUG: file_name: _ch02_tmo-ref_5g auto_udp upload task at 20 mbps for 10 seconds_good coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch02_tmo-ref_5g auto_udp upload task at 20 mbps for 10 seconds_good coverage_da test.csv. Skipping.
+DEBUG: file_name: dut_5g auto_multi stream http download for 30 seconds.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: ref_5g auto_multi stream http download for 30 seconds.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: dut_5g auto_single stream http download for 60 seconds.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: dut_5g auto_single stream http download for 60 seconds.csv. Skipping.
+DEBUG: file_name: ref_5g auto_single stream http download for 60 seconds.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: ref_5g auto_single stream http download for 60 seconds.csv. Skipping.
+DEBUG: file_name: dut_5g auto_udp download task at 200 mbps for 10.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: dut_5g auto_udp download task at 200 mbps for 10.csv. Skipping.
+DEBUG: file_name: ref_5g auto_udp download task at 200 mbps for 10.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: ref_5g auto_udp download task at 200 mbps for 10.csv. Skipping.
+DEBUG: file_name: dut_5g auto_udp download task at 400 mbps for 10 seconds.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: dut_5g auto_udp download task at 400 mbps for 10 seconds.csv. Skipping.
+DEBUG: file_name: ref_5g auto_udp download task at 400 mbps for 10 seconds.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: ref_5g auto_udp download task at 400 mbps for 10 seconds.csv. Skipping.
+--- Analyzing Ping file: Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 2 UL\5G auto_25x64 bytes PING_moderate\_CH01_TMO_5G auto_25x64 bytes PING_DUT_.csv ---
+--- Analyzing Ping file: Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 2 UL\5G auto_25x64 bytes PING_moderate\_CH02_TMO_5G auto_25x64 bytes PING_REF_.csv ---
+DEBUG: file_name: _ch01_tmo_5g auto_multi stream http upload for 30 seconds_dut_.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: _ch02_tmo_5g auto_multi stream http upload for 30 seconds_ref_.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: dut_5g auto_udp upload task at 10 mbps for 10 seconds.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: dut_5g auto_udp upload task at 10 mbps for 10 seconds.csv. Skipping.
+DEBUG: file_name: ref_5g auto_udp upload task at 10 mbps for 10 seconds.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: ref_5g auto_udp upload task at 10 mbps for 10 seconds.csv. Skipping.
+DEBUG: file_name: dut_5g auto_udp upload task at 20 mbps for 10 seconds.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: dut_5g auto_udp upload task at 20 mbps for 10 seconds.csv. Skipping.
+DEBUG: file_name: ref_5g auto_udp upload task at 20 mbps for 10 seconds.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: ref_5g auto_udp upload task at 20 mbps for 10 seconds.csv. Skipping.
+DEBUG: file_name: _ch01_tmo-dut_5g auto_multi stream http download for 30 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: _ch02_tmo-ref_5g auto_multi stream http download for 30 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: dut_5g auto_single stream http download for 60 seconds_poor.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: dut_5g auto_single stream http download for 60 seconds_poor.csv. Skipping.
+DEBUG: file_name: ref_5g auto_single stream http download for 60 seconds_poor.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: ref_5g auto_single stream http download for 60 seconds_poor.csv. Skipping.
+DEBUG: file_name: dut_5g auto_udp download task at 200 mbps for 10 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: dut_5g auto_udp download task at 200 mbps for 10 seconds_poor coverage_da test.csv. Skipping.
+DEBUG: file_name: ref_5g auto_udp download task at 200 mbps for 10 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: ref_5g auto_udp download task at 200 mbps for 10 seconds_poor coverage_da test.csv. Skipping.
+DEBUG: file_name: dut_5g auto_udp download task at 400 mbps for 10 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: dut_5g auto_udp download task at 400 mbps for 10 seconds_poor coverage_da test.csv. Skipping.
+DEBUG: file_name: ref_5g auto_udp download task at 400 mbps for 10 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: ref_5g auto_udp download task at 400 mbps for 10 seconds_poor coverage_da test.csv. Skipping.
+--- Analyzing Ping file: Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 UL\25x64 bytes PING (ICMP)\dut_5g auto_25x64 bytes PING (ICMP)_poor Coverage_DA Test.csv ---
+--- Analyzing Ping file: Raw Data\5G AUTO DP\5G Auto Data Test Stationary Location 3 UL\25x64 bytes PING (ICMP)\ref_5g auto_25x64 bytes PING (ICMP)_poor Coverage_DA Test.csv ---
+DEBUG: file_name: dut_5g auto_multi stream http upload for 30 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: ref_5g auto_multi stream http upload for 30 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: dut_5g auto_single stream http upload of a 15 mb file_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: dut_5g auto_single stream http upload of a 15 mb file_poor coverage_da test.csv. Skipping.
+DEBUG: file_name: ref_5g auto_single stream http upload of a 15 mb file_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: ref_5g auto_single stream http upload of a 15 mb file_poor coverage_da test.csv. Skipping.
+DEBUG: file_name: _ch01_tmo-dut_5g auto_udp upload task at 10 mbps for 10 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch01_tmo-dut_5g auto_udp upload task at 10 mbps for 10 seconds_poor coverage_da test.csv. Skipping.
+DEBUG: file_name: _ch02_tmo-ref_5g auto_udp upload task at 10 mbps for 10 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch02_tmo-ref_5g auto_udp upload task at 10 mbps for 10 seconds_poor coverage_da test.csv. Skipping.
+DEBUG: file_name: dut_5g_udp_ul_task at 20m for 10sec_poor.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+
+Error: Column '[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)' not found in the CSV file.
+DEBUG: file_name: ref_5g_udp_ul_task at 20m for 10sec_poor.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+
+Error: Column '[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)' not found in the CSV file.
+DEBUG: file_name: _ch01_tmo-dut_5g auto_etsi kepler web page hosted on spirent mediaserver_good coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: None
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch01_tmo-dut_5g auto_etsi kepler web page hosted on spirent mediaserver_good coverage_da test.csv. Skipping.
+DEBUG: file_name: _ch02_tmo-ref_5g auto_etsi kepler web page hosted on spirent mediaserver_good coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: None
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch02_tmo-ref_5g auto_etsi kepler web page hosted on spirent mediaserver_good coverage_da test.csv. Skipping.
+DEBUG: file_name: _ch01_tmo_5gnsa_data test drive_dut1_data test drive.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: None
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch01_tmo_5gnsa_data test drive_dut1_data test drive.csv. Skipping.
+DEBUG: file_name: _ch02_tmo_5gnsa_data test drive_ref1_data test drive.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: None
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch02_tmo_5gnsa_data test drive_ref1_data test drive.csv. Skipping.
+DEBUG: file_name: dutmergedfile.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: None
+DEBUG: network_type_detected: None
+Warning: Could not fully determine analysis parameters from filename: dutmergedfile.csv. Skipping.
+DEBUG: file_name: refmergedfile.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: None
+DEBUG: network_type_detected: None
+Warning: Could not fully determine analysis parameters from filename: refmergedfile.csv. Skipping.
+DEBUG: file_name: dutmergedfile.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: None
+DEBUG: network_type_detected: None
+Warning: Could not fully determine analysis parameters from filename: dutmergedfile.csv. Skipping.
+DEBUG: file_name: refmergedfile.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: None
+DEBUG: network_type_detected: None
+Warning: Could not fully determine analysis parameters from filename: refmergedfile.csv. Skipping.
+DEBUG: file_name: dut mergedfile.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: None
+DEBUG: network_type_detected: None
+Warning: Could not fully determine analysis parameters from filename: dut mergedfile.csv. Skipping.
+DEBUG: file_name: refmergedfile.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: None
+DEBUG: network_type_detected: None
+Warning: Could not fully determine analysis parameters from filename: refmergedfile.csv. Skipping.
+DEBUG: file_name: _20250914_163335_ch01_tmo-dut_5g nsa_udp download task at 200 mbps for 10 seconds_poor coverage_da test.csv  
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _20250914_163335_ch01_tmo-dut_5g nsa_udp download task at 200 mbps for 10 seconds_poor coverage_da test.csv. Skipping.
+DEBUG: file_name: _ch01_tmo-dut_5g nsa_udp download task at 200 mbps for 10 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch01_tmo-dut_5g nsa_udp download task at 200 mbps for 10 seconds_poor coverage_da test.csv. Skipping.
+--- Analyzing Ping file: Raw Data\5G NSA DP\5G NSA Data Test Stationary Poor RF UL\25x64 bytes PING (ICMP)\_CH01_TMO-dut_5G NSA_25x64 bytes PING (ICMP)_Poor Coverage_DA Test.csv ---
+--- Analyzing Ping file: Raw Data\5G NSA DP\5G NSA Data Test Stationary Poor RF UL\25x64 bytes PING (ICMP)\_CH02_TMO-ref_5G NSA_25x64 bytes PING (ICMP)_Poor Coverage_DA Test.csv ---
+DEBUG: file_name: _ch01_tmo-dut_5g nsa_multi stream http upload for 30 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: _ch02_tmo-ref_5g nsa_udp umulti stream http upload for 30 second_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: UL
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+DEBUG: file_name: _ch01_tmo-dut_5g nsa_single stream http upload of a 15 mb file_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch01_tmo-dut_5g nsa_single stream http upload of a 15 mb file_poor coverage_da test.csv. Skipping.
+DEBUG: file_name: _ch02_tmo-ref_5g nsa_single stream http upload of a 15 mb file_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: HTTP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch02_tmo-ref_5g nsa_single stream http upload of a 15 mb file_poor coverage_da test.csv. Skipping.
+DEBUG: file_name: dutmergedfile.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: None
+DEBUG: network_type_detected: None
+Warning: Could not fully determine analysis parameters from filename: dutmergedfile.csv. Skipping.
+DEBUG: file_name: refmergedfile.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: None
+DEBUG: network_type_detected: None
+Warning: Could not fully determine analysis parameters from filename: refmergedfile.csv. Skipping.
+DEBUG: file_name: _ch01_tmo-dut_5g nsa_udp upload task at 20 mbps for 10 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch01_tmo-dut_5g nsa_udp upload task at 20 mbps for 10 seconds_poor coverage_da test.csv. Skipping.
+DEBUG: file_name: _ch02_tmo-ref_5g nsa_udp upload task at 20 mbps for 10 seconds_poor coverage_da test.csv
+DEBUG: analysis_direction_detected: None
+DEBUG: protocol_type_detected: UDP
+DEBUG: network_type_detected: 5G
+Warning: Could not fully determine analysis parameters from filename: _ch02_tmo-ref_5g nsa_udp upload task at 20 mbps for 10 seconds_poor coverage_da test.csv. Skipping.
+
+Successfully wrote processed CSV paths to processed_paths.txt
+
+JSON data generated: Scripts\React\frontend\src\data_analysis_results.json
+
+PDF report generated: Data_Performance_Report.pdf
