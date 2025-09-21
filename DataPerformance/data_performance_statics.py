@@ -10,6 +10,7 @@ def _determine_analysis_parameters(file_path):
     Returns a dictionary of parameters or None if essential parameters cannot be determined.
     """
     file_name = os.path.basename(file_path).lower()
+    dir_name = os.path.basename(os.path.dirname(file_path)).lower() # Get parent directory name
     
     params = {
         "event_col": None,
@@ -42,10 +43,10 @@ def _determine_analysis_parameters(file_path):
     elif "udp" in file_name:
         params["protocol_type_detected"] = "UDP"
     
-    # Determine network type (5G/LTE) from filename
-    if "5g" in file_name:
+    # Determine network type (5G/LTE) from filename or directory name
+    if "5g" in file_name or "5g" in dir_name:
         params["network_type_detected"] = "5G"
-    elif "lte" in file_name:
+    elif "lte" in file_name or "lte" in dir_name:
         params["network_type_detected"] = "LTE"
 
     if "dut" in file_name:

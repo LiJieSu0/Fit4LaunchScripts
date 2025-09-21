@@ -1,5 +1,45 @@
 {
     "5G AUTO DP": {
+        "5G Auto Data Test Drive": {
+            "DUT UDP DL": {
+                "Device Type": "DUT",
+                "Analysis Direction": "DL",
+                "Protocol Type": "UDP",
+                "Network Type": "5G",
+                "Throughput": {
+                    "Mean": 9.32192506779785,
+                    "Standard Deviation": 1.7243208964642018,
+                    "Minimum": 2.2292,
+                    "Maximum": 10.002078651685395,
+                    "Number of Intervals": 45
+                },
+                "Jitter": {
+                    "Mean": 1.9889436583483404
+                },
+                "Error Ratio": {
+                    "Mean": 3.9628764489323385
+                }
+            },
+            "REF UDP DL": {
+                "Device Type": "REF",
+                "Analysis Direction": "DL",
+                "Protocol Type": "UDP",
+                "Network Type": "5G",
+                "Throughput": {
+                    "Mean": 9.377856513942442,
+                    "Standard Deviation": 1.7423900224164905,
+                    "Minimum": 2.0135652173913043,
+                    "Maximum": 10.001629213483145,
+                    "Number of Intervals": 48
+                },
+                "Jitter": {
+                    "Mean": 1.9068157055214725
+                },
+                "Error Ratio": {
+                    "Mean": 2.347114968588957
+                }
+            }
+        },
         "5G Auto Data Test Stationary Location 1 DL": {
             "Multi Stream HTTP Download for 30 seconds_Good": {
                 "dut_5G auto_MS HTTP DL_Good": {
