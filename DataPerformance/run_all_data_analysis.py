@@ -3,18 +3,10 @@ import subprocess
 import sys
 import pandas as pd
 import json # Import the json module
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib import colors
-from reportlab.lib.units import inch
-
 # Add the current script's directory to sys.path to enable direct imports
 script_dir = os.path.dirname(os.path.abspath(__file__))
 if script_dir not in sys.path:
     sys.path.insert(0, script_dir)
-
-from pdf_report_generator import create_pdf_report # Import the PDF generation function
 
 # Import the analysis functions from data_performance_statics.py
 # Assuming data_performance_statics.py is in the same directory
@@ -198,7 +190,5 @@ if __name__ == "__main__":
         with open(json_output_path, 'w', encoding='utf-8') as f:
             json.dump(all_collected_results, f, ensure_ascii=False, indent=4)
         print(f"\nJSON data generated: {json_output_path}")
-
-        create_pdf_report(all_collected_results)
     else:
         print("No data collected to generate a report.")
