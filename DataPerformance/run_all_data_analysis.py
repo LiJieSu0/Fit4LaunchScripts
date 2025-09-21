@@ -164,7 +164,7 @@ if __name__ == "__main__":
 
     # Write invalid data file paths to a text file
     if invalid_data_files:
-        invalid_output_path = os.path.join(script_dir, "invalid_data_paths.txt")
+        invalid_output_path = "invalid_data_paths.txt"
         with open(invalid_output_path, 'w', encoding='utf-8') as f:
             for path in invalid_data_files:
                 f.write(f"{path}\n")
@@ -174,7 +174,7 @@ if __name__ == "__main__":
 
     # Write valid data file paths to a text file
     if valid_data_files:
-        valid_output_path = os.path.join(script_dir, "valid_data_paths.txt")
+        valid_output_path = "valid_data_paths.txt"
         with open(valid_output_path, 'w', encoding='utf-8') as f:
             for path in valid_data_files:
                 f.write(f"{path}\n")
