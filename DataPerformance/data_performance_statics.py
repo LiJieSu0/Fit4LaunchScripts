@@ -12,6 +12,9 @@ def _determine_analysis_parameters(file_path):
     file_name = os.path.basename(file_path).lower()
     dir_name = os.path.basename(os.path.dirname(file_path)).lower() # Get parent directory name
     
+    # print(f"DEBUG: file_name: {file_name}") # Removed as per user request
+    # print(f"DEBUG: dir_name: {dir_name}") # Removed as per user request
+
     params = {
         "event_col": None,
         "start_event": None,
@@ -28,13 +31,13 @@ def _determine_analysis_parameters(file_path):
     }
 
     # Determine analysis direction from filename
-    if "ul" in file_name:
-        params["analysis_direction_detected"] = "UL"
-    elif "dl" in file_name:
-        params["analysis_direction_detected"] = "DL"
-    elif "download" in file_name:
+    if "download" in file_name:
         params["analysis_direction_detected"] = "DL"
     elif "upload" in file_name:
+        params["analysis_direction_detected"] = "UL"
+    elif "dl" in file_name: # Fallback for "dl" if "download" not found
+        params["analysis_direction_detected"] = "DL"
+    elif "ul" in file_name: # Fallback for "ul" if "upload" not found
         params["analysis_direction_detected"] = "UL"
     
     # Determine protocol type from filename
@@ -86,7 +89,7 @@ def _determine_analysis_parameters(file_path):
             params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application UL TP" if params["network_type_detected"] == "5G" else "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
             params["column_to_analyze_ul_jitter"] = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Jitter"
             params["column_to_analyze_ul_error_ratio"] = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Error Ratio"
-    
+    # print(f"DEBUG: _determine_analysis_parameters returning: {params}") # Removed as per user request
     return params
 
 def _calculate_statistics(data_series, column_name):
