@@ -83,7 +83,7 @@ def _determine_analysis_parameters(file_path):
             params["column_to_analyze_jitter"] = "[Call Test] [iPerf] [Throughput] DL Jitter"
             params["column_to_analyze_error_ratio"] = "[Call Test] [iPerf] [Throughput] DL Error Ratio"
         elif params["analysis_direction_detected"] == "UL":
-            params["column_to_analyze_throughput"] = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
+            params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application UL TP" if params["network_type_detected"] == "5G" else "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
             params["column_to_analyze_ul_jitter"] = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Jitter"
             params["column_to_analyze_ul_error_ratio"] = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Error Ratio"
     
@@ -180,16 +180,24 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
             num_intervals_detected = len(started_indices) # Use the count of detected start events
 
             if not overall_data_for_sum.empty and num_intervals_detected > 0:
-                total_sum = overall_data_for_sum.sum()
-                calculated_mean = total_sum / num_intervals_detected
-                print(f"Fallback: Calculated overall mean for '{column_name_to_analyze}' as {total_sum} / {num_intervals_detected} = {calculated_mean}")
-                return {
-                    "Mean": calculated_mean,
-                    "Number of Intervals": num_intervals_detected,
-                    "Note": "Calculated overall sum divided by number of detected intervals due to no valid interval data."
-                }
+                # Calculate full statistics for the overall data
+                stats = _calculate_statistics(overall_data_for_sum, column_name_to_analyze)
+                if stats:
+                    # Add the calculated mean (sum / intervals) and other info
+                    total_sum = overall_data_for_sum.sum()
+                    calculated_mean = total_sum / num_intervals_detected
+                    stats["Mean"] = calculated_mean # Override mean with the requested calculation
+                    stats["Number of Intervals"] = num_intervals_detected
+                    stats["Note"] = "Calculated overall sum divided by number of detected intervals due to no valid interval data."
+                    # print(f"Fallback: Calculated overall stats for '{column_name_to_analyze}': {stats}") # Removed as per user request
+                    return stats
+                else:
+                    print(f"Warning: Cannot perform fallback calculation: No valid data in column ('{column_name_to_analyze}' empty: {overall_data_for_sum.empty}) or no intervals detected (num_intervals_detected: {num_intervals_detected}).")
+                    print(f"Available columns in file: {data.columns.tolist()}")
+                    return None
             else:
-                print("Warning: Cannot perform fallback calculation: No valid data in column or no intervals detected.")
+                print(f"Warning: Cannot perform fallback calculation: No valid data in column ('{column_name_to_analyze}' empty: {overall_data_for_sum.empty}) or no intervals detected (num_intervals_detected: {num_intervals_detected}).")
+                print(f"Available columns in file: {data.columns.tolist()}")
                 return None # Still return None if no data at all or no intervals to divide by
 
         averages_series = pd.Series(interval_averages)
