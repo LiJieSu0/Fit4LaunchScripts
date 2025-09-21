@@ -65,7 +65,12 @@ def _determine_analysis_parameters(file_path):
             params["start_event"] = "Download Started"
             params["end_event"] = "Download Ended"
         elif params["analysis_direction_detected"] == "UL":
-            params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application UL TP" if params["network_type_detected"] == "5G" else "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
+            # Try specific 5G UL TP column first
+            if params["network_type_detected"] == "5G":
+                params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application UL TP"
+            else: # Fallback for LTE or if 5G specific not found
+                params["column_to_analyze_throughput"] = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
+            
             params["start_event"] = "Upload Started"
             params["end_event"] = "Upload Ended"
     elif params["protocol_type_detected"] == "UDP":
@@ -120,22 +125,32 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
 
         if column_name_to_analyze not in data.columns:
             print(f"\nError: Column '{column_name_to_analyze}' not found in the CSV file.")
+            print(f"Available columns: {data.columns.tolist()}")
             return None
         if event_col_name not in data.columns:
             print(f"\nError: Event column '{event_col_name}' not found in the CSV file.")
+            print(f"Available columns: {data.columns.tolist()}")
             return None
         
+        # print(f"Attempting to analyze with column: '{column_name_to_analyze}' and event column: '{event_col_name}'") # Removed as per user request
+        # print(f"Looking for start event: '{start_event_str}' and end event: '{end_event_str}'") # Removed as per user request
+
         filtered_data = data.copy()
 
         started_indices = filtered_data[filtered_data[event_col_name].astype(str).str.contains(start_event_str, na=False)].index
         ended_indices = filtered_data[filtered_data[event_col_name].astype(str).str.contains(end_event_str, na=False)].index
 
         if started_indices.empty or ended_indices.empty:
-            # print(f"\nWarning: Could not find both '{start_event_str}' and '{end_event_str}' events in '{event_col_name}'. Cannot calculate interval averages.")
-            # print(f"Proceeding with full dataset for {column_name_to_analyze} analysis (this will calculate overall statistics, not statistics of averages).")
+            print(f"\nWarning: Could not find both '{start_event_str}' and '{end_event_str}' events in '{event_col_name}'. Cannot calculate interval averages.")
+            # print(f"Started indices empty: {started_indices.empty}, Ended indices empty: {ended_indices.empty}") # Removed as per user request
+            print(f"Proceeding with full dataset for {column_name_to_analyze} analysis (this will calculate overall statistics, not statistics of averages).")
             overall_data = filtered_data[column_name_to_analyze].dropna()
+            if overall_data.empty:
+                print(f"Warning: No valid data in '{column_name_to_analyze}' even for overall statistics.")
             return _calculate_statistics(overall_data, column_name_to_analyze)
         
+        # print(f"Found {len(started_indices)} start events and {len(ended_indices)} end events.") # Removed as per user request
+
         interval_averages = []
         current_start_idx = -1
 
@@ -153,13 +168,29 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
                     interval_avg = interval_data.mean()
                     interval_averages.append(interval_avg)
                 # else:
-                    # print(f"Interval from row {current_start_idx} to {end_idx}: No valid {column_name_to_analyze} data.")
+                    # print(f"Interval from row {current_start_idx} to {end_idx}: No valid {column_name_to_analyze} data.") # Removed as per user request
                 
                 current_start_idx = -1 # Reset for the next interval
 
         if not interval_averages:
-            # print(f"\nNo valid '{start_event_str}' to '{end_event_str}' intervals with {column_name_to_analyze} data found.")
-            return None
+            # print(f"\nNo valid '{start_event_str}' to '{end_event_str}' intervals with {column_name_to_analyze} data found.") # Removed as per user request
+            
+            # Implement user's requested fallback logic
+            overall_data_for_sum = filtered_data[column_name_to_analyze].dropna()
+            num_intervals_detected = len(started_indices) # Use the count of detected start events
+
+            if not overall_data_for_sum.empty and num_intervals_detected > 0:
+                total_sum = overall_data_for_sum.sum()
+                calculated_mean = total_sum / num_intervals_detected
+                print(f"Fallback: Calculated overall mean for '{column_name_to_analyze}' as {total_sum} / {num_intervals_detected} = {calculated_mean}")
+                return {
+                    "Mean": calculated_mean,
+                    "Number of Intervals": num_intervals_detected,
+                    "Note": "Calculated overall sum divided by number of detected intervals due to no valid interval data."
+                }
+            else:
+                print("Warning: Cannot perform fallback calculation: No valid data in column or no intervals detected.")
+                return None # Still return None if no data at all or no intervals to divide by
 
         averages_series = pd.Series(interval_averages)
         
