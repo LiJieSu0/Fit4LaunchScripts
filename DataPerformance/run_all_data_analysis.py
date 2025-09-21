@@ -163,7 +163,6 @@ if __name__ == "__main__":
     data_path_reader.write_csv_paths_with_two_parents(all_csv_files_processed, base_raw_data_dir) # Function name remains, but behavior changed
 
     # Write invalid data file paths to a text file
-    print(f"invalid_data_files content: {invalid_data_files}") # Debug print
     if invalid_data_files:
         invalid_output_path = os.path.join(script_dir, "invalid_data_paths.txt")
         with open(invalid_output_path, 'w', encoding='utf-8') as f:
@@ -174,7 +173,6 @@ if __name__ == "__main__":
         print("\nNo invalid data files found.")
 
     # Write valid data file paths to a text file
-    print(f"valid_data_files content: {valid_data_files}") # Debug print
     if valid_data_files:
         valid_output_path = os.path.join(script_dir, "valid_data_paths.txt")
         with open(valid_output_path, 'w', encoding='utf-8') as f:
