@@ -34,7 +34,18 @@ if __name__ == "__main__":
     all_collected_results = {}
     invalid_data_files = [] # Initialize a list to store paths of files with invalid data
     valid_data_files = [] # Initialize a list to store paths of files with valid data
-    
+
+    def _insert_into_nested_dict(data_dict, path_components, value):
+        """Inserts a value into a nested dictionary based on a list of path components."""
+        current_level = data_dict
+        for i, component in enumerate(path_components):
+            if i == len(path_components) - 1:
+                current_level[component] = value
+            else:
+                if component not in current_level:
+                    current_level[component] = {}
+                current_level = current_level[component]
+
     # Get all CSV file paths using the new data_path_reader script
     all_csv_files_processed = data_path_reader.get_csv_file_paths(base_raw_data_dir, directories_to_process)
 
@@ -145,19 +156,15 @@ if __name__ == "__main__":
                 valid_data_files.append(csv_file_path) # Add to valid files if no invalid data found
                 print(f"Valid data detected for: {csv_file_path}. Added to valid_data_files.")
 
-            # Determine a descriptive key for the results
-            # We need to get the relative path from base_raw_data_dir for the key
-            relative_path_from_base = os.path.relpath(os.path.dirname(csv_file_path), base_raw_data_dir)
-            key_prefix = f"{analysis_type_for_file.replace('_', ' ').title()} - {relative_path_from_base}" if relative_path_from_base != "." else analysis_type_for_file.replace('_', ' ').title()
+            # Construct the hierarchical path for the JSON output
+            relative_path = os.path.relpath(csv_file_path, base_raw_data_dir)
+            path_components = relative_path.replace("\\", "/").split('/') # Use forward slashes for consistency
             
-            device_type = stats.get("Device Type", "Unknown")
-            descriptive_key = f"{key_prefix} - {os.path.basename(csv_file_path).replace('.csv', '')}"
-            
-            # Store results, ensuring unique keys
-            if descriptive_key in all_collected_results:
-                all_collected_results[f"{descriptive_key} ({device_type})"] = stats
-            else:
-                all_collected_results[descriptive_key] = stats
+            # The last component is the filename, remove .csv extension
+            filename_without_ext = os.path.splitext(path_components[-1])[0]
+            path_components[-1] = filename_without_ext
+
+            _insert_into_nested_dict(all_collected_results, path_components, stats)
     
     # Write the collected list of CSV files to a TXT file using the new data_path_reader script
     data_path_reader.write_csv_paths_with_two_parents(all_csv_files_processed, base_raw_data_dir) # Function name remains, but behavior changed
