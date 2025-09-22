@@ -494,6 +494,17 @@ def evaluate_performance(dut_value, ref_value, metric_type):
             return "Marginal Fail"
         elif dut_value > 1.20 * ref_value:
             return "Fail"
+    elif metric_type == "error_ratio":
+        # Error Ratio criteria (lower is better)
+        # Assuming dut_value is %Packet Loss AVG DUT and ref_value is % Packet Loss AVG REF
+        if dut_value < ref_value:
+            return "Excellent"
+        elif dut_value <= 5.0 or (dut_value - ref_value) <= 10.0:
+            return "Pass"
+        elif 10.0 < (dut_value - ref_value) <= 20.0:
+            return "Marginal Fail"
+        elif (dut_value - ref_value) > 20.0:
+            return "Fail"
     
     return "Unknown" # Should not happen with the above conditions
 

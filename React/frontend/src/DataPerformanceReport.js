@@ -83,6 +83,11 @@ const DataPerformanceReport = () => {
         else if (dutValue >= 0.9 * refValue && dutValue <= 1.1 * refValue) performanceResult = "Pass";
         else if (dutValue > 1.1 * refValue && dutValue <= 1.20 * refValue) performanceResult = "Marginal Fail";
         else if (dutValue > 1.20 * refValue) performanceResult = "Fail";
+      } else if (metricType === "error_ratio") { // Lower is better
+        if (dutValue < refValue) performanceResult = "Excellent";
+        else if (dutValue <= 5.0 || (dutValue - refValue) <= 10.0) performanceResult = "Pass";
+        else if (10.0 < (dutValue - refValue) && (dutValue - refValue) <= 20.0) performanceResult = "Marginal Fail";
+        else if ((dutValue - refValue) > 20.0) performanceResult = "Fail";
       }
 
       switch (performanceResult) {
@@ -131,13 +136,15 @@ const DataPerformanceReport = () => {
                       metricType = "jitter";
                     } else if (metric === "Ping RTT") {
                       metricType = "ping_rtt";
-                    } else if (metric === "Web Page Load Time") {
-                      metricType = "web_page_load_time"; // New metric type
-                    }
-                    bgColor = getPerformanceColor(dutValue, refValue, metricType);
+                  } else if (metric === "Web Page Load Time") {
+                    metricType = "web_page_load_time"; // New metric type
+                  } else if (metric === "Error Ratio") {
+                    metricType = "error_ratio"; // New metric type
                   }
+                  bgColor = getPerformanceColor(dutValue, refValue, metricType);
+                }
 
-                  const unit = (metric === "Jitter" || metric === "Ping RTT") ? "ms" : (metric === "Error Ratio" ? "%" : (metric === "Web Page Load Time" ? "s" : "")); // Added unit for Web Page Load Time
+                const unit = (metric === "Jitter" || metric === "Ping RTT") ? "ms" : (metric === "Error Ratio" ? "%" : (metric === "Web Page Load Time" ? "s" : ""));
 
                   // Check if both DUT and REF values are null/undefined/NaN
                   const isDutNA = typeof dutValue !== 'number';
