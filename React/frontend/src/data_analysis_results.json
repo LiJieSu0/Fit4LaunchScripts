@@ -186,7 +186,8 @@
                         "max": 247.0,
                         "avg": 54.758,
                         "std_dev": 20.119966752563197
-                    }
+                    },
+                    "Device Type": "DUT"
                 },
                 "_CH02_TMO-ref_5G auto_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
                     "Ping RTT": {
@@ -194,7 +195,8 @@
                         "max": 433.0,
                         "avg": 42.744,
                         "std_dev": 29.2929790434924
-                    }
+                    },
+                    "Device Type": "REF"
                 }
             },
             "Multi Stream HTTP Upload for 30 seconds": {
@@ -442,7 +444,8 @@
                         "max": 308.0,
                         "avg": 87.1,
                         "std_dev": 45.42678930292945
-                    }
+                    },
+                    "Device Type": "DUT"
                 },
                 "_CH02_TMO_5G auto_25x64 bytes PING_REF_": {
                     "Ping RTT": {
@@ -450,7 +453,8 @@
                         "max": 642.0,
                         "avg": 56.484,
                         "std_dev": 50.5930138467773
-                    }
+                    },
+                    "Device Type": "REF"
                 }
             },
             "5G auto_Multi Stream HTTP Upload for 30 seconds_moderate": {
@@ -680,7 +684,8 @@
                         "max": 357.0,
                         "avg": 55.118,
                         "std_dev": 25.52118213318008
-                    }
+                    },
+                    "Device Type": "DUT"
                 },
                 "ref_5g auto_25x64 bytes PING (ICMP)_poor Coverage_DA Test": {
                     "Ping RTT": {
@@ -688,7 +693,8 @@
                         "max": 319.0,
                         "avg": 41.1,
                         "std_dev": 25.560921764343433
-                    }
+                    },
+                    "Device Type": "REF"
                 }
             },
             "Multi Stream HTTP Upload for 30 seconds": {
@@ -797,6 +803,34 @@
                     "Error Ratio": {
                         "Mean": 12.42561985
                     }
+                }
+            }
+        },
+        "5G Auto Data Web-Kepler": {
+            "_CH01_TMO-dut_5G auto_ETSI Kepler web page hosted on Spirent mediaserver_Good Coverage_DA Test": {
+                "Device Type": "DUT",
+                "Analysis Direction": null,
+                "Protocol Type": "WEB_PAGE",
+                "Network Type": "5G",
+                "Web Page Load Time": {
+                    "Mean": 0.80199,
+                    "Standard Deviation": 0.2150639789702242,
+                    "Minimum": 0.453,
+                    "Maximum": 1.115,
+                    "Number of Intervals": 100
+                }
+            },
+            "_CH02_TMO-ref_5G auto_ETSI Kepler web page hosted on Spirent mediaserver_Good Coverage_DA Test": {
+                "Device Type": "REF",
+                "Analysis Direction": null,
+                "Protocol Type": "WEB_PAGE",
+                "Network Type": "5G",
+                "Web Page Load Time": {
+                    "Mean": 0.8302700000000002,
+                    "Standard Deviation": 0.3350953687558456,
+                    "Minimum": 0.444,
+                    "Maximum": 2.003,
+                    "Number of Intervals": 100
                 }
             }
         }
@@ -988,7 +1022,8 @@
                         "max": 332.0,
                         "avg": 52.524,
                         "std_dev": 18.02562815940355
-                    }
+                    },
+                    "Device Type": "DUT"
                 },
                 "_CH02_TMO-ref_5G NSA_25x64 bytes PING (ICMP)_Poor Coverage_DA Test": {
                     "Ping RTT": {
@@ -996,7 +1031,8 @@
                         "max": 372.0,
                         "avg": 54.388,
                         "std_dev": 23.42107062237327
-                    }
+                    },
+                    "Device Type": "REF"
                 }
             },
             "Multi Stream HTTP Upload for 30 seconds": {

@@ -61,9 +61,18 @@ if __name__ == "__main__":
 
         if analysis_type_for_file == "ping":
             print(f"--- Analyzing Ping file: {csv_file_path} ---")
-            ping_stats_result = ping_statics.calculate_ping_statistics(csv_file_path)
+            
+            # Determine device type for ping files
+            device_type_for_ping = None
+            filename_lower = os.path.basename(csv_file_path).lower()
+            if "dut" in filename_lower:
+                device_type_for_ping = "DUT"
+            elif "ref" in filename_lower:
+                device_type_for_ping = "REF"
+
+            ping_stats_result = ping_statics.calculate_ping_statistics(csv_file_path, device_type=device_type_for_ping)
             if ping_stats_result:
-                stats = {"Ping RTT": ping_stats_result}
+                stats = ping_stats_result # ping_statics now returns the full dictionary including "Ping RTT" and "Device Type"
         else: # data_performance analysis
             params = _determine_analysis_parameters(csv_file_path)
 
@@ -123,7 +132,14 @@ if __name__ == "__main__":
         
         # Check for NA/null values in the collected stats or if analysis failed
         # For WEB_PAGE, we specifically check if "Web Page Load Time" key exists and its values are not None/NaN
-        if not params or not all_file_stats: # If analysis parameters could not be determined or no stats were collected
+        if analysis_type_for_file == "ping":
+            if not stats or stats.get("Ping RTT", {}).get("min") is None: # Check if ping stats are valid
+                invalid_data_files.append(csv_file_path)
+                print(f"Invalid data detected or analysis skipped for: {csv_file_path}. Added to invalid_data_files.")
+            else:
+                valid_data_files.append(csv_file_path)
+                print(f"Valid data detected for: {csv_file_path}. Added to valid_data_files.")
+        elif not params or not all_file_stats: # If analysis parameters could not be determined or no stats were collected
             invalid_data_files.append(csv_file_path)
             print(f"Invalid data detected or analysis skipped for: {csv_file_path}. Added to invalid_data_files.")
         elif params["protocol_type_detected"] == "WEB_PAGE":
@@ -163,8 +179,9 @@ if __name__ == "__main__":
             else:
                 valid_data_files.append(csv_file_path) # Add to valid files if no invalid data found
                 print(f"Valid data detected for: {csv_file_path}. Added to valid_data_files.")
-
-            # Construct the hierarchical path for the JSON output
+        
+        # Construct the hierarchical path for the JSON output
+        if stats: # Only insert if stats were successfully collected
             relative_path = os.path.relpath(csv_file_path, base_raw_data_dir)
             path_components = relative_path.replace("\\", "/").split('/') # Use forward slashes for consistency
             
