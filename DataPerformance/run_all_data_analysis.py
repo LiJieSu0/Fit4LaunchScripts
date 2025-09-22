@@ -267,6 +267,18 @@ if __name__ == "__main__":
     else:
         print("\nNo valid data files found.")
 
+    # Generate summary.txt
+    summary_output_path = "summary.txt"
+    total_files_processed = len(all_csv_files_processed)
+    correctly_processed_files = len(valid_data_files)
+    incorrect_paths_count = len(invalid_data_files)
+
+    with open(summary_output_path, 'w', encoding='utf-8') as f:
+        f.write(f"Total files processed: {total_files_processed}\n")
+        f.write(f"Correctly processed statistics: {correctly_processed_files}\n")
+        f.write(f"Incorrect paths: {incorrect_paths_count}\n")
+    print(f"\nSummary written to: {summary_output_path}")
+
     if all_collected_results:
         # Output results to a JSON file for the React app
         json_output_path = os.path.join("Scripts", "React", "frontend", "src", "data_analysis_results.json")
