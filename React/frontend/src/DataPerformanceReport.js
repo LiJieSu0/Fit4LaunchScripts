@@ -2,6 +2,47 @@ import React from 'react';
 import allResults from './data_analysis_results.json';
 import BarChart from './BarChart';
 
+// Helper function to recursively extract test cases
+const extractTestCases = (data, currentPath = []) => {
+  let extracted = [];
+
+  // If the current 'data' object contains DUT/REF keys, it's a test case
+  const hasDutRefKeys = Object.keys(data).some(key => key.toLowerCase().includes("dut") || key.toLowerCase().includes("ref"));
+
+  if (hasDutRefKeys) {
+    let dutObject = {};
+    let refObject = {};
+    let isPingTest = false;
+
+    for (const key in data) {
+      if (key.toLowerCase().includes("dut")) {
+        dutObject = data[key];
+      } else if (key.toLowerCase().includes("ref")) {
+        refObject = data[key];
+      }
+      if (key.toLowerCase().includes("ping")) {
+        isPingTest = true;
+      }
+    }
+    if (Object.keys(dutObject).length > 0 || Object.keys(refObject).length > 0) {
+      extracted.push({
+        name: currentPath.join(" - "),
+        data: { DUT: dutObject, REF: refObject },
+        isPing: isPingTest
+      });
+    }
+  }
+
+  // Always recurse into children, regardless of whether the current 'data' was a test case itself
+  for (const key in data) {
+    if (typeof data[key] === 'object' && data[key] !== null) {
+      extracted = extracted.concat(extractTestCases(data[key], [...currentPath, key]));
+    }
+  }
+
+  return extracted;
+};
+
 const DataPerformanceReport = () => {
   const renderStatisticsTable = (title, data, isPing = false) => {
     if (!data || Object.keys(data).length === 0) {
@@ -115,21 +156,34 @@ const DataPerformanceReport = () => {
     );
   };
 
+  const allFlattenedTestCases = extractTestCases(allResults);
+
+  // Group test cases by their top-level category for rendering headers
+  const groupedByCategories = allFlattenedTestCases.reduce((acc, testCase) => {
+    const category = testCase.name.split(' - ')[0];
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(testCase);
+    return acc;
+  }, {});
+
   return (
     <>
-      {Object.entries(allResults).map(([subdirName, results]) => (
-        <React.Fragment key={subdirName}>
-          {/* Render Statistics Table and Bar Chart within a single report-section */}
-          <div key={subdirName} className="report-section">
-            <h3 className="text-xl font-bold mb-4 text-gray-800">{subdirName}</h3>
-            <div className="table-chart-container"> {/* New container for table and chart */}
-              {renderStatisticsTable(subdirName, results, subdirName.startsWith("Ping -"))}
-              {/* Only render BarChart if there is data and it's not a Ping test */}
-              {!subdirName.startsWith("Ping -") && results && Object.keys(results).length > 0 && (
-                <BarChart testCaseData={results} testCaseName={subdirName} />
-              )}
+      {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
+        <React.Fragment key={categoryName}>
+          <h2 className="text-2xl font-bold mb-6 text-blue-700">{categoryName}</h2>
+          {testCases.map(testCase => (
+            <div key={testCase.name} className="report-section">
+              <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
+              <div className="table-chart-container">
+                {renderStatisticsTable(testCase.name, testCase.data, testCase.isPing)}
+                {!testCase.isPing && (Object.keys(testCase.data.DUT).length > 0 || Object.keys(testCase.data.REF).length > 0) && (
+                  <BarChart testCaseData={testCase.data} testCaseName={testCase.name} />
+                )}
+              </div>
             </div>
-          </div>
+          ))}
         </React.Fragment>
       ))}
     </>

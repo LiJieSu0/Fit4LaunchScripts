@@ -130,13 +130,39 @@ if __name__ == "__main__":
                             all_file_stats["Error Ratio"] = error_ratio_stats
                         else:
                             current_file_has_invalid_data = True
+                elif params["protocol_type_detected"] == "WEB_PAGE":
+                    web_page_stats = data_performance_statics.analyze_web_page_load_time(csv_file_path, params["event_col"], params["start_event"], params["end_event"], params["column_to_analyze_total_duration"])
+                    if web_page_stats:
+                        all_file_stats["Web Page Load Time"] = web_page_stats
+                    else:
+                        current_file_has_invalid_data = True
+                
                 stats = all_file_stats # Assign collected stats to the 'stats' variable
         
         # Check for NA/null values in the collected stats or if analysis failed
+        # For WEB_PAGE, we specifically check if "Web Page Load Time" key exists and its values are not None/NaN
         if current_file_has_invalid_data or not stats: # If analysis failed or marked as invalid earlier
             invalid_data_files.append(csv_file_path)
             print(f"Invalid data detected or analysis skipped for: {csv_file_path}. Added to invalid_data_files.")
-        elif stats: # Only process if stats are valid and not marked as invalid
+        elif params and params["protocol_type_detected"] == "WEB_PAGE":
+            # Special handling for WEB_PAGE stats
+            web_page_stats = stats.get("Web Page Load Time")
+            if web_page_stats is None:
+                invalid_data_files.append(csv_file_path)
+                print(f"Web Page Load Time stats are missing for: {csv_file_path}. Added to invalid_data_files.")
+            else:
+                has_na_or_none_in_web_page_stats = False
+                for stat_value in web_page_stats.values():
+                    if pd.isna(stat_value) or stat_value is None:
+                        has_na_or_none_in_web_page_stats = True
+                        break
+                if has_na_or_none_in_web_page_stats:
+                    invalid_data_files.append(csv_file_path)
+                    print(f"NA/None values detected in Web Page Load Time stats for: {csv_file_path}. Added to invalid_data_files.")
+                else:
+                    valid_data_files.append(csv_file_path)
+                    print(f"Valid data detected for: {csv_file_path}. Added to valid_data_files.")
+        elif stats: # General check for other protocols if stats are valid and not marked as invalid
             has_na_or_none_in_stats = False
             for key, value in stats.items():
                 if isinstance(value, dict):
