@@ -99,8 +99,8 @@ const DataPerformanceReport = () => {
             <tr className="bg-table-header-bg text-table-header-text font-bold">
               <th className="py-2 px-4 border border-table-grid">Metric</th>
               <th className="py-2 px-4 border border-table-grid">Statistic</th>
-              <th className="py-2 px-4 border border-table-grid">DUT Value (Mbps)</th>
-              <th className="py-2 px-4 border border-table-grid">REF Value (Mbps)</th>
+              <th className="py-2 px-4 border border-table-grid">DUT Value {isPing ? "(ms)" : "(Mbps)"}</th>
+              <th className="py-2 px-4 border border-table-grid">REF Value {isPing ? "(ms)" : "(Mbps)"}</th>
             </tr>
           </thead>
           <tbody>
