@@ -26,6 +26,7 @@ if __name__ == "__main__":
     directories_to_process = [
         {"path": "5G AUTO DP", "analysis_type": "data_performance"},
         {"path": "5G NSA DP", "analysis_type": "data_performance"},
+        {"path": "TestInvalid", "analysis_type": "data_performance"}, # Add the new test directory
         # Add other directories here as needed, e.g.:
         # {"path": "Call Performance", "analysis_type": "call_performance"},
         # {"path": "Ping", "analysis_type": "ping"},
@@ -34,7 +35,8 @@ if __name__ == "__main__":
     all_collected_results = {}
     invalid_data_files = [] # Initialize a list to store paths of files with invalid data
     valid_data_files = [] # Initialize a list to store paths of files with valid data
-
+    invalid_data_dir = os.path.join(base_raw_data_dir, "Invalid") # Define the invalid directory
+    os.makedirs(invalid_data_dir, exist_ok=True) # Ensure the invalid directory exists
     def _insert_into_nested_dict(data_dict, path_components, value):
         """Inserts a value into a nested dictionary based on a list of path components."""
         current_level = data_dict
@@ -130,58 +132,109 @@ if __name__ == "__main__":
                 
                 stats = all_file_stats # Assign collected stats to the 'stats' variable
         
-        # Check for NA/null values in the collected stats or if analysis failed
-        # For WEB_PAGE, we specifically check if "Web Page Load Time" key exists and its values are not None/NaN
+        file_moved = False # Flag to check if the file was moved
+        is_invalid = False # Flag to determine if the file is invalid
+
         if analysis_type_for_file == "ping":
             if not stats or stats.get("Ping RTT", {}).get("min") is None: # Check if ping stats are valid
-                invalid_data_files.append(csv_file_path)
-                print(f"Invalid data detected or analysis skipped for: {csv_file_path}. Added to invalid_data_files.")
+                is_invalid = True
+        else: # data_performance analysis
+            params = _determine_analysis_parameters(csv_file_path)
+            if params is None:
+                is_invalid = True
             else:
-                valid_data_files.append(csv_file_path)
-                print(f"Valid data detected for: {csv_file_path}. Added to valid_data_files.")
-        elif not params or not all_file_stats: # If analysis parameters could not be determined or no stats were collected
-            invalid_data_files.append(csv_file_path)
-            print(f"Invalid data detected or analysis skipped for: {csv_file_path}. Added to invalid_data_files.")
-        elif params["protocol_type_detected"] == "WEB_PAGE":
-            # Special handling for WEB_PAGE stats
-            web_page_stats = all_file_stats.get("Web Page Load Time")
-            if web_page_stats is None:
-                invalid_data_files.append(csv_file_path)
-                print(f"Web Page Load Time stats are missing for: {csv_file_path}. Added to invalid_data_files.")
-            else:
-                has_na_or_none_in_web_page_stats = False
-                for stat_value in web_page_stats.values():
-                    if pd.isna(stat_value) or stat_value is None:
-                        has_na_or_none_in_web_page_stats = True
-                        break
-                if has_na_or_none_in_web_page_stats:
-                    invalid_data_files.append(csv_file_path)
-                    print(f"NA/None values detected in Web Page Load Time stats for: {csv_file_path}. Added to invalid_data_files.")
+                all_file_stats = {}
+                all_file_stats["Device Type"] = params["device_type_detected"]
+                all_file_stats["Analysis Direction"] = params["analysis_direction_detected"]
+                all_file_stats["Protocol Type"] = params["protocol_type_detected"]
+                all_file_stats["Network Type"] = params["network_type_detected"]
+
+                if params["protocol_type_detected"] == "HTTP":
+                    if params["analysis_direction_detected"] == "DL":
+                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
+                        if throughput_stats:
+                            all_file_stats["Throughput"] = throughput_stats
+                    elif params["analysis_direction_detected"] == "UL":
+                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
+                        if throughput_stats:
+                            all_file_stats["Throughput"] = throughput_stats
+                elif params["protocol_type_detected"] == "UDP":
+                    if params["analysis_direction_detected"] == "DL":
+                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
+                        if throughput_stats:
+                            all_file_stats["Throughput"] = throughput_stats
+
+                        jitter_stats = data_performance_statics.analyze_jitter(csv_file_path, params["column_to_analyze_jitter"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
+                        if jitter_stats:
+                            all_file_stats["Jitter"] = jitter_stats
+
+                        error_ratio_stats = data_performance_statics.analyze_error_ratio(csv_file_path, params["column_to_analyze_error_ratio"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
+                        if error_ratio_stats:
+                            all_file_stats["Error Ratio"] = error_ratio_stats
+
+                    elif params["analysis_direction_detected"] == "UL":
+                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
+                        if throughput_stats:
+                            all_file_stats["Throughput"] = throughput_stats
+
+                        jitter_stats = data_performance_statics.analyze_jitter(csv_file_path, params["column_to_analyze_ul_jitter"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
+                        if jitter_stats:
+                            all_file_stats["Jitter"] = jitter_stats
+
+                        error_ratio_stats = data_performance_statics.analyze_error_ratio(csv_file_path, params["column_to_analyze_ul_error_ratio"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
+                        if error_ratio_stats:
+                            all_file_stats["Error Ratio"] = error_ratio_stats
+                elif params["protocol_type_detected"] == "WEB_PAGE":
+                    web_page_stats = data_performance_statics.analyze_web_page_load_time(csv_file_path, params["event_col"], params["start_event"], params["end_event"], params["column_to_analyze_total_duration"], fallback_event_col_name=params["event_col_fallback"])
+                    if web_page_stats:
+                        all_file_stats["Web Page Load Time"] = web_page_stats
+                
+                stats = all_file_stats # Assign collected stats to the 'stats' variable
+
+                # Check if 'stats' (all_file_stats) contains actual statistical data beyond just the metadata.
+                # The metadata keys are "Device Type", "Analysis Direction", "Protocol Type", "Network Type".
+                # Statistical keys are "Throughput", "Jitter", "Error Ratio", "Web Page Load Time".
+                
+                statistical_keys = ["Throughput", "Jitter", "Error Ratio", "Web Page Load Time"]
+                has_statistical_data = any(key in all_file_stats for key in statistical_keys)
+
+                if not has_statistical_data:
+                    is_invalid = True
                 else:
-                    valid_data_files.append(csv_file_path)
-                    print(f"Valid data detected for: {csv_file_path}. Added to valid_data_files.")
-        elif all_file_stats: # General check for other protocols if stats are valid
-            has_na_or_none_in_stats = False
-            for key, value in all_file_stats.items():
-                if isinstance(value, dict):
-                    for sub_key, sub_value in value.items():
-                        if pd.isna(sub_value) or sub_value is None:
-                            has_na_or_none_in_stats = True
-                            break
-                elif pd.isna(value) or value is None:
-                    has_na_or_none_in_stats = True
-                if has_na_or_none_in_stats:
-                    break
-            
-            if has_na_or_none_in_stats:
-                invalid_data_files.append(csv_file_path)
-                print(f"NA/None values detected in stats for: {csv_file_path}. Added to invalid_data_files.")
-            else:
-                valid_data_files.append(csv_file_path) # Add to valid files if no invalid data found
-                print(f"Valid data detected for: {csv_file_path}. Added to valid_data_files.")
+                    # Protocol-specific checks for required statistical data
+                    if params["protocol_type_detected"] == "UDP":
+                        required_udp_stats = ["Throughput", "Jitter", "Error Ratio"]
+                        if not all(key in all_file_stats for key in required_udp_stats):
+                            is_invalid = True
+                    # Add other protocol-specific checks here if needed
+
+                    if not is_invalid: # Only proceed to check for NA/None if not already marked invalid
+                        # Check for NA/None values within the collected statistical data
+                        for key in statistical_keys:
+                            if key in all_file_stats:
+                                value = all_file_stats[key]
+                                if isinstance(value, dict):
+                                    for sub_key, sub_value in value.items():
+                                        if pd.isna(sub_value) or sub_value is None:
+                                            is_invalid = True
+                                            break
+                                elif pd.isna(value) or value is None:
+                                    is_invalid = True
+                            if is_invalid:
+                                break
         
-        # Construct the hierarchical path for the JSON output
-        if stats: # Only insert if stats were successfully collected
+        if is_invalid:
+            invalid_data_files.append(csv_file_path)
+            print(f"Invalid data detected or analysis skipped for: {csv_file_path}. Moving to invalid directory.")
+            destination_path = os.path.join(invalid_data_dir, os.path.basename(csv_file_path))
+            os.rename(csv_file_path, destination_path)
+            file_moved = True
+        else:
+            valid_data_files.append(csv_file_path)
+            print(f"Valid data detected for: {csv_file_path}. Added to valid_data_files.")
+        
+        # Construct the hierarchical path for the JSON output only if the file was not moved
+        if stats and not file_moved: # Only insert if stats were successfully collected and the file was not moved
             relative_path = os.path.relpath(csv_file_path, base_raw_data_dir)
             path_components = relative_path.replace("\\", "/").split('/') # Use forward slashes for consistency
             
