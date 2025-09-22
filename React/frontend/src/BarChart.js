@@ -20,28 +20,40 @@ const BarChart = ({ testCaseData, testCaseName }) => {
     const dutThroughput = testCaseData?.DUT?.Throughput?.Mean || 0;
     const refThroughput = testCaseData?.REF?.Throughput?.Mean || 0;
 
-    // 計算 Y 軸的最大值，略高於最大數據值
     const maxThroughput = Math.max(dutThroughput, refThroughput);
-    let yAxisMax = Math.ceil(maxThroughput / 100) * 100 + 100; // 初始最大值作為緩衝
+    const minGridLines = 4; // 最少顯示4格
+    const stepSizes = [250, 100, 50, 25, 10, 5, 1];
+    let tickStep = 1;
+    let yAxisMax = 0;
 
-    // 定義可能的步長，從大到小
-    const stepSizes = [200, 100, 50, 25, 10, 5, 1];
-    let tickStep = 100; // 預設步長
+    if (maxThroughput === 0) {
+      yAxisMax = minGridLines * stepSizes[stepSizes.length - 1]; // 4 * 1 = 4
+      tickStep = stepSizes[stepSizes.length - 1]; // 1
+    } else {
+      // Find the largest step that results in a reasonable number of intervals
+      for (let step of stepSizes) {
+        // Calculate how many intervals this step would create if yAxisMax is maxThroughput
+        const numIntervalsIfMaxIsYMax = maxThroughput / step;
 
-    // 選擇最適合的步長，確保至少 4 格 (5 個刻度點)
-    for (let step of stepSizes) {
-      const tickCount = Math.ceil(yAxisMax / step) + 1; // 包括 0 在內的總刻度數
-      if (tickCount >= 5) { // 至少 4 格 (5 個刻度點)
-        tickStep = step;
-        break;
+        // We want a step where numIntervalsIfMaxIsYMax is not too small (e.g., at least 1)
+        // and also ensures that when we scale up to minGridLines, it's still a good step.
+        if (numIntervalsIfMaxIsYMax >= 1) { // If maxThroughput is at least one step
+            // Check if this step, when scaled to minGridLines, would cover maxThroughput
+            if (minGridLines * step >= maxThroughput) {
+                tickStep = step;
+                break; // Found the largest suitable step
+            }
+        }
+      }
+
+      // Calculate yAxisMax as the smallest multiple of tickStep that is >= maxThroughput
+      yAxisMax = Math.ceil(maxThroughput / tickStep) * tickStep;
+
+      // Ensure yAxisMax is large enough to show at least minGridLines
+      if (yAxisMax / tickStep < minGridLines) {
+        yAxisMax = minGridLines * tickStep;
       }
     }
-
-    // 調整 yAxisMax 為步長的倍數，確保至少 4 格
-    const minTicks = 4;
-    const requiredRange = minTicks * tickStep;
-    yAxisMax = Math.max(yAxisMax, requiredRange); // 確保範圍足夠支持 4 格
-    yAxisMax = Math.ceil(yAxisMax / tickStep) * tickStep; // 調整為步長倍數
 
     const data = {
       labels: labels,
