@@ -118,17 +118,30 @@ th {
     margin-bottom: 10px !important;
   }
 
-  /* Force page break before each report section (title + table) */
+  /* Force page break before each report section (table + chart) */
   .report-section {
     page-break-before: always !important;
     page-break-inside: avoid !important; /* Ensure the section itself doesn't break in the middle */
-    margin-top: 130px !important; /* Default margin for report sections on new pages */
+    margin-top: 120px !important; /* Adjust margin for sections on new pages */
   }
 
-  /* Ensure the first report section doesn't have a page break before it and has a specific top margin */
-  .main-content > .report-section:first-of-type {
+  /* Ensure the first report section within a category does not have a page break before it */
+  .category-section > .report-section:first-of-type {
     page-break-before: auto !important;
-    margin-top: 40px !important; /* Specific margin for the first report section */
+    margin-top: 0 !important; /* No top margin for the first report section in a category */
+  }
+
+  /* Force page break before each category section */
+  .category-section {
+    page-break-before: always !important;
+    page-break-inside: avoid !important; /* Ensure the section itself doesn't break in the middle */
+    margin-top: 130px !important; /* Default margin for category sections on new pages */
+  }
+
+  /* Ensure the very first category section does not have a page break before it */
+  .main-content > .category-section:first-of-type {
+    page-break-before: auto !important;
+    margin-top: 40px !important; /* Specific margin for the first category section */
   }
 
   /* Ensure headers are not split across pages */
