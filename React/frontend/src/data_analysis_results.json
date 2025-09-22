@@ -1194,8 +1194,12 @@
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
                     "Throughput": {},
-                    "Jitter": {},
-                    "Error Ratio": {}
+                    "Jitter": {
+                        "Mean": 2.027548387096774
+                    },
+                    "Error Ratio": {
+                        "Mean": 0.0
+                    }
                 },
                 "REF UDP UL": {
                     "Device Type": "REF",
@@ -1203,8 +1207,12 @@
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
                     "Throughput": {},
-                    "Jitter": {},
-                    "Error Ratio": {}
+                    "Jitter": {
+                        "Mean": 1.4591111111111115
+                    },
+                    "Error Ratio": {
+                        "Mean": 14.80792219047619
+                    }
                 }
             },
             "UDP Upload Task at 20 Mbps for 10 seconds": {
@@ -1214,8 +1222,12 @@
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
                     "Throughput": {},
-                    "Jitter": {},
-                    "Error Ratio": {}
+                    "Jitter": {
+                        "Mean": 1.1185
+                    },
+                    "Error Ratio": {
+                        "Mean": 3.0070523000000002
+                    }
                 },
                 "_CH02_TMO-ref_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_Poor Coverage_DA Test": {
                     "Device Type": "REF",
@@ -1223,8 +1235,12 @@
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
                     "Throughput": {},
-                    "Jitter": {},
-                    "Error Ratio": {}
+                    "Jitter": {
+                        "Mean": 0.9967499999999999
+                    },
+                    "Error Ratio": {
+                        "Mean": 14.631728149999997
+                    }
                 }
             }
         }
