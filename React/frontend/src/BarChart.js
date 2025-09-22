@@ -5,7 +5,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'; // 確保導入插件
 // 註冊插件
 Chart.register(ChartDataLabels);
 
-const BarChart = ({ testCaseData, testCaseName }) => {
+const BarChart = ({ testCaseData, testCaseName, isPing }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
@@ -17,37 +17,39 @@ const BarChart = ({ testCaseData, testCaseName }) => {
     const ctx = chartRef.current.getContext('2d');
 
     const labels = ['DUT', 'REF'];
-    const dutThroughput = testCaseData?.DUT?.Throughput?.Mean || 0;
-    const refThroughput = testCaseData?.REF?.Throughput?.Mean || 0;
+    const dutValue = isPing ? testCaseData?.DUT?.["Ping RTT"]?.avg || 0 : testCaseData?.DUT?.Throughput?.Mean || 0;
+    const refValue = isPing ? testCaseData?.REF?.["Ping RTT"]?.avg || 0 : testCaseData?.REF?.Throughput?.Mean || 0;
 
-    const maxThroughput = Math.max(dutThroughput, refThroughput);
+    const maxDataValue = Math.max(dutValue, refValue);
     const minGridLines = 4; // 最少顯示4格
-    const stepSizes = [250, 100, 50, 25, 10, 5, 1];
+    const throughputStepSizes = [250, 100, 50, 25, 10, 5, 1];
+    const pingStepSizes = [100, 50, 25, 5, 1];
+    const currentStepSizes = isPing ? pingStepSizes : throughputStepSizes;
     let tickStep = 1;
     let yAxisMax = 0;
 
-    if (maxThroughput === 0) {
-      yAxisMax = minGridLines * stepSizes[stepSizes.length - 1]; // 4 * 1 = 4
-      tickStep = stepSizes[stepSizes.length - 1]; // 1
+    if (maxDataValue === 0) {
+      yAxisMax = minGridLines * currentStepSizes[currentStepSizes.length - 1]; // 4 * 1 = 4
+      tickStep = currentStepSizes[currentStepSizes.length - 1]; // 1
     } else {
       // Find the largest step that results in a reasonable number of intervals
-      for (let step of stepSizes) {
-        // Calculate how many intervals this step would create if yAxisMax is maxThroughput
-        const numIntervalsIfMaxIsYMax = maxThroughput / step;
+      for (let step of currentStepSizes) {
+        // Calculate how many intervals this step would create if yAxisMax is maxDataValue
+        const numIntervalsIfMaxIsYMax = maxDataValue / step;
 
         // We want a step where numIntervalsIfMaxIsYMax is not too small (e.g., at least 1)
         // and also ensures that when we scale up to minGridLines, it's still a good step.
-        if (numIntervalsIfMaxIsYMax >= 1) { // If maxThroughput is at least one step
-            // Check if this step, when scaled to minGridLines, would cover maxThroughput
-            if (minGridLines * step >= maxThroughput) {
+        if (numIntervalsIfMaxIsYMax >= 1) { // If maxDataValue is at least one step
+            // Check if this step, when scaled to minGridLines, would cover maxDataValue
+            if (minGridLines * step >= maxDataValue) {
                 tickStep = step;
                 break; // Found the largest suitable step
             }
         }
       }
 
-      // Calculate yAxisMax as the smallest multiple of tickStep that is >= maxThroughput
-      yAxisMax = Math.ceil(maxThroughput / tickStep) * tickStep;
+      // Calculate yAxisMax as the smallest multiple of tickStep that is >= maxDataValue
+      yAxisMax = Math.ceil(maxDataValue / tickStep) * tickStep;
 
       // Ensure yAxisMax is large enough to show at least minGridLines
       if (yAxisMax / tickStep < minGridLines) {
@@ -55,12 +57,16 @@ const BarChart = ({ testCaseData, testCaseName }) => {
       }
     }
 
+    const chartLabel = isPing ? 'Mean Ping RTT (ms)' : 'Mean Throughput (Mbps)';
+    const yAxisTitle = isPing ? 'Time (ms)' : 'Throughput (Mbps)';
+    const unit = isPing ? 'ms' : 'Mbps';
+
     const data = {
       labels: labels,
       datasets: [
         {
-          label: 'Mean Throughput (Mbps)',
-          data: [dutThroughput, refThroughput],
+          label: chartLabel,
+          data: [dutValue, refValue],
           backgroundColor: [
             'rgba(75, 192, 192, 0.6)', // Color for DUT
             'rgba(255, 159, 64, 0.6)', // Color for REF
@@ -105,7 +111,7 @@ const BarChart = ({ testCaseData, testCaseName }) => {
               weight: 'bold', // 數值字體加粗
               size: 12 // 設置字體大小
             },
-            formatter: (value) => (value > 0 ? value.toFixed(2) : ''), // 僅在數值大於0時顯示
+            formatter: (value) => (value > 0 ? `${value.toFixed(2)} ${unit}` : ''), // 僅在數值大於0時顯示，並添加單位
             display: true, // 確保顯示數據標籤
             clamp: true // 防止標籤超出圖表範圍
           }
@@ -122,7 +128,7 @@ const BarChart = ({ testCaseData, testCaseName }) => {
             },
             title: {
               display: true,
-              text: 'Throughput (Mbps)'
+              text: yAxisTitle
             }
           },
           x: {
@@ -146,7 +152,7 @@ const BarChart = ({ testCaseData, testCaseName }) => {
         chartInstance.current.destroy();
       }
     };
-  }, [testCaseData, testCaseName]);
+  }, [testCaseData, testCaseName, isPing]);
 
   return (
     <div className="BarChart-container" style={{ maxWidth: '400px' }}> {/* Removed margin: 'auto' */}

@@ -178,8 +178,8 @@ const DataPerformanceReport = () => {
               <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
               <div className="table-chart-container">
                 {renderStatisticsTable(testCase.name, testCase.data, testCase.isPing)}
-                {!testCase.isPing && (Object.keys(testCase.data.DUT).length > 0 || Object.keys(testCase.data.REF).length > 0) && (
-                  <BarChart testCaseData={testCase.data} testCaseName={testCase.name} />
+                {(Object.keys(testCase.data.DUT).length > 0 || Object.keys(testCase.data.REF).length > 0) && (
+                  <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={testCase.isPing} />
                 )}
               </div>
             </div>
