@@ -115,7 +115,7 @@ def _calculate_statistics(data_series, column_name):
     """
     if data_series.empty:
         # print(f"\nNo valid data found to calculate statistics for '{column_name}'.")
-        return None
+        return {} # Return empty dict instead of None
     
     mean_val = data_series.mean()
     std_dev_val = data_series.std()
@@ -158,11 +158,11 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
                 else:
                     print(f"Error: Primary throughput column '{current_column_to_use}' is empty or not found, and fallback column '{fallback_column_name_stripped}' is also empty or not found.")
                     print(f"Available columns: {data.columns.tolist()}")
-                    return None
+                    return {} # Return empty dict instead of None
             else:
                 print(f"\nError: Column '{current_column_to_use}' not found or is empty in the CSV file, and no fallback column was provided.")
                 print(f"Available columns: {data.columns.tolist()}")
-                return None
+                return {} # Return empty dict instead of None
         
         # Check if primary event column exists, otherwise try fallback
         current_event_col_to_use = event_col_name_stripped
@@ -175,11 +175,11 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
                 else:
                     print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name_stripped}' is also not found.")
                     print(f"Available columns: {data.columns.tolist()}")
-                    return None
+                    return {} # Return empty dict instead of None
             else:
                 print(f"\nError: Event column '{current_event_col_to_use}' not found in the CSV file, and no fallback event column was provided.")
                 print(f"Available columns: {data.columns.tolist()}")
-                return None
+                return {} # Return empty dict instead of None
         
         # print(f"Attempting to analyze with column: '{current_column_to_use}' and event column: '{current_event_col_to_use}'") # Removed as per user request
         # print(f"Looking for start event: '{start_event_str}' and end event: '{end_event_str}'") # Removed as per user request
@@ -196,7 +196,8 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
             overall_data = filtered_data[current_column_to_use].dropna()
             if overall_data.empty:
                 print(f"Warning: No valid data in '{current_column_to_use}' even for overall statistics.")
-            return _calculate_statistics(overall_data, current_column_to_use)
+            stats_result = _calculate_statistics(overall_data, current_column_to_use)
+            return stats_result if stats_result is not None else {} # Ensure empty dict if _calculate_statistics returns None
         
         # print(f"Found {len(started_indices)} start events and {len(ended_indices)} end events.") # Removed as per user request
 
@@ -247,7 +248,7 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
             else:
                 print(f"Warning: Cannot perform fallback calculation: No valid data in column ('{current_column_to_use}' empty: {overall_data_for_sum.empty}) or no intervals detected (num_intervals_detected: {num_intervals_detected}).")
                 print(f"Available columns in file: {data.columns.tolist()}")
-                return None # Still return None if no data at all or no intervals to divide by
+                return {} # Return empty dict instead of None
 
         averages_series = pd.Series(interval_averages)
         
@@ -259,10 +260,10 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
 
     except FileNotFoundError:
         print(f"Error: The file at {file_path} was not found.")
-        return None
+        return {} # Return empty dict instead of None
     except Exception as e:
         print(f"An error occurred: {e}")
-        return None
+        return {} # Return empty dict instead of None
 
 def analyze_jitter(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str, fallback_event_col_name=None):
     """
@@ -288,15 +289,15 @@ def analyze_jitter(file_path, column_name_to_analyze, event_col_name, start_even
                 else:
                     print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name_stripped}' is also not found.")
                     print(f"Available columns: {data.columns.tolist()}")
-                    return None
+                    return {} # Return empty dict instead of None
             else:
                 print(f"\nError: Event column '{current_event_col_to_use}' not found in the CSV file, and no fallback event column was provided.")
                 print(f"Available columns: {data.columns.tolist()}")
-                return None
+                return {} # Return empty dict instead of None
 
         if column_name_to_analyze_stripped not in data.columns:
             print(f"\nError: Column '{column_name_to_analyze_stripped}' not found in the CSV file.")
-            return None
+            return {} # Return empty dict instead of None
         
         # Calculate mean of the entire column
         overall_jitter_data = data[column_name_to_analyze_stripped].dropna()
@@ -306,14 +307,14 @@ def analyze_jitter(file_path, column_name_to_analyze, event_col_name, start_even
             return {"Mean": mean_val}
         else:
             # print(f"\nNo valid data found to calculate mean for '{column_name_to_analyze_stripped}'.")
-            return None
+            return {} # Return empty dict instead of None
 
     except FileNotFoundError:
         print(f"Error: The file at {file_path} was not found.")
-        return None
+        return {} # Return empty dict instead of None
     except Exception as e:
         print(f"An error occurred: {e}")
-        return None
+        return {} # Return empty dict instead of None
 
 def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str, fallback_event_col_name=None):
     """
@@ -339,15 +340,15 @@ def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start
                 else:
                     print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name_stripped}' is also not found.")
                     print(f"Available columns: {data.columns.tolist()}")
-                    return None
+                    return {} # Return empty dict instead of None
             else:
                 print(f"\nError: Event column '{current_event_col_to_use}' not found in the CSV file, and no fallback event column was provided.")
                 print(f"Available columns: {data.columns.tolist()}")
-                return None
+                return {} # Return empty dict instead of None
 
         if column_name_to_analyze_stripped not in data.columns:
             print(f"\nError: Column '{column_name_to_analyze_stripped}' not found in the CSV file.")
-            return None
+            return {} # Return empty dict instead of None
         
         # Calculate mean of the entire column
         overall_error_ratio_data = data[column_name_to_analyze_stripped].dropna()
@@ -357,14 +358,14 @@ def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start
             return {"Mean": mean_val}
         else:
             # print(f"\nNo valid data found to calculate statistics for '{column_name_to_analyze_stripped}'.")
-            return None
+            return {} # Return empty dict instead of None
 
     except FileNotFoundError:
         print(f"Error: The file at {file_path} was not found.")
-        return None
+        return {} # Return empty dict instead of None
     except Exception as e:
         print(f"An error occurred: {e}")
-        return None
+        return {} # Return empty dict instead of None
 
 def analyze_web_page_load_time(file_path, event_col_name, start_event_str, end_event_str, duration_col_name, fallback_event_col_name=None):
     """
@@ -390,16 +391,16 @@ def analyze_web_page_load_time(file_path, event_col_name, start_event_str, end_e
                 else:
                     print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name_stripped}' is also not found.")
                     print(f"Available columns: {data.columns.tolist()}")
-                    return None
+                    return {} # Return empty dict instead of None
             else:
                 print(f"\nError: Event column '{current_event_col_to_use}' not found in the CSV file, and no fallback event column was provided.")
                 print(f"Available columns: {data.columns.tolist()}")
-                return None
+                return {} # Return empty dict instead of None
 
         if duration_col_name_stripped not in data.columns:
             print(f"\nError: Duration column '{duration_col_name_stripped}' not found in the CSV file.")
             print(f"Available columns: {data.columns.tolist()}")
-            return None
+            return {} # Return empty dict instead of None
         
         filtered_data = data.copy()
 
@@ -408,7 +409,7 @@ def analyze_web_page_load_time(file_path, event_col_name, start_event_str, end_e
 
         if started_indices.empty or ended_indices.empty:
             print(f"\nWarning: Could not find both '{start_event_str}' and '{end_event_str}' events in '{current_event_col_to_use}'. Cannot calculate web page load time intervals.")
-            return None
+            return {} # Return empty dict instead of None
         
         total_durations = []
         current_start_idx = -1
@@ -441,7 +442,7 @@ def analyze_web_page_load_time(file_path, event_col_name, start_event_str, end_e
         
         if not total_durations:
             print(f"\nNo valid '{start_event_str}' to '{end_event_str}' intervals with '{duration_col_name_stripped}' data found after 'TIMEOUT_Idle' events.")
-            return None
+            return {} # Return empty dict instead of None
 
         durations_series = pd.Series(total_durations)
         
@@ -452,10 +453,10 @@ def analyze_web_page_load_time(file_path, event_col_name, start_event_str, end_e
 
     except FileNotFoundError:
         print(f"Error: The file at {file_path} was not found.")
-        return None
+        return {} # Return empty dict instead of None
     except Exception as e:
         print(f"An error occurred: {e}")
-        return None
+        return {} # Return empty dict instead of None
 
 def evaluate_performance(dut_value, ref_value, metric_type):
     """
