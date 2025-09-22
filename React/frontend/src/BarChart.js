@@ -17,49 +17,65 @@ const BarChart = ({ testCaseData, testCaseName, isPing }) => {
     const ctx = chartRef.current.getContext('2d');
 
     const labels = ['DUT', 'REF'];
-    const dutValue = isPing ? testCaseData?.DUT?.["Ping RTT"]?.avg || 0 : testCaseData?.DUT?.Throughput?.Mean || 0;
-    const refValue = isPing ? testCaseData?.REF?.["Ping RTT"]?.avg || 0 : testCaseData?.REF?.Throughput?.Mean || 0;
+    const isWebKepler = testCaseName.includes("Web-Kepler");
+    console.log("BarChart - testCaseName:", testCaseName, "isWebKepler:", isWebKepler);
+
+    let dutValue, refValue;
+    if (isWebKepler) {
+      dutValue = testCaseData?.DUT?.["Web Page Load Time"]?.Mean || 0;
+      refValue = testCaseData?.REF?.["Web Page Load Time"]?.Mean || 0;
+    } else {
+      dutValue = isPing ? testCaseData?.DUT?.["Ping RTT"]?.avg || 0 : testCaseData?.DUT?.Throughput?.Mean || 0;
+      refValue = isPing ? testCaseData?.REF?.["Ping RTT"]?.avg || 0 : testCaseData?.REF?.Throughput?.Mean || 0;
+    }
 
     const maxDataValue = Math.max(dutValue, refValue);
     const minGridLines = 4; // 最少顯示4格
     const throughputStepSizes = [250, 100, 50, 25, 10, 5, 1];
     const pingStepSizes = [100, 50, 25, 5, 1];
-    const currentStepSizes = isPing ? pingStepSizes : throughputStepSizes;
-    let tickStep = 1;
-    let yAxisMax = 0;
+    const webKeplerStepSizes = [0.5, 0.2, 0.1, 0.05]; // New step sizes for Web-Kepler
+    
+    const currentStepSizes = isWebKepler 
+      ? webKeplerStepSizes 
+      : (isPing ? pingStepSizes : throughputStepSizes);
+    
+    let tickStep;
+    let yAxisMax;
 
-    if (maxDataValue === 0) {
-      yAxisMax = minGridLines * currentStepSizes[currentStepSizes.length - 1]; // 4 * 1 = 4
-      tickStep = currentStepSizes[currentStepSizes.length - 1]; // 1
-    } else {
-      // Find the largest step that results in a reasonable number of intervals
-      for (let step of currentStepSizes) {
-        // Calculate how many intervals this step would create if yAxisMax is maxDataValue
-        const numIntervalsIfMaxIsYMax = maxDataValue / step;
-
-        // We want a step where numIntervalsIfMaxIsYMax is not too small (e.g., at least 1)
-        // and also ensures that when we scale up to minGridLines, it's still a good step.
-        if (numIntervalsIfMaxIsYMax >= 1) { // If maxDataValue is at least one step
-            // Check if this step, when scaled to minGridLines, would cover maxDataValue
-            if (minGridLines * step >= maxDataValue) {
-                tickStep = step;
-                break; // Found the largest suitable step
-            }
-        }
-      }
-
-      // Calculate yAxisMax as the smallest multiple of tickStep that is >= maxDataValue
+    if (isWebKepler) {
+      tickStep = 0.5;
       yAxisMax = Math.ceil(maxDataValue / tickStep) * tickStep;
-
-      // Ensure yAxisMax is large enough to show at least minGridLines
-      if (yAxisMax / tickStep < minGridLines) {
+      if (yAxisMax < minGridLines * tickStep) {
         yAxisMax = minGridLines * tickStep;
+      }
+    } else {
+      if (maxDataValue === 0) {
+        yAxisMax = minGridLines * currentStepSizes[currentStepSizes.length - 1];
+        tickStep = currentStepSizes[currentStepSizes.length - 1];
+      } else {
+        // Find the largest step that results in a reasonable number of intervals
+        for (let step of currentStepSizes) {
+          const numIntervalsIfMaxIsYMax = maxDataValue / step;
+
+          if (numIntervalsIfMaxIsYMax >= 1) {
+              if (minGridLines * step >= maxDataValue) {
+                  tickStep = step;
+                  break;
+              }
+          }
+        }
+
+        yAxisMax = Math.ceil(maxDataValue / tickStep) * tickStep;
+
+        if (yAxisMax / tickStep < minGridLines) {
+          yAxisMax = minGridLines * tickStep;
+        }
       }
     }
 
-    const chartLabel = isPing ? 'Mean Ping RTT (ms)' : 'Mean Throughput (Mbps)';
-    const yAxisTitle = isPing ? 'Time (ms)' : 'Throughput (Mbps)';
-    const unit = isPing ? 'ms' : 'Mbps';
+    const chartLabel = isWebKepler ? 'Web Page Load Time (s)' : (isPing ? 'Mean Ping RTT (ms)' : 'Mean Throughput (Mbps)');
+    const yAxisTitle = isWebKepler ? 'Time (s)' : (isPing ? 'Time (ms)' : 'Throughput (Mbps)');
+    const unit = isWebKepler ? 's' : (isPing ? 'ms' : 'Mbps');
 
     const data = {
       labels: labels,

@@ -52,12 +52,15 @@ const DataPerformanceReport = () => {
     const dutData = data.DUT || {};
     const refData = data.REF || {};
 
-    const metricsToDisplay = isPing ? ["Ping RTT"] : ["Throughput", "Jitter", "Error Ratio"];
+    const metricsToDisplay = isPing 
+      ? ["Ping RTT"] 
+      : ["Throughput", "Jitter", "Error Ratio", "Web Page Load Time"]; // Added Web Page Load Time
     const statOrderMap = {
       "Throughput": ["Mean", "Standard Deviation", "Minimum", "Maximum"],
       "Jitter": ["Mean"],
       "Error Ratio": ["Mean"],
       "Ping RTT": ["Mean", "Standard Deviation", "Minimum", "Maximum"],
+      "Web Page Load Time": ["Mean", "Standard Deviation", "Minimum", "Maximum"], // Added Web Page Load Time stats
     };
     const pingStatMap = {
       "Mean": "avg",
@@ -75,7 +78,7 @@ const DataPerformanceReport = () => {
         else if (dutValue >= 0.9 * refValue && dutValue <= 1.1 * refValue) performanceResult = "Pass";
         else if (dutValue >= 0.8 * refValue && dutValue < 0.9 * refValue) performanceResult = "Marginal Fail";
         else if (dutValue < 0.8 * refValue) performanceResult = "Fail";
-      } else if (metricType === "jitter" || metricType === "ping_rtt") { // Lower is better
+      } else if (metricType === "jitter" || metricType === "ping_rtt" || metricType === "web_page_load_time") { // Lower is better
         if (dutValue < 0.9 * refValue) performanceResult = "Excellent";
         else if (dutValue >= 0.9 * refValue && dutValue <= 1.1 * refValue) performanceResult = "Pass";
         else if (dutValue > 1.1 * refValue && dutValue <= 1.20 * refValue) performanceResult = "Marginal Fail";
@@ -99,8 +102,8 @@ const DataPerformanceReport = () => {
             <tr className="bg-table-header-bg text-table-header-text font-bold">
               <th className="py-2 px-4 border border-table-grid">Metric</th>
               <th className="py-2 px-4 border border-table-grid">Statistic</th>
-              <th className="py-2 px-4 border border-table-grid">DUT Value {isPing ? "(ms)" : "(Mbps)"}</th>
-              <th className="py-2 px-4 border border-table-grid">REF Value {isPing ? "(ms)" : "(Mbps)"}</th>
+              <th className="py-2 px-4 border border-table-grid">DUT Value {isPing ? "(ms)" : (title.includes("Web-Kepler") ? "(s)" : "(Mbps)")}</th>
+              <th className="py-2 px-4 border border-table-grid">REF Value {isPing ? "(ms)" : (title.includes("Web-Kepler") ? "(s)" : "(Mbps)")}</th>
             </tr>
           </thead>
           <tbody>
@@ -121,11 +124,20 @@ const DataPerformanceReport = () => {
 
                   let bgColor = "";
                   if (stat === "Mean") { // Apply color only to Mean for all metrics
-                    const metricType = metric === "Throughput" ? "throughput" : (metric === "Jitter" ? "jitter" : "ping_rtt");
+                    let metricType = "";
+                    if (metric === "Throughput") {
+                      metricType = "throughput";
+                    } else if (metric === "Jitter") {
+                      metricType = "jitter";
+                    } else if (metric === "Ping RTT") {
+                      metricType = "ping_rtt";
+                    } else if (metric === "Web Page Load Time") {
+                      metricType = "web_page_load_time"; // New metric type
+                    }
                     bgColor = getPerformanceColor(dutValue, refValue, metricType);
                   }
 
-                  const unit = (metric === "Jitter" || metric === "Ping RTT") ? "ms" : (metric === "Error Ratio" ? "%" : "");
+                  const unit = (metric === "Jitter" || metric === "Ping RTT") ? "ms" : (metric === "Error Ratio" ? "%" : (metric === "Web Page Load Time" ? "s" : "")); // Added unit for Web Page Load Time
 
                   // Check if both DUT and REF values are null/undefined/NaN
                   const isDutNA = typeof dutValue !== 'number';
