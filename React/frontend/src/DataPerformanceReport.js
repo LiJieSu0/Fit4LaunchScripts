@@ -70,8 +70,13 @@ const DataPerformanceReport = () => {
     };
 
     const getPerformanceColor = (dutValue, refValue, metricType) => {
-      if (refValue === 0) return "bg-gray-300"; // Cannot evaluate
-      
+      // Special handling for Error Ratio when both DUT and REF values are 0
+      if (metricType === "error_ratio" && dutValue === 0 && refValue === 0) {
+        return "bg-performance-pass"; // Always purple for 0% error
+      }
+
+      if (refValue === 0) return "bg-gray-300"; // Cannot evaluate for other metrics
+
       let performanceResult = "Unknown";
       if (metricType === "throughput") {
         if (dutValue > 1.1 * refValue) performanceResult = "Excellent";
