@@ -81,72 +81,54 @@ if __name__ == "__main__":
 
                 if params["protocol_type_detected"] == "HTTP":
                     if params["analysis_direction_detected"] == "DL":
-                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
+                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
                         if throughput_stats:
                             all_file_stats["Throughput"] = throughput_stats
-                        else:
-                            current_file_has_invalid_data = True
                     elif params["analysis_direction_detected"] == "UL":
-                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
+                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
                         if throughput_stats:
                             all_file_stats["Throughput"] = throughput_stats
-                        else:
-                            current_file_has_invalid_data = True
                 elif params["protocol_type_detected"] == "UDP":
                     if params["analysis_direction_detected"] == "DL":
-                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
+                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
                         if throughput_stats:
                             all_file_stats["Throughput"] = throughput_stats
-                        else:
-                            current_file_has_invalid_data = True
 
-                        jitter_stats = data_performance_statics.analyze_jitter(csv_file_path, params["column_to_analyze_jitter"], params["event_col"], params["start_event"], params["end_event"])
+                        jitter_stats = data_performance_statics.analyze_jitter(csv_file_path, params["column_to_analyze_jitter"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
                         if jitter_stats:
                             all_file_stats["Jitter"] = jitter_stats
-                        else:
-                            current_file_has_invalid_data = True
 
-                        error_ratio_stats = data_performance_statics.analyze_error_ratio(csv_file_path, params["column_to_analyze_error_ratio"], params["event_col"], params["start_event"], params["end_event"])
+                        error_ratio_stats = data_performance_statics.analyze_error_ratio(csv_file_path, params["column_to_analyze_error_ratio"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
                         if error_ratio_stats:
                             all_file_stats["Error Ratio"] = error_ratio_stats
-                        else:
-                            current_file_has_invalid_data = True
 
                     elif params["analysis_direction_detected"] == "UL":
-                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
+                        throughput_stats = data_performance_statics.analyze_throughput(csv_file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
                         if throughput_stats:
                             all_file_stats["Throughput"] = throughput_stats
-                        else:
-                            current_file_has_invalid_data = True
 
-                        jitter_stats = data_performance_statics.analyze_jitter(csv_file_path, params["column_to_analyze_ul_jitter"], params["event_col"], params["start_event"], params["end_event"])
+                        jitter_stats = data_performance_statics.analyze_jitter(csv_file_path, params["column_to_analyze_ul_jitter"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
                         if jitter_stats:
                             all_file_stats["Jitter"] = jitter_stats
-                        else:
-                            current_file_has_invalid_data = True
 
-                        error_ratio_stats = data_performance_statics.analyze_error_ratio(csv_file_path, params["column_to_analyze_ul_error_ratio"], params["event_col"], params["start_event"], params["end_event"])
+                        error_ratio_stats = data_performance_statics.analyze_error_ratio(csv_file_path, params["column_to_analyze_ul_error_ratio"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
                         if error_ratio_stats:
                             all_file_stats["Error Ratio"] = error_ratio_stats
-                        else:
-                            current_file_has_invalid_data = True
                 elif params["protocol_type_detected"] == "WEB_PAGE":
-                    web_page_stats = data_performance_statics.analyze_web_page_load_time(csv_file_path, params["event_col"], params["start_event"], params["end_event"], params["column_to_analyze_total_duration"])
+                    web_page_stats = data_performance_statics.analyze_web_page_load_time(csv_file_path, params["event_col"], params["start_event"], params["end_event"], params["column_to_analyze_total_duration"], fallback_event_col_name=params["event_col_fallback"])
                     if web_page_stats:
                         all_file_stats["Web Page Load Time"] = web_page_stats
-                    else:
-                        current_file_has_invalid_data = True
                 
                 stats = all_file_stats # Assign collected stats to the 'stats' variable
         
         # Check for NA/null values in the collected stats or if analysis failed
         # For WEB_PAGE, we specifically check if "Web Page Load Time" key exists and its values are not None/NaN
-        if current_file_has_invalid_data or not stats: # If analysis failed or marked as invalid earlier
+        if not params or not all_file_stats: # If analysis parameters could not be determined or no stats were collected
             invalid_data_files.append(csv_file_path)
             print(f"Invalid data detected or analysis skipped for: {csv_file_path}. Added to invalid_data_files.")
-        elif params and params["protocol_type_detected"] == "WEB_PAGE":
+        elif params["protocol_type_detected"] == "WEB_PAGE":
             # Special handling for WEB_PAGE stats
-            web_page_stats = stats.get("Web Page Load Time")
+            web_page_stats = all_file_stats.get("Web Page Load Time")
             if web_page_stats is None:
                 invalid_data_files.append(csv_file_path)
                 print(f"Web Page Load Time stats are missing for: {csv_file_path}. Added to invalid_data_files.")
@@ -162,9 +144,9 @@ if __name__ == "__main__":
                 else:
                     valid_data_files.append(csv_file_path)
                     print(f"Valid data detected for: {csv_file_path}. Added to valid_data_files.")
-        elif stats: # General check for other protocols if stats are valid and not marked as invalid
+        elif all_file_stats: # General check for other protocols if stats are valid
             has_na_or_none_in_stats = False
-            for key, value in stats.items():
+            for key, value in all_file_stats.items():
                 if isinstance(value, dict):
                     for sub_key, sub_value in value.items():
                         if pd.isna(sub_value) or sub_value is None:
@@ -196,21 +178,21 @@ if __name__ == "__main__":
     data_path_reader.write_csv_paths_with_two_parents(all_csv_files_processed, base_raw_data_dir) # Function name remains, but behavior changed
 
     # Write invalid data file paths to a text file
+    invalid_output_path = "invalid_data_paths.txt"
+    with open(invalid_output_path, 'w', encoding='utf-8') as f:
+        for path in invalid_data_files:
+            f.write(f"{path}\n")
     if invalid_data_files:
-        invalid_output_path = "invalid_data_paths.txt"
-        with open(invalid_output_path, 'w', encoding='utf-8') as f:
-            for path in invalid_data_files:
-                f.write(f"{path}\n")
         print(f"\nInvalid data file paths written to: {invalid_output_path}")
     else:
         print("\nNo invalid data files found.")
 
     # Write valid data file paths to a text file
+    valid_output_path = "valid_data_paths.txt"
+    with open(valid_output_path, 'w', encoding='utf-8') as f:
+        for path in valid_data_files:
+            f.write(f"{path}\n")
     if valid_data_files:
-        valid_output_path = "valid_data_paths.txt"
-        with open(valid_output_path, 'w', encoding='utf-8') as f:
-            for path in valid_data_files:
-                f.write(f"{path}\n")
         print(f"\nValid data file paths written to: {valid_output_path}")
     else:
         print("\nNo valid data files found.")

@@ -17,6 +17,7 @@ def _determine_analysis_parameters(file_path):
 
     params = {
         "event_col": None,
+        "event_col_fallback": None, # Added for fallback event column
         "start_event": None,
         "end_event": None,
         "analysis_direction_detected": None,
@@ -24,6 +25,7 @@ def _determine_analysis_parameters(file_path):
         "network_type_detected": None,
         "device_type_detected": "Unknown",
         "column_to_analyze_throughput": None,
+        "column_to_analyze_throughput_fallback": None, # Added for fallback throughput column
         "column_to_analyze_jitter": None,
         "column_to_analyze_error_ratio": None,
         "column_to_analyze_ul_jitter": None,
@@ -84,7 +86,8 @@ def _determine_analysis_parameters(file_path):
             params["start_event"] = "Upload Started"
             params["end_event"] = "Upload Ended"
     elif params["protocol_type_detected"] == "UDP":
-        params["event_col"] = "[Event] [Data call test detail events] IPERF Call Event"
+        params["event_col"] = "[Event][Data call test detail events]IPERF Call Event" # Primary event column
+        params["event_col_fallback"] = "[Event] [Data call test detail events] IPERF Call Event" # Fallback event column
         params["start_event"] = "IPERF_T_Start"
         params["end_event"] = "IPERF_T_End"
 
@@ -93,7 +96,8 @@ def _determine_analysis_parameters(file_path):
             params["column_to_analyze_jitter"] = "[Call Test] [iPerf] [Throughput] DL Jitter"
             params["column_to_analyze_error_ratio"] = "[Call Test] [iPerf] [Throughput] DL Error Ratio"
         elif params["analysis_direction_detected"] == "UL":
-            params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application UL TP" if params["network_type_detected"] == "5G" else "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
+            params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application UL TP" # Primary UL Throughput
+            params["column_to_analyze_throughput_fallback"] = "[NR5G] [Throughput] PUSCH TP" # Fallback UL Throughput
             params["column_to_analyze_ul_jitter"] = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Jitter"
             params["column_to_analyze_ul_error_ratio"] = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Error Ratio"
     elif params["protocol_type_detected"] == "WEB_PAGE":
@@ -127,7 +131,7 @@ def _calculate_statistics(data_series, column_name):
     
     return stats
 
-def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str):
+def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str, fallback_column_name=None, fallback_event_col_name=None):
     num_intervals = 0 # Initialize interval count
     """
     Reads a data CSV file, identifies intervals based on start/end event markers,
@@ -136,33 +140,63 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
     """
     try:
         data = pd.read_csv(file_path)
+        data.columns = data.columns.str.strip() # Strip whitespace from column names
         # print(f"Successfully loaded {file_path}")
 
-        if column_name_to_analyze not in data.columns:
-            print(f"\nError: Column '{column_name_to_analyze}' not found in the CSV file.")
-            print(f"Available columns: {data.columns.tolist()}")
-            return None
-        if event_col_name not in data.columns:
-            print(f"\nError: Event column '{event_col_name}' not found in the CSV file.")
-            print(f"Available columns: {data.columns.tolist()}")
-            return None
+        # Strip whitespace from the column names to analyze for robust matching
+        column_name_to_analyze_stripped = column_name_to_analyze.strip()
+        event_col_name_stripped = event_col_name.strip()
         
-        # print(f"Attempting to analyze with column: '{column_name_to_analyze}' and event column: '{event_col_name}'") # Removed as per user request
+        # Check if primary column exists and has data, otherwise try fallback
+        current_column_to_use = column_name_to_analyze_stripped
+        if current_column_to_use not in data.columns or data[current_column_to_use].dropna().empty:
+            if fallback_column_name:
+                fallback_column_name_stripped = fallback_column_name.strip()
+                if fallback_column_name_stripped in data.columns and not data[fallback_column_name_stripped].dropna().empty:
+                    print(f"Warning: Primary throughput column '{current_column_to_use}' is empty or not found. Using fallback column '{fallback_column_name_stripped}'.")
+                    current_column_to_use = fallback_column_name_stripped
+                else:
+                    print(f"Error: Primary throughput column '{current_column_to_use}' is empty or not found, and fallback column '{fallback_column_name_stripped}' is also empty or not found.")
+                    print(f"Available columns: {data.columns.tolist()}")
+                    return None
+            else:
+                print(f"\nError: Column '{current_column_to_use}' not found or is empty in the CSV file, and no fallback column was provided.")
+                print(f"Available columns: {data.columns.tolist()}")
+                return None
+        
+        # Check if primary event column exists, otherwise try fallback
+        current_event_col_to_use = event_col_name_stripped
+        if current_event_col_to_use not in data.columns:
+            if fallback_event_col_name:
+                fallback_event_col_name_stripped = fallback_event_col_name.strip()
+                if fallback_event_col_name_stripped in data.columns:
+                    print(f"Warning: Primary event column '{current_event_col_to_use}' not found. Using fallback event column '{fallback_event_col_name_stripped}'.")
+                    current_event_col_to_use = fallback_event_col_name_stripped
+                else:
+                    print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name_stripped}' is also not found.")
+                    print(f"Available columns: {data.columns.tolist()}")
+                    return None
+            else:
+                print(f"\nError: Event column '{current_event_col_to_use}' not found in the CSV file, and no fallback event column was provided.")
+                print(f"Available columns: {data.columns.tolist()}")
+                return None
+        
+        # print(f"Attempting to analyze with column: '{current_column_to_use}' and event column: '{current_event_col_to_use}'") # Removed as per user request
         # print(f"Looking for start event: '{start_event_str}' and end event: '{end_event_str}'") # Removed as per user request
 
         filtered_data = data.copy()
 
-        started_indices = filtered_data[filtered_data[event_col_name].astype(str).str.contains(start_event_str, na=False)].index
-        ended_indices = filtered_data[filtered_data[event_col_name].astype(str).str.contains(end_event_str, na=False)].index
+        started_indices = filtered_data[filtered_data[current_event_col_to_use].astype(str).str.contains(start_event_str, na=False)].index
+        ended_indices = filtered_data[filtered_data[current_event_col_to_use].astype(str).str.contains(end_event_str, na=False)].index
 
         if started_indices.empty or ended_indices.empty:
-            print(f"\nWarning: Could not find both '{start_event_str}' and '{end_event_str}' events in '{event_col_name}'. Cannot calculate interval averages.")
+            print(f"\nWarning: Could not find both '{start_event_str}' and '{end_event_str}' events in '{current_event_col_to_use}'. Cannot calculate interval averages.")
             # print(f"Started indices empty: {started_indices.empty}, Ended indices empty: {ended_indices.empty}") # Removed as per user request
-            print(f"Proceeding with full dataset for {column_name_to_analyze} analysis (this will calculate overall statistics, not statistics of averages).")
-            overall_data = filtered_data[column_name_to_analyze].dropna()
+            print(f"Proceeding with full dataset for {current_column_to_use} analysis (this will calculate overall statistics, not statistics of averages).")
+            overall_data = filtered_data[current_column_to_use].dropna()
             if overall_data.empty:
-                print(f"Warning: No valid data in '{column_name_to_analyze}' even for overall statistics.")
-            return _calculate_statistics(overall_data, column_name_to_analyze)
+                print(f"Warning: No valid data in '{current_column_to_use}' even for overall statistics.")
+            return _calculate_statistics(overall_data, current_column_to_use)
         
         # print(f"Found {len(started_indices)} start events and {len(ended_indices)} end events.") # Removed as per user request
 
@@ -170,33 +204,33 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
         current_start_idx = -1
 
         for i in range(len(filtered_data)):
-            event = str(filtered_data.loc[i, event_col_name])
+            event = str(filtered_data.loc[i, current_event_col_to_use])
             
             if start_event_str in event:
                 current_start_idx = i
             elif end_event_str in event and current_start_idx != -1:
                 end_idx = i
                 
-                interval_data = filtered_data.loc[current_start_idx : end_idx, column_name_to_analyze].dropna()
+                interval_data = filtered_data.loc[current_start_idx : end_idx, current_column_to_use].dropna()
                 
                 if not interval_data.empty:
                     interval_avg = interval_data.mean()
                     interval_averages.append(interval_avg)
                 # else:
-                    # print(f"Interval from row {current_start_idx} to {end_idx}: No valid {column_name_to_analyze} data.") # Removed as per user request
+                    # print(f"Interval from row {current_start_idx} to {end_idx}: No valid {current_column_to_use} data.") # Removed as per user request
                 
                 current_start_idx = -1 # Reset for the next interval
 
         if not interval_averages:
-            # print(f"\nNo valid '{start_event_str}' to '{end_event_str}' intervals with {column_name_to_analyze} data found.") # Removed as per user request
+            # print(f"\nNo valid '{start_event_str}' to '{end_event_str}' intervals with {current_column_to_use} data found.") # Removed as per user request
             
             # Implement user's requested fallback logic
-            overall_data_for_sum = filtered_data[column_name_to_analyze].dropna()
+            overall_data_for_sum = filtered_data[current_column_to_use].dropna()
             num_intervals_detected = len(started_indices) # Use the count of detected start events
 
             if not overall_data_for_sum.empty and num_intervals_detected > 0:
                 # Calculate full statistics for the overall data
-                stats = _calculate_statistics(overall_data_for_sum, column_name_to_analyze)
+                stats = _calculate_statistics(overall_data_for_sum, current_column_to_use)
                 if stats:
                     # Add the calculated mean (sum / intervals) and other info
                     total_sum = overall_data_for_sum.sum()
@@ -204,21 +238,21 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
                     stats["Mean"] = calculated_mean # Override mean with the requested calculation
                     stats["Number of Intervals"] = num_intervals_detected
                     stats["Note"] = "Calculated overall sum divided by number of detected intervals due to no valid interval data."
-                    # print(f"Fallback: Calculated overall stats for '{column_name_to_analyze}': {stats}") # Removed as per user request
+                    # print(f"Fallback: Calculated overall stats for '{current_column_to_use}': {stats}") # Removed as per user request
                     return stats
                 else:
-                    print(f"Warning: Cannot perform fallback calculation: No valid data in column ('{column_name_to_analyze}' empty: {overall_data_for_sum.empty}) or no intervals detected (num_intervals_detected: {num_intervals_detected}).")
+                    print(f"Warning: Cannot perform fallback calculation: No valid data in column ('{current_column_to_use}' empty: {overall_data_for_sum.empty}) or no intervals detected (num_intervals_detected: {num_intervals_detected}).")
                     print(f"Available columns in file: {data.columns.tolist()}")
                     return None
             else:
-                print(f"Warning: Cannot perform fallback calculation: No valid data in column ('{column_name_to_analyze}' empty: {overall_data_for_sum.empty}) or no intervals detected (num_intervals_detected: {num_intervals_detected}).")
+                print(f"Warning: Cannot perform fallback calculation: No valid data in column ('{current_column_to_use}' empty: {overall_data_for_sum.empty}) or no intervals detected (num_intervals_detected: {num_intervals_detected}).")
                 print(f"Available columns in file: {data.columns.tolist()}")
                 return None # Still return None if no data at all or no intervals to divide by
 
         averages_series = pd.Series(interval_averages)
         
         # Get statistics and add interval count
-        stats = _calculate_statistics(averages_series, column_name_to_analyze)
+        stats = _calculate_statistics(averages_series, current_column_to_use)
         if stats:
             stats["Number of Intervals"] = len(interval_averages)
         return stats
@@ -230,27 +264,48 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
         print(f"An error occurred: {e}")
         return None
 
-def analyze_jitter(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str):
+def analyze_jitter(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str, fallback_event_col_name=None):
     """
     Reads a data CSV file and reports the mean of the entire jitter column.
     Returns a dictionary of statistics or None.
     """
     try:
         data = pd.read_csv(file_path)
+        data.columns = data.columns.str.strip() # Strip whitespace from column names
         # print(f"Successfully loaded {file_path}")
 
-        if column_name_to_analyze not in data.columns:
-            print(f"\nError: Column '{column_name_to_analyze}' not found in the CSV file.")
+        column_name_to_analyze_stripped = column_name_to_analyze.strip()
+        event_col_name_stripped = event_col_name.strip()
+
+        # Check if primary event column exists, otherwise try fallback
+        current_event_col_to_use = event_col_name_stripped
+        if current_event_col_to_use not in data.columns:
+            if fallback_event_col_name:
+                fallback_event_col_name_stripped = fallback_event_col_name.strip()
+                if fallback_event_col_name_stripped in data.columns:
+                    print(f"Warning: Primary event column '{current_event_col_to_use}' not found. Using fallback event column '{fallback_event_col_name_stripped}'.")
+                    current_event_col_to_use = fallback_event_col_name_stripped
+                else:
+                    print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name_stripped}' is also not found.")
+                    print(f"Available columns: {data.columns.tolist()}")
+                    return None
+            else:
+                print(f"\nError: Event column '{current_event_col_to_use}' not found in the CSV file, and no fallback event column was provided.")
+                print(f"Available columns: {data.columns.tolist()}")
+                return None
+
+        if column_name_to_analyze_stripped not in data.columns:
+            print(f"\nError: Column '{column_name_to_analyze_stripped}' not found in the CSV file.")
             return None
         
         # Calculate mean of the entire column
-        overall_jitter_data = data[column_name_to_analyze].dropna()
+        overall_jitter_data = data[column_name_to_analyze_stripped].dropna()
 
         if not overall_jitter_data.empty:
             mean_val = overall_jitter_data.mean()
             return {"Mean": mean_val}
         else:
-            # print(f"\nNo valid data found to calculate mean for '{column_name_to_analyze}'.")
+            # print(f"\nNo valid data found to calculate mean for '{column_name_to_analyze_stripped}'.")
             return None
 
     except FileNotFoundError:
@@ -260,27 +315,48 @@ def analyze_jitter(file_path, column_name_to_analyze, event_col_name, start_even
         print(f"An error occurred: {e}")
         return None
 
-def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str):
+def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str, fallback_event_col_name=None):
     """
     Reads a data CSV file and reports the mean of the entire error ratio column.
     Returns a dictionary of statistics or None.
     """
     try:
         data = pd.read_csv(file_path)
+        data.columns = data.columns.str.strip() # Strip whitespace from column names
         # print(f"Successfully loaded {file_path}")
 
-        if column_name_to_analyze not in data.columns:
-            print(f"\nError: Column '{column_name_to_analyze}' not found in the CSV file.")
+        column_name_to_analyze_stripped = column_name_to_analyze.strip()
+        event_col_name_stripped = event_col_name.strip()
+
+        # Check if primary event column exists, otherwise try fallback
+        current_event_col_to_use = event_col_name_stripped
+        if current_event_col_to_use not in data.columns:
+            if fallback_event_col_name:
+                fallback_event_col_name_stripped = fallback_event_col_name.strip()
+                if fallback_event_col_name_stripped in data.columns:
+                    print(f"Warning: Primary event column '{current_event_col_to_use}' not found. Using fallback event column '{fallback_event_col_name_stripped}'.")
+                    current_event_col_to_use = fallback_event_col_name_stripped
+                else:
+                    print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name_stripped}' is also not found.")
+                    print(f"Available columns: {data.columns.tolist()}")
+                    return None
+            else:
+                print(f"\nError: Event column '{current_event_col_to_use}' not found in the CSV file, and no fallback event column was provided.")
+                print(f"Available columns: {data.columns.tolist()}")
+                return None
+
+        if column_name_to_analyze_stripped not in data.columns:
+            print(f"\nError: Column '{column_name_to_analyze_stripped}' not found in the CSV file.")
             return None
         
         # Calculate mean of the entire column
-        overall_error_ratio_data = data[column_name_to_analyze].dropna()
+        overall_error_ratio_data = data[column_name_to_analyze_stripped].dropna()
 
         if not overall_error_ratio_data.empty:
             mean_val = overall_error_ratio_data.mean()
             return {"Mean": mean_val}
         else:
-            # print(f"\nNo valid data found to calculate statistics for '{column_name_to_analyze}'.")
+            # print(f"\nNo valid data found to calculate statistics for '{column_name_to_analyze_stripped}'.")
             return None
 
     except FileNotFoundError:
@@ -290,7 +366,7 @@ def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start
         print(f"An error occurred: {e}")
         return None
 
-def analyze_web_page_load_time(file_path, event_col_name, start_event_str, end_event_str, duration_col_name):
+def analyze_web_page_load_time(file_path, event_col_name, start_event_str, end_event_str, duration_col_name, fallback_event_col_name=None):
     """
     Reads a data CSV file, identifies web page load time intervals based on start/end event markers,
     extracts total duration for each, and calculates statistics (count, average, max, min, std dev).
@@ -298,32 +374,49 @@ def analyze_web_page_load_time(file_path, event_col_name, start_event_str, end_e
     """
     try:
         data = pd.read_csv(file_path)
+        data.columns = data.columns.str.strip() # Strip whitespace from column names
 
-        if duration_col_name not in data.columns:
-            print(f"\nError: Duration column '{duration_col_name}' not found in the CSV file.")
-            print(f"Available columns: {data.columns.tolist()}")
-            return None
-        if event_col_name not in data.columns:
-            print(f"\nError: Event column '{event_col_name}' not found in the CSV file.")
+        duration_col_name_stripped = duration_col_name.strip()
+        event_col_name_stripped = event_col_name.strip()
+
+        # Check if primary event column exists, otherwise try fallback
+        current_event_col_to_use = event_col_name_stripped
+        if current_event_col_to_use not in data.columns:
+            if fallback_event_col_name:
+                fallback_event_col_name_stripped = fallback_event_col_name.strip()
+                if fallback_event_col_name_stripped in data.columns:
+                    print(f"Warning: Primary event column '{current_event_col_to_use}' not found. Using fallback event column '{fallback_event_col_name_stripped}'.")
+                    current_event_col_to_use = fallback_event_col_name_stripped
+                else:
+                    print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name_stripped}' is also not found.")
+                    print(f"Available columns: {data.columns.tolist()}")
+                    return None
+            else:
+                print(f"\nError: Event column '{current_event_col_to_use}' not found in the CSV file, and no fallback event column was provided.")
+                print(f"Available columns: {data.columns.tolist()}")
+                return None
+
+        if duration_col_name_stripped not in data.columns:
+            print(f"\nError: Duration column '{duration_col_name_stripped}' not found in the CSV file.")
             print(f"Available columns: {data.columns.tolist()}")
             return None
         
         filtered_data = data.copy()
 
-        started_indices = filtered_data[filtered_data[event_col_name].astype(str).str.contains(start_event_str, na=False)].index
-        ended_indices = filtered_data[filtered_data[event_col_name].astype(str).str.contains(end_event_str, na=False)].index
+        started_indices = filtered_data[filtered_data[current_event_col_to_use].astype(str).str.contains(start_event_str, na=False)].index
+        ended_indices = filtered_data[filtered_data[current_event_col_to_use].astype(str).str.contains(end_event_str, na=False)].index
 
         if started_indices.empty or ended_indices.empty:
-            print(f"\nWarning: Could not find both '{start_event_str}' and '{end_event_str}' events in '{event_col_name}'. Cannot calculate web page load time intervals.")
+            print(f"\nWarning: Could not find both '{start_event_str}' and '{end_event_str}' events in '{current_event_col_to_use}'. Cannot calculate web page load time intervals.")
             return None
         
         total_durations = []
         current_start_idx = -1
         
         # Find all start and end event indices
-        start_events = filtered_data[filtered_data[event_col_name].astype(str).str.contains(start_event_str, na=False)].index
-        end_events = filtered_data[filtered_data[event_col_name].astype(str).str.contains(end_event_str, na=False)].index
-        timeout_idle_events = filtered_data[filtered_data[event_col_name].astype(str).str.contains("TIMEOUT_Idle", na=False)].index
+        start_events = filtered_data[filtered_data[current_event_col_to_use].astype(str).str.contains(start_event_str, na=False)].index
+        end_events = filtered_data[filtered_data[current_event_col_to_use].astype(str).str.contains(end_event_str, na=False)].index
+        timeout_idle_events = filtered_data[filtered_data[current_event_col_to_use].astype(str).str.contains("TIMEOUT_Idle", na=False)].index
 
         # Match start, end, and then find the duration after TIMEOUT_Idle
         for start_idx in start_events:
@@ -341,18 +434,18 @@ def analyze_web_page_load_time(file_path, event_col_name, start_event_str, end_e
                     # Check if timeout_idx + 1 is a valid index
                     if timeout_idx + 1 < len(filtered_data):
                         duration_row_idx = timeout_idx + 1
-                        duration_val = filtered_data.loc[duration_row_idx, duration_col_name]
+                        duration_val = filtered_data.loc[duration_row_idx, duration_col_name_stripped]
                         
                         if pd.notna(duration_val): # Check if the value is not NaN
                             total_durations.append(duration_val)
         
         if not total_durations:
-            print(f"\nNo valid '{start_event_str}' to '{end_event_str}' intervals with '{duration_col_name}' data found after 'TIMEOUT_Idle' events.")
+            print(f"\nNo valid '{start_event_str}' to '{end_event_str}' intervals with '{duration_col_name_stripped}' data found after 'TIMEOUT_Idle' events.")
             return None
 
         durations_series = pd.Series(total_durations)
         
-        stats = _calculate_statistics(durations_series, duration_col_name)
+        stats = _calculate_statistics(durations_series, duration_col_name_stripped)
         if stats:
             stats["Number of Intervals"] = len(total_durations)
         return stats
@@ -431,13 +524,13 @@ if __name__ == "__main__":
     if params["protocol_type_detected"] == "HTTP":
         if params["analysis_direction_detected"] == "DL":
             print(f"\n--- Performing Throughput Analysis for {params['analysis_direction_detected']} HTTP ---")
-            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
+            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
             print(f"Throughput Stats: {stats}")
             if stats and "Number of Intervals" in stats:
                 print(f"Number of Intervals: {stats['Number of Intervals']}")
         elif params["analysis_direction_detected"] == "UL":
             print(f"\n--- Performing Throughput Analysis for {params['analysis_direction_detected']} HTTP ---")
-            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
+            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
             print(f"Throughput Stats: {stats}")
             if stats and "Number of Intervals" in stats:
                 print(f"Number of Intervals: {stats['Number of Intervals']}")
@@ -445,41 +538,41 @@ if __name__ == "__main__":
         if params["analysis_direction_detected"] == "DL":
             # Analyze Throughput
             print(f"\n--- Performing Throughput Analysis for {params['analysis_direction_detected']} UDP ---")
-            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
+            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
             print(f"Throughput Stats: {stats}")
             if stats and "Number of Intervals" in stats:
                 print(f"Number of Intervals: {stats['Number of Intervals']}")
 
             # Analyze Jitter
             print(f"\n--- Performing Jitter Analysis for {params['analysis_direction_detected']} UDP ---")
-            stats = analyze_jitter(file_path, params["column_to_analyze_jitter"], params["event_col"], params["start_event"], params["end_event"])
+            stats = analyze_jitter(file_path, params["column_to_analyze_jitter"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
             print(f"Jitter Stats: {stats}")
 
             # Analyze DL Error Ratio
             print(f"\n--- Performing DL Error Ratio Analysis for {params['analysis_direction_detected']} UDP ---")
-            stats = analyze_error_ratio(file_path, params["column_to_analyze_error_ratio"], params["event_col"], params["start_event"], params["end_event"])
+            stats = analyze_error_ratio(file_path, params["column_to_analyze_error_ratio"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
             print(f"Error Ratio Stats: {stats}")
 
         elif params["analysis_direction_detected"] == "UL":
             # Analyze Throughput
             print(f"\n--- Performing Throughput Analysis for {params['analysis_direction_detected']} UDP ---")
-            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"])
+            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], params["column_to_analyze_throughput_fallback"], fallback_event_col_name=params["event_col_fallback"])
             print(f"Throughput Stats: {stats}")
             if stats and "Number of Intervals" in stats:
                 print(f"Number of Intervals: {stats['Number of Intervals']}")
 
             # Analyze UL Jitter
             print(f"\n--- Performing UL Jitter Analysis for {params['analysis_direction_detected']} UDP ---")
-            stats = analyze_jitter(file_path, params["column_to_analyze_ul_jitter"], params["event_col"], params["start_event"], params["end_event"])
+            stats = analyze_jitter(file_path, params["column_to_analyze_ul_jitter"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
             print(f"Jitter Stats: {stats}")
 
             # Analyze UL Error Ratio
             print(f"\n--- Performing UL Error Ratio Analysis for {params['analysis_direction_detected']} UDP ---")
-            stats = analyze_error_ratio(file_path, params["column_to_analyze_ul_error_ratio"], params["event_col"], params["start_event"], params["end_event"])
+            stats = analyze_error_ratio(file_path, params["column_to_analyze_ul_error_ratio"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
             print(f"Error Ratio Stats: {stats}")
     elif params["protocol_type_detected"] == "WEB_PAGE":
         print(f"\n--- Performing Web Page Load Time Analysis ---")
-        stats = analyze_web_page_load_time(file_path, params["event_col"], params["start_event"], params["end_event"], params["column_to_analyze_total_duration"])
+        stats = analyze_web_page_load_time(file_path, params["event_col"], params["start_event"], params["end_event"], params["column_to_analyze_total_duration"], fallback_event_col_name=params["event_col_fallback"])
         print(f"Web Page Load Time Stats: {stats}")
         if stats and "Number of Intervals" in stats:
             print(f"Number of Intervals: {stats['Number of Intervals']}")
