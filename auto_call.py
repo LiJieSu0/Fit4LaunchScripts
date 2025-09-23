@@ -85,8 +85,8 @@ def main():
     # If this list is empty, the script will attempt to use all currently connected devices.
     # You can specify up to 8 devices as requested.
     SPECIFIC_DEVICES = [
-        "BS88523AA1430400069", # Replace with your actual device serial
-        "BS88532AA1533100678", 
+        "R5CR31GAESR", # Replace with your actual device serial
+        
     ] 
 
     all_connected_devices = get_connected_devices()
