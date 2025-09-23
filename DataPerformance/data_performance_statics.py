@@ -78,8 +78,10 @@ def _determine_analysis_parameters(file_path):
             params["end_event"] = "Download Ended"
         elif params["analysis_direction_detected"] == "UL":
             # Try specific 5G UL TP column first
+            # Try specific 5G UL TP column first, with a fallback
             if params["network_type_detected"] == "5G":
                 params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application UL TP"
+                params["column_to_analyze_throughput_fallback"] = "[NR5G] [(NR + LTE)] [Throughput] PUSCH TP" # Added fallback for 5G UL HTTP
             else: # Fallback for LTE or if 5G specific not found
                 params["column_to_analyze_throughput"] = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
             
@@ -93,6 +95,7 @@ def _determine_analysis_parameters(file_path):
 
         if params["analysis_direction_detected"] == "DL":
             params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application DL TP" if params["network_type_detected"] == "5G" else "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
+            params["column_to_analyze_throughput_fallback"] = "[NR5G] [(NR + LTE)] [Throughput] PDSCH TP" # Added fallback for 5G DL UDP
             params["column_to_analyze_jitter"] = "[Call Test] [iPerf] [Throughput] DL Jitter"
             params["column_to_analyze_error_ratio"] = "[Call Test] [iPerf] [Throughput] DL Error Ratio"
         elif params["analysis_direction_detected"] == "UL":
@@ -536,13 +539,13 @@ if __name__ == "__main__":
     if params["protocol_type_detected"] == "HTTP":
         if params["analysis_direction_detected"] == "DL":
             print(f"\n--- Performing Throughput Analysis for {params['analysis_direction_detected']} HTTP ---")
-            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
+            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_column_name=params["column_to_analyze_throughput_fallback"], fallback_event_col_name=params["event_col_fallback"])
             print(f"Throughput Stats: {stats}")
             if stats and "Number of Intervals" in stats:
                 print(f"Number of Intervals: {stats['Number of Intervals']}")
         elif params["analysis_direction_detected"] == "UL":
             print(f"\n--- Performing Throughput Analysis for {params['analysis_direction_detected']} HTTP ---")
-            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
+            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_column_name=params["column_to_analyze_throughput_fallback"], fallback_event_col_name=params["event_col_fallback"])
             print(f"Throughput Stats: {stats}")
             if stats and "Number of Intervals" in stats:
                 print(f"Number of Intervals: {stats['Number of Intervals']}")
@@ -550,7 +553,7 @@ if __name__ == "__main__":
         if params["analysis_direction_detected"] == "DL":
             # Analyze Throughput
             print(f"\n--- Performing Throughput Analysis for {params['analysis_direction_detected']} UDP ---")
-            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_event_col_name=params["event_col_fallback"])
+            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_column_name=params["column_to_analyze_throughput_fallback"], fallback_event_col_name=params["event_col_fallback"])
             print(f"Throughput Stats: {stats}")
             if stats and "Number of Intervals" in stats:
                 print(f"Number of Intervals: {stats['Number of Intervals']}")

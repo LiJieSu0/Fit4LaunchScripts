@@ -1029,6 +1029,46 @@
                     }
                 }
             },
+            "UDP Download Task at 200 Mbps for 10 seconds": {
+                "dut_5G NSA_UDP Download Task at 200 Mbps for 10 seconds_Poor": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": "DL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 155.89331666666666,
+                        "Standard Deviation": 59.88167048448176,
+                        "Minimum": 51.4868888888889,
+                        "Maximum": 196.3001111111111,
+                        "Number of Intervals": 20
+                    },
+                    "Jitter": {
+                        "Mean": 0.16117499999999998
+                    },
+                    "Error Ratio": {
+                        "Mean": 17.431486160000002
+                    }
+                },
+                "ref_5G NSA_UDP Download Task at 200 Mbps for 10 seconds_Poor": {
+                    "Device Type": "REF",
+                    "Analysis Direction": "DL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 188.27003888888888,
+                        "Standard Deviation": 6.7184915595664,
+                        "Minimum": 178.77455555555557,
+                        "Maximum": 208.97533333333334,
+                        "Number of Intervals": 20
+                    },
+                    "Jitter": {
+                        "Mean": 0.06376500000000002
+                    },
+                    "Error Ratio": {
+                        "Mean": 8.6747872
+                    }
+                }
+            },
             "UDP Download Task at 400 Mbps for 10 seconds": {
                 "DUT UDP DL": {
                     "Device Type": "DUT",
@@ -1066,46 +1106,6 @@
                     },
                     "Error Ratio": {
                         "Mean": 27.52697748
-                    }
-                }
-            },
-            "____UDP Download Task at 200 Mbps for 10 seconds": {
-                "_20250914_163335_CH01_TMO-dut_5G NSA_UDP Download Task at 200 Mbps for 10 seconds_Poor Coverage_DA Test": {
-                    "Device Type": "DUT",
-                    "Analysis Direction": "DL",
-                    "Protocol Type": "UDP",
-                    "Network Type": "5G",
-                    "Throughput": {
-                        "Mean": 150.00553333333335,
-                        "Standard Deviation": 63.69502361857696,
-                        "Minimum": 51.4868888888889,
-                        "Maximum": 196.3001111111111,
-                        "Number of Intervals": 15
-                    },
-                    "Jitter": {
-                        "Mean": 0.17149333333333333
-                    },
-                    "Error Ratio": {
-                        "Mean": 20.465427400000003
-                    }
-                },
-                "_CH01_TMO-dut_5G NSA_UDP Download Task at 200 Mbps for 10 seconds_Poor Coverage_DA Test": {
-                    "Device Type": "DUT",
-                    "Analysis Direction": "DL",
-                    "Protocol Type": "UDP",
-                    "Network Type": "5G",
-                    "Throughput": {
-                        "Mean": 173.55666666666667,
-                        "Standard Deviation": 48.09295871699224,
-                        "Minimum": 87.55466666666668,
-                        "Maximum": 196.20644444444446,
-                        "Number of Intervals": 5
-                    },
-                    "Jitter": {
-                        "Mean": 0.13022
-                    },
-                    "Error Ratio": {
-                        "Mean": 8.32966244
                     }
                 }
             }
@@ -1188,12 +1188,18 @@
                 }
             },
             "UDP Upload Task at 10 Mbps for 10 seconds": {
-                "DUT UDP UL": {
+                "dut_5G NSA_UDP Upload Task at 10 Mbps for 10 seconds_Poor": {
                     "Device Type": "DUT",
                     "Analysis Direction": "UL",
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
-                    "Throughput": {},
+                    "Throughput": {
+                        "Mean": 9.214598863636365,
+                        "Standard Deviation": 1.5448032407055892,
+                        "Minimum": 5.670727272727273,
+                        "Maximum": 10.4933,
+                        "Number of Intervals": 16
+                    },
                     "Jitter": {
                         "Mean": 2.027548387096774
                     },
@@ -1201,12 +1207,18 @@
                         "Mean": 0.0
                     }
                 },
-                "REF UDP UL": {
+                "ref_5G NSA_UDP Upload Task at 10 Mbps for 10 seconds_Poor": {
                     "Device Type": "REF",
                     "Analysis Direction": "UL",
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
-                    "Throughput": {},
+                    "Throughput": {
+                        "Mean": 6.050942912316441,
+                        "Standard Deviation": 5.235268931522349,
+                        "Minimum": 0.0026666666666666666,
+                        "Maximum": 11.422555555555556,
+                        "Number of Intervals": 17
+                    },
                     "Jitter": {
                         "Mean": 1.4591111111111115
                     },
@@ -1216,12 +1228,18 @@
                 }
             },
             "UDP Upload Task at 20 Mbps for 10 seconds": {
-                "_CH01_TMO-dut_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_Poor Coverage_DA Test": {
+                "_20250914_144028_CH01_TMO-dut_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_Poor Coverage_DA Test": {
                     "Device Type": "DUT",
                     "Analysis Direction": "UL",
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
-                    "Throughput": {},
+                    "Throughput": {
+                        "Mean": 13.461882272727275,
+                        "Standard Deviation": 1.9472389791357951,
+                        "Minimum": 9.863545454545454,
+                        "Maximum": 16.507,
+                        "Number of Intervals": 20
+                    },
                     "Jitter": {
                         "Mean": 1.1185
                     },
@@ -1229,12 +1247,18 @@
                         "Mean": 3.0070523000000002
                     }
                 },
-                "_CH02_TMO-ref_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_Poor Coverage_DA Test": {
+                "_20250914_144028_CH02_TMO-ref_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_Poor Coverage_DA Test": {
                     "Device Type": "REF",
                     "Analysis Direction": "UL",
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
-                    "Throughput": {},
+                    "Throughput": {
+                        "Mean": 14.156333257575756,
+                        "Standard Deviation": 2.754264116334134,
+                        "Minimum": 8.816727272727274,
+                        "Maximum": 19.213083333333334,
+                        "Number of Intervals": 20
+                    },
                     "Jitter": {
                         "Mean": 0.9967499999999999
                     },
