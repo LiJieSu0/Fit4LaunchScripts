@@ -70,7 +70,7 @@
                 }
             },
             "Single Stream HTTP Download for 60 seconds-test 2": {
-                "DUT SS HTTP DL for 60 seconds-test 2": {
+                "DUT SS HTTP DL for 60 seconds": {
                     "Device Type": "DUT",
                     "Analysis Direction": "DL",
                     "Protocol Type": "HTTP",
@@ -83,7 +83,7 @@
                         "Number of Intervals": 20
                     }
                 },
-                "REF SS HTTP DL for 60 seconds-test 2": {
+                "REF SS HTTP DL for 60 seconds": {
                     "Device Type": "REF",
                     "Analysis Direction": "DL",
                     "Protocol Type": "HTTP",
@@ -93,34 +93,6 @@
                         "Standard Deviation": 35.34889987770869,
                         "Minimum": 59.2845,
                         "Maximum": 172.22616949152544,
-                        "Number of Intervals": 20
-                    }
-                }
-            },
-            "Single Stream HTTP Download for 60 seconds": {
-                "DUT SS HTTP DL for 60 seconds": {
-                    "Device Type": "DUT",
-                    "Analysis Direction": "DL",
-                    "Protocol Type": "HTTP",
-                    "Network Type": "5G",
-                    "Throughput": {
-                        "Mean": 68.71009267881243,
-                        "Standard Deviation": 19.33076687172661,
-                        "Minimum": 37.73692307692308,
-                        "Maximum": 101.54356410256412,
-                        "Number of Intervals": 20
-                    }
-                },
-                "REF SS HTTP DL for 60 seconds": {
-                    "Device Type": "REF",
-                    "Analysis Direction": "DL",
-                    "Protocol Type": "HTTP",
-                    "Network Type": "5G",
-                    "Throughput": {
-                        "Mean": 130.6788495032145,
-                        "Standard Deviation": 37.80814632477832,
-                        "Minimum": 77.46889655172416,
-                        "Maximum": 201.8050338983051,
                         "Number of Intervals": 20
                     }
                 }
@@ -289,7 +261,14 @@
                     "Analysis Direction": "UL",
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
-                    "Throughput": {},
+                    "Throughput": {
+                        "Mean": 9.884724700000003,
+                        "Standard Deviation": 0.04999482342897858,
+                        "Minimum": 9.749922,
+                        "Maximum": 9.932914,
+                        "Number of Intervals": 20,
+                        "Note": "Calculated overall sum divided by number of detected intervals due to no valid interval data."
+                    },
                     "Jitter": {
                         "Mean": 1.959
                     },
@@ -302,7 +281,14 @@
                     "Analysis Direction": "UL",
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
-                    "Throughput": {},
+                    "Throughput": {
+                        "Mean": 9.85788635,
+                        "Standard Deviation": 0.08367783127804729,
+                        "Minimum": 9.607931,
+                        "Maximum": 9.922476,
+                        "Number of Intervals": 20,
+                        "Note": "Calculated overall sum divided by number of detected intervals due to no valid interval data."
+                    },
                     "Jitter": {
                         "Mean": 1.7820500000000004
                     },
@@ -317,7 +303,14 @@
                     "Analysis Direction": "UL",
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
-                    "Throughput": {},
+                    "Throughput": {
+                        "Mean": 19.76504325,
+                        "Standard Deviation": 0.09540361694615077,
+                        "Minimum": 19.478259,
+                        "Maximum": 19.864729,
+                        "Number of Intervals": 20,
+                        "Note": "Calculated overall sum divided by number of detected intervals due to no valid interval data."
+                    },
                     "Jitter": {
                         "Mean": 0.8625999999999999
                     },
@@ -330,7 +323,14 @@
                     "Analysis Direction": "UL",
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
-                    "Throughput": {},
+                    "Throughput": {
+                        "Mean": 19.67081535,
+                        "Standard Deviation": 0.1806562803792056,
+                        "Minimum": 19.251807,
+                        "Maximum": 19.843876,
+                        "Number of Intervals": 20,
+                        "Note": "Calculated overall sum divided by number of detected intervals due to no valid interval data."
+                    },
                     "Jitter": {
                         "Mean": 0.91135
                     },

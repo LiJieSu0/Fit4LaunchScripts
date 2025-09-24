@@ -36,6 +36,7 @@ def _determine_analysis_parameters(file_path):
         "device_type_detected": "Unknown",
         "column_to_analyze_throughput": None,
         "column_to_analyze_throughput_fallback": None, # Added for fallback throughput column
+        "column_to_analyze_throughput_third_fallback": None, # Added for third fallback throughput column
         "column_to_analyze_jitter": None,
         "column_to_analyze_error_ratio": None,
         "column_to_analyze_ul_jitter": None,
@@ -92,16 +93,20 @@ def _determine_analysis_parameters(file_path):
             if params["network_type_detected"] in ["5G", "5G NSA", "5G SA"]:
                 params["column_to_analyze_throughput"] = _clean_header("[Call Test] [Throughput] Application DL TP")
                 params["column_to_analyze_throughput_fallback"] = _clean_header("[NR5G] [(NR + LTE)] [Throughput] PDSCH TP") # Fallback for 5G DL HTTP
+                params["column_to_analyze_throughput_third_fallback"] = _clean_header("DL TP (excl. slow start)") # Third fallback for 5G DL HTTP
             else: # LTE
                 params["column_to_analyze_throughput"] = _clean_header("[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)")
+                params["column_to_analyze_throughput_third_fallback"] = _clean_header("DL TP (excl. slow start)") # Third fallback for LTE DL HTTP
         elif params["analysis_direction_detected"] == "UL":
             params["start_event"] = "Upload Started"
             params["end_event"] = "Upload Ended"
             if params["network_type_detected"] in ["5G", "5G NSA", "5G SA"]:
                 params["column_to_analyze_throughput"] = _clean_header("[Call Test] [Throughput] Application UL TP")
                 params["column_to_analyze_throughput_fallback"] = _clean_header("[NR5G] [(NR + LTE)] [Throughput] PUSCH TP") # Fallback for 5G UL HTTP
+                params["column_to_analyze_throughput_third_fallback"] = _clean_header("UL Avg TP") # Third fallback for 5G UL HTTP
             else: # LTE
                 params["column_to_analyze_throughput"] = _clean_header("[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)")
+                params["column_to_analyze_throughput_third_fallback"] = _clean_header("UL Avg TP") # Third fallback for LTE UL HTTP
     elif params["protocol_type_detected"] == "UDP":
         params["event_col"] = _clean_header("[Event][Data call test detail events]IPERF Call Event") # Primary event column
         params["event_col_fallback"] = _clean_header("[Event] [Data call test detail events] IPERF Call Event") # Fallback event column
@@ -111,11 +116,13 @@ def _determine_analysis_parameters(file_path):
         if params["analysis_direction_detected"] == "DL":
             params["column_to_analyze_throughput"] = _clean_header("[Call Test] [Throughput] Application DL TP") if params["network_type_detected"] in ["5G", "5G NSA", "5G SA"] else _clean_header("[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)")
             params["column_to_analyze_throughput_fallback"] = _clean_header("[NR5G] [(NR + LTE)] [Throughput] PDSCH TP") # Added fallback for 5G DL UDP
+            params["column_to_analyze_throughput_third_fallback"] = _clean_header("DL TP (excl. slow start)") # Third fallback for DL UDP
             params["column_to_analyze_jitter"] = _clean_header("[Call Test] [iPerf] [Throughput] DL Jitter")
             params["column_to_analyze_error_ratio"] = _clean_header("[Call Test] [iPerf] [Throughput] DL Error Ratio")
         elif params["analysis_direction_detected"] == "UL":
             params["column_to_analyze_throughput"] = _clean_header("[Call Test] [Throughput] Application UL TP") # Primary UL Throughput
             params["column_to_analyze_throughput_fallback"] = _clean_header("[NR5G] [Throughput] PUSCH TP") # Fallback UL Throughput
+            params["column_to_analyze_throughput_third_fallback"] = _clean_header("UL Avg TP") # Third fallback for UL Throughput
             params["column_to_analyze_ul_jitter"] = _clean_header("[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Jitter")
             params["column_to_analyze_ul_error_ratio"] = _clean_header("[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Error Ratio")
     elif params["protocol_type_detected"] == "WEB_PAGE":
@@ -149,7 +156,7 @@ def _calculate_statistics(data_series, column_name):
     
     return stats
 
-def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str, fallback_column_name=None, fallback_event_col_name=None):
+def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_event_str, end_event_str, fallback_column_name=None, fallback_event_col_name=None, third_fallback_column_name=None):
     num_intervals = 0 # Initialize interval count
     """
     Reads a data CSV file, identifies intervals based on start/end event markers,
@@ -165,19 +172,21 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
         # The column names to analyze are already cleaned by _determine_analysis_parameters
         # No need to strip or clean them again here.
         
-        # Check if primary column exists and has data, otherwise try fallback
         current_column_to_use = column_name_to_analyze
-        if current_column_to_use not in data.columns or data[current_column_to_use].dropna().empty:
-            if fallback_column_name:
-                if fallback_column_name in data.columns and not data[fallback_column_name].dropna().empty:
-                    print(f"Warning: Primary throughput column '{current_column_to_use}' is empty or not found. Using fallback column '{fallback_column_name}'.")
-                    current_column_to_use = fallback_column_name
-                else:
-                    print(f"Error: Primary throughput column '{current_column_to_use}' is empty or not found, and fallback column '{fallback_column_name}' is also empty or not found.")
-                    print(f"Available columns: {data.columns.tolist()}")
-                    return {} # Return empty dict instead of None
+        
+        # Check primary column
+        if current_column_to_use in data.columns and not data[current_column_to_use].dropna().empty:
+            pass # Primary column is good
+        else:
+            # Primary column is not good, try fallbacks
+            if fallback_column_name in data.columns and not data[fallback_column_name].dropna().empty:
+                print(f"Warning: Primary throughput column '{current_column_to_use}' is empty or not found. Using fallback column '{fallback_column_name}'.")
+                current_column_to_use = fallback_column_name
+            elif third_fallback_column_name in data.columns and not data[third_fallback_column_name].dropna().empty:
+                print(f"Warning: Primary throughput column '{column_name_to_analyze}' and first fallback '{fallback_column_name}' are empty or not found. Using third fallback column '{third_fallback_column_name}'.")
+                current_column_to_use = third_fallback_column_name
             else:
-                print(f"\nError: Column '{current_column_to_use}' not found or is empty in the CSV file, and no fallback column was provided.")
+                print(f"Error: Primary throughput column '{column_name_to_analyze}' is empty or not found, and fallback column '{fallback_column_name}' is also empty or not found, and third fallback '{third_fallback_column_name}' is also empty or not found.")
                 print(f"Available columns: {data.columns.tolist()}")
                 return {} # Return empty dict instead of None
         
@@ -584,7 +593,7 @@ if __name__ == "__main__":
         elif params["analysis_direction_detected"] == "UL":
             # Analyze Throughput
             print(f"\n--- Performing Throughput Analysis for {params['analysis_direction_detected']} UDP ---")
-            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], params["column_to_analyze_throughput_fallback"], fallback_event_col_name=params["event_col_fallback"])
+            stats = analyze_throughput(file_path, params["column_to_analyze_throughput"], params["event_col"], params["start_event"], params["end_event"], fallback_column_name=params["column_to_analyze_throughput_fallback"], fallback_event_col_name=params["event_col_fallback"], third_fallback_column_name=params["column_to_analyze_throughput_third_fallback"])
             print(f"Throughput Stats: {stats}")
             if stats and "Number of Intervals" in stats:
                 print(f"Number of Intervals: {stats['Number of Intervals']}")
