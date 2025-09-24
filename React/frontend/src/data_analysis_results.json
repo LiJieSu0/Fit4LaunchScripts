@@ -340,6 +340,144 @@
                 }
             }
         },
+        "5G Auto Data Test MHS Stationary Location 2 DL": {
+            "Multi Stream HTTP Download for 30 seconds": {
+                "DUT MS HTTP DL 30s": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": "DL",
+                    "Protocol Type": "HTTP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 95.72333868695407,
+                        "Standard Deviation": 44.55261347618768,
+                        "Minimum": 1.7502857142857144,
+                        "Maximum": 154.53657142857142,
+                        "Number of Intervals": 26
+                    }
+                },
+                "REF MS HTTP DL 30s": {
+                    "Device Type": "REF",
+                    "Analysis Direction": "DL",
+                    "Protocol Type": "HTTP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 45.13789396399683,
+                        "Standard Deviation": 56.086777979429165,
+                        "Minimum": 1.3071724137931036,
+                        "Maximum": 179.0783103448276,
+                        "Number of Intervals": 27
+                    }
+                }
+            },
+            "Single Stream HTTP Download for 60 seconds": {
+                "DUT SS HTTP DL 60S": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": "DL",
+                    "Protocol Type": "HTTP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 47.92456211906154,
+                        "Standard Deviation": 23.498129977582327,
+                        "Minimum": 1.6937288135593218,
+                        "Maximum": 82.16994915254236,
+                        "Number of Intervals": 21
+                    }
+                },
+                "REF SS HTTP DL 60S": {
+                    "Device Type": "REF",
+                    "Analysis Direction": "DL",
+                    "Protocol Type": "HTTP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 50.38782621274108,
+                        "Standard Deviation": 44.39121848653609,
+                        "Minimum": 4.642118644067796,
+                        "Maximum": 125.74556896551725,
+                        "Number of Intervals": 20
+                    }
+                }
+            },
+            "UDP Download Task at 200 Mbps for 10 seconds": {
+                "DUT UDP DL 200M 10s": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": "DL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 104.94110625,
+                        "Standard Deviation": 45.77879298981825,
+                        "Minimum": 4.43375,
+                        "Maximum": 169.207,
+                        "Number of Intervals": 24
+                    },
+                    "Jitter": {
+                        "Mean": 0.45332083333333334
+                    },
+                    "Error Ratio": {
+                        "Mean": 33.2695339625
+                    }
+                },
+                "REF UDP DL 200M 10s": {
+                    "Device Type": "REF",
+                    "Analysis Direction": "DL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 154.61472743055558,
+                        "Standard Deviation": 50.638176545208644,
+                        "Minimum": 6.538444444444445,
+                        "Maximum": 193.31699999999998,
+                        "Number of Intervals": 24
+                    },
+                    "Jitter": {
+                        "Mean": 0.38779583333333334
+                    },
+                    "Error Ratio": {
+                        "Mean": 16.150638704166667
+                    }
+                }
+            },
+            "UDP Download Task at 400 Mbps for 10 seconds": {
+                "DUT UDP DL 400 M 10s": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": "DL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 110.40211,
+                        "Standard Deviation": 43.40872155931764,
+                        "Minimum": 2.1725,
+                        "Maximum": 166.106,
+                        "Number of Intervals": 20
+                    },
+                    "Jitter": {
+                        "Mean": 0.6020145631067961
+                    },
+                    "Error Ratio": {
+                        "Mean": 60.86096389320388
+                    }
+                },
+                "REF UDP DL 400 M 10s": {
+                    "Device Type": "REF",
+                    "Analysis Direction": "DL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 38.465023611111114,
+                        "Standard Deviation": 66.08542849829087,
+                        "Minimum": 0.20200000000000004,
+                        "Maximum": 198.84822222222223,
+                        "Number of Intervals": 20
+                    },
+                    "Jitter": {
+                        "Mean": 45.88134999999999
+                    },
+                    "Error Ratio": {
+                        "Mean": 75.42882090500001
+                    }
+                }
+            }
+        },
         "5G Auto Data Test Stationary Location 1 DL": {
             "Multi Stream HTTP Download for 30 seconds_Good": {
                 "dut_5G auto_MS HTTP DL_Good": {
