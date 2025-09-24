@@ -197,8 +197,8 @@ if __name__ == "__main__":
             # The last component is the filename, remove .csv extension
             filename_without_ext = os.path.splitext(path_components[-1])[0]
             path_components[-1] = filename_without_ext
-
-    _insert_into_nested_dict(all_collected_results, path_components, stats)
+            
+            _insert_into_nested_dict(all_collected_results, path_components, stats)
     
     # Write the collected list of CSV files to a TXT file using the new data_path_reader script
     data_path_reader.write_csv_paths_with_two_parents(all_csv_files_processed, base_raw_data_dir, output_dir) # Pass output_dir
