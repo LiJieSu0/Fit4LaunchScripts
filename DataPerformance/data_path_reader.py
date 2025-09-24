@@ -30,18 +30,19 @@ def get_csv_file_paths(base_raw_data_dir, directories_config):
             
     return sorted(all_csv_files)
 
-def write_csv_paths_with_two_parents(csv_file_paths, base_raw_data_dir):
+def write_csv_paths_with_two_parents(csv_file_paths, base_raw_data_dir, output_dir):
     """
     Prints each CSV file's name along with its two parent directories.
     
     Args:
         csv_file_paths (list): A list of absolute paths to CSV files.
         base_raw_data_dir (str): The base directory to consider for relative paths.
+        output_dir (str): The directory where the output file should be written.
     """
     if csv_file_paths:
-        output_file_path = "processed_paths.txt"
+        output_file_path = os.path.join(output_dir, "Discovered Raw Data Paths.txt")
         with open(output_file_path, 'w', encoding='utf-8') as f:
-            f.write("--- CSV files with their two parent directories: ---\n")
+            f.write("--- Discovered Raw Data Paths (CSV files with their two parent directories): ---\n")
             # Sort the list for consistent output
             sorted_csv_files = sorted(csv_file_paths)
             for csv_file_path in sorted_csv_files:
@@ -67,10 +68,10 @@ def write_csv_paths_with_two_parents(csv_file_paths, base_raw_data_dir):
                     f.write(f"- {immediate_parent_dir}\\{file_name}\n")
                 else:
                     f.write(f"- {file_name}\n")
-        print(f"\nSuccessfully wrote processed CSV paths to {output_file_path}")
+        print(f"\nSuccessfully wrote discovered raw data paths to {output_file_path}")
     else:
         print("\nNo CSV files were found in the specified directories.")
-        print("No processed_paths.txt file was generated.")
+        print("No Discovered Raw Data Paths.txt file was generated.")
 
 if __name__ == "__main__":
     # Example usage (for testing the script independently)
@@ -92,4 +93,7 @@ if __name__ == "__main__":
         print("Dummy CSV files created for testing.")
 
     csv_files = get_csv_file_paths(base_dir, config)
-    write_csv_paths_with_two_parents(csv_files, base_dir) # Call the modified function
+    # For independent testing, define a dummy output_dir
+    test_output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "TestOutput")
+    os.makedirs(test_output_dir, exist_ok=True)
+    write_csv_paths_with_two_parents(csv_files, base_dir, test_output_dir) # Call the modified function

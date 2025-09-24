@@ -23,9 +23,9 @@ def check_empty_collections(data, path_parts=None, empty_collections_found=None)
             check_empty_collections(item, path_parts + [f"[{index}]"], empty_collections_found)
     return empty_collections_found
 
-def main():
-    json_file_path = "React/frontend/src/data_analysis_results.json"
-    output_file_path = "Scripts/Empty_Json.txt" # Updated path
+def main(output_dir):
+    json_file_path = os.path.join("Scripts", "React", "frontend", "src", "data_analysis_results.json")
+    output_file_path = os.path.join(output_dir, "Empty_Json.txt")
 
     try:
         with open(json_file_path, 'r', encoding='utf-8') as f:
@@ -34,15 +34,16 @@ def main():
         print(f"Checking '{json_file_path}' for empty collections...")
         empty_collections = check_empty_collections(data)
         
-        if empty_collections:
-            with open(output_file_path, 'w', encoding='utf-8') as out_f:
+        with open(output_file_path, 'w', encoding='utf-8') as out_f:
+            if empty_collections:
                 out_f.write("Empty collections found in JSON:\n")
                 for item_path in empty_collections:
                     for i, part in enumerate(item_path):
                         out_f.write("    " * i + f"- {part}\n")
-            print(f"Empty collections found. Details written to '{output_file_path}'.")
-        else:
-            print("No empty collections found.")
+                print(f"Empty collections found. Details written to '{output_file_path}'.")
+            else:
+                out_f.write("No empty collections found.\n")
+                print("No empty collections found.")
         
         print("Check complete.")
         
@@ -54,4 +55,8 @@ def main():
         print(f"An unexpected error occurred: {e}")
 
 if __name__ == "__main__":
-    main()
+    # For independent testing, define a dummy output_dir
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    test_output_dir = os.path.join(os.path.dirname(script_dir), "TestOutput")
+    os.makedirs(test_output_dir, exist_ok=True)
+    main(test_output_dir)

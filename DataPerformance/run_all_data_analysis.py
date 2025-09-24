@@ -3,10 +3,11 @@ import subprocess
 import sys
 import pandas as pd
 import json # Import the json module
-# Add the current script's directory to sys.path to enable direct imports
+# Add the 'Scripts' directory to sys.path to enable imports from it
 script_dir = os.path.dirname(os.path.abspath(__file__))
-if script_dir not in sys.path:
-    sys.path.insert(0, script_dir)
+scripts_parent_dir = os.path.dirname(script_dir) # This is 'Scripts' directory
+if scripts_parent_dir not in sys.path:
+    sys.path.insert(0, scripts_parent_dir)
 
 # Import the analysis functions from data_performance_statics.py
 # Assuming data_performance_statics.py is in the same directory
@@ -14,11 +15,14 @@ import data_performance_statics
 from data_performance_statics import _determine_analysis_parameters # Import the new helper function
 import ping_statics # Import the ping_statics module
 import data_path_reader # Import the new path reader script
+import check_empty_data # Import check_empty_data directly
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
     
     base_raw_data_dir = "Raw Data" # Changed to "Raw Data" as per user's path
+    output_dir = os.path.join(os.path.dirname(script_dir), "Analyze Summary") # Define output directory
+    os.makedirs(output_dir, exist_ok=True) # Ensure the output directory exists
     
     # Define a list of directories to process, along with their analysis type
     # These paths are relative to base_raw_data_dir
@@ -194,13 +198,13 @@ if __name__ == "__main__":
             filename_without_ext = os.path.splitext(path_components[-1])[0]
             path_components[-1] = filename_without_ext
 
-            _insert_into_nested_dict(all_collected_results, path_components, stats)
+    _insert_into_nested_dict(all_collected_results, path_components, stats)
     
     # Write the collected list of CSV files to a TXT file using the new data_path_reader script
-    data_path_reader.write_csv_paths_with_two_parents(all_csv_files_processed, base_raw_data_dir) # Function name remains, but behavior changed
+    data_path_reader.write_csv_paths_with_two_parents(all_csv_files_processed, base_raw_data_dir, output_dir) # Pass output_dir
 
     # Write invalid data file paths to a text file
-    invalid_output_path = "invalid_data_paths.txt"
+    invalid_output_path = os.path.join(output_dir, "invalid_data_paths.txt")
     with open(invalid_output_path, 'w', encoding='utf-8') as f:
         for path in invalid_data_files:
             f.write(f"{path}\n")
@@ -210,7 +214,7 @@ if __name__ == "__main__":
         print("\nNo invalid data files found.")
 
     # Write valid data file paths to a text file
-    valid_output_path = "valid_data_paths.txt"
+    valid_output_path = os.path.join(output_dir, "valid_data_paths.txt")
     with open(valid_output_path, 'w', encoding='utf-8') as f:
         for path in valid_data_files:
             f.write(f"{path}\n")
@@ -219,8 +223,8 @@ if __name__ == "__main__":
     else:
         print("\nNo valid data files found.")
 
-    # Generate summary.txt
-    summary_output_path = "summary.txt"
+    # Generate Processed File Count.txt
+    summary_output_path = os.path.join(output_dir, "Processed File Count.txt")
     total_files_processed = len(all_csv_files_processed)
     correctly_processed_files = len(valid_data_files)
     incorrect_paths_count = len(invalid_data_files)
@@ -229,7 +233,7 @@ if __name__ == "__main__":
         f.write(f"Total files processed: {total_files_processed}\n")
         f.write(f"Correctly processed statistics: {correctly_processed_files}\n")
         f.write(f"Incorrect paths: {incorrect_paths_count}\n")
-    print(f"\nSummary written to: {summary_output_path}")
+    print(f"\nProcessed file count written to: {summary_output_path}")
 
     if all_collected_results:
         # Output results to a JSON file for the React app
@@ -239,3 +243,6 @@ if __name__ == "__main__":
         print(f"\nJSON data generated: {json_output_path}")
     else:
         print("No data collected to generate a report.")
+    
+    # Call check_empty_data.main with the output_dir
+    check_empty_data.main(output_dir)
