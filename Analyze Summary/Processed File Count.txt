@@ -1,3 +1,3 @@
-Total files processed: 112
-Correctly processed statistics: 112
+Total files processed: 118
+Correctly processed statistics: 118
 Incorrect paths: 0

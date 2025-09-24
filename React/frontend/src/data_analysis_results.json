@@ -180,7 +180,7 @@
         },
         "5G Auto Data Test MHS Stationary Location 1 UL": {
             "25x64 bytes PING (ICMP)": {
-                "_CH01_TMO-DUT_5G MHS_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
+                "_20250915_123553_CH01_TMO-DUT_5G MHS_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
                     "Ping RTT": {
                         "min": 38.0,
                         "max": 1052.0,
@@ -189,7 +189,7 @@
                     },
                     "Device Type": "DUT"
                 },
-                "_CH02_TMO-Ref_5G MHS_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
+                "_20250915_123553_CH02_TMO-Ref_5G MHS_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
                     "Ping RTT": {
                         "min": 43.0,
                         "max": 788.0,
@@ -474,6 +474,106 @@
                     },
                     "Error Ratio": {
                         "Mean": 75.42882090500001
+                    }
+                }
+            }
+        },
+        "5G Auto Data Test MHS Stationary Location 2 UL": {
+            "Multi Stream HTTP Upload for 30 seconds": {
+                "DUT MS HTTP UL 30S": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "HTTP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 3.1814699723193476,
+                        "Standard Deviation": 2.1112701454934024,
+                        "Minimum": 1.0794117647058825,
+                        "Maximum": 11.1148,
+                        "Number of Intervals": 40
+                    }
+                },
+                "REF MS HTTP UL 30S": {
+                    "Device Type": "REF",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "HTTP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 4.9235336653102015,
+                        "Standard Deviation": 2.1792021142643656,
+                        "Minimum": 0.0,
+                        "Maximum": 9.003206896551724,
+                        "Number of Intervals": 23
+                    }
+                }
+            },
+            "Single Stream HTTP Upload of a 15 MB file": {
+                "_20250918_124924_CH01_TMO-dut_5G Auto_Single Stream HTTP Upload of a 15 MB file_Moderate Coverage_DA Test": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "HTTP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 2.5919795574471656,
+                        "Standard Deviation": 1.699852144780323,
+                        "Minimum": 0.6700710059171597,
+                        "Maximum": 6.581388888888889,
+                        "Number of Intervals": 20
+                    }
+                },
+                "_20250918_124924_CH02_TMO-ref_5G Auto_Single Stream HTTP Upload of a 15 MB file_Moderate Coverage_DA Test": {
+                    "Device Type": "REF",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "HTTP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 10.238630068265069,
+                        "Standard Deviation": 2.2773730151758165,
+                        "Minimum": 5.9422,
+                        "Maximum": 14.155750000000001,
+                        "Number of Intervals": 20
+                    }
+                }
+            },
+            "UDP Upload Task at 20 Mbps for 10 seconds": {
+                "DUT UDP UL 20M": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 7.819243029411765,
+                        "Standard Deviation": 6.6966422604242934,
+                        "Minimum": 0.0,
+                        "Maximum": 19.705978,
+                        "Number of Intervals": 34,
+                        "Note": "Calculated overall sum divided by number of detected intervals due to no valid interval data."
+                    },
+                    "Jitter": {
+                        "Mean": 0.9872758620689656
+                    },
+                    "Error Ratio": {
+                        "Mean": 33.01282695454545
+                    }
+                },
+                "REF UDP UL 20M": {
+                    "Device Type": "REF",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G",
+                    "Throughput": {
+                        "Mean": 11.011713676470588,
+                        "Standard Deviation": 5.304197166302446,
+                        "Minimum": 4.609173,
+                        "Maximum": 19.804394,
+                        "Number of Intervals": 34,
+                        "Note": "Calculated overall sum divided by number of detected intervals due to no valid interval data."
+                    },
+                    "Jitter": {
+                        "Mean": 0.9599705882352942
+                    },
+                    "Error Ratio": {
+                        "Mean": 40.39131020588235
                     }
                 }
             }
