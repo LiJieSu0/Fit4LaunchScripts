@@ -2,6 +2,16 @@ import pandas as pd
 import sys
 import argparse
 import os
+import re
+
+def _clean_header(header):
+    """
+    Removes content within square brackets (tags) and strips leading/trailing whitespace from a header string.
+    """
+    # Remove content within square brackets, including the brackets themselves
+    cleaned_header = re.sub(r'\[.*?\]', '', header)
+    # Strip leading/trailing whitespace
+    return cleaned_header.strip()
 
 def _determine_analysis_parameters(file_path):
     """
@@ -75,44 +85,44 @@ def _determine_analysis_parameters(file_path):
 
 
     if params["protocol_type_detected"] == "HTTP":
-        params["event_col"] = "[Call Test] [HTTP Transfer] HTTP Transfer Call Event"
+        params["event_col"] = _clean_header("[Call Test] [HTTP Transfer] HTTP Transfer Call Event")
         if params["analysis_direction_detected"] == "DL":
             params["start_event"] = "Download Started"
             params["end_event"] = "Download Ended"
             if params["network_type_detected"] in ["5G", "5G NSA", "5G SA"]:
-                params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application DL TP"
-                params["column_to_analyze_throughput_fallback"] = "[NR5G] [(NR + LTE)] [Throughput] PDSCH TP" # Fallback for 5G DL HTTP
+                params["column_to_analyze_throughput"] = _clean_header("[Call Test] [Throughput] Application DL TP")
+                params["column_to_analyze_throughput_fallback"] = _clean_header("[NR5G] [(NR + LTE)] [Throughput] PDSCH TP") # Fallback for 5G DL HTTP
             else: # LTE
-                params["column_to_analyze_throughput"] = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
+                params["column_to_analyze_throughput"] = _clean_header("[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)")
         elif params["analysis_direction_detected"] == "UL":
             params["start_event"] = "Upload Started"
             params["end_event"] = "Upload Ended"
             if params["network_type_detected"] in ["5G", "5G NSA", "5G SA"]:
-                params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application UL TP"
-                params["column_to_analyze_throughput_fallback"] = "[NR5G] [(NR + LTE)] [Throughput] PUSCH TP" # Fallback for 5G UL HTTP
+                params["column_to_analyze_throughput"] = _clean_header("[Call Test] [Throughput] Application UL TP")
+                params["column_to_analyze_throughput_fallback"] = _clean_header("[NR5G] [(NR + LTE)] [Throughput] PUSCH TP") # Fallback for 5G UL HTTP
             else: # LTE
-                params["column_to_analyze_throughput"] = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
+                params["column_to_analyze_throughput"] = _clean_header("[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)")
     elif params["protocol_type_detected"] == "UDP":
-        params["event_col"] = "[Event][Data call test detail events]IPERF Call Event" # Primary event column
-        params["event_col_fallback"] = "[Event] [Data call test detail events] IPERF Call Event" # Fallback event column
+        params["event_col"] = _clean_header("[Event][Data call test detail events]IPERF Call Event") # Primary event column
+        params["event_col_fallback"] = _clean_header("[Event] [Data call test detail events] IPERF Call Event") # Fallback event column
         params["start_event"] = "IPERF_T_Start"
         params["end_event"] = "IPERF_T_End"
 
         if params["analysis_direction_detected"] == "DL":
-            params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application DL TP" if params["network_type_detected"] == "5G" else "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
-            params["column_to_analyze_throughput_fallback"] = "[NR5G] [(NR + LTE)] [Throughput] PDSCH TP" # Added fallback for 5G DL UDP
-            params["column_to_analyze_jitter"] = "[Call Test] [iPerf] [Throughput] DL Jitter"
-            params["column_to_analyze_error_ratio"] = "[Call Test] [iPerf] [Throughput] DL Error Ratio"
+            params["column_to_analyze_throughput"] = _clean_header("[Call Test] [Throughput] Application DL TP") if params["network_type_detected"] in ["5G", "5G NSA", "5G SA"] else _clean_header("[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)")
+            params["column_to_analyze_throughput_fallback"] = _clean_header("[NR5G] [(NR + LTE)] [Throughput] PDSCH TP") # Added fallback for 5G DL UDP
+            params["column_to_analyze_jitter"] = _clean_header("[Call Test] [iPerf] [Throughput] DL Jitter")
+            params["column_to_analyze_error_ratio"] = _clean_header("[Call Test] [iPerf] [Throughput] DL Error Ratio")
         elif params["analysis_direction_detected"] == "UL":
-            params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application UL TP" # Primary UL Throughput
-            params["column_to_analyze_throughput_fallback"] = "[NR5G] [Throughput] PUSCH TP" # Fallback UL Throughput
-            params["column_to_analyze_ul_jitter"] = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Jitter"
-            params["column_to_analyze_ul_error_ratio"] = "[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Error Ratio"
+            params["column_to_analyze_throughput"] = _clean_header("[Call Test] [Throughput] Application UL TP") # Primary UL Throughput
+            params["column_to_analyze_throughput_fallback"] = _clean_header("[NR5G] [Throughput] PUSCH TP") # Fallback UL Throughput
+            params["column_to_analyze_ul_jitter"] = _clean_header("[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Jitter")
+            params["column_to_analyze_ul_error_ratio"] = _clean_header("[Call Test] [iPerf] [Call Average] [Jitter and Error] UL Error Ratio")
     elif params["protocol_type_detected"] == "WEB_PAGE":
-        params["event_col"] = "[Event] [Data call test detail events] HTTP Call Event"
+        params["event_col"] = _clean_header("[Event] [Data call test detail events] HTTP Call Event")
         params["start_event"] = "HTTP Traffic Start"
         params["end_event"] = "HTTP Traffic End"
-        params["column_to_analyze_total_duration"] = "[Call Test] [HTTP] Total duration"
+        params["column_to_analyze_total_duration"] = _clean_header("[Call Test] [HTTP] Total duration")
     # print(f"DEBUG: _determine_analysis_parameters returning: {params}") # Removed as per user request
     return params
 
@@ -148,23 +158,22 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
     """
     try:
         data = pd.read_csv(file_path)
-        data.columns = data.columns.str.strip() # Strip whitespace from column names
+        # Apply the cleaning function to all column names in the DataFrame
+        data.columns = [_clean_header(col) for col in data.columns]
         # print(f"Successfully loaded {file_path}")
 
-        # Strip whitespace from the column names to analyze for robust matching
-        column_name_to_analyze_stripped = column_name_to_analyze.strip()
-        event_col_name_stripped = event_col_name.strip()
+        # The column names to analyze are already cleaned by _determine_analysis_parameters
+        # No need to strip or clean them again here.
         
         # Check if primary column exists and has data, otherwise try fallback
-        current_column_to_use = column_name_to_analyze_stripped
+        current_column_to_use = column_name_to_analyze
         if current_column_to_use not in data.columns or data[current_column_to_use].dropna().empty:
             if fallback_column_name:
-                fallback_column_name_stripped = fallback_column_name.strip()
-                if fallback_column_name_stripped in data.columns and not data[fallback_column_name_stripped].dropna().empty:
-                    print(f"Warning: Primary throughput column '{current_column_to_use}' is empty or not found. Using fallback column '{fallback_column_name_stripped}'.")
-                    current_column_to_use = fallback_column_name_stripped
+                if fallback_column_name in data.columns and not data[fallback_column_name].dropna().empty:
+                    print(f"Warning: Primary throughput column '{current_column_to_use}' is empty or not found. Using fallback column '{fallback_column_name}'.")
+                    current_column_to_use = fallback_column_name
                 else:
-                    print(f"Error: Primary throughput column '{current_column_to_use}' is empty or not found, and fallback column '{fallback_column_name_stripped}' is also empty or not found.")
+                    print(f"Error: Primary throughput column '{current_column_to_use}' is empty or not found, and fallback column '{fallback_column_name}' is also empty or not found.")
                     print(f"Available columns: {data.columns.tolist()}")
                     return {} # Return empty dict instead of None
             else:
@@ -173,15 +182,14 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
                 return {} # Return empty dict instead of None
         
         # Check if primary event column exists, otherwise try fallback
-        current_event_col_to_use = event_col_name_stripped
+        current_event_col_to_use = event_col_name
         if current_event_col_to_use not in data.columns:
             if fallback_event_col_name:
-                fallback_event_col_name_stripped = fallback_event_col_name.strip()
-                if fallback_event_col_name_stripped in data.columns:
-                    print(f"Warning: Primary event column '{current_event_col_to_use}' not found. Using fallback event column '{fallback_event_col_name_stripped}'.")
-                    current_event_col_to_use = fallback_event_col_name_stripped
+                if fallback_event_col_name in data.columns:
+                    print(f"Warning: Primary event column '{current_event_col_to_use}' not found. Using fallback event column '{fallback_event_col_name}'.")
+                    current_event_col_to_use = fallback_event_col_name
                 else:
-                    print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name_stripped}' is also not found.")
+                    print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name}' is also not found.")
                     print(f"Available columns: {data.columns.tolist()}")
                     return {} # Return empty dict instead of None
             else:
@@ -280,22 +288,22 @@ def analyze_jitter(file_path, column_name_to_analyze, event_col_name, start_even
     """
     try:
         data = pd.read_csv(file_path)
-        data.columns = data.columns.str.strip() # Strip whitespace from column names
+        # Apply the cleaning function to all column names in the DataFrame
+        data.columns = [_clean_header(col) for col in data.columns]
         # print(f"Successfully loaded {file_path}")
 
-        column_name_to_analyze_stripped = column_name_to_analyze.strip()
-        event_col_name_stripped = event_col_name.strip()
+        # The column names to analyze are already cleaned by _determine_analysis_parameters
+        # No need to strip or clean them again here.
 
         # Check if primary event column exists, otherwise try fallback
-        current_event_col_to_use = event_col_name_stripped
+        current_event_col_to_use = event_col_name
         if current_event_col_to_use not in data.columns:
             if fallback_event_col_name:
-                fallback_event_col_name_stripped = fallback_event_col_name.strip()
-                if fallback_event_col_name_stripped in data.columns:
-                    print(f"Warning: Primary event column '{current_event_col_to_use}' not found. Using fallback event column '{fallback_event_col_name_stripped}'.")
-                    current_event_col_to_use = fallback_event_col_name_stripped
+                if fallback_event_col_name in data.columns:
+                    print(f"Warning: Primary event column '{current_event_col_to_use}' not found. Using fallback event column '{fallback_event_col_name}'.")
+                    current_event_col_to_use = fallback_event_col_name
                 else:
-                    print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name_stripped}' is also not found.")
+                    print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name}' is also not found.")
                     print(f"Available columns: {data.columns.tolist()}")
                     return {} # Return empty dict instead of None
             else:
@@ -303,12 +311,12 @@ def analyze_jitter(file_path, column_name_to_analyze, event_col_name, start_even
                 print(f"Available columns: {data.columns.tolist()}")
                 return {} # Return empty dict instead of None
 
-        if column_name_to_analyze_stripped not in data.columns:
-            print(f"\nError: Column '{column_name_to_analyze_stripped}' not found in the CSV file.")
+        if column_name_to_analyze not in data.columns:
+            print(f"\nError: Column '{column_name_to_analyze}' not found in the CSV file.")
             return {} # Return empty dict instead of None
         
         # Calculate mean of the entire column
-        overall_jitter_data = data[column_name_to_analyze_stripped].dropna()
+        overall_jitter_data = data[column_name_to_analyze].dropna()
 
         if not overall_jitter_data.empty:
             mean_val = overall_jitter_data.mean()
@@ -331,22 +339,22 @@ def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start
     """
     try:
         data = pd.read_csv(file_path)
-        data.columns = data.columns.str.strip() # Strip whitespace from column names
+        # Apply the cleaning function to all column names in the DataFrame
+        data.columns = [_clean_header(col) for col in data.columns]
         # print(f"Successfully loaded {file_path}")
 
-        column_name_to_analyze_stripped = column_name_to_analyze.strip()
-        event_col_name_stripped = event_col_name.strip()
+        # The column names to analyze are already cleaned by _determine_analysis_parameters
+        # No need to strip or clean them again here.
 
         # Check if primary event column exists, otherwise try fallback
-        current_event_col_to_use = event_col_name_stripped
+        current_event_col_to_use = event_col_name
         if current_event_col_to_use not in data.columns:
             if fallback_event_col_name:
-                fallback_event_col_name_stripped = fallback_event_col_name.strip()
-                if fallback_event_col_name_stripped in data.columns:
-                    print(f"Warning: Primary event column '{current_event_col_to_use}' not found. Using fallback event column '{fallback_event_col_name_stripped}'.")
-                    current_event_col_to_use = fallback_event_col_name_stripped
+                if fallback_event_col_name in data.columns:
+                    print(f"Warning: Primary event column '{current_event_col_to_use}' not found. Using fallback event column '{fallback_event_col_name}'.")
+                    current_event_col_to_use = fallback_event_col_name
                 else:
-                    print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name_stripped}' is also not found.")
+                    print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name}' is also not found.")
                     print(f"Available columns: {data.columns.tolist()}")
                     return {} # Return empty dict instead of None
             else:
@@ -354,12 +362,12 @@ def analyze_error_ratio(file_path, column_name_to_analyze, event_col_name, start
                 print(f"Available columns: {data.columns.tolist()}")
                 return {} # Return empty dict instead of None
 
-        if column_name_to_analyze_stripped not in data.columns:
-            print(f"\nError: Column '{column_name_to_analyze_stripped}' not found in the CSV file.")
+        if column_name_to_analyze not in data.columns:
+            print(f"\nError: Column '{column_name_to_analyze}' not found in the CSV file.")
             return {} # Return empty dict instead of None
         
         # Calculate mean of the entire column
-        overall_error_ratio_data = data[column_name_to_analyze_stripped].dropna()
+        overall_error_ratio_data = data[column_name_to_analyze].dropna()
 
         if not overall_error_ratio_data.empty:
             mean_val = overall_error_ratio_data.mean()
@@ -383,21 +391,21 @@ def analyze_web_page_load_time(file_path, event_col_name, start_event_str, end_e
     """
     try:
         data = pd.read_csv(file_path)
-        data.columns = data.columns.str.strip() # Strip whitespace from column names
+        # Apply the cleaning function to all column names in the DataFrame
+        data.columns = [_clean_header(col) for col in data.columns]
 
-        duration_col_name_stripped = duration_col_name.strip()
-        event_col_name_stripped = event_col_name.strip()
-
+        # The column names to analyze are already cleaned by _determine_analysis_parameters
+        # No need to strip or clean them again here.
+        
         # Check if primary event column exists, otherwise try fallback
-        current_event_col_to_use = event_col_name_stripped
+        current_event_col_to_use = event_col_name
         if current_event_col_to_use not in data.columns:
             if fallback_event_col_name:
-                fallback_event_col_name_stripped = fallback_event_col_name.strip()
-                if fallback_event_col_name_stripped in data.columns:
-                    print(f"Warning: Primary event column '{current_event_col_to_use}' not found. Using fallback event column '{fallback_event_col_name_stripped}'.")
-                    current_event_col_to_use = fallback_event_col_name_stripped
+                if fallback_event_col_name in data.columns:
+                    print(f"Warning: Primary event column '{current_event_col_to_use}' not found. Using fallback event column '{fallback_event_col_name}'.")
+                    current_event_col_to_use = fallback_event_col_name
                 else:
-                    print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name_stripped}' is also not found.")
+                    print(f"\nError: Primary event column '{current_event_col_to_use}' not found, and fallback event column '{fallback_event_col_name}' is also not found.")
                     print(f"Available columns: {data.columns.tolist()}")
                     return {} # Return empty dict instead of None
             else:
@@ -405,8 +413,8 @@ def analyze_web_page_load_time(file_path, event_col_name, start_event_str, end_e
                 print(f"Available columns: {data.columns.tolist()}")
                 return {} # Return empty dict instead of None
 
-        if duration_col_name_stripped not in data.columns:
-            print(f"\nError: Duration column '{duration_col_name_stripped}' not found in the CSV file.")
+        if duration_col_name not in data.columns:
+            print(f"\nError: Duration column '{duration_col_name}' not found in the CSV file.")
             print(f"Available columns: {data.columns.tolist()}")
             return {} # Return empty dict instead of None
         
@@ -443,18 +451,18 @@ def analyze_web_page_load_time(file_path, event_col_name, start_event_str, end_e
                     # Check if timeout_idx + 1 is a valid index
                     if timeout_idx + 1 < len(filtered_data):
                         duration_row_idx = timeout_idx + 1
-                        duration_val = filtered_data.loc[duration_row_idx, duration_col_name_stripped]
+                        duration_val = filtered_data.loc[duration_row_idx, duration_col_name]
                         
                         if pd.notna(duration_val): # Check if the value is not NaN
                             total_durations.append(duration_val)
         
         if not total_durations:
-            print(f"\nNo valid '{start_event_str}' to '{end_event_str}' intervals with '{duration_col_name_stripped}' data found after 'TIMEOUT_Idle' events.")
+            print(f"\nNo valid '{start_event_str}' to '{end_event_str}' intervals with '{duration_col_name}' data found after 'TIMEOUT_Idle' events.")
             return {} # Return empty dict instead of None
 
         durations_series = pd.Series(total_durations)
         
-        stats = _calculate_statistics(durations_series, duration_col_name_stripped)
+        stats = _calculate_statistics(durations_series, duration_col_name)
         if stats:
             stats["Number of Intervals"] = len(total_durations)
         return stats
