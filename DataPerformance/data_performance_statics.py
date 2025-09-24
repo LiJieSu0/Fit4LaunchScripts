@@ -52,8 +52,12 @@ def _determine_analysis_parameters(file_path):
     
     # Determine network type (5G/LTE) from the full file path
     file_path_lower = file_path.lower()
-    if "5g" in file_path_lower:
-        params["network_type_detected"] = "5G"
+    if "5g nsa" in file_path_lower:
+        params["network_type_detected"] = "5G NSA"
+    elif "5g sa" in file_path_lower:
+        params["network_type_detected"] = "5G SA"
+    elif "5g" in file_path_lower:
+        params["network_type_detected"] = "5G" # Generic 5G if SA/NSA not specified
     elif "lte" in file_path_lower:
         params["network_type_detected"] = "LTE"
 
@@ -73,20 +77,21 @@ def _determine_analysis_parameters(file_path):
     if params["protocol_type_detected"] == "HTTP":
         params["event_col"] = "[Call Test] [HTTP Transfer] HTTP Transfer Call Event"
         if params["analysis_direction_detected"] == "DL":
-            params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application DL TP" if params["network_type_detected"] == "5G" else "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
             params["start_event"] = "Download Started"
             params["end_event"] = "Download Ended"
+            if params["network_type_detected"] in ["5G", "5G NSA", "5G SA"]:
+                params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application DL TP"
+                params["column_to_analyze_throughput_fallback"] = "[NR5G] [(NR + LTE)] [Throughput] PDSCH TP" # Fallback for 5G DL HTTP
+            else: # LTE
+                params["column_to_analyze_throughput"] = "[LTE] [Data Throughput] [Downlink (All)] [PDSCH] PDSCH TP (Total)"
         elif params["analysis_direction_detected"] == "UL":
-            # Try specific 5G UL TP column first
-            # Try specific 5G UL TP column first, with a fallback
-            if params["network_type_detected"] == "5G":
-                params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application UL TP"
-                params["column_to_analyze_throughput_fallback"] = "[NR5G] [(NR + LTE)] [Throughput] PUSCH TP" # Added fallback for 5G UL HTTP
-            else: # Fallback for LTE or if 5G specific not found
-                params["column_to_analyze_throughput"] = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
-            
             params["start_event"] = "Upload Started"
             params["end_event"] = "Upload Ended"
+            if params["network_type_detected"] in ["5G", "5G NSA", "5G SA"]:
+                params["column_to_analyze_throughput"] = "[Call Test] [Throughput] Application UL TP"
+                params["column_to_analyze_throughput_fallback"] = "[NR5G] [(NR + LTE)] [Throughput] PUSCH TP" # Fallback for 5G UL HTTP
+            else: # LTE
+                params["column_to_analyze_throughput"] = "[LTE] [Data Throughput] [Uplink (All)] [PUSCH] PUSCH TP (Total)"
     elif params["protocol_type_detected"] == "UDP":
         params["event_col"] = "[Event][Data call test detail events]IPERF Call Event" # Primary event column
         params["event_col_fallback"] = "[Event] [Data call test detail events] IPERF Call Event" # Fallback event column
