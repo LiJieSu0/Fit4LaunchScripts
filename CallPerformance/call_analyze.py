@@ -1,6 +1,8 @@
 import pandas as pd
 import sys
 import re
+import os
+from collections import defaultdict
 
 def _clean_header(header):
     """
@@ -11,18 +13,15 @@ def _clean_header(header):
     # Strip leading/trailing whitespace
     return cleaned_header.strip()
 
-import os
-from collections import defaultdict
-
 def analyze_call_data(file_path):
     try:
         df = pd.read_csv(file_path)
     except FileNotFoundError:
         print(f"Error: File not found at {file_path}")
-        return None, None, None
+        return None, None, None, None, None
     except Exception as e:
         print(f"Error reading CSV file: {e}")
-        return None, None, None
+        return None, None, None, None, None
 
     # Apply the cleaning function to all column names in the DataFrame
     df.columns = [_clean_header(col) for col in df.columns]
@@ -74,7 +73,6 @@ def analyze_call_data(file_path):
 
     # The following statistics are temporarily removed as per user request:
     # Fail attempts
-    # Mean setup Time
     # Success Rate
 
     # print(f"Analysis for file: {file_path}") # Commented out
@@ -82,6 +80,8 @@ def analyze_call_data(file_path):
 
     call_result_distribution = {}
     rat_distribution = {} # Initialize rat_distribution
+    total_setup_duration = 0
+    setup_duration_count = 0
     
     # New statistic: Call Result Distribution for 'Voice' Call Type
     if call_test_call_result_col in df_filtered.columns and call_test_call_type_col in df_filtered.columns:
@@ -101,20 +101,30 @@ def analyze_call_data(file_path):
         voice_calls_df = df_filtered[df_filtered[call_test_call_type_col].astype(str).str.contains('Voice', na=False)]
         if not voice_calls_df.empty:
             rat_distribution = voice_calls_df[call_test_real_service_col].value_counts().to_dict()
+
+    # New statistic: Mean setup Time
+    if sip_setup_duration_col in df_filtered.columns:
+        # Convert to numeric, coercing errors to NaN, then drop NaNs
+        setup_durations = df_filtered[sip_setup_duration_col].apply(pd.to_numeric, errors='coerce').dropna()
+        if not setup_durations.empty:
+            total_setup_duration = setup_durations.sum()
+            setup_duration_count = setup_durations.count()
     
-    return total_attempts, call_result_distribution, rat_distribution
+    return total_attempts, call_result_distribution, rat_distribution, total_setup_duration, setup_duration_count
 
 def analyze_directory(directory_path):
     total_attempts_sum = 0
     aggregated_call_results = defaultdict(int)
     aggregated_rat_distribution = defaultdict(int)
+    aggregated_total_setup_duration = 0
+    aggregated_setup_duration_count = 0
     
     for root, _, files in os.walk(directory_path):
         for file in files:
             if file.endswith('.csv'):
                 file_path = os.path.join(root, file)
                 print(f"Analyzing file: {file_path}")
-                total_attempts, call_result_distribution, rat_distribution = analyze_call_data(file_path)
+                total_attempts, call_result_distribution, rat_distribution, total_setup_duration, setup_duration_count = analyze_call_data(file_path)
                 
                 if total_attempts is not None:
                     total_attempts_sum += total_attempts
@@ -126,6 +136,11 @@ def analyze_directory(directory_path):
                 if rat_distribution is not None:
                     for rat, count in rat_distribution.items():
                         aggregated_rat_distribution[rat] += count
+                
+                if total_setup_duration is not None:
+                    aggregated_total_setup_duration += total_setup_duration
+                if setup_duration_count is not None:
+                    aggregated_setup_duration_count += setup_duration_count
                         
     print("\n--- Aggregated Analysis Results ---")
     print(f"Total attempts (Voice calls, excluding 603 Declined sections) across all files: {total_attempts_sum}")
@@ -144,13 +159,20 @@ def analyze_directory(directory_path):
     else:
         print("No 'Voice' call types found in the aggregated data for RAT distribution.")
 
+    print("\nAggregated Mean Setup Time (excluding 603 Declined sections):")
+    if aggregated_setup_duration_count > 0:
+        aggregated_mean_setup_time = aggregated_total_setup_duration / aggregated_setup_duration_count
+        print(f"  {aggregated_mean_setup_time:.2f} (seconds)")
+    else:
+        print("  No valid setup durations found for aggregation.")
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python call_analyze.py <path_to_csv_file_or_directory>")
     else:
         input_path = sys.argv[1]
         if os.path.isfile(input_path):
-            total_attempts, call_result_distribution, rat_distribution = analyze_call_data(input_path)
+            total_attempts, call_result_distribution, rat_distribution, total_setup_duration, setup_duration_count = analyze_call_data(input_path)
             print(f"Analysis for file: {input_path}")
             print(f"Total attempts (Voice calls, excluding 603 Declined sections): {total_attempts}")
             if call_result_distribution:
@@ -166,6 +188,13 @@ if __name__ == "__main__":
                     print(f"  {rat}: {count}")
             else:
                 print("\nNo 'Voice' call types found in the filtered data for RAT distribution.")
+            
+            print("\nMean Setup Time (excluding 603 Declined sections):")
+            if setup_duration_count > 0:
+                mean_setup_time = total_setup_duration / setup_duration_count
+                print(f"  {mean_setup_time:.2f} (seconds)")
+            else:
+                print("  No valid setup durations found.")
         elif os.path.isdir(input_path):
             analyze_directory(input_path)
         else:
