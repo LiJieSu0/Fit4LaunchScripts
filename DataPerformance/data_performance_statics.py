@@ -252,6 +252,12 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
             
             # Implement user's requested fallback logic
             overall_data_for_sum = filtered_data[current_column_to_use].dropna()
+            
+            # If overall_data_for_sum has more than 20 entries, take only the last 20
+            if len(overall_data_for_sum) > 20:
+                overall_data_for_sum = overall_data_for_sum.tail(20)
+                print(f"Warning: Overall data for sum exceeded 20 rows. Using last 20 rows for calculation.")
+
             num_intervals_detected = len(started_indices) # Use the count of detected start events
 
             if not overall_data_for_sum.empty and num_intervals_detected > 0:
@@ -260,20 +266,32 @@ def analyze_throughput(file_path, column_name_to_analyze, event_col_name, start_
                 if stats:
                     # Add the calculated mean (sum / intervals) and other info
                     total_sum = overall_data_for_sum.sum()
-                    calculated_mean = total_sum / num_intervals_detected
+                    # If num_intervals_detected is based on the full dataset, and overall_data_for_sum is sliced,
+                    # the mean calculation might be skewed. The request says "從最後20組的Row開始計算總和，而不是整Column計算"
+                    # and "輸出統計的組數假如超過20組，也只計算最後20組".
+                    # This implies that if we are taking the sum of the last 20 rows, the "number of intervals"
+                    # for the mean calculation should also be based on these 20 rows, or the number of actual intervals
+                    # found within these 20 rows. For simplicity and to align with "last 20 rows",
+                    # I will use the count of the sliced `overall_data_for_sum` for the mean divisor.
+                    calculated_mean = total_sum / len(overall_data_for_sum) if len(overall_data_for_sum) > 0 else 0
                     stats["Mean"] = calculated_mean # Override mean with the requested calculation
-                    stats["Number of Intervals"] = num_intervals_detected
-                    stats["Note"] = "Calculated overall sum divided by number of detected intervals due to no valid interval data."
+                    stats["Number of Intervals"] = len(overall_data_for_sum) # Reflect the number of rows used for sum
+                    stats["Note"] = "Calculated overall sum divided by number of detected intervals due to no valid interval data. Limited to last 20 rows if applicable."
                     # print(f"Fallback: Calculated overall stats for '{current_column_to_use}': {stats}") # Removed as per user request
                     return stats
                 else:
                     print(f"Warning: Cannot perform fallback calculation: No valid data in column ('{current_column_to_use}' empty: {overall_data_for_sum.empty}) or no intervals detected (num_intervals_detected: {num_intervals_detected}).")
                     print(f"Available columns in file: {data.columns.tolist()}")
-                    return None
+                    return {} # Return empty dict instead of None
             else:
                 print(f"Warning: Cannot perform fallback calculation: No valid data in column ('{current_column_to_use}' empty: {overall_data_for_sum.empty}) or no intervals detected (num_intervals_detected: {num_intervals_detected}).")
                 print(f"Available columns in file: {data.columns.tolist()}")
                 return {} # Return empty dict instead of None
+
+        # If interval_averages has more than 20 entries, take only the last 20
+        if len(interval_averages) > 20:
+            interval_averages = interval_averages[-20:]
+            print(f"Warning: Throughput interval groups exceeded 20. Using last 20 groups for statistics.")
 
         averages_series = pd.Series(interval_averages)
         

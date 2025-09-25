@@ -1,6 +1,8 @@
 --- Discovered Raw Data Paths (CSV files with their two parent directories): ---
-- 5G AUTO DP\5G Auto Data Test Drive\DUT UDP DL.csv
-- 5G AUTO DP\5G Auto Data Test Drive\REF UDP DL.csv
+- 5G AUTO DP\5G Auto Data Test Drive___need to calculate ping\DUT UDP DL.csv
+- 5G AUTO DP\5G Auto Data Test Drive___need to calculate ping\REF UDP DL.csv
+- 5G AUTO DP\5G Auto Data Test MHS Drive___need to calculate ping\DUT MHS UDP Drive.csv
+- 5G AUTO DP\5G Auto Data Test MHS Drive___need to calculate ping\REF MHS UDP Drive.csv
 - 5G Auto Data Test MHS Stationary Location 1 DL\Multi Stream HTTP Download for 30 seconds\DUT MS HTTP DL for 30 seconds.csv
 - 5G Auto Data Test MHS Stationary Location 1 DL\Multi Stream HTTP Download for 30 seconds\REF MS HTTP DL for 30 seconds.csv
 - 5G Auto Data Test MHS Stationary Location 1 DL\Single Stream HTTP Download for 60 seconds-test 2\DUT SS HTTP DL for 60 seconds.csv
