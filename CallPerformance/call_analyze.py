@@ -1,5 +1,15 @@
 import pandas as pd
 import sys
+import re
+
+def _clean_header(header):
+    """
+    Removes content within square brackets (tags) and strips leading/trailing whitespace from a header string.
+    """
+    # Remove content within square brackets, including the brackets themselves
+    cleaned_header = re.sub(r'\[.*?\]', '', header)
+    # Strip leading/trailing whitespace
+    return cleaned_header.strip()
 
 def analyze_call_data(file_path):
     try:
@@ -11,16 +21,23 @@ def analyze_call_data(file_path):
         print(f"Error reading CSV file: {e}")
         return
 
-    # 1. Total attempts: Count 'INVITE' in '[Packet Data] [SIP] Request Method'
-    total_attempts = df['[Packet Data] [SIP] Request Method'].astype(str).str.contains('INVITE').sum()
+    # Apply the cleaning function to all column names in the DataFrame
+    df.columns = [_clean_header(col) for col in df.columns]
 
-    # 2. Success initiation: Count 'Setup Success' in '[Event] Voice Call Event'
-    success_initiation = df['[Event] Voice Call Event'].astype(str).str.contains('Setup Success').sum()
+    # Define cleaned header names
+    packet_data_sip_request_method_col = _clean_header('[Packet Data] [SIP] Request Method')
+    event_voice_call_event_col = _clean_header('[Event] Voice Call Event')
+    sip_setup_duration_col = _clean_header('[Call Test] [VoNR VoLTE] [Duration] SIP Setup Duration (Invite~200OK)')
 
-    # 3. Mean setup Time: Average of '[Call Test] [VoNR VoLTE] [Duration] SIP Setup Duration (Invite~200OK)'
+    # 1. Total attempts: Count 'INVITE' in cleaned '[Packet Data] [SIP] Request Method'
+    total_attempts = df[packet_data_sip_request_method_col].astype(str).str.contains('INVITE').sum()
+
+    # 2. Success initiation: Count 'Setup Success' in cleaned '[Event] Voice Call Event'
+    success_initiation = df[event_voice_call_event_col].astype(str).str.contains('Setup Success').sum()
+
+    # 3. Mean setup Time: Average of cleaned '[Call Test] [VoNR VoLTE] [Duration] SIP Setup Duration (Invite~200OK)'
     # Convert to numeric, coercing errors to NaN, then drop NaNs before calculating mean
-    setup_duration_col = '[Call Test] [VoNR VoLTE] [Duration] SIP Setup Duration (Invite~200OK)'
-    mean_setup_time = df[setup_duration_col].apply(pd.to_numeric, errors='coerce').dropna().mean()
+    mean_setup_time = df[sip_setup_duration_col].apply(pd.to_numeric, errors='coerce').dropna().mean()
 
     # 4. Success Rate: success initiation / total attempts
     success_rate = (success_initiation / total_attempts) * 100 if total_attempts > 0 else 0
