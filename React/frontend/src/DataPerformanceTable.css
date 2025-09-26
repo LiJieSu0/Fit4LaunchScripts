@@ -1,0 +1,78 @@
+.data-performance-table-container {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.data-performance-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.data-performance-table th,
+.data-performance-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.data-performance-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.header-cell {
+  background-color: #e0e0e0;
+}
+
+.summary-header {
+  background-color: #c0c0c0;
+}
+
+.kpi-header {
+  background-color: #d0d0d0;
+}
+
+.kpi-sub-header {
+  background-color: #e0e0e0;
+}
+
+.du-ref-header {
+  background-color: #f0f0f0;
+  font-size: 0.9em;
+}
+
+.test-name-cell {
+  text-align: left;
+  font-weight: bold;
+}
+
+.data-cell {
+  background-color: #ffffff;
+}
+
+@media print {
+  .table-chart-container {
+    display: block; /* Revert to default block display */
+  }
+
+  .charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin-top: 20px; /* Add some space between table and charts */
+  }
+
+  .BarChart-container {
+    flex: 1 1 48%; /* Allow charts to grow/shrink, take up ~48% width for side-by-side */
+    max-width: 48%; /* Ensure two charts fit side-by-side with some spacing */
+    margin: 1%; /* Add some margin between charts */
+    page-break-inside: avoid; /* Prevent charts from breaking across pages */
+  }
+
+  .table-container { /* This is the div wrapping the table */
+    width: 100%; /* Ensure table takes full width */
+    page-break-inside: avoid; /* Prevent table from breaking across pages */
+  }
+}

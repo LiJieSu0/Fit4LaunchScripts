@@ -1,0 +1,35 @@
+.ping-statistics-table-container {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.ping-statistics-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.ping-statistics-table th,
+.ping-statistics-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.ping-statistics-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.ping-statistics-table .header-cell {
+  background-color: #c0c0c0;
+}
+
+.ping-statistics-table .test-name-cell {
+  text-align: left;
+  font-weight: bold;
+}
+
+.ping-statistics-table .data-cell {
+  background-color: #ffffff;
+}

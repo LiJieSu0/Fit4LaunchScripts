@@ -1,0 +1,29 @@
+.ping-bar-charts-container {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.ping-bar-charts-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.chart-item {
+  width: 100%;
+  max-width: 400px; /* Limit individual chart width */
+  height: 300px; /* Set a fixed height for consistency */
+  border: 1px solid #ddd;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -20,10 +20,11 @@ const extractTestCases = (data, currentPath = []) => {
       } else if (key.toLowerCase().includes("ref")) {
         refObject = data[key];
       }
-      if (key.toLowerCase().includes("ping")) {
-        isPingTest = true;
+        // Check for Ping RTT within DUT or REF objects
+        if (dutObject["Ping RTT"] || refObject["Ping RTT"]) {
+          isPingTest = true;
+        }
       }
-    }
     if (Object.keys(dutObject).length > 0 || Object.keys(refObject).length > 0) {
       extracted.push({
         name: currentPath.join(" - "),
@@ -44,7 +45,7 @@ const extractTestCases = (data, currentPath = []) => {
 };
 
 const DataPerformanceReport = () => {
-  const renderStatisticsTable = (title, data, isPing = false) => {
+  const renderStatisticsTable = (title, data, metricsToDisplay) => { // Added metricsToDisplay prop
     if (!data || Object.keys(data).length === 0) {
       return <p className="text-gray-600">No comparable data found for this subdirectory.</p>;
     }
@@ -52,15 +53,15 @@ const DataPerformanceReport = () => {
     const dutData = data.DUT || {};
     const refData = data.REF || {};
 
-    const metricsToDisplay = isPing 
-      ? ["Ping RTT"] 
-      : ["Throughput", "Jitter", "Error Ratio", "Web Page Load Time"]; // Added Web Page Load Time
+    // metricsToDisplay is now passed as a prop
+    // Removed internal definition of metricsToDisplay
+
     const statOrderMap = {
       "Throughput": ["Mean", "Standard Deviation", "Minimum", "Maximum"],
       "Jitter": ["Mean"],
       "Error Ratio": ["Mean"],
       "Ping RTT": ["Mean", "Standard Deviation", "Minimum", "Maximum"],
-      "Web Page Load Time": ["Mean", "Standard Deviation", "Minimum", "Maximum"], // Added Web Page Load Time stats
+      "Web Page Load Time": ["Mean", "Standard Deviation", "Minimum", "Maximum"],
     };
     const pingStatMap = {
       "Mean": "avg",
@@ -112,19 +113,22 @@ const DataPerformanceReport = () => {
             <tr className="bg-table-header-bg text-table-header-text font-bold">
               <th className="py-2 px-4 border border-table-grid">Metric</th>
               <th className="py-2 px-4 border border-table-grid">Statistic</th>
-              <th className="py-2 px-4 border border-table-grid">DUT Value {isPing ? "(ms)" : (title.includes("Web-Kepler") ? "(s)" : "(Mbps)")}</th>
-              <th className="py-2 px-4 border border-table-grid">REF Value {isPing ? "(ms)" : (title.includes("Web-Kepler") ? "(s)" : "(Mbps)")}</th>
+              <th className="py-2 px-4 border border-table-grid">DUT Value</th>
+              <th className="py-2 px-4 border border-table-grid">REF Value</th>
             </tr>
           </thead>
           <tbody>
             {metricsToDisplay.map((metric, metricIndex) => (
               <React.Fragment key={metric}>
                 {(statOrderMap[metric] || []).map((stat, statIndex) => {
-                  const dutValue = isPing 
-                    ? (metric === "Ping RTT" ? dutData[metric]?.[pingStatMap[stat]] : null)
+                  const isCurrentMetricPing = (metric === "Ping RTT");
+                  const isCurrentMetricWebKepler = (metric === "Web Page Load Time");
+
+                  const dutValue = isCurrentMetricPing 
+                    ? dutData[metric]?.[pingStatMap[stat]]
                     : dutData[metric]?.[stat];
-                  const refValue = isPing 
-                    ? (metric === "Ping RTT" ? refData[metric]?.[pingStatMap[stat]] : null)
+                  const refValue = isCurrentMetricPing 
+                    ? refData[metric]?.[pingStatMap[stat]]
                     : refData[metric]?.[stat];
 
                   let rowMetric = "";
@@ -133,23 +137,29 @@ const DataPerformanceReport = () => {
                   }
 
                   let bgColor = "";
-                  if (stat === "Mean") { // Apply color only to Mean for all metrics
-                    let metricType = "";
-                    if (metric === "Throughput") {
-                      metricType = "throughput";
-                    } else if (metric === "Jitter") {
-                      metricType = "jitter";
-                    } else if (metric === "Ping RTT") {
-                      metricType = "ping_rtt";
-                  } else if (metric === "Web Page Load Time") {
-                    metricType = "web_page_load_time"; // New metric type
-                  } else if (metric === "Error Ratio") {
-                    metricType = "error_ratio"; // New metric type
-                  }
-                  bgColor = getPerformanceColor(dutValue, refValue, metricType);
-                }
+                  let metricType = "";
+                  let unit = "";
 
-                const unit = (metric === "Jitter" || metric === "Ping RTT") ? "ms" : (metric === "Error Ratio" ? "%" : (metric === "Web Page Load Time" ? "s" : ""));
+                  if (metric === "Throughput") {
+                    metricType = "throughput";
+                    unit = "Mbps";
+                  } else if (metric === "Jitter") {
+                    metricType = "jitter";
+                    unit = "ms";
+                  } else if (metric === "Ping RTT") {
+                    metricType = "ping_rtt";
+                    unit = "ms";
+                  } else if (metric === "Web Page Load Time") {
+                    metricType = "web_page_load_time";
+                    unit = "s";
+                  } else if (metric === "Error Ratio") {
+                    metricType = "error_ratio";
+                    unit = "%";
+                  }
+
+                  if (stat === "Mean") { // Apply color only to Mean for all metrics
+                    bgColor = getPerformanceColor(dutValue, refValue, metricType);
+                  }
 
                   // Check if both DUT and REF values are null/undefined/NaN
                   const isDutNA = typeof dutValue !== 'number';
@@ -197,17 +207,41 @@ const DataPerformanceReport = () => {
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
           <h2 className="text-2xl font-bold mb-6 text-blue-700">{categoryName}</h2>
-          {testCases.map(testCase => (
-            <div key={testCase.name} className="report-section">
-              <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
-              <div className="table-chart-container">
-                {renderStatisticsTable(testCase.name, testCase.data, testCase.isPing)}
-                {(Object.keys(testCase.data.DUT).length > 0 || Object.keys(testCase.data.REF).length > 0) && (
-                  <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={testCase.isPing} />
-                )}
+          {testCases.map(testCase => {
+            const dutData = testCase.data.DUT || {};
+            const refData = testCase.data.REF || {};
+
+            const hasThroughputData = dutData.Throughput || refData.Throughput;
+            const hasJitterData = dutData.Jitter || refData.Jitter;
+            const hasErrorRatioData = dutData["Error Ratio"] || refData["Error Ratio"];
+            const hasWebPageLoadTimeData = dutData["Web Page Load Time"] || refData["Web Page Load Time"];
+            const hasPingRttData = dutData["Ping RTT"] || refData["Ping RTT"];
+
+            let metricsToDisplayForTable = [];
+            if (hasThroughputData || hasJitterData || hasErrorRatioData || hasWebPageLoadTimeData) {
+              metricsToDisplayForTable.push("Throughput", "Jitter", "Error Ratio", "Web Page Load Time");
+            }
+            if (hasPingRttData) {
+              metricsToDisplayForTable.push("Ping RTT");
+            }
+
+            return (
+              <div key={testCase.name} className="report-section">
+                <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
+                <div className="table-chart-container">
+                  {renderStatisticsTable(testCase.name, testCase.data, metricsToDisplayForTable)}
+                  <div className="charts-container">
+                    {(hasThroughputData || hasJitterData || hasErrorRatioData || hasWebPageLoadTimeData) && (
+                      <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={false} />
+                    )}
+                    {hasPingRttData && (
+                      <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={true} />
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ))}
     </>
