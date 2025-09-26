@@ -41,6 +41,7 @@ def _determine_analysis_parameters(file_path):
         "protocol_type_detected": None,
         "network_type_detected": None,
         "device_type_detected": "Unknown",
+        "analysis_type_detected": "Unknown", # Added for analysis type
         "column_to_analyze_throughput": None,
         "column_to_analyze_throughput_fallback": None, # Added for fallback throughput column
         "column_to_analyze_throughput_third_fallback": None, # Added for third fallback throughput column
@@ -87,6 +88,12 @@ def _determine_analysis_parameters(file_path):
     elif "lte" in file_path_lower:
         params["network_type_detected"] = "LTE"
 
+    # Determine analysis type based on directory name
+    if "5g vonr mrab stationary" in file_path_lower:
+        params["analysis_type_detected"] = "mrab_performance"
+    elif "5g auto dp" in file_path_lower or "5g nsa dp" in file_path_lower:
+        params["analysis_type_detected"] = "data_performance"
+
     print(f"DEBUG: _determine_analysis_parameters - 'dut' in file_name: {'dut' in file_name}")
     print(f"DEBUG: _determine_analysis_parameters - 'ref' in file_name: {'ref' in file_name}")
 
@@ -101,7 +108,12 @@ def _determine_analysis_parameters(file_path):
     # If essential parameters are not detected, return None
     # For WEB_PAGE, analysis_direction_detected is not strictly necessary as it's a single metric
     # For PING, analysis_direction_detected is not strictly necessary as it's a single metric (RTT)
-    if params["protocol_type_detected"] not in ["WEB_PAGE", "PING"] and (not params["analysis_direction_detected"] or not params["protocol_type_detected"] or not params["network_type_detected"]):
+    # For MRAB, protocol_type_detected and analysis_direction_detected are not strictly necessary as it's a specific analysis
+    if params["analysis_type_detected"] == "mrab_performance":
+        # Only need network type and device type for MRAB
+        if not params["network_type_detected"] or not params["device_type_detected"]:
+            return None
+    elif params["protocol_type_detected"] not in ["WEB_PAGE", "PING"] and (not params["analysis_direction_detected"] or not params["protocol_type_detected"] or not params["network_type_detected"]):
         return None
     elif params["protocol_type_detected"] == "WEB_PAGE" and (not params["protocol_type_detected"] or not params["network_type_detected"]):
         return None

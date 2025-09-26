@@ -1,12 +1,12 @@
 --- Discovered Raw Data Paths (CSV files with their two parent directories): ---
-- 5G AUTO DP\5G Auto Data Test Drive___need to calculate ping\DUT UDP DL.csv
-- 5G AUTO DP\5G Auto Data Test Drive___need to calculate ping\REF UDP DL.csv
-- 5G AUTO DP\5G Auto Data Test MHS Drive___need to calculate ping\DUT MHS UDP Drive.csv
-- 5G AUTO DP\5G Auto Data Test MHS Drive___need to calculate ping\REF MHS UDP Drive.csv
+- 5G AUTO DP\5G Auto Data Test Drive\DUT UDP DL.csv
+- 5G AUTO DP\5G Auto Data Test Drive\REF UDP DL.csv
+- 5G AUTO DP\5G Auto Data Test MHS Drive\DUT MHS UDP Drive.csv
+- 5G AUTO DP\5G Auto Data Test MHS Drive\REF MHS UDP Drive.csv
 - 5G Auto Data Test MHS Stationary Location 1 DL\Multi Stream HTTP Download for 30 seconds\DUT MS HTTP DL for 30 seconds.csv
 - 5G Auto Data Test MHS Stationary Location 1 DL\Multi Stream HTTP Download for 30 seconds\REF MS HTTP DL for 30 seconds.csv
-- 5G Auto Data Test MHS Stationary Location 1 DL\Single Stream HTTP Download for 60 seconds-test 2\DUT SS HTTP DL for 60 seconds.csv
-- 5G Auto Data Test MHS Stationary Location 1 DL\Single Stream HTTP Download for 60 seconds-test 2\REF SS HTTP DL for 60 seconds.csv
+- 5G Auto Data Test MHS Stationary Location 1 DL\Single Stream HTTP Download for 60 seconds\DUT SS HTTP DL for 60 seconds.csv
+- 5G Auto Data Test MHS Stationary Location 1 DL\Single Stream HTTP Download for 60 seconds\REF SS HTTP DL for 60 seconds.csv
 - 5G Auto Data Test MHS Stationary Location 1 DL\UDP Download Task at 200 Mbps for 10 seconds\DUT UDP DL 200 Mbps for 10S.csv
 - 5G Auto Data Test MHS Stationary Location 1 DL\UDP Download Task at 200 Mbps for 10 seconds\REF UDP DL 200 Mbps for 10S.csv
 - 5G Auto Data Test MHS Stationary Location 1 DL\UDP Download Task at 400 Mbps for 10 seconds\DUT UDP DL 400 Mbps for 10S.csv
@@ -119,3 +119,5 @@
 - 5G NSA Data Test Stationary Poor RF UL\UDP Upload Task at 10 Mbps for 10 seconds\ref_5G NSA_UDP Upload Task at 10 Mbps for 10 seconds_Poor.csv
 - 5G NSA Data Test Stationary Poor RF UL\UDP Upload Task at 20 Mbps for 10 seconds\_20250914_144028_CH01_TMO-dut_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_Poor Coverage_DA Test.csv
 - 5G NSA Data Test Stationary Poor RF UL\UDP Upload Task at 20 Mbps for 10 seconds\_20250914_144028_CH02_TMO-ref_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_Poor Coverage_DA Test.csv
+- 5G VoNR MRAB Stationary\DUT MRAB.csv
+- 5G VoNR MRAB Stationary\REF MRAB.csv
