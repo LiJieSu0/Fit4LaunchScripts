@@ -124,10 +124,10 @@ def analyze_grouped_intervals(all_intervals_with_lines):
         group_name = group_labels.get(group_key, f"Group {group_key}") # Get the descriptive name
         if not sums_in_group:
             results[group_name] = {
-                "Average of Interval Sums": None,
-                "Max of Interval Sums": None,
-                "Min of Interval Sums": None,
-                "Standard Deviation of Interval Sums": None
+                "Mean": None,
+                "Maximum": None,
+                "Minimum": None,
+                "Standard Deviation": None
             }
             continue
 
@@ -138,10 +138,10 @@ def analyze_grouped_intervals(all_intervals_with_lines):
         std_dev_of_sums = np.std(sums_in_group)
 
         results[group_name] = {
-            "Average of Interval Sums": average_of_sums,
-            "Max of Interval Sums": maximum_of_sums,
-            "Min of Interval Sums": minimum_of_sums,
-            "Standard Deviation of Interval Sums": std_dev_of_sums
+            "Mean": average_of_sums,
+            "Maximum": maximum_of_sums,
+            "Minimum": minimum_of_sums,
+            "Standard Deviation": std_dev_of_sums
         }
     return results
 
