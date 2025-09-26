@@ -6,7 +6,7 @@
   body {
     background-color: red !important; /* Temporary: to check if print.css is loading */
     margin: 10px !important;
-    padding-top: 120px !important; /* Padding to clear fixed header on every page */
+    padding-top: 20px !important; /* Reduced padding for print top margin */
     -webkit-print-color-adjust: exact !important; /* Ensures background colors and images are printed */
     print-color-adjust: exact !important;
     min-height: 100vh !important; /* Ensure body takes full viewport height for proper page breaks */
@@ -51,7 +51,7 @@
   .report-section {
     page-break-before: always !important;
     page-break-inside: avoid !important; /* Ensure the section itself doesn't break in the middle */
-    margin-top: 130px !important; /* Default margin for report sections on new pages */
+    margin-top: 10px !important; /* Default margin for report sections on new pages */
   }
 
   /* Ensure the first report section doesn't have a page break before it and has a specific top margin */

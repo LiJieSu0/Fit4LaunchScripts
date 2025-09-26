@@ -77,7 +77,7 @@ th {
 
   body {
     margin: 10px !important;
-    padding-top: 120px !important; /* Padding to clear fixed header on every page */
+    padding-top: 10px !important; /* Padding to clear fixed header on every page */
     -webkit-print-color-adjust: exact !important; /* Ensures background colors and images are printed */
     print-color-adjust: exact !important;
     min-height: 100vh !important; /* Ensure body takes full viewport height for proper page breaks */
@@ -122,7 +122,7 @@ th {
   .report-section {
     page-break-before: always !important;
     page-break-inside: avoid !important; /* Ensure the section itself doesn't break in the middle */
-    margin-top: 120px !important; /* Adjust margin for sections on new pages */
+    margin-top: 10px !important; /* Adjust margin for sections on new pages */
   }
 
   /* Ensure the first report section within a category does not have a page break before it */
