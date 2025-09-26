@@ -8,8 +8,8 @@ function Header() {
           <div className="flex items-center">
             <img src="/logo192.png" alt="ATMCL Logo" className="h-10 mr-4" /> {/* Placeholder for ATMCL logo */}
             <div>
-              <h1 className="text-xl font-bold text-gray-800">Fit4Launch | ATMCL</h1>
-              <p className="text-xs text-gray-600">T-Mobile Device Test Plan: 5G Auto Call Performance Report | Wingtech Plunkett</p>
+              <h1 className="text-xl font-bold text-gray-800">ATMCL Field Performance Test Report</h1>
+              <p className="text-xs text-gray-600">Samsung Galaxy Fold S34</p>
             </div>
           </div>
           <div>

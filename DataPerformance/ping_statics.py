@@ -1,4 +1,14 @@
 import pandas as pd
+import re
+
+def _clean_header(header):
+    """
+    Removes content within square brackets (tags) and strips leading/trailing whitespace from a header string.
+    """
+    # Remove content within square brackets, including the brackets themselves
+    cleaned_header = re.sub(r'\[.*?\]', '', header)
+    # Strip leading/trailing whitespace
+    return cleaned_header.strip()
 
 def calculate_ping_statistics(file_path, device_type=None):
     """
@@ -38,16 +48,19 @@ def calculate_ping_statistics(file_path, device_type=None):
         print(f"Error: An unexpected error occurred while reading {file_path}: {e}")
         return {"min": None, "max": None, "avg": None, "std_dev": None}
 
+    # Apply the cleaning function to all column names in the DataFrame
+    df.columns = [_clean_header(col) for col in df.columns]
+
     rtt_values = []
     in_ping_traffic_block = False
 
     # Dynamically determine column names or indices
-    event_col_name = '[Event] [Data call test detail events] Ping Call Event'
-    rtt_col_name = '[Call Test] [PING] [RTT] RTT'
+    event_col_name = _clean_header('[Event] [Data call test detail events] Ping Call Event')
+    rtt_col_name = _clean_header('[Call Test] [PING] [RTT] RTT')
 
     # Check if original column names exist
     if event_col_name not in df.columns or rtt_col_name not in df.columns:
-        print(f"Warning: Original column names not found in {file_path}. Attempting to infer or use default indices.")
+        print(f"Warning: Cleaned column names not found in {file_path}. Attempting to infer or use default indices.")
         # This is a heuristic. Without knowing the file structure, this is a guess.
         # Assuming event is first column (index 0) and RTT is second (index 1) if no header.
         if df.shape[1] >= 2: # Ensure there are at least two columns

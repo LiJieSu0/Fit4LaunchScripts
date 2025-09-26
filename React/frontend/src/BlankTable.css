@@ -1,0 +1,89 @@
+.blank-table-wrapper {
+  margin: 20px;
+  margin-top: 40px; /* Add some top margin to separate it from previous content */
+  overflow-x: auto; /* Enable horizontal scrolling if table is too wide */
+}
+
+.data-performance-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: black; /* Set default font color to black */
+}
+
+.data-performance-table th,
+.data-performance-table td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+  vertical-align: middle;
+  color: black; /* Ensure all cells have black text */
+}
+
+.du-ref-header {
+  background-color: #f0f0f0; /* Light grey for DU/REF headers */
+  font-size: 10px;
+}
+
+/* Print-specific styles */
+@media print {
+  .blank-table-wrapper {
+    margin: 0;
+    margin-top: 0;
+    overflow-x: visible; /* Ensure table is fully visible when printing */
+    width: auto; /* Allow table to take natural width */
+  }
+
+  .data-performance-table {
+    font-size: 8px; /* Smaller font size for printing */
+    width: 100%; /* Ensure table uses full print width */
+  }
+
+  .data-performance-table th,
+  .data-performance-table td {
+    padding: 2px; /* Reduced padding for printing */
+  }
+
+  .du-ref-header {
+    font-size: 7px; /* Even smaller font for DU/REF headers in print */
+  }
+
+  .summary-header,
+  .kpi-header,
+  .kpi-sub-header,
+  .test-name-cell {
+    font-size: 8px; /* Ensure all headers and test names are smaller */
+    padding-left: 5px; /* Adjust padding for left-aligned cells */
+  }
+}
+
+.summary-header {
+  background-color: #c0ffc0; /* Slightly darker green for main summary header */
+  text-align: left;
+  padding-left: 10px;
+}
+
+.kpi-header {
+  background-color: #c0ffc0; /* Slightly darker green for KPI header */
+}
+
+.kpi-sub-header {
+  background-color: #e0ffe0; /* Light green for KPI sub-headers */
+}
+
+.du-ref-header {
+  background-color: #f0f0f0; /* Light grey for DU/REF headers */
+  font-size: 10px;
+}
+
+.test-name-cell {
+  background-color: #ffe0ff; /* Light pink for test names */
+  text-align: left;
+  font-weight: bold;
+  padding-left: 10px;
+}
+
+.data-cell {
+  background-color: white;
+}

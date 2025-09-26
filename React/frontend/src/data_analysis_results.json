@@ -2,42 +2,54 @@
     "5G AUTO DP": {
         "5G Auto Data Test Drive___need to calculate ping": {
             "DUT UDP DL": {
-                "Ping RTT": {
-                    "min": 29.0,
-                    "max": 922.0,
-                    "avg": 57.90610610610611,
-                    "std_dev": 29.173500038187505
+                "Device Type": "DUT",
+                "Analysis Direction": "DL",
+                "Protocol Type": "UDP",
+                "Network Type": "5G",
+                "Throughput": {
+                    "Mean": 9.781204435636633,
+                    "Standard Deviation": 0.931381287195882,
+                    "Minimum": 5.826606741573033,
+                    "Maximum": 10.000303370786517,
+                    "Number of Intervals": 20
                 },
-                "Device Type": "DUT"
+                "Jitter": {
+                    "Mean": 1.9889436583483404
+                },
+                "Error Ratio": {
+                    "Mean": 3.9628764489323385
+                },
+                "Ping RTT": {
+                    "min": 38.0,
+                    "max": 1052.0,
+                    "avg": 115.558,
+                    "std_dev": 70.44666138434384
+                }
             },
             "REF UDP DL": {
-                "Ping RTT": {
-                    "min": 28.0,
-                    "max": 920.0,
-                    "avg": 40.356750392464676,
-                    "std_dev": 27.234097385621556
+                "Device Type": "REF",
+                "Analysis Direction": "DL",
+                "Protocol Type": "UDP",
+                "Network Type": "5G",
+                "Throughput": {
+                    "Mean": 9.799550080256822,
+                    "Standard Deviation": 0.7161841508617297,
+                    "Minimum": 6.843808988764044,
+                    "Maximum": 10.000685393258427,
+                    "Number of Intervals": 20
                 },
-                "Device Type": "REF"
-            }
-        },
-        "5G Auto Data Test MHS Drive___need to calculate ping": {
-            "DUT MHS UDP Drive": {
-                "Ping RTT": {
-                    "min": 34.0,
-                    "max": 843.0,
-                    "avg": 117.08741594620557,
-                    "std_dev": 58.700794116663204
+                "Jitter": {
+                    "Mean": 1.9068157055214725
                 },
-                "Device Type": "DUT"
-            },
-            "REF MHS UDP Drive": {
-                "Ping RTT": {
-                    "min": 36.0,
-                    "max": 1159.0,
-                    "avg": 98.23293079424059,
-                    "std_dev": 92.95520304132387
+                "Error Ratio": {
+                    "Mean": 2.347114968588957
                 },
-                "Device Type": "REF"
+                "Ping RTT": {
+                    "min": 43.0,
+                    "max": 788.0,
+                    "avg": 148.088,
+                    "std_dev": 106.62866218422886
+                }
             }
         },
         "5G Auto Data Test MHS Stationary Location 1 DL": {
@@ -181,22 +193,28 @@
         "5G Auto Data Test MHS Stationary Location 1 UL": {
             "25x64 bytes PING (ICMP)": {
                 "_20250915_123553_CH01_TMO-DUT_5G MHS_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": null,
+                    "Protocol Type": "PING",
+                    "Network Type": "5G",
                     "Ping RTT": {
                         "min": 38.0,
                         "max": 1052.0,
                         "avg": 115.558,
                         "std_dev": 70.44666138434384
-                    },
-                    "Device Type": "DUT"
+                    }
                 },
                 "_20250915_123553_CH02_TMO-Ref_5G MHS_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
+                    "Device Type": "REF",
+                    "Analysis Direction": null,
+                    "Protocol Type": "PING",
+                    "Network Type": "5G",
                     "Ping RTT": {
                         "min": 43.0,
                         "max": 788.0,
                         "avg": 148.088,
                         "std_dev": 106.62866218422886
-                    },
-                    "Device Type": "REF"
+                    }
                 }
             },
             "Multi Stream HTTP Upload for 30 seconds": {
@@ -719,22 +737,28 @@
         "5G Auto Data Test Stationary Location 1 UL": {
             "25x64 bytes PING (ICMP)": {
                 "_CH01_TMO-dut_5G auto_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": null,
+                    "Protocol Type": "PING",
+                    "Network Type": "5G",
                     "Ping RTT": {
                         "min": 33.0,
                         "max": 247.0,
                         "avg": 54.758,
                         "std_dev": 20.119966752563197
-                    },
-                    "Device Type": "DUT"
+                    }
                 },
                 "_CH02_TMO-ref_5G auto_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
+                    "Device Type": "REF",
+                    "Analysis Direction": null,
+                    "Protocol Type": "PING",
+                    "Network Type": "5G",
                     "Ping RTT": {
                         "min": 29.0,
                         "max": 433.0,
                         "avg": 42.744,
                         "std_dev": 29.2929790434924
-                    },
-                    "Device Type": "REF"
+                    }
                 }
             },
             "Multi Stream HTTP Upload for 30 seconds": {
@@ -1017,22 +1041,28 @@
         "5G Auto Data Test Stationary Location 2 UL": {
             "5G auto_25x64 bytes PING_moderate": {
                 "_CH01_TMO_5G auto_25x64 bytes PING_DUT_": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": null,
+                    "Protocol Type": "PING",
+                    "Network Type": "5G",
                     "Ping RTT": {
                         "min": 35.0,
                         "max": 308.0,
                         "avg": 87.1,
                         "std_dev": 45.42678930292945
-                    },
-                    "Device Type": "DUT"
+                    }
                 },
                 "_CH02_TMO_5G auto_25x64 bytes PING_REF_": {
+                    "Device Type": "REF",
+                    "Analysis Direction": null,
+                    "Protocol Type": "PING",
+                    "Network Type": "5G",
                     "Ping RTT": {
                         "min": 30.0,
                         "max": 642.0,
                         "avg": 56.484,
                         "std_dev": 50.5930138467773
-                    },
-                    "Device Type": "REF"
+                    }
                 }
             },
             "5G auto_Multi Stream HTTP Upload for 30 seconds_moderate": {
@@ -1313,22 +1343,28 @@
         "5G Auto Data Test Stationary Location 3 UL": {
             "25x64 bytes PING (ICMP)": {
                 "dut_5g auto_25x64 bytes PING (ICMP)_poor Coverage_DA Test": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": null,
+                    "Protocol Type": "PING",
+                    "Network Type": "5G",
                     "Ping RTT": {
                         "min": 35.0,
                         "max": 357.0,
                         "avg": 55.118,
                         "std_dev": 25.52118213318008
-                    },
-                    "Device Type": "DUT"
+                    }
                 },
                 "ref_5g auto_25x64 bytes PING (ICMP)_poor Coverage_DA Test": {
+                    "Device Type": "REF",
+                    "Analysis Direction": null,
+                    "Protocol Type": "PING",
+                    "Network Type": "5G",
                     "Ping RTT": {
                         "min": 30.0,
                         "max": 319.0,
                         "avg": 41.1,
                         "std_dev": 25.560921764343433
-                    },
-                    "Device Type": "REF"
+                    }
                 }
             },
             "Multi Stream HTTP Upload for 30 seconds": {
@@ -1516,6 +1552,12 @@
                 },
                 "Error Ratio": {
                     "Mean": 1.0425411406088754
+                },
+                "Ping RTT": {
+                    "min": 38.0,
+                    "max": 1052.0,
+                    "avg": 115.558,
+                    "std_dev": 70.44666138434384
                 }
             },
             "UDP DL REF1_Data Test Drive": {
@@ -1535,6 +1577,12 @@
                 },
                 "Error Ratio": {
                     "Mean": 1.1761252791537666
+                },
+                "Ping RTT": {
+                    "min": 43.0,
+                    "max": 788.0,
+                    "avg": 148.088,
+                    "std_dev": 106.62866218422886
                 }
             }
         },
@@ -1817,22 +1865,28 @@
         "5G NSA Data Test Stationary Poor RF UL": {
             "25x64 bytes PING (ICMP)": {
                 "_CH01_TMO-dut_5G NSA_25x64 bytes PING (ICMP)_Poor Coverage_DA Test": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": null,
+                    "Protocol Type": "PING",
+                    "Network Type": "5G NSA",
                     "Ping RTT": {
                         "min": 35.0,
                         "max": 332.0,
                         "avg": 52.524,
                         "std_dev": 18.02562815940355
-                    },
-                    "Device Type": "DUT"
+                    }
                 },
                 "_CH02_TMO-ref_5G NSA_25x64 bytes PING (ICMP)_Poor Coverage_DA Test": {
+                    "Device Type": "REF",
+                    "Analysis Direction": null,
+                    "Protocol Type": "PING",
+                    "Network Type": "5G NSA",
                     "Ping RTT": {
                         "min": 30.0,
                         "max": 372.0,
                         "avg": 54.388,
                         "std_dev": 23.42107062237327
-                    },
-                    "Device Type": "REF"
+                    }
                 }
             },
             "Multi Stream HTTP Upload for 30 seconds": {

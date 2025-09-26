@@ -22,8 +22,15 @@ def _determine_analysis_parameters(file_path):
     file_name = os.path.basename(file_path).lower()
     dir_name = os.path.basename(os.path.dirname(file_path)).lower() # Get parent directory name
     
-    # print(f"DEBUG: file_name: {file_name}") # Removed as per user request
-    # print(f"DEBUG: dir_name: {dir_name}") # Removed as per user request
+    file_name = os.path.basename(file_path).lower()
+    # Get the directory name of the file, then its parent directory name
+    # This is to correctly identify the "drive" context which is usually one level up from the specific test type directory
+    current_file_dir = os.path.dirname(file_path)
+    parent_dir_of_file_dir = os.path.basename(os.path.dirname(current_file_dir)).lower()
+    
+    print(f"DEBUG: _determine_analysis_parameters - file_path: {file_path}")
+    print(f"DEBUG: _determine_analysis_parameters - file_name (from basename): {file_name}")
+    print(f"DEBUG: _determine_analysis_parameters - parent_dir_of_file_dir: {parent_dir_of_file_dir}")
 
     params = {
         "event_col": None,
@@ -41,7 +48,13 @@ def _determine_analysis_parameters(file_path):
         "column_to_analyze_error_ratio": None,
         "column_to_analyze_ul_jitter": None,
         "column_to_analyze_ul_error_ratio": None,
+        "column_to_analyze_ping_rtt": None, # Added for Ping RTT
+        "is_drive_path": False, # Added to indicate if path contains "drive"
     }
+
+    # Determine if it's a "drive" path based on the full file path
+    if "drive" in file_path.lower():
+        params["is_drive_path"] = True
 
     # Determine analysis direction from filename
     if "download" in file_name:
@@ -60,6 +73,8 @@ def _determine_analysis_parameters(file_path):
         params["protocol_type_detected"] = "HTTP"
     elif "udp" in file_name:
         params["protocol_type_detected"] = "UDP"
+    elif "ping" in file_name: # Detect PING protocol
+        params["protocol_type_detected"] = "PING"
     
     # Determine network type (5G/LTE) from the full file path
     file_path_lower = file_path.lower()
@@ -72,16 +87,25 @@ def _determine_analysis_parameters(file_path):
     elif "lte" in file_path_lower:
         params["network_type_detected"] = "LTE"
 
+    print(f"DEBUG: _determine_analysis_parameters - 'dut' in file_name: {'dut' in file_name}")
+    print(f"DEBUG: _determine_analysis_parameters - 'ref' in file_name: {'ref' in file_name}")
+
     if "dut" in file_name:
         params["device_type_detected"] = "DUT"
     elif "ref" in file_name:
         params["device_type_detected"] = "REF"
+    
+    print(f"DEBUG: _determine_analysis_parameters - device_type_detected (after logic): {params['device_type_detected']}")
+    print(f"DEBUG: _determine_analysis_parameters - is_drive_path: {params['is_drive_path']}")
 
     # If essential parameters are not detected, return None
     # For WEB_PAGE, analysis_direction_detected is not strictly necessary as it's a single metric
-    if params["protocol_type_detected"] != "WEB_PAGE" and (not params["analysis_direction_detected"] or not params["protocol_type_detected"] or not params["network_type_detected"]):
+    # For PING, analysis_direction_detected is not strictly necessary as it's a single metric (RTT)
+    if params["protocol_type_detected"] not in ["WEB_PAGE", "PING"] and (not params["analysis_direction_detected"] or not params["protocol_type_detected"] or not params["network_type_detected"]):
         return None
     elif params["protocol_type_detected"] == "WEB_PAGE" and (not params["protocol_type_detected"] or not params["network_type_detected"]):
+        return None
+    elif params["protocol_type_detected"] == "PING" and (not params["protocol_type_detected"] or not params["network_type_detected"]):
         return None
 
 
@@ -130,8 +154,34 @@ def _determine_analysis_parameters(file_path):
         params["start_event"] = "HTTP Traffic Start"
         params["end_event"] = "HTTP Traffic End"
         params["column_to_analyze_total_duration"] = _clean_header("[Call Test] [HTTP] Total duration")
-    # print(f"DEBUG: _determine_analysis_parameters returning: {params}") # Removed as per user request
+    elif params["protocol_type_detected"] == "PING":
+        params["event_col"] = _clean_header("[Event] [Data call test detail events] Ping Call Event")
+        params["start_event"] = "PING Traffic Start"
+        params["end_event"] = "PING Traffic End"
+        params["column_to_analyze_ping_rtt"] = _clean_header("[Call Test] [PING] [RTT] RTT")
+    print(f"DEBUG: _determine_analysis_parameters returning: {params}")
     return params
+
+def _find_related_ping_file(current_file_path, device_type):
+    """
+    Attempts to find a related PING CSV file by searching within the 'Raw Data' directory.
+    """
+    # Assuming 'Raw Data' is at the root of the current working directory
+    raw_data_root = "Raw Data" 
+    
+    if not os.path.isdir(raw_data_root):
+        print(f"Error: '{raw_data_root}' directory not found at the project root.")
+        return None
+
+    device_type_lower = device_type.lower()
+
+    for root, _, files in os.walk(raw_data_root):
+        for f in files:
+            file_lower = f.lower()
+            # Check if it's a CSV, contains "ping" in the filename, and matches the device type
+            if file_lower.endswith(".csv") and "ping" in file_lower and device_type_lower in file_lower:
+                return os.path.join(root, f)
+    return None
 
 def _calculate_statistics(data_series, column_name):
     """
@@ -552,6 +602,8 @@ def evaluate_performance(dut_value, ref_value, metric_type):
     
     return "Unknown" # Should not happen with the above conditions
 
+import ping_statics # Import ping_statics here to avoid circular dependencies if ping_statics also imports data_performance_statics
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Analyze data performance statistics from a CSV file.")
     parser.add_argument("file_path", help="Path to the CSV file.")
@@ -631,5 +683,32 @@ if __name__ == "__main__":
         print(f"Web Page Load Time Stats: {stats}")
         if stats and "Number of Intervals" in stats:
             print(f"Number of Intervals: {stats['Number of Intervals']}")
+    elif params["protocol_type_detected"] == "PING": # This block handles direct PING files
+        print(f"\n--- Performing Ping RTT Analysis ---")
+        ping_stats = ping_statics.calculate_ping_statistics(file_path, params["device_type_detected"])
+        if ping_stats and "Ping RTT" in ping_stats:
+            print(f"Ping RTT Mean: {ping_stats['Ping RTT']['avg']:.2f} ms")
+            print(f"Ping RTT Min: {ping_stats['Ping RTT']['min']:.2f} ms")
+            print(f"Ping RTT Max: {ping_stats['Ping RTT']['max']:.2f} ms")
+            print(f"Ping RTT Std Dev: {ping_stats['Ping RTT']['std_dev']:.2f} ms")
+        else:
+            print("No Ping RTT statistics could be calculated.")
+
+    # Additional Ping RTT analysis for "drive" paths, regardless of primary protocol
+    if params["is_drive_path"] and params["protocol_type_detected"] != "PING":
+        print(f"DEBUG: Attempting to find related ping file for drive path. is_drive_path: {params['is_drive_path']}, protocol_type_detected: {params['protocol_type_detected']}, device_type_detected: {params['device_type_detected']}")
+        related_ping_file = _find_related_ping_file(file_path, params["device_type_detected"])
+        if related_ping_file:
+            print(f"Found related Ping file: {related_ping_file}")
+            ping_stats = ping_statics.calculate_ping_statistics(related_ping_file, params["device_type_detected"])
+            if ping_stats and "Ping RTT" in ping_stats:
+                print(f"Ping RTT Mean: {ping_stats['Ping RTT']['avg']:.2f} ms")
+                print(f"Ping RTT Min: {ping_stats['Ping RTT']['min']:.2f} ms")
+                print(f"Ping RTT Max: {ping_stats['Ping RTT']['max']:.2f} ms")
+                print(f"Ping RTT Std Dev: {ping_stats['Ping RTT']['std_dev']:.2f} ms")
+            else:
+                print(f"No Ping RTT statistics could be calculated from {related_ping_file}.")
+        else:
+            print(f"No related Ping file found for drive path: {file_path}")
 
     print(f"\nDevice Type: {params['device_type_detected']}")
