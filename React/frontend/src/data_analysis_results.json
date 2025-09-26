@@ -2135,9 +2135,6 @@
     },
     "5G VoNR MRAB Stationary": {
         "DUT MRAB": {
-            "Device Type": "DUT",
-            "Network Type": "5G",
-            "Analysis Type": "mrab_performance",
             "MRAB Statistics": {
                 "Pre Call": {
                     "Mean": 48.620333333333335,
@@ -2160,9 +2157,6 @@
             }
         },
         "REF MRAB": {
-            "Device Type": "REF",
-            "Network Type": "5G",
-            "Analysis Type": "mrab_performance",
             "MRAB Statistics": {
                 "Pre Call": {
                     "Mean": 258.5486,
@@ -2183,6 +2177,7 @@
                     "Standard Deviation": 325.68925564709
                 }
             }
-        }
+        },
+        "overallMrabStatus": "Fail"
     }
 }

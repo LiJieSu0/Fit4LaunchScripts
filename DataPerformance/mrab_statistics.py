@@ -1,6 +1,7 @@
 import csv
 import sys
 import numpy as np
+import json
 
 def extract_intervals_and_values(file_path, header_name, blank_row_threshold=10):
     """
@@ -120,6 +121,18 @@ def analyze_grouped_intervals(all_intervals_with_lines):
             grouped_interval_line_ranges[group_key].append(line_range)
 
     results = {}
+    grouped_interval_sums_with_lines = {
+        0: [],
+        1: [],
+        2: []
+    }
+
+    for i, (interval_values, line_range) in enumerate(all_intervals_with_lines):
+        if interval_values:
+            interval_sum = np.sum(interval_values)
+            group_key = i % 3
+            grouped_interval_sums_with_lines[group_key].append((interval_sum, line_range))
+
     for group_key, sums_in_group in grouped_interval_sums.items():
         group_name = group_labels.get(group_key, f"Group {group_key}") # Get the descriptive name
         if not sums_in_group:
@@ -143,7 +156,7 @@ def analyze_grouped_intervals(all_intervals_with_lines):
             "Minimum": minimum_of_sums,
             "Standard Deviation": std_dev_of_sums
         }
-    return results
+    return results, grouped_interval_line_ranges, grouped_interval_sums_with_lines
 
 def calculate_mrab_status(overall_avg_tput_dut, overall_avg_tput_ref):
     """
@@ -167,34 +180,68 @@ def calculate_mrab_status(overall_avg_tput_dut, overall_avg_tput_ref):
         return "Pass"
     elif 0.8 * overall_avg_tput_ref <= overall_avg_tput_dut < 0.9 * overall_avg_tput_ref:
         return "Marginal Fail"
+    else:
         return "Fail"
 
 if __name__ == "__main__":
-    import json
-    
-    if len(sys.argv) < 2:
-        print("Usage: python mrab_statistics.py <path_to_data_analysis_results.json>")
-        sys.exit(1)
+    # Define file paths
+    DUT_MRAB_CSV_PATH = "Raw Data/5G VoNR MRAB Stationary/DUT MRAB.csv"
+    REF_MRAB_CSV_PATH = "Raw Data/5G VoNR MRAB Stationary/REF MRAB.csv"
+    JSON_OUTPUT_PATH = "Scripts/React/frontend/src/data_analysis_results.json"
+    THROUGHPUT_HEADER = "[Call Test] [Throughput] Application DL TP" # Using DL TP as discussed
 
-    json_file_path = sys.argv[1]
-
+    # Initialize data structure for JSON output
+    data = {}
     try:
-        with open(json_file_path, 'r', encoding='utf-8') as f:
+        with open(JSON_OUTPUT_PATH, 'r', encoding='utf-8') as f:
             data = json.load(f)
     except FileNotFoundError:
-        print(f"Error: JSON file not found at '{json_file_path}'")
-        sys.exit(1)
+        print(f"Warning: JSON file not found at '{JSON_OUTPUT_PATH}'. Creating a new one.")
+        data = {} # Start with an empty dictionary if file doesn't exist
     except json.JSONDecodeError:
-        print(f"Error: Could not decode JSON from '{json_file_path}'")
-        sys.exit(1)
+        print(f"Warning: Could not decode JSON from '{JSON_OUTPUT_PATH}'. Starting with an empty dictionary.")
+        data = {}
     except Exception as e:
-        print(f"An unexpected error occurred while reading JSON: {e}")
-        sys.exit(1)
+        print(f"An unexpected error occurred while reading JSON: {e}. Starting with an empty dictionary.")
+        data = {}
 
-    # Extract MRAB statistics for DUT and REF
-    mrab_data_section = data.get("5G VoNR MRAB Stationary", {})
-    dut_mrab_stats = mrab_data_section.get("DUT MRAB", {}).get("MRAB Statistics", {})
-    ref_mrab_stats = mrab_data_section.get("REF MRAB", {}).get("MRAB Statistics", {})
+    # Ensure the top-level key exists
+    if "5G VoNR MRAB Stationary" not in data:
+        data["5G VoNR MRAB Stationary"] = {}
+
+    # Process DUT MRAB data
+    print(f"Processing DUT MRAB data from: {DUT_MRAB_CSV_PATH}")
+    dut_intervals = extract_intervals_and_values(DUT_MRAB_CSV_PATH, THROUGHPUT_HEADER)
+    print(f"  Total DUT intervals counted: {len(dut_intervals)}")
+    dut_mrab_analysis = {}
+    dut_mrab_line_ranges = {}
+    dut_mrab_sums_with_lines = {}
+    if dut_intervals:
+        dut_mrab_analysis, dut_mrab_line_ranges, dut_mrab_sums_with_lines = analyze_grouped_intervals(dut_intervals)
+        data["5G VoNR MRAB Stationary"]["DUT MRAB"] = {"MRAB Statistics": dut_mrab_analysis}
+        print("DUT MRAB statistics generated.")
+    else:
+        print(f"Could not extract intervals for DUT MRAB from {DUT_MRAB_CSV_PATH}. Skipping DUT MRAB analysis.")
+        data["5G VoNR MRAB Stationary"]["DUT MRAB"] = {"MRAB Statistics": {}} # Ensure key exists even if empty
+
+    # Process REF MRAB data
+    print(f"Processing REF MRAB data from: {REF_MRAB_CSV_PATH}")
+    ref_intervals = extract_intervals_and_values(REF_MRAB_CSV_PATH, THROUGHPUT_HEADER)
+    print(f"  Total REF intervals counted: {len(ref_intervals)}")
+    ref_mrab_analysis = {}
+    ref_mrab_line_ranges = {}
+    ref_mrab_sums_with_lines = {}
+    if ref_intervals:
+        ref_mrab_analysis, ref_mrab_line_ranges, ref_mrab_sums_with_lines = analyze_grouped_intervals(ref_intervals)
+        data["5G VoNR MRAB Stationary"]["REF MRAB"] = {"MRAB Statistics": ref_mrab_analysis}
+        print("REF MRAB statistics generated.")
+    else:
+        print(f"Could not extract intervals for REF MRAB from {REF_MRAB_CSV_PATH}. Skipping REF MRAB analysis.")
+        data["5G VoNR MRAB Stationary"]["REF MRAB"] = {"MRAB Statistics": {}} # Ensure key exists even if empty
+
+    # Extract MRAB statistics for DUT and REF from the newly processed data
+    dut_mrab_stats = data["5G VoNR MRAB Stationary"].get("DUT MRAB", {}).get("MRAB Statistics", {})
+    ref_mrab_stats = data["5G VoNR MRAB Stationary"].get("REF MRAB", {}).get("MRAB Statistics", {})
 
     dut_in_call_mean = dut_mrab_stats.get("In Call", {}).get("Mean")
     ref_in_call_mean = ref_mrab_stats.get("In Call", {}).get("Mean")
@@ -205,16 +252,51 @@ if __name__ == "__main__":
     else:
         overall_mrab_status = "Cannot perform Mrab Case comparison: 'In Call' Mean not available for both DUT and REF."
 
+    # Print statistics to console
+    group_labels = {0: "Pre Call", 1: "In Call", 2: "Post Call"} # Define group_labels here for printing
+
+    print("\n--- DUT MRAB Statistics ---")
+    for group_key, stats in dut_mrab_analysis.items():
+        print(f"  {group_key}:")
+        for stat_name, value in stats.items():
+            print(f"    {stat_name}: {value}")
+    
+    print("\n--- DUT MRAB Intervals (Line Ranges and Sums) ---")
+    for group_key, sums_with_lines in dut_mrab_sums_with_lines.items():
+        group_name = group_labels.get(group_key, f"Group {group_key}")
+        print(f"  {group_name} Intervals:")
+        if sums_with_lines:
+            for interval_sum, (start, end) in sums_with_lines:
+                print(f"    Lines {start}-{end}, Sum: {interval_sum:.2f}")
+        else:
+            print("    No intervals found for this group.")
+
+    print("\n--- REF MRAB Statistics ---")
+    for group_key, stats in ref_mrab_analysis.items():
+        print(f"  {group_key}:")
+        for stat_name, value in stats.items():
+            print(f"    {stat_name}: {value}")
+
+    print("\n--- REF MRAB Intervals (Line Ranges and Sums) ---")
+    for group_key, sums_with_lines in ref_mrab_sums_with_lines.items():
+        group_name = group_labels.get(group_key, f"Group {group_key}")
+        print(f"  {group_name} Intervals:")
+        if sums_with_lines:
+            for interval_sum, (start, end) in sums_with_lines:
+                print(f"    Lines {start}-{end}, Sum: {interval_sum:.2f}")
+        else:
+            print("    No intervals found for this group.")
+
+    print(f"\nOverall Mrab Case Status: {overall_mrab_status}")
+
     # Add the overall Mrab status to the JSON data
-    if "5G VoNR MRAB Stationary" not in data:
-        data["5G VoNR MRAB Stationary"] = {}
     data["5G VoNR MRAB Stationary"]["overallMrabStatus"] = overall_mrab_status
 
     # Write the updated data back to the JSON file
     try:
-        with open(json_file_path, 'w', encoding='utf-8') as f:
+        with open(JSON_OUTPUT_PATH, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
-        print(f"Successfully updated '{json_file_path}' with Mrab Case Status: {overall_mrab_status}")
+        print(f"\nSuccessfully updated '{JSON_OUTPUT_PATH}' with Mrab Case Status: {overall_mrab_status}")
     except Exception as e:
         print(f"An unexpected error occurred while writing JSON: {e}")
         sys.exit(1)
