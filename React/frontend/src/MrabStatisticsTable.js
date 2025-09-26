@@ -50,7 +50,7 @@ const MrabStatisticsTable = ({ mrabData }) => {
 
   return (
     <div className="overflow-x-auto mb-6 table-container">
-      <h3 className="text-xl font-bold mb-4 text-gray-800">MRAB Statistics</h3>
+      <h3 className="text-xl font-bold mb-4 text-gray-800">5G VoNR MRAB Stationary</h3>
       <table className="min-w-full border border-table-grid">
         <thead>
           <tr className="bg-table-header-bg text-table-header-text font-bold">

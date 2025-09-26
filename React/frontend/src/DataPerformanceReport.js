@@ -11,7 +11,8 @@ const extractTestCases = (data, currentPath = []) => {
   // If the current 'data' object contains DUT/REF keys, it's a test case
   const hasDutRefKeys = Object.keys(data).some(key => key.toLowerCase().includes("dut") || key.toLowerCase().includes("ref"));
 
-  if (hasDutRefKeys) {
+  // Only consider it a test case if it has DUT/REF keys AND it's not the top-level MRAB container
+  if (hasDutRefKeys && !currentPath.includes("5G VoNR MRAB Stationary")) {
     let dutObject = {};
     let refObject = {};
     let isPingTest = false;
