@@ -145,30 +145,76 @@ def analyze_grouped_intervals(all_intervals_with_lines):
         }
     return results
 
+def calculate_mrab_status(overall_avg_tput_dut, overall_avg_tput_ref):
+    """
+    Calculates the Mrab Case status based on DUT and REF overall average throughputs.
+
+    Args:
+        overall_avg_tput_dut (float): Overall Average Throughput for Device Under Test (DUT).
+        overall_avg_tput_ref (float): Overall Average Throughput for Reference Device (REF).
+
+    Returns:
+        str: The Mrab Case status (Excellent, Pass, Marginal Fail, Fail).
+    """
+    if overall_avg_tput_ref is None or overall_avg_tput_ref == 0:
+        return "Cannot calculate: Reference Throughput is zero or None."
+    if overall_avg_tput_dut is None:
+        return "Cannot calculate: DUT Throughput is None."
+
+    if overall_avg_tput_dut > 1.1 * overall_avg_tput_ref:
+        return "Excellent"
+    elif 0.9 * overall_avg_tput_ref <= overall_avg_tput_dut <= 1.1 * overall_avg_tput_ref:
+        return "Pass"
+    elif 0.8 * overall_avg_tput_ref <= overall_avg_tput_dut < 0.9 * overall_avg_tput_ref:
+        return "Marginal Fail"
+        return "Fail"
+
 if __name__ == "__main__":
+    import json
+    
     if len(sys.argv) < 2:
-        print("Usage: python marb_statistics.py <path_to_csv_file>")
+        print("Usage: python mrab_statistics.py <path_to_data_analysis_results.json>")
         sys.exit(1)
 
-    csv_file_path = sys.argv[1]
-    target_header = "[Call Test] [Throughput] Application DL TP"
-    threshold = 10
+    json_file_path = sys.argv[1]
 
-    all_intervals_with_lines = extract_intervals_and_values(csv_file_path, target_header, threshold)
+    try:
+        with open(json_file_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        print(f"Error: JSON file not found at '{json_file_path}'")
+        sys.exit(1)
+    except json.JSONDecodeError:
+        print(f"Error: Could not decode JSON from '{json_file_path}'")
+        sys.exit(1)
+    except Exception as e:
+        print(f"An unexpected error occurred while reading JSON: {e}")
+        sys.exit(1)
 
-    if all_intervals_with_lines:
-        print(f"Total number of discrete intervals found: {len(all_intervals_with_lines)}")
-        analysis_results = analyze_grouped_intervals(all_intervals_with_lines)
-        
-        for group_name, stats in analysis_results.items():
-            print(f"\n--- {group_name} Statistics ---") # Changed this line
-            for key, value in stats.items():
-                if key == "Interval Line Ranges":
-                    # print(f"{key}:") # Commented out as per user request
-                    # for line_range in value: # Commented out as per user request
-                    #     print(f"  Lines {line_range[0]} to {line_range[1]}") # Commented out as per user request
-                    pass # Added pass to maintain valid syntax for the if block
-                else:
-                    print(f"{key}: {value}")
+    # Extract MRAB statistics for DUT and REF
+    mrab_data_section = data.get("5G VoNR MRAB Stationary", {})
+    dut_mrab_stats = mrab_data_section.get("DUT MRAB", {}).get("MRAB Statistics", {})
+    ref_mrab_stats = mrab_data_section.get("REF MRAB", {}).get("MRAB Statistics", {})
+
+    dut_in_call_mean = dut_mrab_stats.get("In Call", {}).get("Mean")
+    ref_in_call_mean = ref_mrab_stats.get("In Call", {}).get("Mean")
+
+    overall_mrab_status = "N/A"
+    if dut_in_call_mean is not None and ref_in_call_mean is not None:
+        overall_mrab_status = calculate_mrab_status(dut_in_call_mean, ref_in_call_mean)
     else:
-        print("No intervals found or an error occurred during extraction.")
+        overall_mrab_status = "Cannot perform Mrab Case comparison: 'In Call' Mean not available for both DUT and REF."
+
+    # Add the overall Mrab status to the JSON data
+    if "5G VoNR MRAB Stationary" not in data:
+        data["5G VoNR MRAB Stationary"] = {}
+    data["5G VoNR MRAB Stationary"]["overallMrabStatus"] = overall_mrab_status
+
+    # Write the updated data back to the JSON file
+    try:
+        with open(json_file_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4)
+        print(f"Successfully updated '{json_file_path}' with Mrab Case Status: {overall_mrab_status}")
+    except Exception as e:
+        print(f"An unexpected error occurred while writing JSON: {e}")
+        sys.exit(1)

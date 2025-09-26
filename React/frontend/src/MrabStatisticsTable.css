@@ -1,0 +1,53 @@
+/* MrabStatisticsTable.css */
+
+/* Reusing general table styles from DataPerformanceTable.css or PingStatisticsTable.css */
+.table-container {
+  margin-bottom: 1.5rem; /* mb-6 */
+  overflow-x: auto; /* overflow-x-auto */
+}
+
+.min-w-full {
+  min-width: 100%;
+}
+
+.border {
+  border-width: 1px;
+  border-style: solid;
+}
+
+.border-table-grid {
+  border-color: var(--table-grid, #000000);
+}
+
+.bg-table-header-bg {
+  background-color: var(--table-header-bg, #808080);
+}
+
+.text-table-header-text {
+  color: var(--table-header-text, #F5F5F5);
+}
+
+.bg-table-body-bg {
+  background-color: var(--table-body-bg, #F5F5DC);
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Performance colors - these are handled by Tailwind CSS classes directly */
+/* No explicit background-color needed here for performance classes */
+
+.bg-gray-300 {
+  background-color: #d1d5db; /* This one is not a CSS variable, keep as is or check if it should be one */
+}

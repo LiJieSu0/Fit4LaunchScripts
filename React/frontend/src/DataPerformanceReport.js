@@ -1,10 +1,12 @@
 import React from 'react';
 import allResults from './data_analysis_results.json';
 import BarChart from './BarChart';
+import MrabStatisticsTable from './MrabStatisticsTable'; // Import MrabStatisticsTable
 
 // Helper function to recursively extract test cases
 const extractTestCases = (data, currentPath = []) => {
   let extracted = [];
+  let mrabData = {};
 
   // If the current 'data' object contains DUT/REF keys, it's a test case
   const hasDutRefKeys = Object.keys(data).some(key => key.toLowerCase().includes("dut") || key.toLowerCase().includes("ref"));
@@ -37,14 +39,29 @@ const extractTestCases = (data, currentPath = []) => {
   // Always recurse into children, regardless of whether the current 'data' was a test case itself
   for (const key in data) {
     if (typeof data[key] === 'object' && data[key] !== null) {
-      extracted = extracted.concat(extractTestCases(data[key], [...currentPath, key]));
+      const result = extractTestCases(data[key], [...currentPath, key]);
+      extracted = extracted.concat(result.extracted);
+      // Merge mrabData from children, if any
+      if (Object.keys(result.mrabData).length > 0) {
+        mrabData = { ...mrabData, ...result.mrabData };
+      }
     }
   }
 
-  return extracted;
+  // Extract MRAB data if present at the top level of the current 'data' object
+  if (data["DUT MRAB"] && data["REF MRAB"]) {
+    mrabData = {
+      "DUT MRAB": data["DUT MRAB"],
+      "REF MRAB": data["REF MRAB"],
+    };
+  }
+
+  return { extracted, mrabData };
 };
 
 const DataPerformanceReport = () => {
+  const { extracted: allFlattenedTestCases, mrabData } = extractTestCases(allResults);
+
   const renderStatisticsTable = (title, data, metricsToDisplay) => { // Added metricsToDisplay prop
     if (!data || Object.keys(data).length === 0) {
       return <p className="text-gray-600">No comparable data found for this subdirectory.</p>;
@@ -190,8 +207,6 @@ const DataPerformanceReport = () => {
     );
   };
 
-  const allFlattenedTestCases = extractTestCases(allResults);
-
   // Group test cases by their top-level category for rendering headers
   const groupedByCategories = allFlattenedTestCases.reduce((acc, testCase) => {
     const category = testCase.name.split(' - ')[0];
@@ -244,6 +259,12 @@ const DataPerformanceReport = () => {
           })}
         </div>
       ))}
+
+      {Object.keys(mrabData).length > 0 && (
+        <div className="category-section">
+          <MrabStatisticsTable mrabData={mrabData} />
+        </div>
+      )}
     </>
   );
 };
