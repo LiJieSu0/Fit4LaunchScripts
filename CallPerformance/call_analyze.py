@@ -142,27 +142,37 @@ def analyze_directory(directory_path):
                 if setup_duration_count is not None:
                     aggregated_setup_duration_count += setup_duration_count
                         
-    print("\n--- Aggregated Analysis Results ---")
-    print(f"Total attempts (Voice calls, excluding 603 Declined sections) across all files: {total_attempts_sum}")
+    mean_setup_time = None
+    if aggregated_setup_duration_count > 0:
+        mean_setup_time = aggregated_total_setup_duration / aggregated_setup_duration_count
+
+    return {
+        "total_attempts": total_attempts_sum,
+        "call_result_distribution": dict(aggregated_call_results),
+        "rat_distribution": dict(aggregated_rat_distribution),
+        "mean_setup_time": mean_setup_time
+    }
+
+def _print_analysis_results(results):
+    print(f"Total attempts (Voice calls, excluding 603 Declined sections) across all files: {results['total_attempts']}")
     
     print("\nAggregated Call Result Distribution for 'Voice' Call Type (excluding 603 Declined sections):")
-    if aggregated_call_results:
-        for result, count in aggregated_call_results.items():
+    if results['call_result_distribution']:
+        for result, count in results['call_result_distribution'].items():
             print(f"  {result}: {count}")
     else:
         print("No 'Voice' call types found in the aggregated data for Call Result distribution.")
 
     print("\nAggregated RAT Distribution for 'Voice' Call Type:")
-    if aggregated_rat_distribution:
-        for rat, count in aggregated_rat_distribution.items():
+    if results['rat_distribution']:
+        for rat, count in results['rat_distribution'].items():
             print(f"  {rat}: {count}")
     else:
         print("No 'Voice' call types found in the aggregated data for RAT distribution.")
 
     print("\nAggregated Mean Setup Time (excluding 603 Declined sections):")
-    if aggregated_setup_duration_count > 0:
-        aggregated_mean_setup_time = aggregated_total_setup_duration / aggregated_setup_duration_count
-        print(f"  {aggregated_mean_setup_time:.2f} (seconds)")
+    if results['mean_setup_time'] is not None:
+        print(f"  {results['mean_setup_time']:.2f} (seconds)")
     else:
         print("  No valid setup durations found for aggregation.")
 
@@ -196,6 +206,31 @@ if __name__ == "__main__":
             else:
                 print("  No valid setup durations found.")
         elif os.path.isdir(input_path):
-            analyze_directory(input_path)
+            dut_path = os.path.join(input_path, 'DUT')
+            ref_path = os.path.join(input_path, 'REF')
+
+            dut_results = None
+            ref_results = None
+
+            if os.path.isdir(dut_path):
+                print(f"\n--- Analyzing DUT data in: {dut_path} ---")
+                dut_results = analyze_directory(dut_path)
+            else:
+                print(f"Warning: DUT directory not found at {dut_path}")
+
+            if os.path.isdir(ref_path):
+                print(f"\n--- Analyzing REF data in: {ref_path} ---")
+                ref_results = analyze_directory(ref_path)
+            else:
+                print(f"Warning: REF directory not found at {ref_path}")
+
+            if dut_results:
+                print("\n--- DUT Aggregated Analysis Results ---")
+                _print_analysis_results(dut_results)
+            
+            if ref_results:
+                print("\n--- REF Aggregated Analysis Results ---")
+                _print_analysis_results(ref_results)
+
         else:
             print(f"Error: Invalid path provided: {input_path}. Must be a file or a directory.")
