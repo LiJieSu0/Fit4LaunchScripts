@@ -72,6 +72,10 @@ def analyze_call_data(file_path):
         df_filtered[call_test_call_type_col].astype(str).str.contains('Voice', na=False)
     ].shape[0]
 
+    total_mo_attempts = df_filtered[
+        df_filtered[call_test_call_type_col].astype(str).str.contains('MO Voice', na=False)
+    ].shape[0]
+
     # The following statistics are temporarily removed as per user request:
     # Fail attempts
     # Success Rate
@@ -111,14 +115,22 @@ def analyze_call_data(file_path):
             total_setup_duration = setup_durations.sum()
             setup_duration_count = setup_durations.count()
     
-    FAILURE_CATEGORIES = ['Etc.', 'Orig. Fail', 'Forced stop', 'Drop']
-    total_failures = sum(call_result_distribution.get(cat, 0) for cat in FAILURE_CATEGORIES)
+    INITIATION_FAILURE_CATEGORIES = ['Orig. Fail']
+    initiation_failures = sum(call_result_distribution.get(cat, 0) for cat in INITIATION_FAILURE_CATEGORIES)
 
-    return total_attempts, total_failures, call_result_distribution, rat_distribution, total_setup_duration, setup_duration_count
+    RETENTION_FAILURE_CATEGORIES = ['Drop']
+    retention_failures = sum(call_result_distribution.get(cat, 0) for cat in RETENTION_FAILURE_CATEGORIES)
+
+    initiation_successes = total_attempts - initiation_failures
+
+    return total_attempts, total_mo_attempts, initiation_failures, retention_failures, initiation_successes, call_result_distribution, rat_distribution, total_setup_duration, setup_duration_count
 
 def analyze_directory(directory_path):
     total_attempts_sum = 0
-    total_failures_sum = 0
+    total_mo_attempts_sum = 0
+    total_initiation_failures_sum = 0
+    total_retention_failures_sum = 0
+    total_initiation_successes_sum = 0
     aggregated_call_results = defaultdict(int)
     aggregated_rat_distribution = defaultdict(int)
     aggregated_total_setup_duration = 0
@@ -129,13 +141,22 @@ def analyze_directory(directory_path):
             if file.endswith('.csv'):
                 file_path = os.path.join(root, file)
                 print(f"Analyzing file: {file_path}")
-                total_attempts, total_failures, call_result_distribution, rat_distribution, total_setup_duration, setup_duration_count = analyze_call_data(file_path)
+                total_attempts, total_mo_attempts, initiation_failures, retention_failures, initiation_successes, call_result_distribution, rat_distribution, total_setup_duration, setup_duration_count = analyze_call_data(file_path)
                 
                 if total_attempts is not None:
                     total_attempts_sum += total_attempts
                 
-                if total_failures is not None:
-                    total_failures_sum += total_failures
+                if total_mo_attempts is not None:
+                    total_mo_attempts_sum += total_mo_attempts
+
+                if initiation_failures is not None:
+                    total_initiation_failures_sum += initiation_failures
+
+                if retention_failures is not None:
+                    total_retention_failures_sum += retention_failures
+
+                if initiation_successes is not None:
+                    total_initiation_successes_sum += initiation_successes
 
                 if call_result_distribution is not None:
                     for result, count in call_result_distribution.items():
@@ -156,7 +177,10 @@ def analyze_directory(directory_path):
 
     return {
         "total_attempts": total_attempts_sum,
-        "total_failures": total_failures_sum,
+        "total_mo_attempts": total_mo_attempts_sum,
+        "total_initiation_failures": total_initiation_failures_sum,
+        "total_retention_failures": total_retention_failures_sum,
+        "total_initiation_successes": total_initiation_successes_sum,
         "call_result_distribution": dict(aggregated_call_results),
         "rat_distribution": dict(aggregated_rat_distribution),
         "mean_setup_time": mean_setup_time
@@ -164,7 +188,6 @@ def analyze_directory(directory_path):
 
 def _print_analysis_results(results, ref_results=None):
     print(f"Total attempts (Voice calls, excluding 603 Declined sections) across all files: {results['total_attempts']}")
-    print(f"Total failures (Voice calls, excluding 603 Declined sections) across all files: {results['total_failures']}")
     
     print("\nAggregated Call Result Distribution for 'Voice' Call Type (excluding 603 Declined sections):")
     if results['call_result_distribution']:
@@ -190,16 +213,16 @@ def _print_analysis_results(results, ref_results=None):
         print("\n--- Criteria Analysis ---")
         print("\n5G Auto mode Call Initiation Criteria:")
         initiation_criteria = _calculate_fisher_exact_criteria(
-            results['total_failures'], results['total_attempts'],
-            ref_results['total_failures'], ref_results['total_attempts'],
+            results['total_initiation_failures'], results['total_attempts'] - results['total_initiation_failures'],
+            ref_results['total_initiation_failures'], ref_results['total_attempts'] - ref_results['total_initiation_failures'],
             criteria_type="MO/MT"
         )
         print(f"  Result: {initiation_criteria}")
 
         print("\n5G Auto mode Call Retention (MO Only) Criteria:")
         retention_criteria = _calculate_fisher_exact_criteria(
-            results['total_failures'], results['total_attempts'],
-            ref_results['total_failures'], ref_results['total_attempts'],
+            results['total_retention_failures'], results['total_initiation_successes'],
+            ref_results['total_retention_failures'], ref_results['total_initiation_successes'],
             criteria_type="MO"
         )
         print(f"  Result: {retention_criteria}")
@@ -211,16 +234,13 @@ def _print_analysis_results(results, ref_results=None):
         print(f"  Result: {setup_time_criteria}")
 
 
-def _calculate_fisher_exact_criteria(dut_failures, dut_attempts, ref_failures, ref_attempts, criteria_type="MO/MT"):
-    if dut_attempts == 0 or ref_attempts == 0:
-        return "N/A (Insufficient data for Fisher Exact Test)"
-
-    dut_successes = dut_attempts - dut_failures
-    ref_successes = ref_attempts - ref_failures
-
+def _calculate_fisher_exact_criteria(dut_failures, dut_successes, ref_failures, ref_successes, criteria_type="MO/MT"):
     # Ensure all values are non-negative
     if any(x < 0 for x in [dut_failures, dut_successes, ref_failures, ref_successes]):
         return "N/A (Invalid failure/success counts)"
+
+    if (dut_failures + dut_successes == 0) or (ref_failures + ref_successes == 0):
+        return "N/A (Insufficient data for Fisher Exact Test)"
 
     table = [[dut_successes, dut_failures],
              [ ref_successes,ref_failures]]
@@ -241,12 +261,16 @@ def _calculate_fisher_exact_criteria(dut_failures, dut_attempts, ref_failures, r
 
     result_string = f" (p-value: {p_value:.4f})"
 
+    # Calculate total attempts for percentage calculation
+    dut_total_attempts = dut_failures + dut_successes
+    ref_total_attempts = ref_failures + ref_successes
+
     # Criteria from the image
     if p_value > 0.99:
         return "PASS (p-value > 0.99)" + result_string
     elif 0.05 <= p_value <= 0.99:
         # Check RED condition for DUT failures < 1%
-        dut_failure_percentage = (dut_failures / dut_attempts) * 100 if dut_attempts > 0 else 0
+        dut_failure_percentage = (dut_failures / dut_total_attempts) * 100 if dut_total_attempts > 0 else 0
         if dut_failure_percentage < 1:
             return "WARNING (RED condition satisfied: % failures (DUT) < 1%)" + result_string
         else:
@@ -277,10 +301,13 @@ if __name__ == "__main__":
     else:
         input_path = sys.argv[1]
         if os.path.isfile(input_path):
-            total_attempts, total_failures, call_result_distribution, rat_distribution, total_setup_duration, setup_duration_count = analyze_call_data(input_path)
+            total_attempts, total_mo_attempts, initiation_failures, retention_failures, initiation_successes, call_result_distribution, rat_distribution, total_setup_duration, setup_duration_count = analyze_call_data(input_path)
             print(f"Analysis for file: {input_path}")
             print(f"Total attempts (Voice calls, excluding 603 Declined sections): {total_attempts}")
-            print(f"Total failures (Voice calls, excluding 603 Declined sections): {total_failures}")
+            print(f"Total MO attempts (Voice calls, excluding 603 Declined sections): {total_mo_attempts}")
+            print(f"Initiation Failures (Orig. Fail only): {initiation_failures}")
+            print(f"Initiation Successes: {initiation_successes}")
+            print(f"Retention Failures (Drop only): {retention_failures}")
             if call_result_distribution:
                 print("\nCall Result Distribution for 'Voice' Call Type (excluding 603 Declined sections):")
                 for result, count in call_result_distribution.items():
