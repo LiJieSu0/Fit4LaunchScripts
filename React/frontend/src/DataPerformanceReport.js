@@ -2,6 +2,8 @@ import React from 'react';
 import allResults from './data_analysis_results.json';
 import BarChart from './BarChart';
 import MrabStatisticsTable from './MrabStatisticsTable'; // Import MrabStatisticsTable
+import CallPerformanceTable from './CallPerformanceTable'; // New import
+import CallCategoriesChart from './CallCategoriesChart'; // New import
 
 // Helper function to recursively extract test cases
 const extractTestCases = (data, currentPath = []) => {
@@ -13,8 +15,20 @@ const extractTestCases = (data, currentPath = []) => {
       name: currentPath.join(" - "),
       data: data, // Pass the entire MRAB data object
       isMrab: true,
+      isCallPerformance: false,
     });
     return extracted; // Stop further recursion for this branch as we've found the MRAB data
+  }
+
+  // Check if the current data object is a Call Performance test case
+  if (data.DUT && data.REF && typeof data.initiation_p_value === 'number' && typeof data.retention_p_value === 'number') {
+    extracted.push({
+      name: currentPath.join(" - "),
+      data: data, // Pass the entire Call Performance data object
+      isMrab: false,
+      isCallPerformance: true,
+    });
+    return extracted; // Stop further recursion for this branch as we've found the Call Performance data
   }
 
   // If the current 'data' object contains DUT/REF keys, it's a regular data performance test case
@@ -42,6 +56,7 @@ const extractTestCases = (data, currentPath = []) => {
         data: { DUT: dutObject, REF: refObject },
         isPing: isPingTest,
         isMrab: false,
+        isCallPerformance: false,
       });
     }
   }
@@ -227,6 +242,14 @@ const DataPerformanceReport = () => {
                 <div key={testCase.name} className="report-section">
                   <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
                   <MrabStatisticsTable mrabData={testCase.data} />
+                </div>
+              );
+            } else if (testCase.isCallPerformance) { // New condition for Call Performance
+              return (
+                <div key={testCase.name} className="report-section">
+                  <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
+                  <CallPerformanceTable callPerformanceData={testCase.data} />
+                  <CallCategoriesChart callPerformanceData={testCase.data} />
                 </div>
               );
             } else {
