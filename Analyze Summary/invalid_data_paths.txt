@@ -1,2 +1,18 @@
 Raw Data\5G AUTO DP\5G Auto Data Test MHS Drive\DUT MHS UDP Drive.csv
 Raw Data\5G AUTO DP\5G Auto Data Test MHS Drive\REF MHS UDP Drive.csv
+Raw Data\Call Performance\5G Auto VoNR Disabled CP MO Drive\DUT\VONR OFF CP MO CH1 DUT1.csv
+Raw Data\Call Performance\5G Auto VoNR Disabled CP MO Drive\DUT\VONR OFF CP MO CH3 DUT2.csv
+Raw Data\Call Performance\5G Auto VoNR Disabled CP MO Drive\DUT\VONR OFF CP MO CH5 DUT3.csv
+Raw Data\Call Performance\5G Auto VoNR Disabled CP MO Drive\DUT\VONR OFF CP MO CH7 DUT4.csv
+Raw Data\Call Performance\5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH2 REF1.csv
+Raw Data\Call Performance\5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH4 REF2.csv
+Raw Data\Call Performance\5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH6 REF3.csv
+Raw Data\Call Performance\5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH8 REF4.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MO Drive\DUT\VONR ON CP MO CH1 DUT1.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MO Drive\DUT\VoNR ON CP MO CH3 DUT2.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MO Drive\DUT\VoNR ON CP MO CH5 DUT3.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MO Drive\DUT\VoNR ON CP MO CH7 DUT4.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH10 REF5.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH2 REF2.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH4 REF2.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH6 REF3.csv

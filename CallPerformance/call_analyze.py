@@ -175,7 +175,8 @@ def analyze_directory(directory_path):
     if aggregated_setup_duration_count > 0:
         mean_setup_time = aggregated_total_setup_duration / aggregated_setup_duration_count
 
-    return {
+    # Prepare the results dictionary
+    analysis_results = {
         "total_attempts": total_attempts_sum,
         "total_mo_attempts": total_mo_attempts_sum,
         "total_initiation_failures": total_initiation_failures_sum,
@@ -185,6 +186,17 @@ def analyze_directory(directory_path):
         "rat_distribution": dict(aggregated_rat_distribution),
         "mean_setup_time": mean_setup_time
     }
+    
+    # Calculate p-values for aggregated results if both DUT and REF data are available
+    # This function is called for either DUT or REF path, so we need to pass ref_results if available
+    # However, analyze_directory is called separately for DUT and REF.
+    # The p-value calculation requires both DUT and REF aggregated results.
+    # This means p-value calculation cannot happen *inside* analyze_directory for a single DUT/REF path.
+    # It must happen *after* both DUT and REF results are collected in run_all_data_analysis.py.
+    # So, I will revert the change to _print_analysis_results and instead modify run_all_data_analysis.py
+    # to perform the p-value calculation and add it to the JSON.
+
+    return analysis_results
 
 def _print_analysis_results(results, ref_results=None):
     print(f"Total attempts (Voice calls, excluding 603 Declined sections) across all files: {results['total_attempts']}")
@@ -212,20 +224,24 @@ def _print_analysis_results(results, ref_results=None):
     if ref_results:
         print("\n--- Criteria Analysis ---")
         print("\n5G Auto mode Call Initiation Criteria:")
-        initiation_criteria = _calculate_fisher_exact_criteria(
+        initiation_criteria_status, initiation_p_value = _calculate_fisher_exact_criteria(
             results['total_initiation_failures'], results['total_attempts'] - results['total_initiation_failures'],
             ref_results['total_initiation_failures'], ref_results['total_attempts'] - ref_results['total_initiation_failures'],
             criteria_type="MO/MT"
         )
-        print(f"  Result: {initiation_criteria}")
+        print(f"  Result: {initiation_criteria_status}")
+        if initiation_p_value is not None:
+            print(f"  P-value: {initiation_p_value:.4f}")
 
         print("\n5G Auto mode Call Retention (MO Only) Criteria:")
-        retention_criteria = _calculate_fisher_exact_criteria(
+        retention_criteria_status, retention_p_value = _calculate_fisher_exact_criteria(
             results['total_retention_failures'], results['total_initiation_successes'],
             ref_results['total_retention_failures'], ref_results['total_initiation_successes'],
             criteria_type="MO"
         )
-        print(f"  Result: {retention_criteria}")
+        print(f"  Result: {retention_criteria_status}")
+        if retention_p_value is not None:
+            print(f"  P-value: {retention_p_value:.4f}")
 
         print("\n5G Auto mode Call Setup Time Criteria:")
         setup_time_criteria = _calculate_call_setup_time_criteria(
@@ -235,12 +251,14 @@ def _print_analysis_results(results, ref_results=None):
 
 
 def _calculate_fisher_exact_criteria(dut_failures, dut_successes, ref_failures, ref_successes, criteria_type="MO/MT"):
+    p_value = None # Initialize p_value to None
+
     # Ensure all values are non-negative
     if any(x < 0 for x in [dut_failures, dut_successes, ref_failures, ref_successes]):
-        return "N/A (Invalid failure/success counts)"
+        return "N/A (Invalid failure/success counts)", p_value
 
     if (dut_failures + dut_successes == 0) or (ref_failures + ref_successes == 0):
-        return "N/A (Insufficient data for Fisher Exact Test)"
+        return "N/A (Insufficient data for Fisher Exact Test)", p_value
 
     table = [[dut_successes, dut_failures],
              [ ref_successes,ref_failures]]
@@ -267,18 +285,18 @@ def _calculate_fisher_exact_criteria(dut_failures, dut_successes, ref_failures, 
 
     # Criteria from the image
     if p_value > 0.99:
-        return "PASS (p-value > 0.99)" + result_string
+        return "PASS (p-value > 0.99)" + result_string, p_value
     elif 0.05 <= p_value <= 0.99:
         # Check RED condition for DUT failures < 1%
         dut_failure_percentage = (dut_failures / dut_total_attempts) * 100 if dut_total_attempts > 0 else 0
         if dut_failure_percentage < 1:
-            return "WARNING (RED condition satisfied: % failures (DUT) < 1%)" + result_string
+            return "WARNING (RED condition satisfied: % failures (DUT) < 1%)" + result_string, p_value
         else:
-            return "WARNING (0.05 <= p-value <= 0.99)" + result_string
+            return "WARNING (0.05 <= p-value <= 0.99)" + result_string, p_value
     elif p_value < 0.05:
-        return "FAIL (p-value < 0.05)" + result_string
+        return "FAIL (p-value < 0.05)" + result_string, p_value
     else:
-        return "N/A (Could not determine Fisher Exact criteria)" + result_string
+        return "N/A (Could not determine Fisher Exact criteria)" + result_string, p_value
 
 def _calculate_call_setup_time_criteria(dut_mean_setup_time, ref_mean_setup_time):
     if dut_mean_setup_time is None or ref_mean_setup_time is None or ref_mean_setup_time == 0:

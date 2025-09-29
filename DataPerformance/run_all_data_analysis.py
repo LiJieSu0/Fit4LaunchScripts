@@ -17,6 +17,7 @@ import ping_statics # Import the ping_statics module
 import mrab_statistics # Import the mrab_statistics module
 import data_path_reader # Import the new path reader script
 import check_empty_data # Import check_empty_data directly
+from CallPerformance.call_analyze import analyze_directory, _calculate_fisher_exact_criteria # Import analyze_directory and _calculate_fisher_exact_criteria
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -33,9 +34,7 @@ if __name__ == "__main__":
         {"path": "5G NSA DP", "analysis_type": "data_performance"},
         {"path": "5G VoNR MRAB Stationary", "analysis_type": "mrab_performance"}, # Add MRAB directory
         {"path": "TestInvalid", "analysis_type": "data_performance"}, # Add the new test directory
-        # Add other directories here as needed, e.g.:
-        # {"path": "Call Performance", "analysis_type": "call_performance"},
-        # {"path": "Ping", "analysis_type": "ping"},
+        {"path": "Call Performance", "analysis_type": "call_performance"}, # Add Call Performance directory
     ]
     
     all_collected_results = {}
@@ -139,11 +138,17 @@ if __name__ == "__main__":
                 threshold = 10
                 mrab_intervals = mrab_statistics.extract_intervals_and_values(csv_file_path, target_header, threshold)
                 if mrab_intervals:
-                    mrab_analysis_results = mrab_statistics.analyze_grouped_intervals(mrab_intervals)
+                    mrab_analysis_results, _, _ = mrab_statistics.analyze_grouped_intervals(mrab_intervals) # Unpack and get only the results
                     if mrab_analysis_results:
                         all_file_stats["MRAB Statistics"] = mrab_analysis_results
                 else:
                     print(f"No MRAB intervals found or an error occurred for: {csv_file_path}")
+            
+            # Add Call Performance statistics collection
+            elif params["analysis_type_detected"] == "call_performance":
+                # For call performance, we analyze the entire directory, not individual files here.
+                # This block will be skipped for individual CSVs, and handled after the loop.
+                pass
 
             # Determine if the file is invalid: it's invalid if no statistical data was collected
             statistical_keys = ["Throughput", "Jitter", "Error Ratio", "Web Page Load Time", "Ping RTT", "MRAB Statistics"]
@@ -153,7 +158,7 @@ if __name__ == "__main__":
                     has_any_statistical_data = True
                     break
             
-            if not has_any_statistical_data:
+            if not has_any_statistical_data and params["analysis_type_detected"] != "call_performance": # Don't mark call_performance files as invalid here
                 current_file_has_invalid_data = True
         
         if current_file_has_invalid_data:
@@ -164,7 +169,7 @@ if __name__ == "__main__":
             print(f"Valid data detected for: {csv_file_path}. Added to valid_data_files.")
         
         # Construct the hierarchical path for the JSON output
-        if all_file_stats: # Only insert if stats were successfully collected (even if it's just device type etc.)
+        if all_file_stats and params["analysis_type_detected"] != "call_performance": # Only insert if stats were successfully collected and not call_performance
             relative_path = os.path.relpath(csv_file_path, base_raw_data_dir)
             path_components = relative_path.replace("\\", "/").split('/') # Use forward slashes for consistency
             
@@ -174,7 +179,79 @@ if __name__ == "__main__":
             
             _insert_into_nested_dict(all_collected_results, path_components, all_file_stats)
     
+    # After processing all individual CSVs, handle directory-level analyses
+    for directory_info in directories_to_process:
+        if directory_info["analysis_type"] == "call_performance":
+            call_performance_path = os.path.join(base_raw_data_dir, directory_info["path"])
+            if os.path.isdir(call_performance_path):
+                print(f"\n--- Starting Call Performance analysis for directory: {call_performance_path} ---")
+                
+                # Iterate through subdirectories within the main Call Performance directory
+                for sub_dir_name in os.listdir(call_performance_path):
+                    sub_dir_full_path = os.path.join(call_performance_path, sub_dir_name)
+                    
+                    if os.path.isdir(sub_dir_full_path):
+                        # Check for DUT and REF subdirectories within the current sub_dir_full_path
+                        dut_call_path = os.path.join(sub_dir_full_path, 'DUT')
+                        ref_call_path = os.path.join(sub_dir_full_path, 'REF')
+
+                        if os.path.isdir(dut_call_path) or os.path.isdir(ref_call_path):
+                            print(f"\n--- Analyzing Call Performance data in: {sub_dir_full_path} ---")
+                            call_results_for_subdir = {}
+
+                            if os.path.isdir(dut_call_path):
+                                print(f"Analyzing DUT call data in: {dut_call_path}")
+                                dut_call_results = analyze_directory(dut_call_path)
+                                if dut_call_results:
+                                    call_results_for_subdir['DUT'] = dut_call_results
+                            else:
+                                print(f"Warning: DUT directory not found for Call Performance at {dut_call_path}")
+
+                            if os.path.isdir(ref_call_path):
+                                print(f"Analyzing REF call data in: {ref_call_path}")
+                                ref_call_results = analyze_directory(ref_call_path)
+                                if ref_call_results:
+                                    call_results_for_subdir['REF'] = ref_call_results
+                            else:
+                                print(f"Warning: REF directory not found for Call Performance at {ref_call_path}")
+
+                            if call_results_for_subdir:
+                                # Calculate p-values for aggregated results if both DUT and REF data are available
+                                if 'DUT' in call_results_for_subdir and 'REF' in call_results_for_subdir:
+                                    dut_res = call_results_for_subdir['DUT']
+                                    ref_res = call_results_for_subdir['REF']
+
+                                    # Initiation P-value
+                                    _, initiation_p_value = _calculate_fisher_exact_criteria(
+                                        dut_res['total_initiation_failures'], dut_res['total_attempts'] - dut_res['total_initiation_failures'],
+                                        ref_res['total_initiation_failures'], ref_res['total_attempts'] - ref_res['total_initiation_failures'],
+                                        criteria_type="MO/MT"
+                                    )
+                                    if initiation_p_value is not None:
+                                        call_results_for_subdir['initiation_p_value'] = initiation_p_value
+
+                                    # Retention P-value
+                                    _, retention_p_value = _calculate_fisher_exact_criteria(
+                                        dut_res['total_retention_failures'], dut_res['total_initiation_successes'],
+                                        ref_res['total_retention_failures'], ref_res['total_initiation_successes'],
+                                        criteria_type="MO"
+                                    )
+                                    if retention_p_value is not None:
+                                        call_results_for_subdir['retention_p_value'] = retention_p_value
+
+                                # Insert results under the specific subdirectory's name
+                                _insert_into_nested_dict(all_collected_results, [directory_info["path"], sub_dir_name], call_results_for_subdir)
+                                print(f"Call Performance analysis for {sub_dir_name} completed and added to results.")
+                            else:
+                                print(f"No call performance data collected for {sub_dir_name}.")
+                        else:
+                            print(f"Skipping directory {sub_dir_name}: No 'DUT' or 'REF' subdirectories found.")
+            else:
+                print(f"Warning: Call Performance directory not found at {call_performance_path}. Skipping analysis.")
+
     # Write the collected list of CSV files to a TXT file using the new data_path_reader script
+    # Note: all_csv_files_processed only contains paths for data_performance and mrab_performance.
+    # Call performance files are handled by analyze_directory and not individually listed here.
     data_path_reader.write_csv_paths_with_two_parents(all_csv_files_processed, base_raw_data_dir, output_dir) # Pass output_dir
 
     # Write invalid data file paths to a text file

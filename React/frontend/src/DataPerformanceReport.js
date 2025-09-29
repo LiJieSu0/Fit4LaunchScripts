@@ -6,13 +6,21 @@ import MrabStatisticsTable from './MrabStatisticsTable'; // Import MrabStatistic
 // Helper function to recursively extract test cases
 const extractTestCases = (data, currentPath = []) => {
   let extracted = [];
-  let mrabData = {};
 
-  // If the current 'data' object contains DUT/REF keys, it's a test case
+  // Check if the current data object is an MRAB test case
+  if (data["DUT MRAB"] && data["REF MRAB"] && data["DUT MRAB"]["Analysis Type"] === "mrab_performance") {
+    extracted.push({
+      name: currentPath.join(" - "),
+      data: data, // Pass the entire MRAB data object
+      isMrab: true,
+    });
+    return extracted; // Stop further recursion for this branch as we've found the MRAB data
+  }
+
+  // If the current 'data' object contains DUT/REF keys, it's a regular data performance test case
   const hasDutRefKeys = Object.keys(data).some(key => key.toLowerCase().includes("dut") || key.toLowerCase().includes("ref"));
 
-  // Only consider it a test case if it has DUT/REF keys AND it's not the top-level MRAB container
-  if (hasDutRefKeys && !currentPath.includes("5G VoNR MRAB Stationary")) {
+  if (hasDutRefKeys) {
     let dutObject = {};
     let refObject = {};
     let isPingTest = false;
@@ -23,45 +31,34 @@ const extractTestCases = (data, currentPath = []) => {
       } else if (key.toLowerCase().includes("ref")) {
         refObject = data[key];
       }
-        // Check for Ping RTT within DUT or REF objects
-        if (dutObject["Ping RTT"] || refObject["Ping RTT"]) {
-          isPingTest = true;
-        }
+      // Check for Ping RTT within DUT or REF objects
+      if (dutObject["Ping RTT"] || refObject["Ping RTT"]) {
+        isPingTest = true;
       }
+    }
     if (Object.keys(dutObject).length > 0 || Object.keys(refObject).length > 0) {
       extracted.push({
         name: currentPath.join(" - "),
         data: { DUT: dutObject, REF: refObject },
-        isPing: isPingTest
+        isPing: isPingTest,
+        isMrab: false,
       });
     }
   }
 
-  // Always recurse into children, regardless of whether the current 'data' was a test case itself
+  // Always recurse into children for other types of data
   for (const key in data) {
     if (typeof data[key] === 'object' && data[key] !== null) {
       const result = extractTestCases(data[key], [...currentPath, key]);
-      extracted = extracted.concat(result.extracted);
-      // Merge mrabData from children, if any
-      if (Object.keys(result.mrabData).length > 0) {
-        mrabData = { ...mrabData, ...result.mrabData };
-      }
+      extracted = extracted.concat(result);
     }
   }
 
-  // Extract MRAB data if present at the top level of the current 'data' object
-  if (data["DUT MRAB"] && data["REF MRAB"]) {
-    mrabData = {
-      "DUT MRAB": data["DUT MRAB"],
-      "REF MRAB": data["REF MRAB"],
-    };
-  }
-
-  return { extracted, mrabData };
+  return extracted;
 };
 
 const DataPerformanceReport = () => {
-  const { extracted: allFlattenedTestCases, mrabData } = extractTestCases(allResults);
+  const allFlattenedTestCases = extractTestCases(allResults);
 
   const renderStatisticsTable = (title, data, metricsToDisplay) => { // Added metricsToDisplay prop
     if (!data || Object.keys(data).length === 0) {
@@ -224,48 +221,54 @@ const DataPerformanceReport = () => {
         <div key={categoryName} className="category-section">
           <h2 className="text-2xl font-bold mb-6 text-blue-700">{categoryName}</h2>
           {testCases.map(testCase => {
-            const dutData = testCase.data.DUT || {};
-            const refData = testCase.data.REF || {};
+            if (testCase.isMrab) {
+              // Render MrabStatisticsTable for MRAB test cases
+              return (
+                <div key={testCase.name} className="report-section">
+                  <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
+                  <MrabStatisticsTable mrabData={testCase.data} />
+                </div>
+              );
+            } else {
+              // Render DataPerformanceReport and BarChart for other test cases
+              const dutData = testCase.data.DUT || {};
+              const refData = testCase.data.REF || {};
 
-            const hasThroughputData = dutData.Throughput || refData.Throughput;
-            const hasJitterData = dutData.Jitter || refData.Jitter;
-            const hasErrorRatioData = dutData["Error Ratio"] || refData["Error Ratio"];
-            const hasWebPageLoadTimeData = dutData["Web Page Load Time"] || refData["Web Page Load Time"];
-            const hasPingRttData = dutData["Ping RTT"] || refData["Ping RTT"];
+              const hasThroughputData = dutData.Throughput || refData.Throughput;
+              const hasJitterData = dutData.Jitter || refData.Jitter;
+              const hasErrorRatioData = dutData["Error Ratio"] || refData["Error Ratio"];
+              const hasWebPageLoadTimeData = dutData["Web Page Load Time"] || refData["Web Page Load Time"];
+              const hasPingRttData = dutData["Ping RTT"] || refData["Ping RTT"];
 
-            let metricsToDisplayForTable = [];
-            if (hasThroughputData || hasJitterData || hasErrorRatioData || hasWebPageLoadTimeData) {
-              metricsToDisplayForTable.push("Throughput", "Jitter", "Error Ratio", "Web Page Load Time");
-            }
-            if (hasPingRttData) {
-              metricsToDisplayForTable.push("Ping RTT");
-            }
+              let metricsToDisplayForTable = [];
+              if (hasThroughputData || hasJitterData || hasErrorRatioData || hasWebPageLoadTimeData) {
+                metricsToDisplayForTable.push("Throughput", "Jitter", "Error Ratio", "Web Page Load Time");
+              }
+              if (hasPingRttData) {
+                metricsToDisplayForTable.push("Ping RTT");
+              }
 
-            return (
-              <div key={testCase.name} className="report-section">
-                <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
-                <div className="table-chart-container">
-                  {renderStatisticsTable(testCase.name, testCase.data, metricsToDisplayForTable)}
-                  <div className="charts-container">
-                    {(hasThroughputData || hasJitterData || hasErrorRatioData || hasWebPageLoadTimeData) && (
-                      <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={false} />
-                    )}
-                    {hasPingRttData && (
-                      <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={true} />
-                    )}
+              return (
+                <div key={testCase.name} className="report-section">
+                  <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
+                  <div className="table-chart-container">
+                    {renderStatisticsTable(testCase.name, testCase.data, metricsToDisplayForTable)}
+                    <div className="charts-container">
+                      {(hasThroughputData || hasJitterData || hasErrorRatioData || hasWebPageLoadTimeData) && (
+                        <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={false} />
+                      )}
+                      {hasPingRttData && (
+                        <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={true} />
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
+              );
+            }
           })}
         </div>
       ))}
 
-      {Object.keys(mrabData).length > 0 && (
-        <div className="category-section">
-          <MrabStatisticsTable mrabData={mrabData} />
-        </div>
-      )}
     </>
   );
 };

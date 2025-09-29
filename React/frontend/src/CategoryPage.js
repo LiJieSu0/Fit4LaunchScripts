@@ -43,13 +43,19 @@ const extractTestCases = (data, currentPath = []) => {
 
 const CategoryPage = ({ categoryName }) => {
   const allFlattenedTestCases = extractTestCases(allResults);
-  const filteredTestCases = allFlattenedTestCases.filter(testCase =>
-    testCase.name.startsWith(categoryName)
-  );
+  const filteredTestCases = allFlattenedTestCases.filter(testCase => {
+    if (categoryName === "5G AUTO DP") {
+      return testCase.name.startsWith("5G AUTO DP") || testCase.name.startsWith("5G VoNR MRAB Stationary");
+    }
+    return testCase.name.startsWith(categoryName);
+  });
 
   // Group test cases by their top-level category for rendering headers
   const groupedByCategories = filteredTestCases.reduce((acc, testCase) => {
-    const category = testCase.name.split(' - ')[0];
+    let category = testCase.name.split(' - ')[0];
+    if (category === "5G VoNR MRAB Stationary") {
+      category = "5G AUTO DP"; // Group MRAB under 5G AUTO DP
+    }
     if (!acc[category]) {
       acc[category] = [];
     }
@@ -61,27 +67,39 @@ const CategoryPage = ({ categoryName }) => {
     <div className="container mx-auto p-4 main-content">
       <h1 className="text-4xl font-bold text-center my-8">{categoryName} Data Performance Analysis Report</h1>
       <h2 className="text-2xl font-semibold text-center mb-10">Comparison of DUT and REF Devices</h2>
-      {Object.entries(groupedByCategories).map(([currentCategoryName, testCases]) => (
-        <React.Fragment key={currentCategoryName}>
-          {/* Only render the category header if it's different from the main categoryName prop */}
-          {currentCategoryName !== categoryName && (
-            <h2 className="text-2xl font-bold mb-6 text-blue-700">{currentCategoryName}</h2>
-          )}
-          {testCases.map(testCase => (
-            <div key={testCase.name} className="report-section">
-              <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name.replace(`${categoryName} - `, '')}</h3>
-              <div className="table-chart-container">
-                <DataPerformanceReport
-                  testCaseName={testCase.name}
-                  testCaseData={testCase.data}
-                  isPing={testCase.isPing}
-                  renderStatisticsTable={DataPerformanceReport.renderStatisticsTable} // Pass down the render function
-                />
+      {Object.entries(groupedByCategories).map(([currentCategoryName, testCases]) => {
+        let sortedTestCases = [...testCases];
+        if (currentCategoryName === "5G AUTO DP") {
+          // Sort "5G AUTO DP" test cases to put "5G VoNR MRAB Stationary" at the end
+          sortedTestCases.sort((a, b) => {
+            if (a.name.startsWith("5G VoNR MRAB Stationary")) return 1;
+            if (b.name.startsWith("5G VoNR MRAB Stationary")) return -1;
+            return 0;
+          });
+        }
+
+        return (
+          <React.Fragment key={currentCategoryName}>
+            {/* Only render the category header if it's different from the main categoryName prop */}
+            {currentCategoryName !== categoryName && (
+              <h2 className="text-2xl font-bold mb-6 text-blue-700">{currentCategoryName}</h2>
+            )}
+            {sortedTestCases.map(testCase => (
+              <div key={testCase.name} className="report-section">
+                <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name.replace(`${categoryName} - `, '')}</h3>
+                <div className="table-chart-container">
+                  <DataPerformanceReport
+                    testCaseName={testCase.name}
+                    testCaseData={testCase.data}
+                    isPing={testCase.isPing}
+                    renderStatisticsTable={DataPerformanceReport.renderStatisticsTable} // Pass down the render function
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-        </React.Fragment>
-      ))}
+            ))}
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 };

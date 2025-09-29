@@ -262,31 +262,11 @@ if __name__ == "__main__":
         for stat_name, value in stats.items():
             print(f"    {stat_name}: {value}")
     
-    print("\n--- DUT MRAB Intervals (Line Ranges and Averages) ---") # Updated print statement
-    for group_key, averages_with_lines in dut_mrab_averages_with_lines.items(): # Updated variable name
-        group_name = group_labels.get(group_key, f"Group {group_key}")
-        print(f"  {group_name} Intervals:")
-        if averages_with_lines:
-            for interval_average, (start, end) in averages_with_lines: # Updated variable name
-                print(f"    Lines {start}-{end}, Average: {interval_average:.2f}") # Updated print statement
-        else:
-            print("    No intervals found for this group.")
-
     print("\n--- REF MRAB Statistics ---")
     for group_key, stats in ref_mrab_analysis.items():
         print(f"  {group_key}:")
         for stat_name, value in stats.items():
             print(f"    {stat_name}: {value}")
-
-    print("\n--- REF MRAB Intervals (Line Ranges and Averages) ---") # Updated print statement
-    for group_key, averages_with_lines in ref_mrab_averages_with_lines.items(): # Updated variable name
-        group_name = group_labels.get(group_key, f"Group {group_key}")
-        print(f"  {group_name} Intervals:")
-        if averages_with_lines:
-            for interval_average, (start, end) in averages_with_lines: # Updated variable name
-                print(f"    Lines {start}-{end}, Average: {interval_average:.2f}") # Updated print statement
-        else:
-            print("    No intervals found for this group.")
 
     print("\n--- MRAB Case Statuses by Group ---")
     for group_name, status in mrab_statuses.items():

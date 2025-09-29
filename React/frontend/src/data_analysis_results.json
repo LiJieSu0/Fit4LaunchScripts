@@ -1611,6 +1611,58 @@
                     "Number of Intervals": 100
                 }
             }
+        },
+        "5G VoNR MRAB Stationary": {
+            "DUT MRAB": {
+                "Device Type": "DUT",
+                "Network Type": "5G",
+                "Analysis Type": "mrab_performance",
+                "MRAB Statistics": {
+                    "Pre Call": {
+                        "Mean": 4.882911111111111,
+                        "Maximum": 24.7571,
+                        "Minimum": 1.4072999999999998,
+                        "Standard Deviation": 5.543084409159013
+                    },
+                    "In Call": {
+                        "Mean": 3.2097527203065135,
+                        "Maximum": 6.742133333333333,
+                        "Minimum": 1.5989333333333335,
+                        "Standard Deviation": 1.27981540795501
+                    },
+                    "Post Call": {
+                        "Mean": 3.6976074074074075,
+                        "Maximum": 7.0381,
+                        "Minimum": 1.5766,
+                        "Standard Deviation": 1.692325914605559
+                    }
+                }
+            },
+            "REF MRAB": {
+                "Device Type": "REF",
+                "Network Type": "5G",
+                "Analysis Type": "mrab_performance",
+                "MRAB Statistics": {
+                    "Pre Call": {
+                        "Mean": 26.241174814814816,
+                        "Maximum": 143.533,
+                        "Minimum": 1.1616,
+                        "Standard Deviation": 43.83573310127177
+                    },
+                    "In Call": {
+                        "Mean": 5.224466896551723,
+                        "Maximum": 21.51643333333333,
+                        "Minimum": 1.1007931034482759,
+                        "Standard Deviation": 4.92464495414153
+                    },
+                    "Post Call": {
+                        "Mean": 20.76726518518518,
+                        "Maximum": 104.6692,
+                        "Minimum": 1.1988,
+                        "Standard Deviation": 32.54592431994347
+                    }
+                }
+            }
         }
     },
     "5G NSA DP": {
@@ -2133,56 +2185,90 @@
             }
         }
     },
-    "5G VoNR MRAB Stationary": {
-        "DUT MRAB": {
-            "MRAB Statistics": {
-                "Pre Call": {
-                    "Mean": 4.882911111111111,
-                    "Maximum": 24.7571,
-                    "Minimum": 1.4072999999999998,
-                    "Standard Deviation": 5.543084409159013
+    "Call Performance": {
+        "5G Auto VoNR Disabled CP MO Drive": {
+            "DUT": {
+                "total_attempts": 344,
+                "total_mo_attempts": 0,
+                "total_initiation_failures": 0,
+                "total_retention_failures": 1,
+                "total_initiation_successes": 344,
+                "call_result_distribution": {
+                    "Complete": 332,
+                    "Etc.": 11,
+                    "Drop": 1
                 },
-                "In Call": {
-                    "Mean": 3.2097527203065135,
-                    "Maximum": 6.742133333333333,
-                    "Minimum": 1.5989333333333335,
-                    "Standard Deviation": 1.27981540795501
+                "rat_distribution": {
+                    "EPSFB": 322,
+                    "VoLTE": 17,
+                    "VoNR": 5
                 },
-                "Post Call": {
-                    "Mean": 3.6976074074074075,
-                    "Maximum": 7.0381,
-                    "Minimum": 1.5766,
-                    "Standard Deviation": 1.692325914605559
-                }
-            }
+                "mean_setup_time": 1.309947898809524
+            },
+            "REF": {
+                "total_attempts": 402,
+                "total_mo_attempts": 0,
+                "total_initiation_failures": 82,
+                "total_retention_failures": 0,
+                "total_initiation_successes": 320,
+                "call_result_distribution": {
+                    "Complete": 307,
+                    "Orig. Fail": 82,
+                    "Etc.": 12,
+                    "Forced stop": 1
+                },
+                "rat_distribution": {
+                    "EPSFB": 283,
+                    "VoNR": 87,
+                    "VoLTE": 17,
+                    "VoNR-VoLTE": 15
+                },
+                "mean_setup_time": 1.5097094108280256
+            },
+            "initiation_p_value": 1.0,
+            "retention_p_value": 0.518796992481203
         },
-        "REF MRAB": {
-            "MRAB Statistics": {
-                "Pre Call": {
-                    "Mean": 26.241174814814816,
-                    "Maximum": 143.533,
-                    "Minimum": 1.1616,
-                    "Standard Deviation": 43.83573310127177
+        "5G Auto VoNR Enabled CP MO Drive": {
+            "DUT": {
+                "total_attempts": 1134,
+                "total_mo_attempts": 0,
+                "total_initiation_failures": 5,
+                "total_retention_failures": 4,
+                "total_initiation_successes": 1129,
+                "call_result_distribution": {
+                    "Complete": 1090,
+                    "Etc.": 28,
+                    "Orig. Fail": 5,
+                    "Forced stop": 7,
+                    "Drop": 4
                 },
-                "In Call": {
-                    "Mean": 5.224466896551723,
-                    "Maximum": 21.51643333333333,
-                    "Minimum": 1.1007931034482759,
-                    "Standard Deviation": 4.92464495414153
+                "rat_distribution": {
+                    "VoNR": 1107,
+                    "VoLTE": 13,
+                    "VoNR-VoLTE": 14
                 },
-                "Post Call": {
-                    "Mean": 20.76726518518518,
-                    "Maximum": 104.6692,
-                    "Minimum": 1.1988,
-                    "Standard Deviation": 32.54592431994347
-                }
-            }
-        },
-        "overallMrabStatus": "Fail",
-        "mrabGroupStatuses": {
-            "Pre Call": "Fail",
-            "In Call": "Fail",
-            "Post Call": "Fail"
+                "mean_setup_time": 1.22705422323049
+            },
+            "REF": {
+                "total_attempts": 1200,
+                "total_mo_attempts": 0,
+                "total_initiation_failures": 91,
+                "total_retention_failures": 0,
+                "total_initiation_successes": 1109,
+                "call_result_distribution": {
+                    "Complete": 1072,
+                    "Orig. Fail": 91,
+                    "Etc.": 24,
+                    "Forced stop": 13
+                },
+                "rat_distribution": {
+                    "VoNR": 1199,
+                    "EPSFB": 1
+                },
+                "mean_setup_time": 1.348080883593034
+            },
+            "initiation_p_value": 1.0,
+            "retention_p_value": 0.06504857820184161
         }
     }
 }
