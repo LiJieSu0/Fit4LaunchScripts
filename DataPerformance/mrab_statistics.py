@@ -102,10 +102,10 @@ def analyze_grouped_intervals(all_intervals_with_lines):
         2: "Post Call"
     }
 
-    grouped_interval_sums = {
-        0: [],  # Sums of intervals where index % 3 == 0
-        1: [],  # Sums of intervals where index % 3 == 1
-        2: []   # Sums of intervals where index % 3 == 2
+    grouped_interval_averages = {
+        0: [],  # Averages of intervals where index % 3 == 0
+        1: [],  # Averages of intervals where index % 3 == 1
+        2: []   # Averages of intervals where index % 3 == 2
     }
     grouped_interval_line_ranges = {
         0: [],
@@ -114,14 +114,14 @@ def analyze_grouped_intervals(all_intervals_with_lines):
     }
 
     for i, (interval_values, line_range) in enumerate(all_intervals_with_lines):
-        if interval_values: # Only calculate sum if interval is not empty
-            interval_sum = np.sum(interval_values)
+        if interval_values: # Only calculate average if interval is not empty
+            interval_average = np.mean(interval_values)
             group_key = i % 3
-            grouped_interval_sums[group_key].append(interval_sum)
+            grouped_interval_averages[group_key].append(interval_average)
             grouped_interval_line_ranges[group_key].append(line_range)
 
     results = {}
-    grouped_interval_sums_with_lines = {
+    grouped_interval_averages_with_lines = {
         0: [],
         1: [],
         2: []
@@ -129,13 +129,13 @@ def analyze_grouped_intervals(all_intervals_with_lines):
 
     for i, (interval_values, line_range) in enumerate(all_intervals_with_lines):
         if interval_values:
-            interval_sum = np.sum(interval_values)
+            interval_average = np.mean(interval_values)
             group_key = i % 3
-            grouped_interval_sums_with_lines[group_key].append((interval_sum, line_range))
+            grouped_interval_averages_with_lines[group_key].append((interval_average, line_range))
 
-    for group_key, sums_in_group in grouped_interval_sums.items():
+    for group_key, averages_in_group in grouped_interval_averages.items():
         group_name = group_labels.get(group_key, f"Group {group_key}") # Get the descriptive name
-        if not sums_in_group:
+        if not averages_in_group:
             results[group_name] = {
                 "Mean": None,
                 "Maximum": None,
@@ -144,41 +144,41 @@ def analyze_grouped_intervals(all_intervals_with_lines):
             }
             continue
 
-        total_sum_of_sums = np.sum(sums_in_group)
-        average_of_sums = np.mean(sums_in_group)
-        maximum_of_sums = np.max(sums_in_group)
-        minimum_of_sums = np.min(sums_in_group)
-        std_dev_of_sums = np.std(sums_in_group)
+        overall_average = np.mean(averages_in_group)
+        maximum_of_averages = np.max(averages_in_group)
+        minimum_of_averages = np.min(averages_in_group)
+        std_dev_of_averages = np.std(averages_in_group)
 
         results[group_name] = {
-            "Mean": average_of_sums,
-            "Maximum": maximum_of_sums,
-            "Minimum": minimum_of_sums,
-            "Standard Deviation": std_dev_of_sums
+            "Mean": overall_average,
+            "Maximum": maximum_of_averages,
+            "Minimum": minimum_of_averages,
+            "Standard Deviation": std_dev_of_averages
         }
-    return results, grouped_interval_line_ranges, grouped_interval_sums_with_lines
+    return results, grouped_interval_line_ranges, grouped_interval_averages_with_lines
 
-def calculate_mrab_status(overall_avg_tput_dut, overall_avg_tput_ref):
+def calculate_group_status(dut_mean, ref_mean, group_name):
     """
-    Calculates the Mrab Case status based on DUT and REF overall average throughputs.
+    Calculates the Mrab Case status for a specific group (Pre Call, In Call, Post Call).
 
     Args:
-        overall_avg_tput_dut (float): Overall Average Throughput for Device Under Test (DUT).
-        overall_avg_tput_ref (float): Overall Average Throughput for Reference Device (REF).
+        dut_mean (float): Mean throughput for the DUT in the specified group.
+        ref_mean (float): Mean throughput for the REF in the specified group.
+        group_name (str): The name of the group (e.g., "Pre Call", "In Call", "Post Call").
 
     Returns:
-        str: The Mrab Case status (Excellent, Pass, Marginal Fail, Fail).
+        str: The Mrab Case status for the group (Excellent, Pass, Marginal Fail, Fail, or error message).
     """
-    if overall_avg_tput_ref is None or overall_avg_tput_ref == 0:
-        return "Cannot calculate: Reference Throughput is zero or None."
-    if overall_avg_tput_dut is None:
-        return "Cannot calculate: DUT Throughput is None."
+    if ref_mean is None or ref_mean == 0:
+        return f"Cannot calculate {group_name} status: Reference Throughput is zero or None."
+    if dut_mean is None:
+        return f"Cannot calculate {group_name} status: DUT Throughput is None."
 
-    if overall_avg_tput_dut > 1.1 * overall_avg_tput_ref:
+    if dut_mean > 1.1 * ref_mean:
         return "Excellent"
-    elif 0.9 * overall_avg_tput_ref <= overall_avg_tput_dut <= 1.1 * overall_avg_tput_ref:
+    elif 0.9 * ref_mean <= dut_mean <= 1.1 * ref_mean:
         return "Pass"
-    elif 0.8 * overall_avg_tput_ref <= overall_avg_tput_dut < 0.9 * overall_avg_tput_ref:
+    elif 0.8 * ref_mean <= dut_mean < 0.9 * ref_mean:
         return "Marginal Fail"
     else:
         return "Fail"
@@ -215,9 +215,9 @@ if __name__ == "__main__":
     print(f"  Total DUT intervals counted: {len(dut_intervals)}")
     dut_mrab_analysis = {}
     dut_mrab_line_ranges = {}
-    dut_mrab_sums_with_lines = {}
+    dut_mrab_averages_with_lines = {} # Renamed from sums_with_lines
     if dut_intervals:
-        dut_mrab_analysis, dut_mrab_line_ranges, dut_mrab_sums_with_lines = analyze_grouped_intervals(dut_intervals)
+        dut_mrab_analysis, dut_mrab_line_ranges, dut_mrab_averages_with_lines = analyze_grouped_intervals(dut_intervals)
         data["5G VoNR MRAB Stationary"]["DUT MRAB"] = {"MRAB Statistics": dut_mrab_analysis}
         print("DUT MRAB statistics generated.")
     else:
@@ -230,9 +230,9 @@ if __name__ == "__main__":
     print(f"  Total REF intervals counted: {len(ref_intervals)}")
     ref_mrab_analysis = {}
     ref_mrab_line_ranges = {}
-    ref_mrab_sums_with_lines = {}
+    ref_mrab_averages_with_lines = {} # Renamed from sums_with_lines
     if ref_intervals:
-        ref_mrab_analysis, ref_mrab_line_ranges, ref_mrab_sums_with_lines = analyze_grouped_intervals(ref_intervals)
+        ref_mrab_analysis, ref_mrab_line_ranges, ref_mrab_averages_with_lines = analyze_grouped_intervals(ref_intervals)
         data["5G VoNR MRAB Stationary"]["REF MRAB"] = {"MRAB Statistics": ref_mrab_analysis}
         print("REF MRAB statistics generated.")
     else:
@@ -243,14 +243,15 @@ if __name__ == "__main__":
     dut_mrab_stats = data["5G VoNR MRAB Stationary"].get("DUT MRAB", {}).get("MRAB Statistics", {})
     ref_mrab_stats = data["5G VoNR MRAB Stationary"].get("REF MRAB", {}).get("MRAB Statistics", {})
 
-    dut_in_call_mean = dut_mrab_stats.get("In Call", {}).get("Mean")
-    ref_in_call_mean = ref_mrab_stats.get("In Call", {}).get("Mean")
+    # Calculate and store status for each group
+    mrab_statuses = {}
+    group_names = ["Pre Call", "In Call", "Post Call"]
 
-    overall_mrab_status = "N/A"
-    if dut_in_call_mean is not None and ref_in_call_mean is not None:
-        overall_mrab_status = calculate_mrab_status(dut_in_call_mean, ref_in_call_mean)
-    else:
-        overall_mrab_status = "Cannot perform Mrab Case comparison: 'In Call' Mean not available for both DUT and REF."
+    for group_name in group_names:
+        dut_mean = dut_mrab_stats.get(group_name, {}).get("Mean")
+        ref_mean = ref_mrab_stats.get(group_name, {}).get("Mean")
+        status = calculate_group_status(dut_mean, ref_mean, group_name)
+        mrab_statuses[group_name] = status
 
     # Print statistics to console
     group_labels = {0: "Pre Call", 1: "In Call", 2: "Post Call"} # Define group_labels here for printing
@@ -261,13 +262,13 @@ if __name__ == "__main__":
         for stat_name, value in stats.items():
             print(f"    {stat_name}: {value}")
     
-    print("\n--- DUT MRAB Intervals (Line Ranges and Sums) ---")
-    for group_key, sums_with_lines in dut_mrab_sums_with_lines.items():
+    print("\n--- DUT MRAB Intervals (Line Ranges and Averages) ---") # Updated print statement
+    for group_key, averages_with_lines in dut_mrab_averages_with_lines.items(): # Updated variable name
         group_name = group_labels.get(group_key, f"Group {group_key}")
         print(f"  {group_name} Intervals:")
-        if sums_with_lines:
-            for interval_sum, (start, end) in sums_with_lines:
-                print(f"    Lines {start}-{end}, Sum: {interval_sum:.2f}")
+        if averages_with_lines:
+            for interval_average, (start, end) in averages_with_lines: # Updated variable name
+                print(f"    Lines {start}-{end}, Average: {interval_average:.2f}") # Updated print statement
         else:
             print("    No intervals found for this group.")
 
@@ -277,26 +278,28 @@ if __name__ == "__main__":
         for stat_name, value in stats.items():
             print(f"    {stat_name}: {value}")
 
-    print("\n--- REF MRAB Intervals (Line Ranges and Sums) ---")
-    for group_key, sums_with_lines in ref_mrab_sums_with_lines.items():
+    print("\n--- REF MRAB Intervals (Line Ranges and Averages) ---") # Updated print statement
+    for group_key, averages_with_lines in ref_mrab_averages_with_lines.items(): # Updated variable name
         group_name = group_labels.get(group_key, f"Group {group_key}")
         print(f"  {group_name} Intervals:")
-        if sums_with_lines:
-            for interval_sum, (start, end) in sums_with_lines:
-                print(f"    Lines {start}-{end}, Sum: {interval_sum:.2f}")
+        if averages_with_lines:
+            for interval_average, (start, end) in averages_with_lines: # Updated variable name
+                print(f"    Lines {start}-{end}, Average: {interval_average:.2f}") # Updated print statement
         else:
             print("    No intervals found for this group.")
 
-    print(f"\nOverall Mrab Case Status: {overall_mrab_status}")
+    print("\n--- MRAB Case Statuses by Group ---")
+    for group_name, status in mrab_statuses.items():
+        print(f"  {group_name} Status: {status}")
 
-    # Add the overall Mrab status to the JSON data
-    data["5G VoNR MRAB Stationary"]["overallMrabStatus"] = overall_mrab_status
+    # Add the individual Mrab statuses to the JSON data
+    data["5G VoNR MRAB Stationary"]["mrabGroupStatuses"] = mrab_statuses
 
     # Write the updated data back to the JSON file
     try:
         with open(JSON_OUTPUT_PATH, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
-        print(f"\nSuccessfully updated '{JSON_OUTPUT_PATH}' with Mrab Case Status: {overall_mrab_status}")
+        print(f"\nSuccessfully updated '{JSON_OUTPUT_PATH}' with Mrab Group Statuses.")
     except Exception as e:
         print(f"An unexpected error occurred while writing JSON: {e}")
         sys.exit(1)
