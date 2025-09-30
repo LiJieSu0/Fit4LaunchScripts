@@ -122,7 +122,6 @@ def main():
         print(f"    Mean: {ul_stats['mean']:.2f}")
         print(f"    Standard Deviation: {ul_stats['std_dev']:.2f}")
         print(f"    Max: {ul_stats['max']:.2f}")
-        print(f"    Min: {ul_stats['min']:.2f}")
         print(f"    Percentage of scores < 2: {ul_stats['percent_less_than_2']:.2f}%")
         print(f"    Percentage of scores < 3: {ul_stats['percent_less_than_3']:.2f}%")
 
@@ -133,7 +132,6 @@ def main():
         print(f"    Mean: {dl_stats['mean']:.2f}")
         print(f"    Standard Deviation: {dl_stats['std_dev']:.2f}")
         print(f"    Max: {dl_stats['max']:.2f}")
-        print(f"    Min: {dl_stats['min']:.2f}")
         print(f"    Percentage of scores < 2: {dl_stats['percent_less_than_2']:.2f}%")
         print(f"    Percentage of scores < 3: {dl_stats['percent_less_than_3']:.2f}%")
 
