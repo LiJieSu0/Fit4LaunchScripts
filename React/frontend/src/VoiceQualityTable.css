@@ -1,0 +1,14 @@
+@import './table-styles.css'; /* Import the common table styles */
+
+.voice-quality-table-container {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+    overflow-x: auto; /* Ensures table is scrollable on smaller screens */
+}
+
+/* The .common-table class from table-styles.css will handle most of the table styling */
+.voice-quality-table {
+    /* Inherit common styles and override if necessary */
+    /* For example, if you need a specific margin-top for this table only */
+    margin-top: 10px; 
+}

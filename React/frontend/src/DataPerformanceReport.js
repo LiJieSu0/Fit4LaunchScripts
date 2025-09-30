@@ -4,6 +4,7 @@ import BarChart from './BarChart';
 import MrabStatisticsTable from './MrabStatisticsTable'; // Import MrabStatisticsTable
 import CallPerformanceTable from './CallPerformanceTable'; // New import
 import CallCategoriesChart from './CallCategoriesChart'; // New import
+import VoiceQualityTable from './VoiceQualityTable'; // New import
 
 // Helper function to recursively extract test cases
 const extractTestCases = (data, currentPath = []) => {
@@ -16,6 +17,7 @@ const extractTestCases = (data, currentPath = []) => {
       data: data, // Pass the entire MRAB data object
       isMrab: true,
       isCallPerformance: false,
+      isVoiceQuality: false,
     });
     return extracted; // Stop further recursion for this branch as we've found the MRAB data
   }
@@ -27,8 +29,28 @@ const extractTestCases = (data, currentPath = []) => {
       data: data, // Pass the entire Call Performance data object
       isMrab: false,
       isCallPerformance: true,
+      isVoiceQuality: false,
     });
     return extracted; // Stop further recursion for this branch as we've found the Call Performance data
+  }
+
+  // Check if the current data object is a Voice Quality test case
+  const isVoiceQualityTest = Object.keys(data).some(key => key.startsWith("DUT")) &&
+                             Object.keys(data).some(key => key.startsWith("REF")) &&
+                             Object.values(data).every(deviceData => 
+                               typeof deviceData === 'object' && deviceData !== null &&
+                               deviceData.ul_mos_stats && deviceData.dl_mos_stats
+                             );
+
+  if (isVoiceQualityTest) {
+    extracted.push({
+      name: currentPath.join(" - "),
+      data: data,
+      isMrab: false,
+      isCallPerformance: false,
+      isVoiceQuality: true,
+    });
+    return extracted; // Stop further recursion for this branch
   }
 
   // If the current 'data' object contains DUT/REF keys, it's a regular data performance test case
@@ -50,15 +72,16 @@ const extractTestCases = (data, currentPath = []) => {
         isPingTest = true;
       }
     }
-    if (Object.keys(dutObject).length > 0 || Object.keys(refObject).length > 0) {
-      extracted.push({
-        name: currentPath.join(" - "),
-        data: { DUT: dutObject, REF: refObject },
-        isPing: isPingTest,
-        isMrab: false,
-        isCallPerformance: false,
-      });
-    }
+        if (Object.keys(dutObject).length > 0 || Object.keys(refObject).length > 0) {
+          extracted.push({
+            name: currentPath.join(" - "),
+            data: { DUT: dutObject, REF: refObject },
+            isPing: isPingTest,
+            isMrab: false,
+            isCallPerformance: false,
+            isVoiceQuality: false,
+          });
+        }
   }
 
   // Always recurse into children for other types of data
@@ -252,7 +275,15 @@ const DataPerformanceReport = () => {
                   <CallCategoriesChart callPerformanceData={testCase.data} />
                 </div>
               );
-            } else {
+            } else if (testCase.isVoiceQuality) { // New condition for Voice Quality
+              return (
+                <div key={testCase.name} className="report-section">
+                  <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
+                  <VoiceQualityTable data={testCase.data} testName={testCase.name} />
+                </div>
+              );
+            }
+            else {
               // Render DataPerformanceReport and BarChart for other test cases
               const dutData = testCase.data.DUT || {};
               const refData = testCase.data.REF || {};

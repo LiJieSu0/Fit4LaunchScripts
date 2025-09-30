@@ -50,13 +50,13 @@ const MrabStatisticsTable = ({ mrabData }) => {
 
   return (
     <div className="overflow-x-auto mb-6 table-container">
-      <table className="min-w-full border border-table-grid">
+      <table className="common-table">
         <thead>
-          <tr className="bg-table-header-bg text-table-header-text font-bold">
-            <th className="py-2 px-4 border border-table-grid">Category</th>
-            <th className="py-2 px-4 border border-table-grid">Statistic</th>
-            <th className="py-2 px-4 border border-table-grid">DUT Value (Mbps)</th>
-            <th className="py-2 px-4 border border-table-grid">REF Value (Mbps)</th>
+          <tr>
+            <th>Category</th>
+            <th>Statistic</th>
+            <th>DUT Value (Mbps)</th>
+            <th>REF Value (Mbps)</th>
           </tr>
         </thead>
         <tbody>
@@ -75,7 +75,8 @@ const MrabStatisticsTable = ({ mrabData }) => {
                 if (stat === "Mean") {
                   bgColor = getPerformanceColor(dutValue, refValue, "mrab_performance");
                 } else {
-                  bgColor = "bg-table-body-bg"; // Default background for other stats
+                  // Use a default background from common styles or keep it transparent
+                  bgColor = ""; 
                 }
 
                 // Check if both DUT and REF values are null/undefined/NaN
@@ -87,13 +88,13 @@ const MrabStatisticsTable = ({ mrabData }) => {
                 }
 
                 return (
-                  <tr key={`${category}-${stat}`} className="bg-table-body-bg">
-                    <td className="py-2 px-4 border border-table-grid text-center">{rowCategory}</td>
-                    <td className="py-2 px-4 border border-table-grid text-center">{stat}</td>
-                    <td className={`py-2 px-4 border border-table-grid text-center ${bgColor}`}>
+                  <tr key={`${category}-${stat}`}>
+                    <td>{rowCategory}</td>
+                    <td>{stat}</td>
+                    <td className={`${bgColor}`}>
                       {typeof dutValue === 'number' ? `${dutValue.toFixed(2)} Mbps` : 'N/A'}
                     </td>
-                    <td className={`py-2 px-4 border border-table-grid text-center ${bgColor}`}>
+                    <td className={`${bgColor}`}>
                       {typeof refValue === 'number' ? `${refValue.toFixed(2)} Mbps` : 'N/A'}
                     </td>
                   </tr>
@@ -102,9 +103,9 @@ const MrabStatisticsTable = ({ mrabData }) => {
             </React.Fragment>
           ))}
           {mrabData.overallMrabStatus && (
-            <tr className="bg-table-body-bg font-bold">
-              <td className="py-2 px-4 border border-table-grid text-center" colSpan="2">Overall MRAB Case Status (In Call Mean)</td>
-              <td className={`py-2 px-4 border border-table-grid text-center ${getPerformanceColor(
+            <tr className="font-bold">
+              <td colSpan="2">Overall MRAB Case Status (In Call Mean)</td>
+              <td className={`${getPerformanceColor(
                 mrabData["DUT MRAB"]?.["MRAB Statistics"]?.["In Call"]?.["Mean"],
                 mrabData["REF MRAB"]?.["MRAB Statistics"]?.["In Call"]?.["Mean"],
                 "mrab_performance"

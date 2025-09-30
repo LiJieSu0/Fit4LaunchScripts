@@ -1,0 +1,70 @@
+:root {
+  /* Table Header Colors */
+  --table-header-bg-primary: #808080; /* Dark grey for main headers */
+  --table-header-text-primary: #F5F5F5; /* Light text for main headers */
+
+  /* Table Body Colors */
+  --table-body-bg-odd: #F5F5DC; /* Light yellow/beige for odd rows */
+  --table-body-bg-even: #F5F5DC; /* Light yellow/beige for even rows */
+  --table-body-hover-bg: #e0e0e0; /* Light grey for hover effect */
+
+  /* Table Border Color */
+  --table-border-color: #ddd; /* Light grey for borders */
+}
+
+/* General table styling using the defined variables */
+.common-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  min-width: 600px;
+}
+
+.common-table th,
+.common-table td {
+  border: 1px solid var(--table-border-color);
+  padding: 8px;
+  text-align: center;
+}
+
+.common-table thead th {
+  background-color: var(--table-header-bg-primary);
+  color: var(--table-header-text-primary);
+  font-weight: bold;
+}
+
+.common-table tbody tr:nth-child(odd) {
+  background-color: var(--table-body-bg-odd);
+}
+
+.common-table tbody tr:nth-child(even) {
+  background-color: var(--table-body-bg-even);
+}
+
+.common-table tbody tr:hover {
+  background-color: var(--table-body-hover-bg);
+}
+
+/*
+Documentation for Table Color Scheme:
+
+This file defines a centralized color scheme for tables across the React application
+using CSS variables. This ensures consistency and ease of modification.
+
+- --table-header-bg-primary: Used for the main background of table headers.
+  (Currently: #808080 - Dark Grey)
+- --table-header-text-primary: Used for the text color in table headers.
+  (Currently: #F5F5F5 - Light Grey/White)
+- --table-body-bg-odd: Used for the background of odd-numbered rows in the table body.
+  (Currently: #F5F5DC - Light Yellow/Beige)
+- --table-body-bg-even: Used for the background of even-numbered rows in the table body.
+  (Currently: #F5F5DC - Light Yellow/Beige)
+- --table-body-hover-bg: Used for the background color when hovering over table rows.
+  (Currently: #e0e0e0 - Light Grey)
+- --table-border-color: Used for the border color of table cells.
+  (Currently: #ddd - Light Grey)
+
+To apply this scheme to a table, import this CSS file and add the class "common-table"
+to your <table> element. Specific overrides can be done in component-specific CSS
+files if absolutely necessary, but consistency is encouraged.
+*/

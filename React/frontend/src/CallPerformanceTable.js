@@ -23,39 +23,39 @@ const CallPerformanceTable = ({ callPerformanceData }) => {
 
   return (
     <div className="overflow-x-auto mb-6 table-container">
-      <table className="min-w-full border border-table-grid">
+      <table className="common-table">
         <thead>
-          <tr className="bg-table-header-bg text-table-header-text font-bold">
-            <th className="py-2 px-4 border border-table-grid">Device</th>
-            <th className="py-2 px-4 border border-table-grid">Connection Attempts</th>
-            <th className="py-2 px-4 border border-table-grid">Mean Setup Time (s)</th>
-            <th className="py-2 px-4 border border-table-grid">Successful Initiations</th>
-            <th className="py-2 px-4 border border-table-grid">Successful Initiations (%)</th>
-            <th className="py-2 px-4 border border-table-grid">Failed Initiations</th>
-            <th className="py-2 px-4 border border-table-grid">Failed Initiations (%)</th>
-            <th className="py-2 px-4 border border-table-grid">P - Value</th>
+          <tr>
+            <th>Device</th>
+            <th>Connection Attempts</th>
+            <th>Mean Setup Time (s)</th>
+            <th>Successful Initiations</th>
+            <th>Successful Initiations (%)</th>
+            <th>Failed Initiations</th>
+            <th>Failed Initiations (%)</th>
+            <th>P - Value</th>
           </tr>
         </thead>
         <tbody>
-          <tr className="bg-table-body-bg">
-            <td className="py-2 px-4 border border-table-grid text-center">DUT</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{dutTotalAttempts}</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{DUT.mean_setup_time.toFixed(2)}</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{dutSuccessfulInitiations}</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{dutSuccessfulInitiationsPercentage}%</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{dutFailedInitiations}</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{dutFailedInitiationsPercentage}%</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{initiation_p_value.toFixed(3)}</td>
+          <tr>
+            <td>DUT</td>
+            <td>{dutTotalAttempts}</td>
+            <td>{DUT.mean_setup_time.toFixed(2)}</td>
+            <td>{dutSuccessfulInitiations}</td>
+            <td>{dutSuccessfulInitiationsPercentage}%</td>
+            <td>{dutFailedInitiations}</td>
+            <td>{dutFailedInitiationsPercentage}%</td>
+            <td>{initiation_p_value.toFixed(3)}</td>
           </tr>
-          <tr className="bg-table-body-bg">
-            <td className="py-2 px-4 border border-table-grid text-center">REF</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{refTotalAttempts}</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{REF.mean_setup_time.toFixed(2)}</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{refSuccessfulInitiations}</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{refSuccessfulInitiationsPercentage}%</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{refFailedInitiations}</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{refFailedInitiationsPercentage}%</td>
-            <td className="py-2 px-4 border border-table-grid text-center">{retention_p_value.toFixed(3)}</td>
+          <tr>
+            <td>REF</td>
+            <td>{refTotalAttempts}</td>
+            <td>{REF.mean_setup_time.toFixed(2)}</td>
+            <td>{refSuccessfulInitiations}</td>
+            <td>{refSuccessfulInitiationsPercentage}%</td>
+            <td>{refFailedInitiations}</td>
+            <td>{refFailedInitiationsPercentage}%</td>
+            <td>{retention_p_value.toFixed(3)}</td>
           </tr>
         </tbody>
       </table>
