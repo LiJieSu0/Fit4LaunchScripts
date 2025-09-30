@@ -41,7 +41,7 @@ const VoiceQualityTable = ({ data, testName }) => { // Accept testName as a prop
         { label: "MOS Stdev", ulKey: "std_dev", dlKey: "std_dev" },
         { label: "Maximum MOS", ulKey: "max", dlKey: "max" },
         // { label: "Dropped Calls", ulKey: null, dlKey: null }, // Removed as per user request
-        { label: "Count", ulKey: "count", dlKey: "count" },
+        { label: "Counts", ulKey: "count", dlKey: "count" },
         { label: "% MOS < 3.0", ulKey: "percent_less_than_3", dlKey: "percent_less_than_3" },
         { label: "% MOS < 2.0", ulKey: "percent_less_than_2", dlKey: "percent_less_than_2" },
     ];
