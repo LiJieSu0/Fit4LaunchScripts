@@ -63,13 +63,22 @@ def analyze_csv(file_path):
         "dl_mos_stats": dl_stats
     }
 
-def process_directory(directory_path):
+def process_directory(directory_path, subdir_filter=None):
     """
     Traverses a directory, finds CSV files, and collects voice quality metrics per file.
+    If subdir_filter is provided, only processes subdirectories whose names contain the filter string.
     """
     all_file_stats = []
     
-    for root, _, files in os.walk(directory_path):
+    for root, dirs, files in os.walk(directory_path):
+        # If a filter is applied and we are not in the root directory, check the current subdirectory name
+        if subdir_filter and root != directory_path:
+            current_subdir_name = os.path.basename(root)
+            if subdir_filter.lower() not in current_subdir_name.lower():
+                # If the current subdirectory doesn't match the filter, skip its contents and subdirectories
+                dirs[:] = [] # Clear dirs to prevent os.walk from descending further
+                continue
+
         for file in files:
             if file.endswith('.csv'):
                 file_path = os.path.join(root, file)

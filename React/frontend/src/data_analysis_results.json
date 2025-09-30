@@ -2365,6 +2365,97 @@
                     "percent_less_than_3": 0.9765625
                 }
             }
+        },
+        "5G Auto VoNR Enabled AMR WB VQ": {
+            "DUT1": {
+                "ul_mos_stats": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "std_dev": 0.0,
+                    "max": 0.0,
+                    "min": 0.0,
+                    "percent_less_than_2": 0.0,
+                    "percent_less_than_3": 0.0
+                },
+                "dl_mos_stats": {
+                    "count": 505,
+                    "mean": 3.487255839603961,
+                    "std_dev": 0.33615156184940986,
+                    "max": 3.835027,
+                    "percent_less_than_2": 0.39603960396039606,
+                    "percent_less_than_3": 8.712871287128712
+                }
+            },
+            "DUT2": {
+                "ul_mos_stats": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "std_dev": 0.0,
+                    "max": 0.0,
+                    "min": 0.0,
+                    "percent_less_than_2": 0.0,
+                    "percent_less_than_3": 0.0
+                },
+                "dl_mos_stats": {
+                    "count": 505,
+                    "mean": 3.567763613861386,
+                    "std_dev": 0.23397643346100977,
+                    "max": 3.807065,
+                    "percent_less_than_2": 0.0,
+                    "percent_less_than_3": 4.752475247524752
+                }
+            },
+            "REF": {
+                "ul_mos_stats": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "std_dev": 0.0,
+                    "max": 0.0,
+                    "min": 0.0,
+                    "percent_less_than_2": 0.0,
+                    "percent_less_than_3": 0.0
+                },
+                "dl_mos_stats": {
+                    "count": 505,
+                    "mean": 3.422579637623762,
+                    "std_dev": 0.4892298365700669,
+                    "max": 3.798488,
+                    "percent_less_than_2": 2.9702970297029703,
+                    "percent_less_than_3": 12.277227722772277
+                }
+            }
+        },
+        "Audio Delay": {
+            "5G Auto VoNR Disabled Audio Delay": {
+                "DUT1": {
+                    "mean": 333.2319965034965,
+                    "std_dev": 13.02754330872966,
+                    "min": 278.41900000000004,
+                    "max": 365.409,
+                    "occurrences": 286
+                },
+                "REF1": {
+                    "mean": 323.2025454545455,
+                    "std_dev": 16.700418290572898,
+                    "min": 274.78000000000003,
+                    "max": 415.753,
+                    "occurrences": 286
+                },
+                "DUT2": {
+                    "mean": 326.46682456140354,
+                    "std_dev": 13.565217189591925,
+                    "min": 298.174,
+                    "max": 367.906,
+                    "occurrences": 285
+                },
+                "REF2": {
+                    "mean": 328.30592280701757,
+                    "std_dev": 51.00205562490566,
+                    "min": 285.326,
+                    "max": 1157.071,
+                    "occurrences": 285
+                }
+            }
         }
     }
 }

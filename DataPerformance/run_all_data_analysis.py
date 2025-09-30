@@ -19,6 +19,7 @@ import data_path_reader # Import the new path reader script
 import check_empty_data # Import check_empty_data directly
 from CallPerformance.call_analyze import analyze_directory, _calculate_fisher_exact_criteria # Import analyze_directory and _calculate_fisher_exact_criteria
 from VoiceQuality.voice_quality_analyzer import process_directory as analyze_voice_quality_directory # Import process_directory from voice_quality_analyzer.py
+from VoiceQuality.audio_delay_analyzer import process_directory as analyze_audio_delay_directory # Import process_directory from audio_delay_analyzer.py
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -37,6 +38,7 @@ if __name__ == "__main__":
         {"path": "TestInvalid", "analysis_type": "data_performance"}, # Add the new test directory
         {"path": "Call Performance", "analysis_type": "call_performance"}, # Add Call Performance directory
         {"path": "Voice Quality", "analysis_type": "voice_quality"}, # Add Voice Quality directory
+        {"path": "Voice Quality", "analysis_type": "audio_delay"}, # Add Audio Delay directory, using the same base path
     ]
     
     all_collected_results = {}
@@ -260,7 +262,8 @@ if __name__ == "__main__":
             voice_quality_path = os.path.join(base_raw_data_dir, directory_info["path"])
             if os.path.isdir(voice_quality_path):
                 print(f"\n--- Starting Voice Quality analysis for directory: {voice_quality_path} ---")
-                voice_quality_results = analyze_voice_quality_directory(voice_quality_path)
+                # Pass the subdir_filter to process_directory
+                voice_quality_results = analyze_voice_quality_directory(voice_quality_path, subdir_filter="VQ")
                 print(f"Raw voice_quality_results: {voice_quality_results}") # Debug print
                 
                 if voice_quality_results:
@@ -274,7 +277,9 @@ if __name__ == "__main__":
                         
                         # Handle cases where the file is directly in the voice_quality_path
                         if os.sep not in relative_path_to_vq_dir:
-                            sub_dir_name = "Root" # Or some other placeholder if files can be directly in VQ folder
+                            # If the file is directly in the voice_quality_path, use its parent directory name
+                            # which is the voice_quality_path itself, or a more generic name like "Root"
+                            sub_dir_name = os.path.basename(voice_quality_path)
                         else:
                             sub_dir_name = relative_path_to_vq_dir.split(os.sep)[0] # Get the first directory after voice_quality_path
 
@@ -295,6 +300,48 @@ if __name__ == "__main__":
                     print(f"No voice quality data collected for {voice_quality_path}.")
             else:
                 print(f"Warning: Voice Quality directory not found at {voice_quality_path}. Skipping analysis.")
+        
+        elif directory_info["analysis_type"] == "audio_delay":
+            audio_delay_path = os.path.join(base_raw_data_dir, directory_info["path"])
+            print(f"Debug: Checking audio_delay_path: {audio_delay_path}, exists: {os.path.isdir(audio_delay_path)}")
+            if os.path.isdir(audio_delay_path):
+                print(f"\n--- Starting Audio Delay analysis for directory: {audio_delay_path} ---")
+                # Pass the subdir_filter to process_directory
+                audio_delay_results = analyze_audio_delay_directory(audio_delay_path, subdir_filter="Audio Delay")
+                print(f"Debug: Raw audio_delay_results: {audio_delay_results}") # Debug print
+                
+                if audio_delay_results:
+                    # Organize results by subdirectory
+                    organized_ad_results = {}
+                    for file_stats in audio_delay_results:
+                        # Extract the subdirectory name from the file_path
+                        relative_path_to_ad_dir = os.path.relpath(file_stats["file_path"], audio_delay_path)
+                        
+                        if os.sep not in relative_path_to_ad_dir:
+                            sub_dir_name = os.path.basename(audio_delay_path)
+                        else:
+                            sub_dir_name = relative_path_to_ad_dir.split(os.sep)[0]
+
+                        if sub_dir_name not in organized_ad_results:
+                            organized_ad_results[sub_dir_name] = {} # Change to dictionary for device types
+                        
+                        # Use device_type (DUT1, DUT2, REF1, REF2) as keys under the subdirectory
+                        organized_ad_results[sub_dir_name][file_stats["device_type"]] = {
+                            "mean": file_stats["mean"],
+                            "std_dev": file_stats["std_dev"],
+                            "min": file_stats["min"],
+                            "max": file_stats["max"],
+                            "occurrences": file_stats["occurrences"]
+                        }
+                    
+                    print(f"Debug: Organized AD Results before insertion: {organized_ad_results}") # Debug print
+                    _insert_into_nested_dict(all_collected_results, [directory_info["path"], "Audio Delay"], organized_ad_results)
+                    print(f"Debug: all_collected_results after AD insertion: {all_collected_results.get(directory_info['path'])}") # Debug print
+                    print(f"Audio Delay analysis for {audio_delay_path} completed and added to results.")
+                else:
+                    print(f"No audio delay data collected for {audio_delay_path}.")
+            else:
+                print(f"Warning: Audio Delay directory not found at {audio_delay_path}. Skipping analysis.")
 
     # Write the collected list of CSV files to a TXT file using the new data_path_reader script
     # Note: all_csv_files_processed only contains paths for data_performance and mrab_performance.
