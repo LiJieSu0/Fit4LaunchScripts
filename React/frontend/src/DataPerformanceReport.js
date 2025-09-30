@@ -271,20 +271,24 @@ const DataPerformanceReport = () => {
                 metricsToDisplayForTable.push("Ping RTT");
               }
 
+              const shouldRenderDetailedTable = categoryName === "5G AUTO DP" || categoryName === "5G NSA DP";
+
               return (
                 <div key={testCase.name} className="report-section">
                   <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
-                  <div className="table-chart-container">
-                    {renderStatisticsTable(testCase.name, testCase.data, metricsToDisplayForTable)}
-                    <div className="charts-container">
-                      {(hasThroughputData || hasJitterData || hasErrorRatioData || hasWebPageLoadTimeData) && (
-                        <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={false} />
-                      )}
-                      {hasPingRttData && (
-                        <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={true} />
-                      )}
+                  {shouldRenderDetailedTable && (
+                    <div className="table-chart-container">
+                      {renderStatisticsTable(testCase.name, testCase.data, metricsToDisplayForTable)}
+                      <div className="charts-container">
+                        {(hasThroughputData || hasJitterData || hasErrorRatioData || hasWebPageLoadTimeData) && (
+                          <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={false} />
+                        )}
+                        {hasPingRttData && (
+                          <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={true} />
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               );
             }
