@@ -16,3 +16,14 @@ Raw Data\Call Performance\5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH1
 Raw Data\Call Performance\5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH2 REF2.csv
 Raw Data\Call Performance\5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH4 REF2.csv
 Raw Data\Call Performance\5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH6 REF3.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MT Drive\DUT\CH1 DUT1.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MT Drive\DUT\CH3 DUT2.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MT Drive\DUT\CH5 DUT3.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MT Drive\DUT\CH7 DUT4.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MT Drive\REF\CH2 REF1.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MT Drive\REF\CH4 REF2.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MT Drive\REF\CH6 REF3.csv
+Raw Data\Call Performance\5G Auto VoNR Enabled CP MT Drive\REF\CH8 REF4.csv
+Raw Data\Voice Quality\5G Auto VoNR Enabled AMR NB VQ\DUT1.csv
+Raw Data\Voice Quality\5G Auto VoNR Enabled AMR NB VQ\DUT2.csv
+Raw Data\Voice Quality\5G Auto VoNR Enabled AMR NB VQ\REF.csv

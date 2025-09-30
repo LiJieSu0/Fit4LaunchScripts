@@ -2269,6 +2269,102 @@
             },
             "initiation_p_value": 1.0,
             "retention_p_value": 0.06504857820184161
+        },
+        "5G Auto VoNR Enabled CP MT Drive": {
+            "DUT": {
+                "total_attempts": 1056,
+                "total_mo_attempts": 0,
+                "total_initiation_failures": 0,
+                "total_retention_failures": 0,
+                "total_initiation_successes": 1056,
+                "call_result_distribution": {
+                    "Complete": 1017,
+                    "Etc.": 39
+                },
+                "rat_distribution": {
+                    "VoNR": 1042,
+                    "VoLTE": 13,
+                    "EPSFB": 1
+                },
+                "mean_setup_time": 1.160445481986368
+            },
+            "REF": {
+                "total_attempts": 1056,
+                "total_mo_attempts": 0,
+                "total_initiation_failures": 0,
+                "total_retention_failures": 0,
+                "total_initiation_successes": 1056,
+                "call_result_distribution": {
+                    "Complete": 1014,
+                    "Etc.": 37,
+                    "Term. Fail": 4,
+                    "Forced stop": 1
+                },
+                "rat_distribution": {
+                    "VoNR": 1056
+                },
+                "mean_setup_time": 0.9136735504854367
+            },
+            "initiation_p_value": 1.0,
+            "retention_p_value": 1.0
+        }
+    },
+    "Voice Quality": {
+        "5G Auto VoNR Enabled AMR NB VQ": {
+            "DUT1": {
+                "ul_mos_stats": {
+                    "count": 510,
+                    "mean": 4.307019607843137,
+                    "std_dev": 0.35017837106218785,
+                    "max": 4.5,
+                    "percent_less_than_2": 0.39215686274509803,
+                    "percent_less_than_3": 1.9607843137254901
+                },
+                "dl_mos_stats": {
+                    "count": 512,
+                    "mean": 4.3306686796875,
+                    "std_dev": 0.1585078157183774,
+                    "max": 4.492305,
+                    "percent_less_than_2": 0.0,
+                    "percent_less_than_3": 0.390625
+                }
+            },
+            "DUT2": {
+                "ul_mos_stats": {
+                    "count": 509,
+                    "mean": 4.328506876227898,
+                    "std_dev": 0.22477401260813717,
+                    "max": 4.5,
+                    "percent_less_than_2": 0.0,
+                    "percent_less_than_3": 0.5893909626719057
+                },
+                "dl_mos_stats": {
+                    "count": 510,
+                    "mean": 4.323119366666666,
+                    "std_dev": 0.18692181324757462,
+                    "max": 4.480864,
+                    "percent_less_than_2": 0.0,
+                    "percent_less_than_3": 0.5882352941176471
+                }
+            },
+            "REF": {
+                "ul_mos_stats": {
+                    "count": 510,
+                    "mean": 4.283862745098039,
+                    "std_dev": 0.35909373592840543,
+                    "max": 4.5,
+                    "percent_less_than_2": 0.39215686274509803,
+                    "percent_less_than_3": 1.5686274509803921
+                },
+                "dl_mos_stats": {
+                    "count": 512,
+                    "mean": 4.294230353515625,
+                    "std_dev": 0.26122524303475264,
+                    "max": 4.465755,
+                    "percent_less_than_2": 0.390625,
+                    "percent_less_than_3": 0.9765625
+                }
+            }
         }
     }
 }

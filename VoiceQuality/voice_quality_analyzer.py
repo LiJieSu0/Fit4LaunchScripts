@@ -111,12 +111,11 @@ def calculate_statistics(mos_scores):
     return {
         "count": len(mos_scores),
         "mean": mean_mos,
-        "std_dev": std_dev_mos,
-        "max": max_mos,
-        "min": min_mos,
-        "percent_less_than_2": percent_less_than_2,
-        "percent_less_than_3": percent_less_than_3
-    }
+            "std_dev": std_dev_mos,
+            "max": max_mos,
+            "percent_less_than_2": percent_less_than_2,
+            "percent_less_than_3": percent_less_than_3
+        }
 
 def main():
     parser = argparse.ArgumentParser(description="Analyze voice quality from CSV files in a given directory.")

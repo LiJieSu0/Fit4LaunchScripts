@@ -18,6 +18,7 @@ import mrab_statistics # Import the mrab_statistics module
 import data_path_reader # Import the new path reader script
 import check_empty_data # Import check_empty_data directly
 from CallPerformance.call_analyze import analyze_directory, _calculate_fisher_exact_criteria # Import analyze_directory and _calculate_fisher_exact_criteria
+from VoiceQuality.voice_quality_analyzer import process_directory as analyze_voice_quality_directory # Import process_directory from voice_quality_analyzer.py
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -35,6 +36,7 @@ if __name__ == "__main__":
         {"path": "5G VoNR MRAB Stationary", "analysis_type": "mrab_performance"}, # Add MRAB directory
         {"path": "TestInvalid", "analysis_type": "data_performance"}, # Add the new test directory
         {"path": "Call Performance", "analysis_type": "call_performance"}, # Add Call Performance directory
+        {"path": "Voice Quality", "analysis_type": "voice_quality"}, # Add Voice Quality directory
     ]
     
     all_collected_results = {}
@@ -52,6 +54,8 @@ if __name__ == "__main__":
                 current_level = current_level[component]
 
     # Get all CSV file paths using the new data_path_reader script
+    # This will now also include Voice Quality CSVs, but they won't be processed in the main loop
+    # as their analysis_type is 'voice_quality'
     all_csv_files_processed = data_path_reader.get_csv_file_paths(base_raw_data_dir, directories_to_process)
 
     # Now iterate through the collected files for analysis
@@ -149,6 +153,9 @@ if __name__ == "__main__":
                 # For call performance, we analyze the entire directory, not individual files here.
                 # This block will be skipped for individual CSVs, and handled after the loop.
                 pass
+            # Voice Quality analysis will also be handled after the loop, so skip here
+            elif params["analysis_type_detected"] == "voice_quality":
+                pass
 
             # Determine if the file is invalid: it's invalid if no statistical data was collected
             statistical_keys = ["Throughput", "Jitter", "Error Ratio", "Web Page Load Time", "Ping RTT", "MRAB Statistics"]
@@ -158,7 +165,7 @@ if __name__ == "__main__":
                     has_any_statistical_data = True
                     break
             
-            if not has_any_statistical_data and params["analysis_type_detected"] != "call_performance": # Don't mark call_performance files as invalid here
+            if not has_any_statistical_data and params["analysis_type_detected"] not in ["call_performance", "voice_quality"]: # Don't mark call_performance or voice_quality files as invalid here
                 current_file_has_invalid_data = True
         
         if current_file_has_invalid_data:
@@ -169,7 +176,7 @@ if __name__ == "__main__":
             print(f"Valid data detected for: {csv_file_path}. Added to valid_data_files.")
         
         # Construct the hierarchical path for the JSON output
-        if all_file_stats and params["analysis_type_detected"] != "call_performance": # Only insert if stats were successfully collected and not call_performance
+        if all_file_stats and params["analysis_type_detected"] not in ["call_performance", "voice_quality"]: # Only insert if stats were successfully collected and not call_performance or voice_quality
             relative_path = os.path.relpath(csv_file_path, base_raw_data_dir)
             path_components = relative_path.replace("\\", "/").split('/') # Use forward slashes for consistency
             
@@ -248,10 +255,50 @@ if __name__ == "__main__":
                             print(f"Skipping directory {sub_dir_name}: No 'DUT' or 'REF' subdirectories found.")
             else:
                 print(f"Warning: Call Performance directory not found at {call_performance_path}. Skipping analysis.")
+        
+        elif directory_info["analysis_type"] == "voice_quality":
+            voice_quality_path = os.path.join(base_raw_data_dir, directory_info["path"])
+            if os.path.isdir(voice_quality_path):
+                print(f"\n--- Starting Voice Quality analysis for directory: {voice_quality_path} ---")
+                voice_quality_results = analyze_voice_quality_directory(voice_quality_path)
+                print(f"Raw voice_quality_results: {voice_quality_results}") # Debug print
+                
+                if voice_quality_results:
+                    # Organize results by subdirectory and then by device type
+                    organized_vq_results = {}
+                    for file_stats in voice_quality_results:
+                        # Extract the subdirectory name from the file_path
+                        # Example: Raw Data/Voice Quality/5G Auto VoNR Enabled AMR NB VQ/DUT1.csv
+                        # We want "5G Auto VoNR Enabled AMR NB VQ"
+                        relative_path_to_vq_dir = os.path.relpath(file_stats["file_path"], voice_quality_path)
+                        
+                        # Handle cases where the file is directly in the voice_quality_path
+                        if os.sep not in relative_path_to_vq_dir:
+                            sub_dir_name = "Root" # Or some other placeholder if files can be directly in VQ folder
+                        else:
+                            sub_dir_name = relative_path_to_vq_dir.split(os.sep)[0] # Get the first directory after voice_quality_path
+
+                        if sub_dir_name not in organized_vq_results:
+                            organized_vq_results[sub_dir_name] = {}
+                        
+                        # Use device_type (DUT1, DUT2, REF) as keys under the subdirectory
+                        organized_vq_results[sub_dir_name][file_stats["device_type"]] = {
+                            "ul_mos_stats": file_stats["ul_mos_stats"],
+                            "dl_mos_stats": file_stats["dl_mos_stats"]
+                        }
+                    
+                    print(f"Organized VQ Results before insertion: {organized_vq_results}") # Debug print
+                    _insert_into_nested_dict(all_collected_results, [directory_info["path"]], organized_vq_results)
+                    print(f"Voice Quality analysis for {voice_quality_path} completed and added to results.")
+                    print(f"All collected results after VQ insertion: {all_collected_results.get(directory_info['path'])}") # Debug print
+                else:
+                    print(f"No voice quality data collected for {voice_quality_path}.")
+            else:
+                print(f"Warning: Voice Quality directory not found at {voice_quality_path}. Skipping analysis.")
 
     # Write the collected list of CSV files to a TXT file using the new data_path_reader script
     # Note: all_csv_files_processed only contains paths for data_performance and mrab_performance.
-    # Call performance files are handled by analyze_directory and not individually listed here.
+    # Call performance and Voice Quality files are handled by their respective directory analyzers.
     data_path_reader.write_csv_paths_with_two_parents(all_csv_files_processed, base_raw_data_dir, output_dir) # Pass output_dir
 
     # Write invalid data file paths to a text file
