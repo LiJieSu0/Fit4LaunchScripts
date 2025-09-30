@@ -5,6 +5,7 @@ import MrabStatisticsTable from './MrabStatisticsTable'; // Import MrabStatistic
 import CallPerformanceTable from './CallPerformanceTable'; // New import
 import CallCategoriesChart from './CallCategoriesChart'; // New import
 import VoiceQualityTable from './VoiceQualityTable'; // New import
+import AudioDelayTable from './AudioDelayTable'; // New import
 
 // Helper function to recursively extract test cases
 const extractTestCases = (data, currentPath = []) => {
@@ -49,6 +50,33 @@ const extractTestCases = (data, currentPath = []) => {
       isMrab: false,
       isCallPerformance: false,
       isVoiceQuality: true,
+      isAudioDelay: false,
+    });
+    return extracted; // Stop further recursion for this branch
+  }
+
+  // Check if the current data object is an Audio Delay test case
+  const isAudioDelayTest = Object.keys(data).includes("DUT1") &&
+                           Object.keys(data).includes("REF1") &&
+                           Object.keys(data).includes("DUT2") &&
+                           Object.keys(data).includes("REF2") &&
+                           Object.values(data).every(deviceData =>
+                               typeof deviceData === 'object' && deviceData !== null &&
+                               deviceData.mean !== undefined &&
+                               deviceData.std_dev !== undefined &&
+                               deviceData.min !== undefined &&
+                               deviceData.max !== undefined &&
+                               deviceData.occurrences !== undefined
+                           );
+
+  if (isAudioDelayTest) {
+    extracted.push({
+      name: currentPath.join(" - "),
+      data: data,
+      isMrab: false,
+      isCallPerformance: false,
+      isVoiceQuality: false,
+      isAudioDelay: true,
     });
     return extracted; // Stop further recursion for this branch
   }
@@ -77,11 +105,12 @@ const extractTestCases = (data, currentPath = []) => {
             name: currentPath.join(" - "),
             data: { DUT: dutObject, REF: refObject },
             isPing: isPingTest,
-            isMrab: false,
-            isCallPerformance: false,
-            isVoiceQuality: false,
-          });
-        }
+      isMrab: false,
+      isCallPerformance: false,
+      isVoiceQuality: false,
+      isAudioDelay: false,
+    });
+  }
   }
 
   // Always recurse into children for other types of data
@@ -282,8 +311,14 @@ const DataPerformanceReport = () => {
                   <VoiceQualityTable data={testCase.data} testName={testCase.name} />
                 </div>
               );
-            }
-            else {
+            } else if (testCase.isAudioDelay) { // New condition for Audio Delay
+              return (
+                <div key={testCase.name} className="report-section">
+                  <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
+                  <AudioDelayTable data={testCase.data} testName={testCase.name} />
+                </div>
+              );
+            } else {
               // Render DataPerformanceReport and BarChart for other test cases
               const dutData = testCase.data.DUT || {};
               const refData = testCase.data.REF || {};

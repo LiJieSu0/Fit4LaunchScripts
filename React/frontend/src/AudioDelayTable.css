@@ -1,0 +1,11 @@
+@import './table-styles.css'; /* Import the common table styles */
+
+.audio-delay-table-container {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+    overflow-x: auto; /* Ensures table is scrollable on smaller screens */
+}
+
+.audio-delay-table {
+    margin-top: 10px;
+}
