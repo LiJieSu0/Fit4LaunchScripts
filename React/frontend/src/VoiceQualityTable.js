@@ -25,7 +25,10 @@ const VoiceQualityTable = ({ data, testName }) => { // Accept testName as a prop
             return 'N/A';
         }
         if (metricKey.startsWith('percent_less_than_')) {
-            return (value * 100).toFixed(2) + '%';
+            return value.toFixed(2) + '%';
+        }
+        if (metricKey === 'count') {
+            return Math.round(value); // Display as integer
         }
         if (typeof value === 'number') {
             return value.toFixed(2);
