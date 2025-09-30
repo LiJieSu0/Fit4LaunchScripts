@@ -2,6 +2,29 @@ import os
 import pandas as pd
 import argparse
 
+def extract_device_type(file_path):
+    """
+    Extracts device type from the filename.
+    Handles specific cases like DUT1.csv, DUT2.csv, REF.csv,
+    and assumes filename format like 'YYYY-MM-DD_TMO_DeviceType_...' for others.
+    """
+    base_name = os.path.basename(file_path)
+    
+    # Handle specific cases
+    if base_name.lower() == "dut1.csv":
+        return "DUT1"
+    if base_name.lower() == "dut2.csv":
+        return "DUT2"
+    if base_name.lower() == "ref.csv":
+        return "REF"
+
+    # Existing logic for other filenames
+    parts = base_name.split('_')
+    if len(parts) >= 4:
+        # Assuming device type is like 'Wingtech_Plunkett' from 'TMO_Wingtech_Plunkett_...'
+        return f"{parts[2]}_{parts[3]}"
+    return "Unknown Device"
+
 def analyze_csv(file_path):
     """
     Analyzes a single CSV file for voice quality metrics.
@@ -31,9 +54,11 @@ def analyze_csv(file_path):
 
     ul_stats = calculate_statistics(ul_mos_scores)
     dl_stats = calculate_statistics(dl_mos_scores)
+    device_type = extract_device_type(file_path)
 
     return {
         "file_path": file_path,
+        "device_type": device_type,
         "ul_mos_stats": ul_stats,
         "dl_mos_stats": dl_stats
     }
@@ -113,11 +138,13 @@ def main():
 
     for stats in all_file_stats:
         file_name = os.path.basename(stats["file_path"])
+        device_type = stats["device_type"]
         print(f"\n--- File: {file_name} ---")
+        print(f"  Device Type: {device_type}")
 
         # Uplink MOS statistics
         ul_stats = stats["ul_mos_stats"]
-        print(f"  Uplink MOS (UL MOS):")
+        print(f"  Uplink MOS :")
         print(f"    Count: {ul_stats['count']}")
         print(f"    Mean: {ul_stats['mean']:.2f}")
         print(f"    Standard Deviation: {ul_stats['std_dev']:.2f}")
@@ -127,7 +154,7 @@ def main():
 
         # Downlink MOS statistics
         dl_stats = stats["dl_mos_stats"]
-        print(f"  Downlink MOS (Per Rx Clip):")
+        print(f"  Downlink MOS :")
         print(f"    Count: {dl_stats['count']}")
         print(f"    Mean: {dl_stats['mean']:.2f}")
         print(f"    Standard Deviation: {dl_stats['std_dev']:.2f}")
