@@ -20,6 +20,7 @@ import check_empty_data # Import check_empty_data directly
 from CallPerformance.call_analyze import analyze_directory, _calculate_fisher_exact_criteria # Import analyze_directory and _calculate_fisher_exact_criteria
 from VoiceQuality.voice_quality_analyzer import process_directory as analyze_voice_quality_directory # Import process_directory from voice_quality_analyzer.py
 from VoiceQuality.audio_delay_analyzer import process_directory as analyze_audio_delay_directory # Import process_directory from audio_delay_analyzer.py
+from Coverage.coverage_coordinate_analyzer import analyze_coverage_coordinates # Import the coverage analysis function
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -39,6 +40,7 @@ if __name__ == "__main__":
         {"path": "Call Performance", "analysis_type": "call_performance"}, # Add Call Performance directory
         {"path": "Voice Quality", "analysis_type": "voice_quality"}, # Add Voice Quality directory
         {"path": "Voice Quality", "analysis_type": "audio_delay"}, # Add Audio Delay directory, using the same base path
+        {"path": "Coverage", "analysis_type": "coverage_coordinate"}, # Add Coverage Coordinate directory
     ]
     
     all_collected_results = {}
@@ -342,6 +344,55 @@ if __name__ == "__main__":
                     print(f"No audio delay data collected for {audio_delay_path}.")
             else:
                 print(f"Warning: Audio Delay directory not found at {audio_delay_path}. Skipping analysis.")
+        
+        elif directory_info["analysis_type"] == "coverage_coordinate":
+            coverage_path = os.path.join(base_raw_data_dir, directory_info["path"])
+            if os.path.isdir(coverage_path):
+                print(f"\n--- Starting Coverage Coordinate analysis for directory: {coverage_path} ---")
+                
+                # Recursively find all CSV files in the coverage directory
+                coverage_csv_files = []
+                for root, _, files in os.walk(coverage_path):
+                    for file in files:
+                        if file.endswith(".csv"):
+                            coverage_csv_files.append(os.path.join(root, file))
+                
+                if coverage_csv_files:
+                    for csv_file in coverage_csv_files:
+                        file_name = os.path.basename(csv_file).lower()
+                        device_type = None
+                        if "dut" in file_name:
+                            device_type = "DUT"
+                        elif "ref" in file_name:
+                            device_type = "REF"
+                        
+                        if device_type:
+                            print(f"Analyzing coverage for {file_name} (Device Type: {device_type})")
+                            coverage_results = analyze_coverage_coordinates(csv_file)
+                            
+                            # Construct the path components for insertion into all_collected_results
+                            # Example: Raw Data/Coverage/5G VoNR Coverage Test/Round1/DUT_file.csv
+                            # We want path_components: ['Coverage', '5G VoNR Coverage Test', 'Round1', 'DUT']
+                            
+                            # Get the path relative to base_raw_data_dir
+                            relative_path_from_base = os.path.relpath(csv_file, base_raw_data_dir)
+                            # Get the directory part of this relative path
+                            relative_dir_path = os.path.dirname(relative_path_from_base)
+                            
+                            # Split into components and add the device_type as the last component
+                            path_components_for_insert = relative_dir_path.replace("\\", "/").split('/')
+                            path_components_for_insert.append(device_type) # Add DUT/REF as the final key
+                            
+                            _insert_into_nested_dict(all_collected_results, path_components_for_insert, coverage_results)
+                            print(f"Coverage analysis for {file_name} added to results.")
+                        else:
+                            print(f"Warning: Could not determine device type for {file_name}. Skipping coverage analysis for this file.")
+                    
+                    print(f"Coverage Coordinate analysis for {coverage_path} completed and added to results.")
+                else:
+                    print(f"No CSV files found in {coverage_path} for coverage coordinate analysis.")
+            else:
+                print(f"Warning: Coverage directory not found at {coverage_path}. Skipping analysis.")
 
     # Write the collected list of CSV files to a TXT file using the new data_path_reader script
     # Note: all_csv_files_processed only contains paths for data_performance and mrab_performance.

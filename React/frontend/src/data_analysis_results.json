@@ -2457,5 +2457,45 @@
                 }
             }
         }
+    },
+    "Coverage": {
+        "5G VoNR Coverage Test": {
+            "DUT": {
+                "last_mos_value_coords": {
+                    "latitude": "47.146212",
+                    "longitude": "-122.357310"
+                },
+                "voice_call_drop_coords": {
+                    "latitude": "47.147595",
+                    "longitude": "-122.357257"
+                },
+                "first_dl_tp_gt_1_coords": {
+                    "latitude": "47.144150",
+                    "longitude": "-122.357327"
+                },
+                "first_ul_tp_gt_1_coords": {
+                    "latitude": "47.144150",
+                    "longitude": "-122.357327"
+                }
+            },
+            "REF": {
+                "last_mos_value_coords": {
+                    "latitude": "47.150115",
+                    "longitude": "-122.357223"
+                },
+                "voice_call_drop_coords": {
+                    "latitude": "47.150115",
+                    "longitude": "-122.357223"
+                },
+                "first_dl_tp_gt_1_coords": {
+                    "latitude": "47.148357",
+                    "longitude": "-122.357232"
+                },
+                "first_ul_tp_gt_1_coords": {
+                    "latitude": "47.143685",
+                    "longitude": "-122.357327"
+                }
+            }
+        }
     }
 }
