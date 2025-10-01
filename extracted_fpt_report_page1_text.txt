@@ -1,0 +1,20 @@
+ATMCL Field Performance Test Report -Samsung Galaxy Fold S34
+1Format/Structure for ATMCL Field Performance Test Report
+1, Remove all F4L and Fit For Launch from Report (Copyright of Spirent)
+2, Begin with Summary Report  
+Page 1
+A, DUT OEM
+B. Device Name
+DUT S. No:/IMEI REF S.No/IMEI
+Performance Summary Report
+Category% Completed%PassedIssuesLink to Issue 
+PageTime to 
+complete
+Call 
+Performance
+Data 
+Performance
+V oice Quality
+Coverage 
+Performance
+WFC

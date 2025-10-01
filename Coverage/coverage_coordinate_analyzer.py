@@ -1,6 +1,27 @@
 import csv
 import argparse
 import os
+import json
+import math
+
+BASE_STATION_COORDS = {"latitude": 47.128234, "longitude": -122.356792}
+
+def haversine_distance(lat1, lon1, lat2, lon2):
+    R = 6371  # Radius of Earth in kilometers
+
+    lat1_rad = math.radians(lat1)
+    lon1_rad = math.radians(lon1)
+    lat2_rad = math.radians(lat2)
+    lon2_rad = math.radians(lon2)
+
+    dlon = lon2_rad - lon1_rad
+    dlat = lat2_rad - lat1_rad
+
+    a = math.sin(dlat / 2)**2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(dlon / 2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+    distance = R * c
+    return distance
 
 def analyze_coverage_coordinates(file_path):
     """
@@ -53,7 +74,10 @@ def analyze_coverage_coordinates(file_path):
                         mos_value = float(row[mos_value_col_idx])
                         coords = _find_coords_in_row_or_upwards(i, latitude_col_idx, longitude_col_idx)
                         if coords:
-                            results["last_mos_value_coords"] = coords
+                            lat = float(coords["latitude"])
+                            lon = float(coords["longitude"])
+                            distance = haversine_distance(lat, lon, BASE_STATION_COORDS["latitude"], BASE_STATION_COORDS["longitude"])
+                            results["last_mos_value_coords"] = {**coords, "distance_to_base_station_km": distance}
                         break
                     except ValueError:
                         continue
@@ -64,7 +88,10 @@ def analyze_coverage_coordinates(file_path):
                 if len(row) > voice_call_event_col_idx and row[voice_call_event_col_idx] == '[Tool] Voice - Call Result : Drop':
                     coords = _find_coords_in_row_or_upwards(i, latitude_col_idx, longitude_col_idx)
                     if coords:
-                        results["voice_call_drop_coords"] = coords
+                        lat = float(coords["latitude"])
+                        lon = float(coords["longitude"])
+                        distance = haversine_distance(lat, lon, BASE_STATION_COORDS["latitude"], BASE_STATION_COORDS["longitude"])
+                        results["voice_call_drop_coords"] = {**coords, "distance_to_base_station_km": distance}
                     break
 
             # --- Search for DL TP ---
@@ -76,7 +103,10 @@ def analyze_coverage_coordinates(file_path):
                         if dl_tp_value > 1:
                             coords = _find_coords_in_row_or_upwards(i, latitude_col_idx, longitude_col_idx)
                             if coords:
-                                results["first_dl_tp_gt_1_coords"] = coords
+                                lat = float(coords["latitude"])
+                                lon = float(coords["longitude"])
+                                distance = haversine_distance(lat, lon, BASE_STATION_COORDS["latitude"], BASE_STATION_COORDS["longitude"])
+                                results["first_dl_tp_gt_1_coords"] = {**coords, "distance_to_base_station_km": distance}
                             break
                     except ValueError:
                         continue
@@ -90,7 +120,10 @@ def analyze_coverage_coordinates(file_path):
                         if ul_tp_value > 1:
                             coords = _find_coords_in_row_or_upwards(i, latitude_col_idx, longitude_col_idx)
                             if coords:
-                                results["first_ul_tp_gt_1_coords"] = coords
+                                lat = float(coords["latitude"])
+                                lon = float(coords["longitude"])
+                                distance = haversine_distance(lat, lon, BASE_STATION_COORDS["latitude"], BASE_STATION_COORDS["longitude"])
+                                results["first_ul_tp_gt_1_coords"] = {**coords, "distance_to_base_station_km": distance}
                             break
                     except ValueError:
                         continue
