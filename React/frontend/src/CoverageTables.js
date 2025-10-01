@@ -1,5 +1,6 @@
 import React from 'react';
 import './table-styles.css'; // Assuming a shared CSS for tables
+import MapComponent from './MapComponent'; // Import the MapComponent
 
 const coverageData = {
     "5G VoNR Coverage Test": {
@@ -724,7 +725,7 @@ const renderTable = (title, data) => {
     );
 };
 
-const CoverageTables = () => {
+const CoverageTables = ({ avgDutCoords, avgRefCoords, baseStationCoords }) => {
     const lastMosData = processData("last_mos_value_coords");
     const voiceCallDropData = processData("voice_call_drop_coords");
     const dlTpData = processData("first_dl_tp_gt_1_coords");
@@ -733,6 +734,11 @@ const CoverageTables = () => {
     return (
         <div>
             {renderTable("Last MOS Value Distance (km)", lastMosData)}
+            <MapComponent
+                dutCoords={avgDutCoords}
+                refCoords={avgRefCoords}
+                baseStationCoords={baseStationCoords}
+            />
             {renderTable("Voice Call Drop Distance (km)", voiceCallDropData)}
             {renderTable("DL TP < 1 Distance (km)", dlTpData)}
             {renderTable("UL TP < 1 Distance (km)", ulTpData)}
