@@ -150,3 +150,10 @@ th {
     page-break-inside: avoid !important;
   }
 }
+
+/* Styles for Leaflet map container */
+.leaflet-container {
+  height: 500px;
+  width: 100%;
+  z-index: 0; /* Ensure the map is not covered by other elements */
+}
