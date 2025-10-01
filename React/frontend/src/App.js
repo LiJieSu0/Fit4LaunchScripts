@@ -2,6 +2,7 @@ import React from 'react';
 import DataPerformanceReport from './DataPerformanceReport';
 import BlankTable from './BlankTable'; // Import the BlankTable component
 import MapComponent from './MapComponent'; // Import the MapComponent
+import CoverageTables from './CoverageTables'; // Import the CoverageTables component
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <h2 className="text-2xl font-semibold text-center mb-10">Comparison of DUT and REF Devices</h2>
       <DataPerformanceReport />
       <MapComponent /> {/* Add the MapComponent here */}
+      <CoverageTables /> {/* Add the CoverageTables component here */}
       {/* <BlankTable /> BlankTable component here don't touch*/}
     </div>
   );
