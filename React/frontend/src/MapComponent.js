@@ -22,20 +22,20 @@ const greenIcon = new L.Icon({
   shadowSize: [33, 33]
 });
 
-const redCrossIcon = L.divIcon({
-  className: 'red-cross-icon',
-  html: '<div style="color: red; font-size: 18px; font-weight: bold; text-align: center; line-height: 18px;">&#x2715;</div>',
-  iconSize: [18, 18],
-  iconAnchor: [9, 9],
-  popupAnchor: [0, -9]
+const redCircleIcon = L.divIcon({
+  className: 'red-circle-icon',
+  html: '<div style="background-color: red; width: 12px; height: 12px; border-radius: 50%;"></div>',
+  iconSize: [12, 12],
+  iconAnchor: [6, 6],
+  popupAnchor: [0, -6]
 });
 
-const blueDotIcon = L.divIcon({
-  className: 'blue-dot-icon',
-  html: '<div style="background-color: transparent; width: 12px; height: 12px; border-radius: 50%; border: 2px solid blue;"></div>',
-  iconSize: [16, 16],
-  iconAnchor: [8, 8],
-  popupAnchor: [0, -8]
+const blueCircleIcon = L.divIcon({
+  className: 'blue-circle-icon',
+  html: '<div style="background-color: blue; width: 12px; height: 12px; border-radius: 50%;"></div>',
+  iconSize: [12, 12],
+  iconAnchor: [6, 6],
+  popupAnchor: [0, -6]
 });
 
 const MapComponent = ({ dutCoords, refCoords, baseStationCoords }) => {
@@ -49,12 +49,12 @@ const MapComponent = ({ dutCoords, refCoords, baseStationCoords }) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {dutCoords[0] !== 0 && (
-          <Marker position={dutCoords} icon={redCrossIcon}>
+          <Marker position={dutCoords} icon={redCircleIcon}>
             <Popup>Average DUT Location</Popup>
           </Marker>
         )}
         {refCoords[0] !== 0 && (
-          <Marker position={refCoords} icon={blueDotIcon}>
+          <Marker position={refCoords} icon={blueCircleIcon}>
             <Popup>Average REF Location</Popup>
           </Marker>
         )}

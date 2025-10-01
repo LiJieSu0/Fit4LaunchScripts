@@ -725,7 +725,7 @@ const renderTable = (title, data) => {
     );
 };
 
-const CoverageTables = ({ avgDutCoords, avgRefCoords, baseStationCoords }) => {
+const CoverageTables = ({ avgDutMosCoords, avgRefMosCoords, avgDutDropCoords, avgRefDropCoords, avgDutDlTpCoords, avgRefDlTpCoords, avgDutUlTpCoords, avgRefUlTpCoords, baseStationCoords }) => {
     const lastMosData = processData("last_mos_value_coords");
     const voiceCallDropData = processData("voice_call_drop_coords");
     const dlTpData = processData("first_dl_tp_gt_1_coords");
@@ -735,13 +735,28 @@ const CoverageTables = ({ avgDutCoords, avgRefCoords, baseStationCoords }) => {
         <div>
             {renderTable("Last MOS Value Distance (km)", lastMosData)}
             <MapComponent
-                dutCoords={avgDutCoords}
-                refCoords={avgRefCoords}
+                dutCoords={avgDutMosCoords}
+                refCoords={avgRefMosCoords}
                 baseStationCoords={baseStationCoords}
             />
             {renderTable("Voice Call Drop Distance (km)", voiceCallDropData)}
+            <MapComponent
+                dutCoords={avgDutDropCoords}
+                refCoords={avgRefDropCoords}
+                baseStationCoords={baseStationCoords}
+            />
             {renderTable("DL TP < 1 Distance (km)", dlTpData)}
+            <MapComponent
+                dutCoords={avgDutDlTpCoords}
+                refCoords={avgRefDlTpCoords}
+                baseStationCoords={baseStationCoords}
+            />
             {renderTable("UL TP < 1 Distance (km)", ulTpData)}
+            <MapComponent
+                dutCoords={avgDutUlTpCoords}
+                refCoords={avgRefUlTpCoords}
+                baseStationCoords={baseStationCoords}
+            />
         </div>
     );
 };
