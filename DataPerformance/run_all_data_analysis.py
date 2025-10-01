@@ -380,6 +380,7 @@ if __name__ == "__main__":
                             relative_dir_path = os.path.dirname(relative_path_from_base)
                             
                             # Split into components and add the device_type as the last component
+                            # Split into components and add the device_type and filename as the final keys
                             path_components_for_insert = relative_dir_path.replace("\\", "/").split('/')
                             path_components_for_insert.append(device_type) # Add DUT/REF as the final key
                             

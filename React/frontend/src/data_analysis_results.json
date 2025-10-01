@@ -2188,45 +2188,46 @@
     "Call Performance": {
         "5G Auto VoNR Disabled CP MO Drive": {
             "DUT": {
-                "total_attempts": 344,
+                "total_attempts": 1159,
                 "total_mo_attempts": 0,
                 "total_initiation_failures": 0,
                 "total_retention_failures": 1,
-                "total_initiation_successes": 344,
+                "total_initiation_successes": 1159,
                 "call_result_distribution": {
-                    "Complete": 332,
-                    "Etc.": 11,
+                    "Complete": 1144,
+                    "Etc.": 14,
                     "Drop": 1
                 },
                 "rat_distribution": {
-                    "EPSFB": 322,
-                    "VoLTE": 17,
-                    "VoNR": 5
+                    "EPSFB": 1068,
+                    "VoLTE": 74,
+                    "VoNR": 10,
+                    "VoNR-VoLTE": 6
                 },
-                "mean_setup_time": 1.309947898809524
+                "mean_setup_time": 1.225294818102698
             },
             "REF": {
-                "total_attempts": 402,
+                "total_attempts": 1294,
                 "total_mo_attempts": 0,
-                "total_initiation_failures": 82,
+                "total_initiation_failures": 196,
                 "total_retention_failures": 0,
-                "total_initiation_successes": 320,
+                "total_initiation_successes": 1098,
                 "call_result_distribution": {
-                    "Complete": 307,
-                    "Orig. Fail": 82,
+                    "Complete": 1085,
+                    "Orig. Fail": 196,
                     "Etc.": 12,
                     "Forced stop": 1
                 },
                 "rat_distribution": {
-                    "EPSFB": 283,
-                    "VoNR": 87,
-                    "VoLTE": 17,
-                    "VoNR-VoLTE": 15
+                    "EPSFB": 942,
+                    "VoNR": 199,
+                    "VoLTE": 90,
+                    "VoNR-VoLTE": 63
                 },
-                "mean_setup_time": 1.5097094108280256
+                "mean_setup_time": 1.376372496336996
             },
             "initiation_p_value": 1.0,
-            "retention_p_value": 0.518796992481203
+            "retention_p_value": 0.5137289636846767
         },
         "5G Auto VoNR Enabled CP MO Drive": {
             "DUT": {
@@ -2455,45 +2456,85 @@
                     "max": 1157.071,
                     "occurrences": 285
                 }
+            },
+            "5G Auto VoNR Enabled Audio Delay": {
+                "DUT1": {
+                    "mean": 310.82476241134754,
+                    "std_dev": 10.87546542202582,
+                    "min": 282.539,
+                    "max": 397.868,
+                    "occurrences": 282
+                },
+                "REF1": {
+                    "mean": 331.5639042553192,
+                    "std_dev": 15.653645221636893,
+                    "min": 279.678,
+                    "max": 388.018,
+                    "occurrences": 282
+                },
+                "DUT2": {
+                    "mean": 299.9631245551601,
+                    "std_dev": 14.764469427018174,
+                    "min": 266.911,
+                    "max": 386.295,
+                    "occurrences": 281
+                },
+                "REF2": {
+                    "mean": 334.0500035587189,
+                    "std_dev": 40.313971784426975,
+                    "min": -15.268,
+                    "max": 823.2009999999999,
+                    "occurrences": 281
+                }
             }
         }
     },
     "Coverage": {
         "5G VoNR Coverage Test": {
-            "DUT": {
-                "last_mos_value_coords": {
-                    "latitude": "47.146212",
-                    "longitude": "-122.357310"
+            "Run1": {
+                "DUT": {
+                    "last_mos_value_coords": {
+                        "latitude": "47.146212",
+                        "longitude": "-122.357310",
+                        "distance_to_base_station_km": 1.999446329912468
+                    },
+                    "voice_call_drop_coords": {
+                        "latitude": "47.147595",
+                        "longitude": "-122.357257",
+                        "distance_to_base_station_km": 2.153132266606282
+                    },
+                    "first_dl_tp_gt_1_coords": {
+                        "latitude": "47.144150",
+                        "longitude": "-122.357327",
+                        "distance_to_base_station_km": 1.7702410668954354
+                    },
+                    "first_ul_tp_gt_1_coords": {
+                        "latitude": "47.144150",
+                        "longitude": "-122.357327",
+                        "distance_to_base_station_km": 1.7702410668954354
+                    }
                 },
-                "voice_call_drop_coords": {
-                    "latitude": "47.147595",
-                    "longitude": "-122.357257"
-                },
-                "first_dl_tp_gt_1_coords": {
-                    "latitude": "47.144150",
-                    "longitude": "-122.357327"
-                },
-                "first_ul_tp_gt_1_coords": {
-                    "latitude": "47.144150",
-                    "longitude": "-122.357327"
-                }
-            },
-            "REF": {
-                "last_mos_value_coords": {
-                    "latitude": "47.150115",
-                    "longitude": "-122.357223"
-                },
-                "voice_call_drop_coords": {
-                    "latitude": "47.150115",
-                    "longitude": "-122.357223"
-                },
-                "first_dl_tp_gt_1_coords": {
-                    "latitude": "47.148357",
-                    "longitude": "-122.357232"
-                },
-                "first_ul_tp_gt_1_coords": {
-                    "latitude": "47.143685",
-                    "longitude": "-122.357327"
+                "REF": {
+                    "last_mos_value_coords": {
+                        "latitude": "47.150115",
+                        "longitude": "-122.357223",
+                        "distance_to_base_station_km": 2.433274574224882
+                    },
+                    "voice_call_drop_coords": {
+                        "latitude": "47.150115",
+                        "longitude": "-122.357223",
+                        "distance_to_base_station_km": 2.433274574224882
+                    },
+                    "first_dl_tp_gt_1_coords": {
+                        "latitude": "47.148357",
+                        "longitude": "-122.357232",
+                        "distance_to_base_station_km": 2.2378229982269593
+                    },
+                    "first_ul_tp_gt_1_coords": {
+                        "latitude": "47.143685",
+                        "longitude": "-122.357327",
+                        "distance_to_base_station_km": 1.718549348813673
+                    }
                 }
             }
         }
