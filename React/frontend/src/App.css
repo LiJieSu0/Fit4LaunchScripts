@@ -1,0 +1,94 @@
+/* General Body Styling */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7f6;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main Container */
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Headings */
+h1 {
+  color: #2c3e50;
+  font-size: 2.5em;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+h2 {
+  color: #34495e;
+  font-size: 1.8em;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
+h3 {
+  color: #555;
+  font-size: 1.4em;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Coverage Section Styling */
+.coverage-section {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.coverage-maps-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Table Styling */
+.coverage-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  overflow: hidden; /* Ensures rounded corners apply to inner elements */
+}
+
+.coverage-table-container th,
+.coverage-table-container td {
+  border: 1px solid #e0e0e0;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.coverage-table-container th {
+  background-color: #f8f8f8;
+  font-weight: bold;
+  color: #555;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+.coverage-table-container tr:nth-child(even) {
+  background-color: #fdfdfd;
+}
+
+.coverage-table-container tr:hover {
+  background-color: #f0f0f0;
+}
+
+/* Map Specific Styling (Leaflet defaults are usually good, but can be overridden) */
+.leaflet-container {
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}

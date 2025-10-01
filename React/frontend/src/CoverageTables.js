@@ -732,7 +732,6 @@ const CoverageTables = () => {
 
     return (
         <div>
-            <h2>5G VoNR Coverage Test Results</h2>
             {renderTable("Last MOS Value Distance (km)", lastMosData)}
             {renderTable("Voice Call Drop Distance (km)", voiceCallDropData)}
             {renderTable("DL TP < 1 Distance (km)", dlTpData)}
