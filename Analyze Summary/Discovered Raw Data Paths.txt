@@ -153,8 +153,36 @@
 - 5G Auto VoNR Enabled CP MT Drive\REF\CH4 REF2.csv
 - 5G Auto VoNR Enabled CP MT Drive\REF\CH6 REF3.csv
 - 5G Auto VoNR Enabled CP MT Drive\REF\CH8 REF4.csv
-- 5G VoNR Coverage Test\Run1\_20250929_132833_CH03_TMO_5G Auto_VoNR Coverage Test_DUT2 Mobile_5G Auto VoNR Coverage Test.csv
-- 5G VoNR Coverage Test\Run1\_20250929_132833_CH04_TMO_5G Auto_VoNR Coverage Test_REF2 Mobile_5G Auto VoNR Coverage Test.csv
+- 5G VoNR Coverage Test\DUT\DUT1_Run1.csv
+- 5G VoNR Coverage Test\DUT\DUT1_Run2.csv
+- 5G VoNR Coverage Test\DUT\DUT1_Run3.csv
+- 5G VoNR Coverage Test\DUT\DUT1_Run4.csv
+- 5G VoNR Coverage Test\DUT\DUT1_Run5.csv
+- 5G VoNR Coverage Test\DUT\DUT2_Run1.csv
+- 5G VoNR Coverage Test\DUT\DUT2_Run2.csv
+- 5G VoNR Coverage Test\DUT\DUT2_Run3.csv
+- 5G VoNR Coverage Test\DUT\DUT2_Run4.csv
+- 5G VoNR Coverage Test\DUT\DUT2_Run5.csv
+- 5G VoNR Coverage Test\DUT\DUT3_Run1.csv
+- 5G VoNR Coverage Test\DUT\DUT3_Run2.csv
+- 5G VoNR Coverage Test\DUT\DUT3_Run3.csv
+- 5G VoNR Coverage Test\DUT\DUT3_Run4.csv
+- 5G VoNR Coverage Test\DUT\DUT3_Run5.csv
+- 5G VoNR Coverage Test\REF\REF1_Run1.csv
+- 5G VoNR Coverage Test\REF\REF1_Run2.csv
+- 5G VoNR Coverage Test\REF\REF1_Run3.csv
+- 5G VoNR Coverage Test\REF\REF1_Run4.csv
+- 5G VoNR Coverage Test\REF\REF1_Run5.csv
+- 5G VoNR Coverage Test\REF\REF2_Run1.csv
+- 5G VoNR Coverage Test\REF\REF2_Run2.csv
+- 5G VoNR Coverage Test\REF\REF2_Run3.csv
+- 5G VoNR Coverage Test\REF\REF2_Run4.csv
+- 5G VoNR Coverage Test\REF\REF2_Run5.csv
+- 5G VoNR Coverage Test\REF\REF3_Run1.csv
+- 5G VoNR Coverage Test\REF\REF3_Run2.csv
+- 5G VoNR Coverage Test\REF\REF3_Run3.csv
+- 5G VoNR Coverage Test\REF\REF3_Run4.csv
+- 5G VoNR Coverage Test\REF\REF3_Run5.csv
 - Voice Quality\5G Auto VoNR Disabled Audio Delay\_20250925_153348_CH03_TMO_5G Auto_VoNR Disabled Audio Delay_DUT1 Mobile_5G Auto VoNR Disabled Audio Delay.csv
 - Voice Quality\5G Auto VoNR Disabled Audio Delay\_20250925_153348_CH03_TMO_5G Auto_VoNR Disabled Audio Delay_DUT1 Mobile_5G Auto VoNR Disabled Audio Delay.csv
 - Voice Quality\5G Auto VoNR Disabled Audio Delay\_20250925_153348_CH04_TMO_5G Auto_VoNR Disabled Audio Delay_REF1 Mobile_5G Auto VoNR Disabled Audio Delay.csv

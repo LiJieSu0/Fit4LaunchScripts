@@ -376,13 +376,20 @@ if __name__ == "__main__":
                             
                             # Get the path relative to base_raw_data_dir
                             relative_path_from_base = os.path.relpath(csv_file, base_raw_data_dir)
-                            # Get the directory part of this relative path
-                            relative_dir_path = os.path.dirname(relative_path_from_base)
                             
-                            # Split into components and add the device_type as the last component
-                            # Split into components and add the device_type and filename as the final keys
-                            path_components_for_insert = relative_dir_path.replace("\\", "/").split('/')
-                            path_components_for_insert.append(device_type) # Add DUT/REF as the final key
+                            # Split into components, remove the device type directory (e.g., 'DUT' or 'REF')
+                            # and then append the filename without extension.
+                            path_components_for_insert = relative_path_from_base.replace("\\", "/").split('/')
+                            
+                            # Remove the device type directory (e.g., 'DUT' or 'REF') from the path components
+                            # This assumes the structure is .../Coverage/<TestName>/<DeviceType>/<FileName>
+                            # So, the device type is the second to last component.
+                            if len(path_components_for_insert) >= 2:
+                                path_components_for_insert.pop(-2) # Remove the device_type directory
+
+                            # The last component is the filename, remove .csv extension
+                            filename_without_ext = os.path.splitext(path_components_for_insert[-1])[0]
+                            path_components_for_insert[-1] = filename_without_ext
                             
                             _insert_into_nested_dict(all_collected_results, path_components_for_insert, coverage_results)
                             print(f"Coverage analysis for {file_name} added to results.")

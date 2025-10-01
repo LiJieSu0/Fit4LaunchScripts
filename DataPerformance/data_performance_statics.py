@@ -93,6 +93,8 @@ def _determine_analysis_parameters(file_path):
         params["analysis_type_detected"] = "mrab_performance"
     elif "5g auto dp" in file_path_lower or "5g nsa dp" in file_path_lower:
         params["analysis_type_detected"] = "data_performance"
+    elif "coverage" in file_path_lower: # New condition for coverage analysis
+        params["analysis_type_detected"] = "coverage_coordinate"
 
     print(f"DEBUG: _determine_analysis_parameters - 'dut' in file_name: {'dut' in file_name}")
     print(f"DEBUG: _determine_analysis_parameters - 'ref' in file_name: {'ref' in file_name}")
@@ -119,6 +121,10 @@ def _determine_analysis_parameters(file_path):
         return None
     elif params["protocol_type_detected"] == "PING" and (not params["protocol_type_detected"] or not params["network_type_detected"]):
         return None
+    elif params["analysis_type_detected"] == "coverage_coordinate":
+        # For coverage, only need device type
+        if not params["device_type_detected"]:
+            return None
 
 
     if params["protocol_type_detected"] == "HTTP":
