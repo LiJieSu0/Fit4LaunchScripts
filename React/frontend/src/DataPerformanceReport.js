@@ -6,6 +6,7 @@ import CallPerformanceTable from './CallPerformanceTable'; // New import
 import CallCategoriesChart from './CallCategoriesChart'; // New import
 import VoiceQualityTable from './VoiceQualityTable'; // New import
 import AudioDelayTable from './AudioDelayTable'; // New import
+import PValueTable from './PValueTable'; // Import PValueTable
 
 // Helper function to recursively extract test cases
 const extractTestCases = (data, currentPath = []) => {
@@ -297,10 +298,24 @@ const DataPerformanceReport = () => {
                 </div>
               );
             } else if (testCase.isCallPerformance) { // New condition for Call Performance
+              console.log("Call Performance Test Case:", testCase.name, "Initiation P-Value:", testCase.data.initiation_p_value, "Retention P-Value:", testCase.data.retention_p_value);
               return (
                 <div key={testCase.name} className="report-section">
                   <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
                   <CallPerformanceTable callPerformanceData={testCase.data} />
+                  {testCase.name.includes("CP MO") && (
+                    <PValueTable
+                      callType="MO"
+                      initiationPValue={testCase.data.initiation_p_value}
+                      retentionPValue={testCase.data.retention_p_value}
+                    />
+                  )}
+                  {testCase.name.includes("CP MT") && (
+                    <PValueTable
+                      callType="MT"
+                      initiationPValue={testCase.data.initiation_p_value}
+                    />
+                  )}
                   <CallCategoriesChart callPerformanceData={testCase.data} />
                 </div>
               );
