@@ -45,59 +45,60 @@ const CallCategoriesChart = ({ callPerformanceData }) => {
     <div className="mb-6">
       <h3 className="text-xl font-bold mb-4 text-gray-800">Call Categories</h3>
 
-      {/* Legend */}
-      <div className="flex justify-center space-x-4 mb-4">
-        {categoriesOrder.map(category => (
-          <div key={category} className="flex items-center">
-            <span className={`inline-block w-4 h-4 ${categoryColors[category]} mr-2`}></span>
-            <span>{category}</span>
-          </div>
-        ))}
-      </div>
-
       {/* Chart */}
-      <div className="flex flex-col space-y-4">
-      {/* DUT Bar */}
-        <div className="flex items-center">
-          <div className="w-40 text-right pr-4">DUT</div>
-          <div className="flex-1 h-8 bg-gray-200 flex rounded overflow-hidden">
-            {categoriesOrder.map(category => {
-              const percentage = parseFloat(dutCategories.percentages[category]);
-              return percentage > 0 && (
-                <div
-                  key={`dut-${category}`}
-                  className={`${categoryColors[category]} h-full flex items-center justify-center text-white text-xs`}
-                  style={{ width: `${percentage}%` }}
-                >
-                  {percentage >= 5.0 ? `${percentage}%` : ''}
-                </div>
-              );
-            })}
+      <div className="flex justify-center"> {/* Centered chart */}
+        <div className="flex flex-col space-y-4 w-2/3"> {/* Chart container, reduced width */}
+          {/* Legend */}
+          <div className="flex justify-start space-x-4 mb-4">
+            {categoriesOrder.map(category => (
+              <div key={category} className="flex items-center">
+                <span className={`inline-block w-4 h-4 ${categoryColors[category]} mr-2`}></span>
+                <span>{category}</span>
+              </div>
+            ))}
           </div>
-        </div>
+          {/* DUT Bar */}
+          <div className="flex items-center">
+            <div className="text-left mr-2">DUT</div>
+            <div className="flex-1 h-8 bg-gray-200 flex rounded overflow-hidden">
+              {categoriesOrder.map(category => {
+                const percentage = parseFloat(dutCategories.percentages[category]);
+                return percentage > 0 && (
+                  <div
+                    key={`dut-${category}`}
+                    className={`${categoryColors[category]} h-full flex items-center justify-center text-white text-xs`}
+                    style={{ width: `${percentage}%` }}
+                  >
+                    {percentage >= 5.0 ? `${percentage}%` : ''}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
 
-        {/* Reference Bar */}
-        <div className="flex items-center">
-          <div className="w-40 text-right pr-4">REF</div>
-          <div className="flex-1 h-8 bg-gray-200 flex rounded overflow-hidden">
-            {categoriesOrder.map(category => {
-              const percentage = parseFloat(refCategories.percentages[category]);
-              return percentage > 0 && (
-                <div
-                  key={`ref-${category}`}
-                  className={`${categoryColors[category]} h-full flex items-center justify-center text-white text-xs`}
-                  style={{ width: `${percentage}%` }}
-                >
-                  {percentage >= 5.0 ? `${percentage}%` : ''}
-                </div>
-              );
-            })}
+          {/* Reference Bar */}
+          <div className="flex items-center">
+            <div className="text-left mr-2">REF</div>
+            <div className="flex-1 h-8 bg-gray-200 flex rounded overflow-hidden">
+              {categoriesOrder.map(category => {
+                const percentage = parseFloat(refCategories.percentages[category]);
+                return percentage > 0 && (
+                  <div
+                    key={`ref-${category}`}
+                    className={`${categoryColors[category]} h-full flex items-center justify-center text-white text-xs`}
+                    style={{ width: `${percentage}%` }}
+                  >
+                    {percentage >= 5.0 ? `${percentage}%` : ''}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Data Table */}
-      <div className="overflow-x-auto mt-6 table-container">
+      <div className="overflow-x-auto mt-6 table-container"> {/* Table container, with mt-6 re-added */}
         <table className="min-w-full border border-table-grid">
           <thead>
             <tr className="bg-table-header-bg text-table-header-text font-bold">
