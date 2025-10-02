@@ -46,8 +46,8 @@ const CallCategoriesChart = ({ callPerformanceData }) => {
       <h3 className="text-xl font-bold mb-4 text-gray-800">Call Categories</h3>
 
       {/* Chart */}
-      <div className="flex justify-center"> {/* Centered chart */}
-        <div className="flex flex-col space-y-4 w-2/3"> {/* Chart container, reduced width */}
+      <div className="flex justify-start"> {/* Aligned chart to left */}
+        <div className="flex flex-col space-y-4 w-1/2"> {/* Chart container, reduced width */}
           {/* Legend */}
           <div className="flex justify-start space-x-4 mb-4">
             {categoriesOrder.map(category => (
@@ -98,8 +98,9 @@ const CallCategoriesChart = ({ callPerformanceData }) => {
       </div>
 
       {/* Data Table */}
-      <div className="overflow-x-auto mt-6 table-container"> {/* Table container, with mt-6 re-added */}
-        <table className="min-w-full border border-table-grid">
+      <div className="flex justify-start"> {/* Align table to left */}
+        <div className="overflow-x-auto mt-6 table-container w-1/2"> {/* Table container, reduced width */}
+          <table className="min-w-full border border-table-grid">
           <thead>
             <tr className="bg-table-header-bg text-table-header-text font-bold">
               <th className="py-2 px-4 border border-table-grid">Device</th>
@@ -130,7 +131,8 @@ const CallCategoriesChart = ({ callPerformanceData }) => {
             </tr>
           </tbody>
         </table>
-      </div>
+        </div> {/* Closing div for w-1/2 container */}
+      </div> {/* Closing div for flex justify-start */}
     </div>
   );
 };

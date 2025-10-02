@@ -33,7 +33,6 @@ const CallPerformanceTable = ({ callPerformanceData }) => {
             <th>Successful Initiations (%)</th>
             <th>Failed Initiations</th>
             <th>Failed Initiations (%)</th>
-            <th>P - Value</th>
           </tr>
         </thead>
         <tbody>
@@ -45,7 +44,6 @@ const CallPerformanceTable = ({ callPerformanceData }) => {
             <td>{dutSuccessfulInitiationsPercentage}%</td>
             <td>{dutFailedInitiations}</td>
             <td>{dutFailedInitiationsPercentage}%</td>
-            <td>{initiation_p_value.toFixed(3)}</td>
           </tr>
           <tr>
             <td>REF</td>
@@ -55,7 +53,6 @@ const CallPerformanceTable = ({ callPerformanceData }) => {
             <td>{refSuccessfulInitiationsPercentage}%</td>
             <td>{refFailedInitiations}</td>
             <td>{refFailedInitiationsPercentage}%</td>
-            <td>{retention_p_value.toFixed(3)}</td>
           </tr>
         </tbody>
       </table>
