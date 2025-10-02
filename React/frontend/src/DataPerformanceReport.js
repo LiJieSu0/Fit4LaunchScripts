@@ -299,6 +299,16 @@ const DataPerformanceReport = () => {
               );
             } else if (testCase.isCallPerformance) { // New condition for Call Performance
               console.log("Call Performance Test Case:", testCase.name, "Initiation P-Value:", testCase.data.initiation_p_value, "Retention P-Value:", testCase.data.retention_p_value);
+
+              const dutTotalAttempts = testCase.data.DUT.total_attempts;
+              const dutInitiationFailures = testCase.data.DUT.total_initiation_failures;
+              const dutRetentionFailures = testCase.data.DUT.total_retention_failures;
+
+              let dutFailurePercentage = 0;
+              if (dutTotalAttempts > 0) {
+                dutFailurePercentage = ((dutInitiationFailures + dutRetentionFailures) / dutTotalAttempts) * 100;
+              }
+
               return (
                 <div key={testCase.name} className="report-section">
                   <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
@@ -308,12 +318,14 @@ const DataPerformanceReport = () => {
                       callType="MO"
                       initiationPValue={testCase.data.initiation_p_value}
                       retentionPValue={testCase.data.retention_p_value}
+                      dutFailurePercentage={dutFailurePercentage}
                     />
                   )}
                   {testCase.name.includes("CP MT") && (
                     <PValueTable
                       callType="MT"
                       initiationPValue={testCase.data.initiation_p_value}
+                      dutFailurePercentage={dutFailurePercentage}
                     />
                   )}
                   <CallCategoriesChart callPerformanceData={testCase.data} />
