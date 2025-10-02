@@ -739,24 +739,80 @@ const CoverageTables = ({ avgDutMosCoords, avgRefMosCoords, avgDutDropCoords, av
                 refCoords={avgRefMosCoords}
                 baseStationCoords={baseStationCoords}
             />
+            <div className="map-legend" style={{ display: 'flex', justifyContent: 'flex-start', gap: '20px', marginTop: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ backgroundColor: 'red', width: '12px', height: '12px', borderRadius: '50%', marginRight: '5px' }}></div>
+                    <span>DUT</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ backgroundColor: 'blue', width: '12px', height: '12px', borderRadius: '50%', marginRight: '5px' }}></div>
+                    <span>REF</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" alt="Base Station Icon" style={{ width: '15px', height: '25px', marginRight: '5px' }} />
+                    <span>Base Station</span>
+                </div>
+            </div>
             {renderTable("Voice Call Drop Distance (km)", voiceCallDropData)}
             <MapComponent
                 dutCoords={avgDutDropCoords}
                 refCoords={avgRefDropCoords}
                 baseStationCoords={baseStationCoords}
             />
+            <div className="map-legend" style={{ display: 'flex', justifyContent: 'flex-start', gap: '20px', marginTop: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ backgroundColor: 'red', width: '12px', height: '12px', borderRadius: '50%', marginRight: '5px' }}></div>
+                    <span>DUT</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ backgroundColor: 'blue', width: '12px', height: '12px', borderRadius: '50%', marginRight: '5px' }}></div>
+                    <span>REF</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" alt="Base Station Icon" style={{ width: '15px', height: '25px', marginRight: '5px' }} />
+                    <span>Base Station</span>
+                </div>
+            </div>
             {renderTable("DL TP < 1 Distance (km)", dlTpData)}
             <MapComponent
                 dutCoords={avgDutDlTpCoords}
                 refCoords={avgRefDlTpCoords}
                 baseStationCoords={baseStationCoords}
             />
+            <div className="map-legend" style={{ display: 'flex', justifyContent: 'flex-start', gap: '20px', marginTop: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ backgroundColor: 'red', width: '12px', height: '12px', borderRadius: '50%', marginRight: '5px' }}></div>
+                    <span>DUT</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ backgroundColor: 'blue', width: '12px', height: '12px', borderRadius: '50%', marginRight: '5px' }}></div>
+                    <span>REF</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" alt="Base Station Icon" style={{ width: '15px', height: '25px', marginRight: '5px' }} />
+                    <span>Base Station</span>
+                </div>
+            </div>
             {renderTable("UL TP < 1 Distance (km)", ulTpData)}
             <MapComponent
                 dutCoords={avgDutUlTpCoords}
                 refCoords={avgRefUlTpCoords}
                 baseStationCoords={baseStationCoords}
             />
+            <div className="map-legend" style={{ display: 'flex', justifyContent: 'flex-start', gap: '20px', marginTop: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ backgroundColor: 'red', width: '12px', height: '12px', borderRadius: '50%', marginRight: '5px' }}></div>
+                    <span>DUT</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ backgroundColor: 'blue', width: '12px', height: '12px', borderRadius: '50%', marginRight: '5px' }}></div>
+                    <span>REF</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" alt="Base Station Icon" style={{ width: '15px', height: '25px', marginRight: '5px' }} />
+                    <span>Base Station</span>
+                </div>
+            </div>
         </div>
     );
 };
