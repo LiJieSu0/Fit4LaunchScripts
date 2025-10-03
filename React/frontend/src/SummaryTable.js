@@ -102,7 +102,7 @@ const SummaryTable = () => {
           </tbody>
         </table>
       </div>
-
+      <div className="page-break-always"> </div>
       <div className="submission-approval-section">
         <h3 className="submission-approval-title">Submission Approval</h3>
         <div className="signature-block">

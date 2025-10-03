@@ -4,9 +4,8 @@
   }
 
   body {
-    background-color: red !important; /* Temporary: to check if print.css is loading */
     margin: 10px !important;
-    padding-top: 20px !important; /* Reduced padding for print top margin */
+    padding-top: 10px !important; /* Reduced padding for print top margin */
     -webkit-print-color-adjust: exact !important; /* Ensures background colors and images are printed */
     print-color-adjust: exact !important;
     min-height: 100vh !important; /* Ensure body takes full viewport height for proper page breaks */
@@ -86,5 +85,14 @@
   .BarChart-container {
     width: auto !important; /* Chart takes its natural width */
     margin-left: 0 !important; /* Ensure it's aligned to the left */
+  }
+
+  /* Custom classes for more granular page break control */
+  .page-break-always {
+    page-break-before: always !important;
+  }
+
+  .page-break-avoid {
+    page-break-inside: avoid !important;
   }
 }

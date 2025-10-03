@@ -78,8 +78,8 @@
   font-size: 1.2em;
   font-weight: bold;
   margin-bottom: 30px;
-  text-decoration: underline;
-  color: #007bff; /* A blue color for the title, similar to the image */
+  text-decoration: none;
+  color: #000000; /* A blue color for the title, similar to the image */
 }
 
 .signature-block {
@@ -105,4 +105,3 @@
   min-width: 250px; /* Ensure enough space for date */
   text-align: left;
 }
-

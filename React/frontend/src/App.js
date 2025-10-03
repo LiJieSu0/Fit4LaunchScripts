@@ -4,6 +4,7 @@ import BlankTable from './BlankTable'; // Import the BlankTable component
 import CoverageTables from './CoverageTables'; // Import the CoverageTables component
 import SummaryTable from './SummaryTable'; // Import the SummaryTable component
 import data from './data_analysis_results.json'; // Import the JSON data
+import './print.css'; // Import print-specific styles
 
 function App() {
   // Base station coordinate
