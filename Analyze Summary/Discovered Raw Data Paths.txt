@@ -103,6 +103,16 @@
 - 5G NSA Data Test Stationary Moderate RF DL\UDP Download Task at 200 Mbps for 10 seconds\_20250919_121427_CH02_TMO-ref_5G NSA_UDP DL 200 Mbps 10 s_location2_DA Test.csv
 - 5G NSA Data Test Stationary Moderate RF DL\UDP Download Task at 400 Mbps for 10 seconds\DUT UDP DL 400 M 10s.csv
 - 5G NSA Data Test Stationary Moderate RF DL\UDP Download Task at 400 Mbps for 10 seconds\REF UDP DL 400 M 10s.csv
+- 5G NSA Data Test Stationary Moderate RF UL\5G NSA_25x64 bytes PING_moderate\_20250911_150928_CH01_TMO_5G NSA_Ping_DUT_.csv
+- 5G NSA Data Test Stationary Moderate RF UL\5G NSA_25x64 bytes PING_moderate\_20250911_150928_CH02_TMO_5G NSA_Ping_REF_.csv
+- 5G NSA Data Test Stationary Moderate RF UL\5G NSA_Multi Stream HTTP Upload for 30 seconds_moderate\DUT 5G NSA_Multi Stream HTTP Upload for 30 seconds_moderate_.csv
+- 5G NSA Data Test Stationary Moderate RF UL\5G NSA_Multi Stream HTTP Upload for 30 seconds_moderate\REF 5G NSA_Multi Stream HTTP Upload for 30 seconds_moderate_.csv
+- 5G NSA Data Test Stationary Moderate RF UL\5G NSA_Single Stream HTTP Upload of a 15 MB file\_20250925_125722_CH01_TMO-dut_5G NSA_Single Stream HTTP Upload of a 15 MB file_location2_DA Test.csv
+- 5G NSA Data Test Stationary Moderate RF UL\5G NSA_Single Stream HTTP Upload of a 15 MB file\_20250925_125722_CH02_TMO-ref_5G NSA_Single Stream HTTP Upload of a 15 MB file_location2_DA Test.csv
+- 5G NSA Data Test Stationary Moderate RF UL\5G NSA_UDP Upload Task at 10 Mbps for 10 seconds\_20250930_144823_CH01_TMO-dut_5G NSA_UDP Upload Task at 10 Mbps for 10 seconds_location2_DA Test.csv
+- 5G NSA Data Test Stationary Moderate RF UL\5G NSA_UDP Upload Task at 10 Mbps for 10 seconds\_20250930_144823_CH02_TMO-ref_5G NSA_UDP Upload Task at 10 Mbps for 10 seconds_location2_DA Test.csv
+- 5G NSA Data Test Stationary Moderate RF UL\5G NSA_UDP Upload Task at 20 Mbps for 10 seconds\_20250930_145837_CH01_TMO-dut_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_location2_DA Test.csv
+- 5G NSA Data Test Stationary Moderate RF UL\5G NSA_UDP Upload Task at 20 Mbps for 10 seconds\_20250930_145837_CH02_TMO-ref_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_location2_DA Test.csv
 - 5G NSA Data Test Stationary Poor RF DL\Multi Stream HTTP Download for 30 seconds\DUT HTTP DL.csv
 - 5G NSA Data Test Stationary Poor RF DL\Multi Stream HTTP Download for 30 seconds\REF HTTP DL.csv
 - 5G NSA Data Test Stationary Poor RF DL\Single Stream HTTP Download for 60 seconds\DUT HTTP DL.csv
@@ -137,6 +147,14 @@
 - 5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH4 REF2.csv
 - 5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH6 REF3.csv
 - 5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH8 REF4.csv
+- 5G Auto VoNR Disabled CP MT Drive\DUT\CH1 DUT1.csv
+- 5G Auto VoNR Disabled CP MT Drive\DUT\CH3 DUT2.csv
+- 5G Auto VoNR Disabled CP MT Drive\DUT\CH5 DUT3.csv
+- 5G Auto VoNR Disabled CP MT Drive\DUT\CH7 DUT4.csv
+- 5G Auto VoNR Disabled CP MT Drive\REF\CH2 REF1.csv
+- 5G Auto VoNR Disabled CP MT Drive\REF\CH4 REF2.csv
+- 5G Auto VoNR Disabled CP MT Drive\REF\CH6 REF3.csv
+- 5G Auto VoNR Disabled CP MT Drive\REF\CH8 REF4.csv
 - 5G Auto VoNR Enabled CP MO Drive\DUT\VONR ON CP MO CH1 DUT1.csv
 - 5G Auto VoNR Enabled CP MO Drive\DUT\VoNR ON CP MO CH3 DUT2.csv
 - 5G Auto VoNR Enabled CP MO Drive\DUT\VoNR ON CP MO CH5 DUT3.csv

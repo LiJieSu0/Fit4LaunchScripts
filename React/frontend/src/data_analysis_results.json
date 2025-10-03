@@ -1866,6 +1866,178 @@
                 }
             }
         },
+        "5G NSA Data Test Stationary Moderate RF UL": {
+            "5G NSA_25x64 bytes PING_moderate": {
+                "_20250911_150928_CH01_TMO_5G NSA_Ping_DUT_": {
+                    "Device Type": "DUT",
+                    "Protocol Type": "PING",
+                    "Network Type": "5G NSA",
+                    "Analysis Type": "data_performance",
+                    "Ping RTT": {
+                        "min": 33.0,
+                        "max": 304.0,
+                        "avg": 53.806,
+                        "std_dev": 28.717900334098218
+                    }
+                },
+                "_20250911_150928_CH02_TMO_5G NSA_Ping_REF_": {
+                    "Device Type": "REF",
+                    "Protocol Type": "PING",
+                    "Network Type": "5G NSA",
+                    "Analysis Type": "data_performance",
+                    "Ping RTT": {
+                        "min": 33.0,
+                        "max": 400.0,
+                        "avg": 81.33,
+                        "std_dev": 51.18982218948981
+                    }
+                }
+            },
+            "5G NSA_Multi Stream HTTP Upload for 30 seconds_moderate": {
+                "DUT 5G NSA_Multi Stream HTTP Upload for 30 seconds_moderate_": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "HTTP",
+                    "Network Type": "5G NSA",
+                    "Analysis Type": "data_performance",
+                    "Throughput": {
+                        "Mean": 5.049309828629033,
+                        "Standard Deviation": 1.5695539360653787,
+                        "Minimum": 2.040032258064516,
+                        "Maximum": 7.822870967741936,
+                        "Number of Intervals": 20
+                    }
+                },
+                "REF 5G NSA_Multi Stream HTTP Upload for 30 seconds_moderate_": {
+                    "Device Type": "REF",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "HTTP",
+                    "Network Type": "5G NSA",
+                    "Analysis Type": "data_performance",
+                    "Throughput": {
+                        "Mean": 2.7735384576612905,
+                        "Standard Deviation": 0.7482020453081405,
+                        "Minimum": 1.2200645161290324,
+                        "Maximum": 4.359096774193548,
+                        "Number of Intervals": 20
+                    }
+                }
+            },
+            "5G NSA_Single Stream HTTP Upload of a 15 MB file": {
+                "_20250925_125722_CH01_TMO-dut_5G NSA_Single Stream HTTP Upload of a 15 MB file_location2_DA Test": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "HTTP",
+                    "Network Type": "5G NSA",
+                    "Analysis Type": "data_performance",
+                    "Throughput": {
+                        "Mean": 4.711623814910937,
+                        "Standard Deviation": 2.1810320792614832,
+                        "Minimum": 1.9333125,
+                        "Maximum": 10.275363636363636,
+                        "Number of Intervals": 20
+                    }
+                },
+                "_20250925_125722_CH02_TMO-ref_5G NSA_Single Stream HTTP Upload of a 15 MB file_location2_DA Test": {
+                    "Device Type": "REF",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "HTTP",
+                    "Network Type": "5G NSA",
+                    "Analysis Type": "data_performance",
+                    "Throughput": {
+                        "Mean": 11.59798779339526,
+                        "Standard Deviation": 11.056164603474176,
+                        "Minimum": 1.9474107142857144,
+                        "Maximum": 34.603,
+                        "Number of Intervals": 20
+                    }
+                }
+            },
+            "5G NSA_UDP Upload Task at 10 Mbps for 10 seconds": {
+                "_20250930_144823_CH01_TMO-dut_5G NSA_UDP Upload Task at 10 Mbps for 10 seconds_location2_DA Test": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G NSA",
+                    "Analysis Type": "data_performance",
+                    "Throughput": {
+                        "Mean": 5.960756818181819,
+                        "Standard Deviation": 2.9707160031334836,
+                        "Minimum": 1.987181818181818,
+                        "Maximum": 11.223,
+                        "Number of Intervals": 20
+                    },
+                    "Jitter": {
+                        "Mean": 4.56985
+                    },
+                    "Error Ratio": {
+                        "Mean": 17.66536855
+                    }
+                },
+                "_20250930_144823_CH02_TMO-ref_5G NSA_UDP Upload Task at 10 Mbps for 10 seconds_location2_DA Test": {
+                    "Device Type": "REF",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G NSA",
+                    "Analysis Type": "data_performance",
+                    "Throughput": {
+                        "Mean": 3.294609621212121,
+                        "Standard Deviation": 1.7073222522077334,
+                        "Minimum": 1.391909090909091,
+                        "Maximum": 6.837272727272728,
+                        "Number of Intervals": 20
+                    },
+                    "Jitter": {
+                        "Mean": 4.5524
+                    },
+                    "Error Ratio": {
+                        "Mean": 58.52158899999999
+                    }
+                }
+            },
+            "5G NSA_UDP Upload Task at 20 Mbps for 10 seconds": {
+                "_20250930_145837_CH01_TMO-dut_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_location2_DA Test": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G NSA",
+                    "Analysis Type": "data_performance",
+                    "Throughput": {
+                        "Mean": 3.3740781818181818,
+                        "Standard Deviation": 0.49063975361182394,
+                        "Minimum": 2.4970000000000003,
+                        "Maximum": 4.408181818181817,
+                        "Number of Intervals": 20
+                    },
+                    "Jitter": {
+                        "Mean": 6.820950000000001
+                    },
+                    "Error Ratio": {
+                        "Mean": 41.739668550000005
+                    }
+                },
+                "_20250930_145837_CH02_TMO-ref_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_location2_DA Test": {
+                    "Device Type": "REF",
+                    "Analysis Direction": "UL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G NSA",
+                    "Analysis Type": "data_performance",
+                    "Throughput": {
+                        "Mean": 2.6462443939393934,
+                        "Standard Deviation": 1.1423489686005783,
+                        "Minimum": 1.1394,
+                        "Maximum": 4.810363636363636,
+                        "Number of Intervals": 20
+                    },
+                    "Jitter": {
+                        "Mean": 2.32685
+                    },
+                    "Error Ratio": {
+                        "Mean": 83.92124905000001
+                    }
+                }
+            }
+        },
         "5G NSA Data Test Stationary Poor RF DL": {
             "Multi Stream HTTP Download for 30 seconds": {
                 "DUT HTTP DL": {
@@ -2229,6 +2401,48 @@
             "initiation_p_value": 1.0,
             "retention_p_value": 0.5137289636846767
         },
+        "5G Auto VoNR Disabled CP MT Drive": {
+            "DUT": {
+                "total_attempts": 1028,
+                "total_mo_attempts": 0,
+                "total_initiation_failures": 0,
+                "total_retention_failures": 7,
+                "total_initiation_successes": 1028,
+                "call_result_distribution": {
+                    "Complete": 1019,
+                    "Etc.": 2,
+                    "Drop": 7
+                },
+                "rat_distribution": {
+                    "EPSFB": 934,
+                    "VoLTE": 61,
+                    "VoNR": 32,
+                    "VoNR-VoLTE": 1
+                },
+                "mean_setup_time": 1.640243593846154
+            },
+            "REF": {
+                "total_attempts": 1028,
+                "total_mo_attempts": 0,
+                "total_initiation_failures": 0,
+                "total_retention_failures": 0,
+                "total_initiation_successes": 1028,
+                "call_result_distribution": {
+                    "Complete": 1025,
+                    "Term. Fail": 2,
+                    "Etc.": 1
+                },
+                "rat_distribution": {
+                    "EPSFB": 925,
+                    "VoLTE": 66,
+                    "VoNR": 36,
+                    "VoNR-VoLTE": 1
+                },
+                "mean_setup_time": 1.6514636191406251
+            },
+            "initiation_p_value": 1.0,
+            "retention_p_value": 0.007919231930004555
+        },
         "5G Auto VoNR Enabled CP MO Drive": {
             "DUT": {
                 "total_attempts": 1134,
@@ -2480,11 +2694,11 @@
                     "occurrences": 281
                 },
                 "REF2": {
-                    "mean": 334.0500035587189,
-                    "std_dev": 40.313971784426975,
-                    "min": -15.268,
+                    "mean": 335.2975678571429,
+                    "std_dev": 34.54949461748995,
+                    "min": 296.00100000000003,
                     "max": 823.2009999999999,
-                    "occurrences": 281
+                    "occurrences": 280
                 }
             }
         }

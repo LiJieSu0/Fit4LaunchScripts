@@ -99,7 +99,7 @@ const CallCategoriesChart = ({ callPerformanceData }) => {
 
       {/* Data Table */}
       <div className="flex justify-start"> {/* Align table to left */}
-        <div className="overflow-x-auto mt-6 table-container w-1/2"> {/* Table container, reduced width */}
+        <div className="overflow-x-auto mt-6 table-container"> {/* Table container */}
           <table className="min-w-full border border-table-grid">
           <thead>
             <tr className="bg-table-header-bg text-table-header-text font-bold">

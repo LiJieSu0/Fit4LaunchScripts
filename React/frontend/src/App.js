@@ -2,6 +2,7 @@ import React from 'react';
 import DataPerformanceReport from './DataPerformanceReport';
 import BlankTable from './BlankTable'; // Import the BlankTable component
 import CoverageTables from './CoverageTables'; // Import the CoverageTables component
+import SummaryTable from './SummaryTable'; // Import the SummaryTable component
 import data from './data_analysis_results.json'; // Import the JSON data
 
 function App() {
@@ -154,8 +155,8 @@ function App() {
 
   return (
     <div className="container mx-auto p-4 main-content">
-      <h1 className="text-4xl font-bold text-center my-8">Data Performance Analysis Report</h1>
-      <h2 className="text-2xl font-semibold text-center mb-10">Comparison of DUT and REF Devices</h2>
+      <h1 className="text-4xl font-bold text-center my-8">ATMCL Field Performance Test Report</h1>
+      <SummaryTable />
       <DataPerformanceReport />
       <CoverageTables
         avgDutMosCoords={avgDutMosCoords}
