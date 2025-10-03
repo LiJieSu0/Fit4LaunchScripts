@@ -102,6 +102,18 @@ const SummaryTable = () => {
           </tbody>
         </table>
       </div>
+
+      <div className="submission-approval-section">
+        <h3 className="submission-approval-title">Submission Approval</h3>
+        <div className="signature-block">
+          <p>Signature of Manager Test Team</p>
+          <p className="date-field">Date</p>
+        </div>
+        <div className="signature-block">
+          <p>Signature of T-Mobile Device Certification</p>
+          <p className="date-field">Date</p>
+        </div>
+      </div>
     </div>
   );
 };

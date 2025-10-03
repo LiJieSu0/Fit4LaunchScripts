@@ -67,3 +67,42 @@
   font-size: 1.5em;
   font-weight: bold;
 }
+
+.submission-approval-section {
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.submission-approval-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-decoration: underline;
+  color: #007bff; /* A blue color for the title, similar to the image */
+}
+
+.signature-block {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 120px;
+  padding-bottom: 10px; /* Increased padding for more space */
+  border-bottom: 1px solid #ccc; /* Underline for signature */
+}
+
+.signature-block p {
+  margin: 0;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.signature-block {
+  min-width: 150px; /* Ensure enough space for date */
+  text-align: left;
+}
+
+.date-field {
+  min-width: 250px; /* Ensure enough space for date */
+  text-align: left;
+}
+
