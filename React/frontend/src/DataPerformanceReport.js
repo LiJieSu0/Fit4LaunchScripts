@@ -2,11 +2,6 @@ import React from 'react';
 import allResults from './data_analysis_results.json';
 import BarChart from './BarChart';
 import MrabStatisticsTable from './MrabStatisticsTable'; // Import MrabStatisticsTable
-import CallPerformanceTable from './CallPerformanceTable'; // New import
-import CallCategoriesChart from './CallCategoriesChart'; // New import
-import VoiceQualityTable from './VoiceQualityTable'; // New import
-import AudioDelayTable from './AudioDelayTable'; // New import
-import PValueTable from './PValueTable'; // Import PValueTable
 
 // Helper function to recursively extract test cases
 const extractTestCases = (data, currentPath = []) => {
@@ -24,63 +19,7 @@ const extractTestCases = (data, currentPath = []) => {
     return extracted; // Stop further recursion for this branch as we've found the MRAB data
   }
 
-  // Check if the current data object is a Call Performance test case
-  if (data.DUT && data.REF && typeof data.initiation_p_value === 'number' && typeof data.retention_p_value === 'number') {
-    extracted.push({
-      name: currentPath.join(" - "),
-      data: data, // Pass the entire Call Performance data object
-      isMrab: false,
-      isCallPerformance: true,
-      isVoiceQuality: false,
-    });
-    return extracted; // Stop further recursion for this branch as we've found the Call Performance data
-  }
 
-  // Check if the current data object is a Voice Quality test case
-  const isVoiceQualityTest = Object.keys(data).some(key => key.startsWith("DUT")) &&
-                             Object.keys(data).some(key => key.startsWith("REF")) &&
-                             Object.values(data).every(deviceData => 
-                               typeof deviceData === 'object' && deviceData !== null &&
-                               deviceData.ul_mos_stats && deviceData.dl_mos_stats
-                             );
-
-  if (isVoiceQualityTest) {
-    extracted.push({
-      name: currentPath.join(" - "),
-      data: data,
-      isMrab: false,
-      isCallPerformance: false,
-      isVoiceQuality: true,
-      isAudioDelay: false,
-    });
-    return extracted; // Stop further recursion for this branch
-  }
-
-  // Check if the current data object is an Audio Delay test case
-  const isAudioDelayTest = Object.keys(data).includes("DUT1") &&
-                           Object.keys(data).includes("REF1") &&
-                           Object.keys(data).includes("DUT2") &&
-                           Object.keys(data).includes("REF2") &&
-                           Object.values(data).every(deviceData =>
-                               typeof deviceData === 'object' && deviceData !== null &&
-                               deviceData.mean !== undefined &&
-                               deviceData.std_dev !== undefined &&
-                               deviceData.min !== undefined &&
-                               deviceData.max !== undefined &&
-                               deviceData.occurrences !== undefined
-                           );
-
-  if (isAudioDelayTest) {
-    extracted.push({
-      name: currentPath.join(" - "),
-      data: data,
-      isMrab: false,
-      isCallPerformance: false,
-      isVoiceQuality: false,
-      isAudioDelay: true,
-    });
-    return extracted; // Stop further recursion for this branch
-  }
 
   // Check if the current 'data' object is a container for DUT/REF data performance test cases
   let dutChildData = null;
@@ -297,54 +236,6 @@ const DataPerformanceReport = () => {
                 <div key={testCase.name} className="report-section">
                   <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
                   <MrabStatisticsTable mrabData={testCase.data} />
-                </div>
-              );
-            } else if (testCase.isCallPerformance) { // New condition for Call Performance
-              console.log("Call Performance Test Case:", testCase.name, "Initiation P-Value:", testCase.data.initiation_p_value, "Retention P-Value:", testCase.data.retention_p_value);
-
-              const dutTotalAttempts = testCase.data.DUT.total_attempts;
-              const dutInitiationFailures = testCase.data.DUT.total_initiation_failures;
-              const dutRetentionFailures = testCase.data.DUT.total_retention_failures;
-
-              let dutFailurePercentage = 0;
-              if (dutTotalAttempts > 0) {
-                dutFailurePercentage = ((dutInitiationFailures + dutRetentionFailures) / dutTotalAttempts) * 100;
-              }
-
-              return (
-                <div key={testCase.name} className="report-section">
-                  <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
-                  <CallPerformanceTable callPerformanceData={testCase.data} />
-                  {testCase.name.includes("CP MO") && (
-                    <PValueTable
-                      callType="MO"
-                      initiationPValue={testCase.data.initiation_p_value}
-                      retentionPValue={testCase.data.retention_p_value}
-                      dutFailurePercentage={dutFailurePercentage}
-                    />
-                  )}
-                  {testCase.name.includes("CP MT") && (
-                    <PValueTable
-                      callType="MT"
-                      initiationPValue={testCase.data.initiation_p_value}
-                      dutFailurePercentage={dutFailurePercentage}
-                    />
-                  )}
-                  <CallCategoriesChart callPerformanceData={testCase.data} />
-                </div>
-              );
-            } else if (testCase.isVoiceQuality) { // New condition for Voice Quality
-              return (
-                <div key={testCase.name} className="report-section">
-                  <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
-                  <VoiceQualityTable data={testCase.data} testName={testCase.name} />
-                </div>
-              );
-            } else if (testCase.isAudioDelay) { // New condition for Audio Delay
-              return (
-                <div key={testCase.name} className="report-section">
-                  <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
-                  <AudioDelayTable data={testCase.data} testName={testCase.name} />
                 </div>
               );
             } else {

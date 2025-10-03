@@ -1,0 +1,105 @@
+import React from 'react';
+import allResults from './data_analysis_results.json'; // Assuming data_analysis_results.json is the source
+import VoiceQualityTable from './VoiceQualityTable';
+import AudioDelayTable from './AudioDelayTable';
+
+// Helper function to extract only Voice Quality and Audio Delay test cases
+const extractVoiceQualityTestCases = (data, currentPath = []) => {
+  let extracted = [];
+
+  // Check if the current data object is a Voice Quality test case
+  const isVoiceQualityTest = Object.keys(data).some(key => key.startsWith("DUT")) &&
+                             Object.keys(data).some(key => key.startsWith("REF")) &&
+                             Object.values(data).every(deviceData => 
+                               typeof deviceData === 'object' && deviceData !== null &&
+                               deviceData.ul_mos_stats && deviceData.dl_mos_stats
+                             );
+
+  if (isVoiceQualityTest) {
+    extracted.push({
+      name: currentPath.join(" - "),
+      data: data,
+      isVoiceQuality: true,
+      isAudioDelay: false,
+    });
+    return extracted; // Stop further recursion for this branch
+  }
+
+  // Check if the current data object is an Audio Delay test case
+  const isAudioDelayTest = Object.keys(data).includes("DUT1") &&
+                           Object.keys(data).includes("REF1") &&
+                           Object.keys(data).includes("DUT2") &&
+                           Object.keys(data).includes("REF2") &&
+                           Object.values(data).every(deviceData =>
+                               typeof deviceData === 'object' && deviceData !== null &&
+                               deviceData.mean !== undefined &&
+                               deviceData.std_dev !== undefined &&
+                               deviceData.min !== undefined &&
+                               deviceData.max !== undefined &&
+                               deviceData.occurrences !== undefined
+                           );
+
+  if (isAudioDelayTest) {
+    extracted.push({
+      name: currentPath.join(" - "),
+      data: data,
+      isVoiceQuality: false,
+      isAudioDelay: true,
+    });
+    return extracted; // Stop further recursion for this branch
+  }
+
+  // Recurse into children
+  for (const key in data) {
+    if (typeof data[key] === 'object' && data[key] !== null) {
+      const result = extractVoiceQualityTestCases(data[key], [...currentPath, key]);
+      extracted = extracted.concat(result);
+    }
+  }
+
+  return extracted;
+};
+
+const VoiceQualityReport = () => {
+  const voiceQualityTestCases = extractVoiceQualityTestCases(allResults);
+
+  // Group test cases by their top-level category for rendering headers
+  const groupedByCategories = voiceQualityTestCases.reduce((acc, testCase) => {
+    const category = testCase.name.split(' - ')[0];
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(testCase);
+    return acc;
+  }, {});
+
+  return (
+    <>
+      {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
+        <div key={categoryName} className="category-section">
+          <h2 className="text-2xl font-bold mb-6 text-blue-700">{categoryName}</h2>
+          {testCases.map(testCase => {
+            if (testCase.isVoiceQuality) {
+              return (
+                <div key={testCase.name} className="report-section">
+                  <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
+                  <VoiceQualityTable data={testCase.data} testName={testCase.name} />
+                </div>
+              );
+            } else if (testCase.isAudioDelay) {
+              return (
+                <div key={testCase.name} className="report-section">
+                  <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
+                  <AudioDelayTable data={testCase.data} testName={testCase.name} />
+                </div>
+              );
+            }
+            return null;
+          })}
+        </div>
+      ))}
+    </>
+  );
+};
+
+export default VoiceQualityReport;

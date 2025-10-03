@@ -60,14 +60,16 @@ const renderTable = (title, data) => {
     );
 };
 
-const CoverageTables = ({ rawCoverageData, avgDutMosCoords, avgRefMosCoords, avgDutDropCoords, avgRefDropCoords, avgDutDlTpCoords, avgRefDlTpCoords, avgDutUlTpCoords, avgRefUlTpCoords, baseStationCoords }) => {
+const CoverageTables = ({ categoryName, testCaseName, rawCoverageData, avgDutMosCoords, avgRefMosCoords, avgDutDropCoords, avgRefDropCoords, avgDutDlTpCoords, avgRefDlTpCoords, avgDutUlTpCoords, avgRefUlTpCoords, baseStationCoords }) => {
     const lastMosData = processData(rawCoverageData, "last_mos_value_coords");
     const voiceCallDropData = processData(rawCoverageData, "voice_call_drop_coords");
     const dlTpData = processData(rawCoverageData, "first_dl_tp_gt_1_coords");
     const ulTpData = processData(rawCoverageData, "first_ul_tp_gt_1_coords");
 
     return (
-        <div>
+        <div className="category-section">
+            <h2 className="text-2xl font-bold mb-6 text-blue-700">{categoryName}</h2>
+            <h3 className="text-xl font-bold mb-4 text-gray-800">{testCaseName}</h3>
             {renderTable("Last MOS Value Distance (km)", lastMosData)}
             <MapComponent
                 dutCoords={avgDutMosCoords}

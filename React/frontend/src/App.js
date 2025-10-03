@@ -1,5 +1,7 @@
 import React from 'react';
 import DataPerformanceReport from './DataPerformanceReport';
+import CallPerformanceReport from './CallPerformanceReport'; // Import the CallPerformanceReport component
+import VoiceQualityReport from './VoiceQualityReport'; // Import the VoiceQualityReport component
 import BlankTable from './BlankTable'; // Import the BlankTable component
 import CoverageTables from './CoverageTables'; // Import the CoverageTables component
 import SummaryTable from './SummaryTable'; // Import the SummaryTable component
@@ -71,8 +73,12 @@ function App() {
     <div className="container mx-auto p-4 main-content">
       <h1 className="text-4xl font-bold text-center my-8">ATMCL Field Performance Test Report</h1>
       <SummaryTable summaryData={summaryTableData} />
+      <CallPerformanceReport /> {/* Render the CallPerformanceReport component */}
       <DataPerformanceReport />
+      <VoiceQualityReport /> {/* Render the VoiceQualityReport component */}
       <CoverageTables
+        categoryName="Coverage Performance"
+        testCaseName="5G VoNR Coverage Test"
         rawCoverageData={coverageData}
         avgDutMosCoords={avgDutMosCoords}
         avgRefMosCoords={avgRefMosCoords}
