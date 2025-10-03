@@ -81,9 +81,9 @@ const CategoryPage = ({ categoryName }) => {
         return (
           <React.Fragment key={currentCategoryName}>
             {/* Only render the category header if it's different from the main categoryName prop */}
-            {currentCategoryName !== categoryName && (
+            {/* {currentCategoryName !== categoryName && (
               <h2 className="text-2xl font-bold mb-6 text-blue-700">{currentCategoryName}</h2>
-            )}
+            )} */}
             {sortedTestCases.map(testCase => (
               <div key={testCase.name} className="report-section">
                 <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name.replace(`${categoryName} - `, '')}</h3>
