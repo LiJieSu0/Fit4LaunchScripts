@@ -33,14 +33,14 @@ if __name__ == "__main__":
     # These paths are relative to base_raw_data_dir
     # This list can be easily extended for future additions
     directories_to_process = [
-        {"path": "5G AUTO DP", "analysis_type": "data_performance"},
-        {"path": "5G NSA DP", "analysis_type": "data_performance"},
+        {"path": "Data Performance/5G AUTO DP", "analysis_type": "data_performance"},
+        {"path": "Data Performance/5G NSA DP", "analysis_type": "data_performance"},
         {"path": "5G VoNR MRAB Stationary", "analysis_type": "mrab_performance"}, # Add MRAB directory
         {"path": "TestInvalid", "analysis_type": "data_performance"}, # Add the new test directory
         {"path": "Call Performance", "analysis_type": "call_performance"}, # Add Call Performance directory
         {"path": "Voice Quality", "analysis_type": "voice_quality"}, # Add Voice Quality directory
         {"path": "Voice Quality", "analysis_type": "audio_delay"}, # Add Audio Delay directory, using the same base path
-        {"path": "Coverage", "analysis_type": "coverage_coordinate"}, # Add Coverage Coordinate directory
+        {"path": "Coverage Performance", "analysis_type": "coverage_coordinate"}, # Add Coverage Coordinate directory
     ]
     
     all_collected_results = {}

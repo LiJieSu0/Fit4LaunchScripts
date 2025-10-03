@@ -82,40 +82,42 @@ const extractTestCases = (data, currentPath = []) => {
     return extracted; // Stop further recursion for this branch
   }
 
-  // If the current 'data' object contains DUT/REF keys, it's a regular data performance test case
-  const hasDutRefKeys = Object.keys(data).some(key => key.toLowerCase().includes("dut") || key.toLowerCase().includes("ref"));
+  // Check if the current 'data' object is a container for DUT/REF data performance test cases
+  let dutChildData = null;
+  let refChildData = null;
+  let isPingTest = false;
 
-  if (hasDutRefKeys) {
-    let dutObject = {};
-    let refObject = {};
-    let isPingTest = false;
-
-    for (const key in data) {
-      if (key.toLowerCase().includes("dut")) {
-        dutObject = data[key];
-      } else if (key.toLowerCase().includes("ref")) {
-        refObject = data[key];
-      }
-      // Check for Ping RTT within DUT or REF objects
-      if (dutObject["Ping RTT"] || refObject["Ping RTT"]) {
-        isPingTest = true;
+  for (const key in data) {
+    if (typeof data[key] === 'object' && data[key] !== null) {
+      if (key.toLowerCase().includes("dut") && data[key]["Analysis Type"] === "data_performance") {
+        dutChildData = data[key];
+        if (dutChildData["Ping RTT"]) isPingTest = true;
+      } else if (key.toLowerCase().includes("ref") && data[key]["Analysis Type"] === "data_performance") {
+        refChildData = data[key];
+        if (refChildData["Ping RTT"]) isPingTest = true;
       }
     }
-        if (Object.keys(dutObject).length > 0 || Object.keys(refObject).length > 0) {
-          extracted.push({
-            name: currentPath.join(" - "),
-            data: { DUT: dutObject, REF: refObject },
-            isPing: isPingTest,
+  }
+
+  if (dutChildData || refChildData) {
+    extracted.push({
+      name: currentPath.join(" - "),
+      data: { DUT: dutChildData, REF: refChildData },
+      isPing: isPingTest,
       isMrab: false,
       isCallPerformance: false,
       isVoiceQuality: false,
       isAudioDelay: false,
     });
-  }
+    // Do not recurse into children if we've identified this as a data performance container
+    return extracted;
   }
 
-  // Always recurse into children for other types of data
+  // Always recurse into children for other types of data, excluding "Coverage Performance"
   for (const key in data) {
+    if (key === "Coverage Performance") {
+      continue; // Skip Coverage Performance as it's handled by CoverageTables
+    }
     if (typeof data[key] === 'object' && data[key] !== null) {
       const result = extractTestCases(data[key], [...currentPath, key]);
       extracted = extracted.concat(result);
@@ -364,7 +366,8 @@ const DataPerformanceReport = () => {
                 metricsToDisplayForTable.push("Ping RTT");
               }
 
-              const shouldRenderDetailedTable = categoryName === "5G AUTO DP" || categoryName === "5G NSA DP";
+              // The categoryName is "Data Performance", but the detailed categories are in testCase.name
+              const shouldRenderDetailedTable = testCase.name.includes("5G AUTO DP") || testCase.name.includes("5G NSA DP");
 
               return (
                 <div key={testCase.name} className="report-section">

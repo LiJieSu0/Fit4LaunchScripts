@@ -1,4 +1,74 @@
 --- Discovered Raw Data Paths (CSV files with their two parent directories): ---
+- 5G Auto VoNR Disabled CP MO Drive\DUT\CH1 DUT1.csv
+- 5G Auto VoNR Disabled CP MO Drive\DUT\CH3 DUT2.csv
+- 5G Auto VoNR Disabled CP MO Drive\DUT\CH5 DUT3.csv
+- 5G Auto VoNR Disabled CP MO Drive\DUT\CH7 DUT4.csv
+- 5G Auto VoNR Disabled CP MO Drive\DUT\VONR OFF CP MO CH1 DUT1.csv
+- 5G Auto VoNR Disabled CP MO Drive\DUT\VONR OFF CP MO CH3 DUT2.csv
+- 5G Auto VoNR Disabled CP MO Drive\DUT\VONR OFF CP MO CH5 DUT3.csv
+- 5G Auto VoNR Disabled CP MO Drive\DUT\VONR OFF CP MO CH7 DUT4.csv
+- 5G Auto VoNR Disabled CP MO Drive\REF\CH2 REF1.csv
+- 5G Auto VoNR Disabled CP MO Drive\REF\CH4 REF2.csv
+- 5G Auto VoNR Disabled CP MO Drive\REF\CH6 REF3.csv
+- 5G Auto VoNR Disabled CP MO Drive\REF\CH8 REF4.csv
+- 5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH2 REF1.csv
+- 5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH4 REF2.csv
+- 5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH6 REF3.csv
+- 5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH8 REF4.csv
+- 5G Auto VoNR Disabled CP MT Drive\DUT\CH1 DUT1.csv
+- 5G Auto VoNR Disabled CP MT Drive\DUT\CH3 DUT2.csv
+- 5G Auto VoNR Disabled CP MT Drive\DUT\CH5 DUT3.csv
+- 5G Auto VoNR Disabled CP MT Drive\DUT\CH7 DUT4.csv
+- 5G Auto VoNR Disabled CP MT Drive\REF\CH2 REF1.csv
+- 5G Auto VoNR Disabled CP MT Drive\REF\CH4 REF2.csv
+- 5G Auto VoNR Disabled CP MT Drive\REF\CH6 REF3.csv
+- 5G Auto VoNR Disabled CP MT Drive\REF\CH8 REF4.csv
+- 5G Auto VoNR Enabled CP MO Drive\DUT\VONR ON CP MO CH1 DUT1.csv
+- 5G Auto VoNR Enabled CP MO Drive\DUT\VoNR ON CP MO CH3 DUT2.csv
+- 5G Auto VoNR Enabled CP MO Drive\DUT\VoNR ON CP MO CH5 DUT3.csv
+- 5G Auto VoNR Enabled CP MO Drive\DUT\VoNR ON CP MO CH7 DUT4.csv
+- 5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH10 REF5.csv
+- 5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH2 REF2.csv
+- 5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH4 REF2.csv
+- 5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH6 REF3.csv
+- 5G Auto VoNR Enabled CP MT Drive\DUT\CH1 DUT1.csv
+- 5G Auto VoNR Enabled CP MT Drive\DUT\CH3 DUT2.csv
+- 5G Auto VoNR Enabled CP MT Drive\DUT\CH5 DUT3.csv
+- 5G Auto VoNR Enabled CP MT Drive\DUT\CH7 DUT4.csv
+- 5G Auto VoNR Enabled CP MT Drive\REF\CH2 REF1.csv
+- 5G Auto VoNR Enabled CP MT Drive\REF\CH4 REF2.csv
+- 5G Auto VoNR Enabled CP MT Drive\REF\CH6 REF3.csv
+- 5G Auto VoNR Enabled CP MT Drive\REF\CH8 REF4.csv
+- 5G VoNR Coverage Test\DUT\DUT1_Run1.csv
+- 5G VoNR Coverage Test\DUT\DUT1_Run2.csv
+- 5G VoNR Coverage Test\DUT\DUT1_Run3.csv
+- 5G VoNR Coverage Test\DUT\DUT1_Run4.csv
+- 5G VoNR Coverage Test\DUT\DUT1_Run5.csv
+- 5G VoNR Coverage Test\DUT\DUT2_Run1.csv
+- 5G VoNR Coverage Test\DUT\DUT2_Run2.csv
+- 5G VoNR Coverage Test\DUT\DUT2_Run3.csv
+- 5G VoNR Coverage Test\DUT\DUT2_Run4.csv
+- 5G VoNR Coverage Test\DUT\DUT2_Run5.csv
+- 5G VoNR Coverage Test\DUT\DUT3_Run1.csv
+- 5G VoNR Coverage Test\DUT\DUT3_Run2.csv
+- 5G VoNR Coverage Test\DUT\DUT3_Run3.csv
+- 5G VoNR Coverage Test\DUT\DUT3_Run4.csv
+- 5G VoNR Coverage Test\DUT\DUT3_Run5.csv
+- 5G VoNR Coverage Test\REF\REF1_Run1.csv
+- 5G VoNR Coverage Test\REF\REF1_Run2.csv
+- 5G VoNR Coverage Test\REF\REF1_Run3.csv
+- 5G VoNR Coverage Test\REF\REF1_Run4.csv
+- 5G VoNR Coverage Test\REF\REF1_Run5.csv
+- 5G VoNR Coverage Test\REF\REF2_Run1.csv
+- 5G VoNR Coverage Test\REF\REF2_Run2.csv
+- 5G VoNR Coverage Test\REF\REF2_Run3.csv
+- 5G VoNR Coverage Test\REF\REF2_Run4.csv
+- 5G VoNR Coverage Test\REF\REF2_Run5.csv
+- 5G VoNR Coverage Test\REF\REF3_Run1.csv
+- 5G VoNR Coverage Test\REF\REF3_Run2.csv
+- 5G VoNR Coverage Test\REF\REF3_Run3.csv
+- 5G VoNR Coverage Test\REF\REF3_Run4.csv
+- 5G VoNR Coverage Test\REF\REF3_Run5.csv
 - 5G AUTO DP\5G Auto Data Test Drive\DUT UDP DL.csv
 - 5G AUTO DP\5G Auto Data Test Drive\REF UDP DL.csv
 - 5G AUTO DP\5G Auto Data Test MHS Drive\DUT MHS UDP Drive.csv
@@ -131,76 +201,6 @@
 - 5G NSA Data Test Stationary Poor RF UL\UDP Upload Task at 10 Mbps for 10 seconds\ref_5G NSA_UDP Upload Task at 10 Mbps for 10 seconds_Poor.csv
 - 5G NSA Data Test Stationary Poor RF UL\UDP Upload Task at 20 Mbps for 10 seconds\_20250914_144028_CH01_TMO-dut_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_Poor Coverage_DA Test.csv
 - 5G NSA Data Test Stationary Poor RF UL\UDP Upload Task at 20 Mbps for 10 seconds\_20250914_144028_CH02_TMO-ref_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_Poor Coverage_DA Test.csv
-- 5G Auto VoNR Disabled CP MO Drive\DUT\CH1 DUT1.csv
-- 5G Auto VoNR Disabled CP MO Drive\DUT\CH3 DUT2.csv
-- 5G Auto VoNR Disabled CP MO Drive\DUT\CH5 DUT3.csv
-- 5G Auto VoNR Disabled CP MO Drive\DUT\CH7 DUT4.csv
-- 5G Auto VoNR Disabled CP MO Drive\DUT\VONR OFF CP MO CH1 DUT1.csv
-- 5G Auto VoNR Disabled CP MO Drive\DUT\VONR OFF CP MO CH3 DUT2.csv
-- 5G Auto VoNR Disabled CP MO Drive\DUT\VONR OFF CP MO CH5 DUT3.csv
-- 5G Auto VoNR Disabled CP MO Drive\DUT\VONR OFF CP MO CH7 DUT4.csv
-- 5G Auto VoNR Disabled CP MO Drive\REF\CH2 REF1.csv
-- 5G Auto VoNR Disabled CP MO Drive\REF\CH4 REF2.csv
-- 5G Auto VoNR Disabled CP MO Drive\REF\CH6 REF3.csv
-- 5G Auto VoNR Disabled CP MO Drive\REF\CH8 REF4.csv
-- 5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH2 REF1.csv
-- 5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH4 REF2.csv
-- 5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH6 REF3.csv
-- 5G Auto VoNR Disabled CP MO Drive\REF\VONR OFF CP MO CH8 REF4.csv
-- 5G Auto VoNR Disabled CP MT Drive\DUT\CH1 DUT1.csv
-- 5G Auto VoNR Disabled CP MT Drive\DUT\CH3 DUT2.csv
-- 5G Auto VoNR Disabled CP MT Drive\DUT\CH5 DUT3.csv
-- 5G Auto VoNR Disabled CP MT Drive\DUT\CH7 DUT4.csv
-- 5G Auto VoNR Disabled CP MT Drive\REF\CH2 REF1.csv
-- 5G Auto VoNR Disabled CP MT Drive\REF\CH4 REF2.csv
-- 5G Auto VoNR Disabled CP MT Drive\REF\CH6 REF3.csv
-- 5G Auto VoNR Disabled CP MT Drive\REF\CH8 REF4.csv
-- 5G Auto VoNR Enabled CP MO Drive\DUT\VONR ON CP MO CH1 DUT1.csv
-- 5G Auto VoNR Enabled CP MO Drive\DUT\VoNR ON CP MO CH3 DUT2.csv
-- 5G Auto VoNR Enabled CP MO Drive\DUT\VoNR ON CP MO CH5 DUT3.csv
-- 5G Auto VoNR Enabled CP MO Drive\DUT\VoNR ON CP MO CH7 DUT4.csv
-- 5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH10 REF5.csv
-- 5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH2 REF2.csv
-- 5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH4 REF2.csv
-- 5G Auto VoNR Enabled CP MO Drive\REF\VoNR ON CP MO CH6 REF3.csv
-- 5G Auto VoNR Enabled CP MT Drive\DUT\CH1 DUT1.csv
-- 5G Auto VoNR Enabled CP MT Drive\DUT\CH3 DUT2.csv
-- 5G Auto VoNR Enabled CP MT Drive\DUT\CH5 DUT3.csv
-- 5G Auto VoNR Enabled CP MT Drive\DUT\CH7 DUT4.csv
-- 5G Auto VoNR Enabled CP MT Drive\REF\CH2 REF1.csv
-- 5G Auto VoNR Enabled CP MT Drive\REF\CH4 REF2.csv
-- 5G Auto VoNR Enabled CP MT Drive\REF\CH6 REF3.csv
-- 5G Auto VoNR Enabled CP MT Drive\REF\CH8 REF4.csv
-- 5G VoNR Coverage Test\DUT\DUT1_Run1.csv
-- 5G VoNR Coverage Test\DUT\DUT1_Run2.csv
-- 5G VoNR Coverage Test\DUT\DUT1_Run3.csv
-- 5G VoNR Coverage Test\DUT\DUT1_Run4.csv
-- 5G VoNR Coverage Test\DUT\DUT1_Run5.csv
-- 5G VoNR Coverage Test\DUT\DUT2_Run1.csv
-- 5G VoNR Coverage Test\DUT\DUT2_Run2.csv
-- 5G VoNR Coverage Test\DUT\DUT2_Run3.csv
-- 5G VoNR Coverage Test\DUT\DUT2_Run4.csv
-- 5G VoNR Coverage Test\DUT\DUT2_Run5.csv
-- 5G VoNR Coverage Test\DUT\DUT3_Run1.csv
-- 5G VoNR Coverage Test\DUT\DUT3_Run2.csv
-- 5G VoNR Coverage Test\DUT\DUT3_Run3.csv
-- 5G VoNR Coverage Test\DUT\DUT3_Run4.csv
-- 5G VoNR Coverage Test\DUT\DUT3_Run5.csv
-- 5G VoNR Coverage Test\REF\REF1_Run1.csv
-- 5G VoNR Coverage Test\REF\REF1_Run2.csv
-- 5G VoNR Coverage Test\REF\REF1_Run3.csv
-- 5G VoNR Coverage Test\REF\REF1_Run4.csv
-- 5G VoNR Coverage Test\REF\REF1_Run5.csv
-- 5G VoNR Coverage Test\REF\REF2_Run1.csv
-- 5G VoNR Coverage Test\REF\REF2_Run2.csv
-- 5G VoNR Coverage Test\REF\REF2_Run3.csv
-- 5G VoNR Coverage Test\REF\REF2_Run4.csv
-- 5G VoNR Coverage Test\REF\REF2_Run5.csv
-- 5G VoNR Coverage Test\REF\REF3_Run1.csv
-- 5G VoNR Coverage Test\REF\REF3_Run2.csv
-- 5G VoNR Coverage Test\REF\REF3_Run3.csv
-- 5G VoNR Coverage Test\REF\REF3_Run4.csv
-- 5G VoNR Coverage Test\REF\REF3_Run5.csv
 - Voice Quality\5G Auto VoNR Disabled Audio Delay\_20250925_153348_CH03_TMO_5G Auto_VoNR Disabled Audio Delay_DUT1 Mobile_5G Auto VoNR Disabled Audio Delay.csv
 - Voice Quality\5G Auto VoNR Disabled Audio Delay\_20250925_153348_CH03_TMO_5G Auto_VoNR Disabled Audio Delay_DUT1 Mobile_5G Auto VoNR Disabled Audio Delay.csv
 - Voice Quality\5G Auto VoNR Disabled Audio Delay\_20250925_153348_CH04_TMO_5G Auto_VoNR Disabled Audio Delay_REF1 Mobile_5G Auto VoNR Disabled Audio Delay.csv

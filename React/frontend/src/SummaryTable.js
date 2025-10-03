@@ -1,7 +1,7 @@
 import React from 'react';
 import './SummaryTable.css'; // Assuming we'll create this for styling
 
-const SummaryTable = () => {
+const SummaryTable = ({ summaryData }) => {
   return (
     <div className="summary-report-container">
       <div className="table-section">
@@ -16,30 +16,11 @@ const SummaryTable = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+            {/* Static rows for Test Devices, as this data is not in the JSON */}
+            <tr><td></td><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td><td></td></tr>
           </tbody>
         </table>
       </div>
@@ -59,46 +40,16 @@ const SummaryTable = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Call Performance</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Data Performance</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Voice Quality</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Coverage Performance</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>WFC</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+            {summaryData.map((item, index) => (
+              <tr key={index}>
+                <td>{item.category}</td>
+                <td>{item.completed > 0 ? `${item.completed} Test Cases` : 'N/A'}</td>
+                <td>{item.passed}</td>
+                <td>{item.issues}</td>
+                <td>{item.link}</td>
+                <td>{item.time}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
