@@ -1,3 +1,17 @@
+:root {
+  /* Table Header Colors */
+  --table-header-bg-primary: #808080; /* Dark grey for main headers */
+  --table-header-text-primary: #F5F5F5; /* Light text for main headers */
+
+  /* Table Body Colors */
+  --table-body-bg-odd: #F5F5DC; /* Light yellow/beige for odd rows */
+  --table-body-bg-even: #F5F5DC; /* Light yellow/beige for even rows */
+  --table-body-hover-bg: #e0e0e0; /* Light grey for hover effect */
+
+  /* Table Border Color - Keeping black as per image */
+  --table-grid-color: #000000;
+}
+
 .summary-report-container {
   font-family: Arial, sans-serif;
   margin: 20px;
@@ -15,24 +29,24 @@
 
 .dut-ref-table td,
 .performance-summary-table th, .performance-summary-table td {
-  border: 1px solid var(--table-grid, #000000);
+  border: 1px solid var(--table-grid-color);
   padding: 8px; /* Reduced padding */
   text-align: left;
 }
 .dut-ref-table th{
-  border: 1px solid var(--table-grid, #000000);
+  border: 1px solid var(--table-grid-color);
   padding: 2px; /* Reduced padding */
   text-align: left;
 }
 
 .dut-ref-table th, .performance-summary-table th {
-  background-color: var(--table-header-bg, #808080);
-  color: var(--table-header-text, #F5F5F5);
+  background-color: var(--table-header-bg-primary);
+  color: var(--table-header-text-primary);
   font-weight: bold;
 }
 
 .dut-ref-table tbody tr, .performance-summary-table tbody tr {
-  background-color: var(--table-body-bg, #F5F5DC);
+  background-color: var(--table-body-bg-odd); /* Using odd for all rows as per image */
 }
 
 .dut-ref-table th:nth-child(1), .dut-ref-table td:nth-child(1),

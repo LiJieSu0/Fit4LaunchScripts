@@ -40,16 +40,25 @@ const SummaryTable = ({ summaryData }) => {
             </tr>
           </thead>
           <tbody>
-            {summaryData.map((item, index) => (
-              <tr key={index}>
-                <td>{item.category}</td>
-                <td>{item.completed > 0 ? `${item.completed} Test Cases` : 'N/A'}</td>
-                <td>{item.passed}</td>
-                <td>{item.issues}</td>
-                <td>{item.link}</td>
-                <td>{item.time}</td>
-              </tr>
-            ))}
+            {[
+              "Call Performance",
+              "Data Performance",
+              "Voice Quality",
+              "Coverage Performance",
+              "WFC",
+            ].map((category, index) => {
+              const item = summaryData.find(dataItem => dataItem.category === category) || {};
+              return (
+                <tr key={index}>
+                  <td>{category}</td>
+                  <td>{item.completed ? (item.completed > 0 ? `${item.completed} Test Cases` : 'N/A') : ''}</td>
+                  <td>{item.passed || ''}</td>
+                  <td>{item.issues || ''}</td>
+                  <td>{item.link || ''}</td>
+                  <td>{item.time || ''}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
