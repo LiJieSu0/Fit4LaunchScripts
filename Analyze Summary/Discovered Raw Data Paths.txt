@@ -39,6 +39,21 @@
 - 5G Auto VoNR Enabled CP MT Drive\REF\CH4 REF2.csv
 - 5G Auto VoNR Enabled CP MT Drive\REF\CH6 REF3.csv
 - 5G Auto VoNR Enabled CP MT Drive\REF\CH8 REF4.csv
+- 5G n41 HPUE Coverage Test\Run1\PC2.csv
+- 5G n41 HPUE Coverage Test\Run1\PC3.csv
+- Coverage Performance\5G n41 HPUE Coverage Test\Run1_RSRP_Analysis.csv
+- 5G n41 HPUE Coverage Test\Run2\PC2.csv
+- 5G n41 HPUE Coverage Test\Run2\PC3.csv
+- Coverage Performance\5G n41 HPUE Coverage Test\Run2_RSRP_Analysis.csv
+- 5G n41 HPUE Coverage Test\Run3\PC2.csv
+- 5G n41 HPUE Coverage Test\Run3\PC3.csv
+- Coverage Performance\5G n41 HPUE Coverage Test\Run3_RSRP_Analysis.csv
+- 5G n41 HPUE Coverage Test\Run4\PC2.csv
+- 5G n41 HPUE Coverage Test\Run4\PC3.csv
+- Coverage Performance\5G n41 HPUE Coverage Test\Run4_RSRP_Analysis.csv
+- 5G n41 HPUE Coverage Test\Run5\PC2.csv
+- 5G n41 HPUE Coverage Test\Run5\PC3.csv
+- Coverage Performance\5G n41 HPUE Coverage Test\Run5_RSRP_Analysis.csv
 - 5G VoNR Coverage Test\DUT\DUT1_Run1.csv
 - 5G VoNR Coverage Test\DUT\DUT1_Run2.csv
 - 5G VoNR Coverage Test\DUT\DUT1_Run3.csv
@@ -69,6 +84,21 @@
 - 5G VoNR Coverage Test\REF\REF3_Run3.csv
 - 5G VoNR Coverage Test\REF\REF3_Run4.csv
 - 5G VoNR Coverage Test\REF\REF3_Run5.csv
+- 5G n41 HPUE Coverage Test\Run1\PC2.csv
+- 5G n41 HPUE Coverage Test\Run1\PC3.csv
+- Coverage Performance\5G n41 HPUE Coverage Test\Run1_RSRP_Analysis.csv
+- 5G n41 HPUE Coverage Test\Run2\PC2.csv
+- 5G n41 HPUE Coverage Test\Run2\PC3.csv
+- Coverage Performance\5G n41 HPUE Coverage Test\Run2_RSRP_Analysis.csv
+- 5G n41 HPUE Coverage Test\Run3\PC2.csv
+- 5G n41 HPUE Coverage Test\Run3\PC3.csv
+- Coverage Performance\5G n41 HPUE Coverage Test\Run3_RSRP_Analysis.csv
+- 5G n41 HPUE Coverage Test\Run4\PC2.csv
+- 5G n41 HPUE Coverage Test\Run4\PC3.csv
+- Coverage Performance\5G n41 HPUE Coverage Test\Run4_RSRP_Analysis.csv
+- 5G n41 HPUE Coverage Test\Run5\PC2.csv
+- 5G n41 HPUE Coverage Test\Run5\PC3.csv
+- Coverage Performance\5G n41 HPUE Coverage Test\Run5_RSRP_Analysis.csv
 - 5G AUTO DP\5G Auto Data Test Drive\DUT UDP DL.csv
 - 5G AUTO DP\5G Auto Data Test Drive\REF UDP DL.csv
 - 5G AUTO DP\5G Auto Data Test MHS Drive\DUT MHS UDP Drive.csv

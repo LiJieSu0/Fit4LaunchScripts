@@ -21,6 +21,7 @@ from CallPerformance.call_analyze import analyze_directory, _calculate_fisher_ex
 from VoiceQuality.voice_quality_analyzer import process_directory as analyze_voice_quality_directory # Import process_directory from voice_quality_analyzer.py
 from VoiceQuality.audio_delay_analyzer import process_directory as analyze_audio_delay_directory # Import process_directory from audio_delay_analyzer.py
 from Coverage.coverage_coordinate_analyzer import analyze_coverage_coordinates # Import the coverage analysis function
+from Coverage.n41_coverage_analyzer import analyze_n41_coverage # Import the n41 coverage analysis function
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -41,6 +42,7 @@ if __name__ == "__main__":
         {"path": "Voice Quality", "analysis_type": "voice_quality"}, # Add Voice Quality directory
         {"path": "Voice Quality", "analysis_type": "audio_delay"}, # Add Audio Delay directory, using the same base path
         {"path": "Coverage Performance", "analysis_type": "coverage_coordinate"}, # Add Coverage Coordinate directory
+        {"path": "Coverage Performance/5G n41 HPUE Coverage Test", "analysis_type": "n41_coverage"}, # Add N41 Coverage directory
     ]
     
     all_collected_results = {}
@@ -401,6 +403,41 @@ if __name__ == "__main__":
                     print(f"No CSV files found in {coverage_path} for coverage coordinate analysis.")
             else:
                 print(f"Warning: Coverage directory not found at {coverage_path}. Skipping analysis.")
+        
+        elif directory_info["analysis_type"] == "n41_coverage":
+            n41_base_path = os.path.join(base_raw_data_dir, directory_info["path"])
+            if os.path.isdir(n41_base_path):
+                print(f"\n--- Starting N41 Coverage analysis for directory: {n41_base_path} ---")
+                
+                n41_results_for_base_path = {}
+                subfolders = [f.path for f in os.scandir(n41_base_path) if f.is_dir()]
+
+                if not subfolders:
+                    print(f"No subfolders found in {n41_base_path}. Processing CSVs directly in the base folder.")
+                    subfolders = [n41_base_path] # Treat base folder as a single "subfolder" for processing
+
+                for folder in subfolders:
+                    folder_name = os.path.basename(folder)
+                    n41_results_for_folder = {}
+
+                    for device_type in ["PC2", "PC3"]:
+                        print(f"Analyzing N41 coverage for {folder_name} (Device Type: {device_type})")
+                        n41_analysis_results = analyze_n41_coverage(folder, device_type_filter=device_type)
+                        if n41_analysis_results:
+                            n41_results_for_folder[device_type] = n41_analysis_results
+                        else:
+                            print(f"No N41 coverage data found for {device_type} in {folder_name}.")
+                    
+                    if n41_results_for_folder:
+                        n41_results_for_base_path[folder_name] = n41_results_for_folder
+                
+                if n41_results_for_base_path:
+                    _insert_into_nested_dict(all_collected_results, [directory_info["path"]], n41_results_for_base_path)
+                    print(f"N41 Coverage analysis for {n41_base_path} completed and added to results.")
+                else:
+                    print(f"No N41 coverage data collected for {n41_base_path}.")
+            else:
+                print(f"Warning: N41 Coverage directory not found at {n41_base_path}. Skipping analysis.")
 
     # Write the collected list of CSV files to a TXT file using the new data_path_reader script
     # Note: all_csv_files_processed only contains paths for data_performance and mrab_performance.
