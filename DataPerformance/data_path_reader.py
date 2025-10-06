@@ -1,21 +1,32 @@
 import os
 
-def get_csv_file_paths(base_raw_data_dir, directories_config):
+def get_csv_file_paths(base_raw_data_dir, directories_config, excluded_analysis_types=None):
     """
-    Collects all CSV file paths from the specified directories.
+    Collects all CSV file paths from the specified directories, excluding those
+    with analysis types that are handled separately (e.g., directory-level analysis).
 
     Args:
         base_raw_data_dir (str): The base directory where raw data is located.
         directories_config (list): A list of dictionaries, where each dictionary
                                    contains "path" (relative to base_raw_data_dir)
                                    and "analysis_type".
+        excluded_analysis_types (list, optional): A list of analysis types for which
+                                                  individual CSV files should not be collected.
+                                                  Defaults to None.
 
     Returns:
         list: A sorted list of absolute paths to all CSV files found.
     """
+    if excluded_analysis_types is None:
+        excluded_analysis_types = []
+
     all_csv_files = []
     
     for dir_info in directories_config:
+        if dir_info["analysis_type"] in excluded_analysis_types:
+            print(f"Skipping individual CSV collection for directory with analysis type: {dir_info['analysis_type']}")
+            continue
+
         current_dir_relative_path = dir_info["path"]
         current_dir_full_path = os.path.join(base_raw_data_dir, current_dir_relative_path)
         

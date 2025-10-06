@@ -3,6 +3,7 @@ import subprocess
 import sys
 import pandas as pd
 import json # Import the json module
+import re # Import the re module for regex operations
 # Add the 'Scripts' directory to sys.path to enable imports from it
 script_dir = os.path.dirname(os.path.abspath(__file__))
 scripts_parent_dir = os.path.dirname(script_dir) # This is 'Scripts' directory
@@ -20,7 +21,8 @@ import check_empty_data # Import check_empty_data directly
 from CallPerformance.call_analyze import analyze_directory, _calculate_fisher_exact_criteria # Import analyze_directory and _calculate_fisher_exact_criteria
 from VoiceQuality.voice_quality_analyzer import process_directory as analyze_voice_quality_directory # Import process_directory from voice_quality_analyzer.py
 from VoiceQuality.audio_delay_analyzer import process_directory as analyze_audio_delay_directory # Import process_directory from audio_delay_analyzer.py
-from Coverage.coverage_coordinate_analyzer import analyze_coverage_coordinates # Import the coverage analysis function
+from Coverage.coverage_coordinate_analyzer import analyze_coverage_coordinates, find_dut_ref_files, compare_analysis_results # Import the coverage analysis functions
+from Coverage.n41_coverage_analyzer import analyze_n41_coverage # Import the n41 coverage analyzer
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -41,6 +43,7 @@ if __name__ == "__main__":
         {"path": "Voice Quality", "analysis_type": "voice_quality"}, # Add Voice Quality directory
         {"path": "Voice Quality", "analysis_type": "audio_delay"}, # Add Audio Delay directory, using the same base path
         {"path": "Coverage Performance", "analysis_type": "coverage_coordinate"}, # Add Coverage Coordinate directory
+        {"path": "Coverage Performance/5G n41 HPUE Coverage Test", "analysis_type": "n41_coverage"}, # Add N41 Coverage directory
     ]
     
     all_collected_results = {}
@@ -59,8 +62,20 @@ if __name__ == "__main__":
 
     # Get all CSV file paths using the new data_path_reader script
     # This will now also include Voice Quality CSVs, but they won't be processed in the main loop
-    # as their analysis_type is 'voice_quality'
-    all_csv_files_processed = data_path_reader.get_csv_file_paths(base_raw_data_dir, directories_to_process)
+    # Define analysis types that are handled at the directory level and should not have individual CSVs processed in the main loop
+    excluded_analysis_types_for_individual_csvs = [
+        "call_performance",
+        "voice_quality",
+        "audio_delay",
+        "coverage_coordinate"
+    ]
+
+    # Get all CSV file paths using the new data_path_reader script, excluding those handled separately
+    all_csv_files_processed = data_path_reader.get_csv_file_paths(
+        base_raw_data_dir, 
+        directories_to_process, 
+        excluded_analysis_types=excluded_analysis_types_for_individual_csvs
+    )
 
     # Now iterate through the collected files for analysis
     for csv_file_path in all_csv_files_processed:
@@ -346,67 +361,91 @@ if __name__ == "__main__":
                 print(f"Warning: Audio Delay directory not found at {audio_delay_path}. Skipping analysis.")
         
         elif directory_info["analysis_type"] == "coverage_coordinate":
-            coverage_path = os.path.join(base_raw_data_dir, directory_info["path"])
-            if os.path.isdir(coverage_path):
-                print(f"\n--- Starting Coverage Coordinate analysis for directory: {coverage_path} ---")
+            # The user specified the target directory as D:\Fit4Launch\Raw Data\Coverage Performance\5G VoNR Coverage Test
+            base_coverage_test_path = os.path.join(base_raw_data_dir, "Coverage Performance", "5G VoNR Coverage Test")
+            
+            if os.path.isdir(base_coverage_test_path):
+                print(f"\n--- Starting Coverage Coordinate analysis for base directory: {base_coverage_test_path} ---")
                 
-                # Recursively find all CSV files in the coverage directory
-                coverage_csv_files = []
-                for root, _, files in os.walk(coverage_path):
-                    for file in files:
-                        if file.endswith(".csv"):
-                            coverage_csv_files.append(os.path.join(root, file))
-                
-                if coverage_csv_files:
-                    for csv_file in coverage_csv_files:
-                        file_name = os.path.basename(csv_file).lower()
-                        device_type = None
-                        if "dut" in file_name:
-                            device_type = "DUT"
-                        elif "ref" in file_name:
-                            device_type = "REF"
-                        
-                        if device_type:
-                            print(f"Analyzing coverage for {file_name} (Device Type: {device_type})")
-                            coverage_results = analyze_coverage_coordinates(csv_file)
-                            
-                            # Construct the path components for insertion into all_collected_results
-                            # Example: Raw Data/Coverage/5G VoNR Coverage Test/Round1/DUT_file.csv
-                            # We want path_components: ['Coverage', '5G VoNR Coverage Test', 'Round1', 'DUT']
-                            
-                            # Get the path relative to base_raw_data_dir
-                            relative_path_from_base = os.path.relpath(csv_file, base_raw_data_dir)
-                            
-                            # Split into components, remove the device type directory (e.g., 'DUT' or 'REF')
-                            # and then append the filename without extension.
-                            path_components_for_insert = relative_path_from_base.replace("\\", "/").split('/')
-                            
-                            # Remove the device type directory (e.g., 'DUT' or 'REF') from the path components
-                            # This assumes the structure is .../Coverage/<TestName>/<DeviceType>/<FileName>
-                            # So, the device type is the second to last component.
-                            if len(path_components_for_insert) >= 2:
-                                path_components_for_insert.pop(-2) # Remove the device_type directory
+                # Assuming subfolders like n25, n41, n71 directly under 5G VoNR Coverage Test
+                subfolders = [f.name for f in os.scandir(base_coverage_test_path) if f.is_dir()]
 
-                            # The last component is the filename, remove .csv extension
-                            filename_without_ext = os.path.splitext(path_components_for_insert[-1])[0]
-                            path_components_for_insert[-1] = filename_without_ext
-                            
-                            _insert_into_nested_dict(all_collected_results, path_components_for_insert, coverage_results)
-                            print(f"Coverage analysis for {file_name} added to results.")
-                        else:
-                            print(f"Warning: Could not determine device type for {file_name}. Skipping coverage analysis for this file.")
+                coverage_comparisons = {}
+
+                for subfolder in subfolders:
+                    subfolder_path = os.path.join(base_coverage_test_path, subfolder)
+                    print(f"Analyzing subfolder: {subfolder_path}")
                     
-                    print(f"Coverage Coordinate analysis for {coverage_path} completed and added to results.")
-                else:
-                    print(f"No CSV files found in {coverage_path} for coverage coordinate analysis.")
+                    paired_files = find_dut_ref_files(subfolder_path)
+                    
+                    if not paired_files:
+                        print(f"No DUT/REF pairs found in {subfolder_path}")
+                        continue
+
+                    subfolder_comparison_results = {"DUT": {}, "REF": {}}
+                    # Regex to extract Run number from filenames like DUTx_RunY.csv
+                    run_pattern = re.compile(r"(DUT|REF)\d+_Run(\d+)\.csv", re.IGNORECASE)
+
+                    for dut_file, ref_file in paired_files:
+                        print(f"Processing DUT: {os.path.basename(dut_file)} and REF: {os.path.basename(ref_file)}")
+                        dut_results = analyze_coverage_coordinates(dut_file)
+                        ref_results = analyze_coverage_coordinates(ref_file)
+                        
+                        # Extract run number for structuring JSON
+                        dut_match = run_pattern.match(os.path.basename(dut_file))
+                        ref_match = run_pattern.match(os.path.basename(ref_file))
+                        
+                        run_name = "UnknownRun"
+                        if dut_match:
+                            run_name = f"Run{int(dut_match.group(2))}"
+                        elif ref_match: # Fallback if only ref_file matches (shouldn't happen with paired_files)
+                            run_name = f"Run{int(ref_match.group(2))}"
+
+                        subfolder_comparison_results["DUT"][run_name] = dut_results
+                        subfolder_comparison_results["REF"][run_name] = ref_results
+                        
+                        # Print comparison summary to console
+                        file_pair_name = f"{os.path.basename(dut_file).replace('.csv', '')}_vs_{os.path.basename(ref_file).replace('.csv', '')}"
+                        compare_analysis_results(dut_results, ref_results, file_pair_name) 
+
+                    coverage_comparisons[subfolder] = subfolder_comparison_results
+                
+                # Insert the structured comparison results into all_collected_results
+                # Path components: ['Coverage Performance', '5G VoNR Coverage Test']
+                _insert_into_nested_dict(all_collected_results, ["Coverage Performance", "5G VoNR Coverage Test"], coverage_comparisons)
+                print(f"Coverage Coordinate analysis for {base_coverage_test_path} completed and added to results.")
             else:
-                print(f"Warning: Coverage directory not found at {coverage_path}. Skipping analysis.")
+                print(f"Warning: Coverage base directory not found at {base_coverage_test_path}. Skipping analysis.")
         
         elif directory_info["analysis_type"] == "n41_coverage":
             n41_base_path = os.path.join(base_raw_data_dir, directory_info["path"])
             if os.path.isdir(n41_base_path):
                 print(f"\n--- Starting N41 Coverage analysis for directory: {n41_base_path} ---")
                 
+                # The analyze_n41_coverage function expects a folder path containing CSVs
+                # The directory_info["path"] is "Coverage Performance/5G n41 HPUE Coverage Test"
+                # We need to iterate through Run1, Run2, etc.
+                
+                n41_coverage_results_by_run = {}
+                
+                # List subdirectories (Run1, Run2, etc.)
+                for run_folder_name in os.listdir(n41_base_path):
+                    run_folder_path = os.path.join(n41_base_path, run_folder_name)
+                    if os.path.isdir(run_folder_path) and run_folder_name.startswith("Run"):
+                        print(f"Analyzing n41 coverage data in: {run_folder_path}")
+                        n41_results = analyze_n41_coverage(run_folder_path)
+                        
+                        if n41_results:
+                            n41_coverage_results_by_run[run_folder_name] = n41_results
+                            print(f"Found {len(n41_results)} n41 coverage points for {run_folder_name}.")
+                        else:
+                            print(f"No n41 coverage results found for {run_folder_name}.")
+                
+                if n41_coverage_results_by_run:
+                    _insert_into_nested_dict(all_collected_results, ["Coverage Performance", "5G n41 HPUE Coverage Test"], n41_coverage_results_by_run)
+                    print(f"N41 Coverage analysis for {n41_base_path} completed and added to results.")
+                else:
+                    print(f"No N41 Coverage data collected for {n41_base_path}.")
             else:
                 print(f"Warning: N41 Coverage directory not found at {n41_base_path}. Skipping analysis.")
 
