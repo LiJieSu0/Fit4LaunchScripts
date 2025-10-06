@@ -38,16 +38,6 @@ Raw Data\Call Performance\5G Auto VoNR Enabled CP MT Drive\REF\CH2 REF1.csv
 Raw Data\Call Performance\5G Auto VoNR Enabled CP MT Drive\REF\CH4 REF2.csv
 Raw Data\Call Performance\5G Auto VoNR Enabled CP MT Drive\REF\CH6 REF3.csv
 Raw Data\Call Performance\5G Auto VoNR Enabled CP MT Drive\REF\CH8 REF4.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run1\PC2.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run1\PC3.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run2\PC2.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run2\PC3.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run3\PC2.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run3\PC3.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run4\PC2.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run4\PC3.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run5\PC2.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run5\PC3.csv
 Raw Data\Coverage Performance\5G VoNR Coverage Test\DUT\DUT1_Run1.csv
 Raw Data\Coverage Performance\5G VoNR Coverage Test\DUT\DUT1_Run2.csv
 Raw Data\Coverage Performance\5G VoNR Coverage Test\DUT\DUT1_Run3.csv
