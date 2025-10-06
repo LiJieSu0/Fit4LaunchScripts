@@ -7,6 +7,7 @@ import CoverageTables from './CoverageTables'; // Import the CoverageTables comp
 import SummaryTable from './SummaryTable'; // Import the SummaryTable component
 import data from './data_analysis_results.json'; // Import the JSON data
 import './print.css'; // Import print-specific styles
+import RsrpChart from './RsrpChart'; // Import the RsrpChart component
 
 function App() {
   // Base station coordinate
@@ -134,13 +135,13 @@ function App() {
         />
       ))}
 
-      {/* 5G n41 HPUE Coverage Test - Placeholder, no action for now */}
-      {n41HPUECoverageData && (
-        <div className="category-section">
-          <h3 className="text-xl font-bold mb-4 text-gray-800">5G n41 HPUE Coverage Test</h3>
-          <p>Data for 5G n41 HPUE Coverage Test will be displayed here later.</p>
-        </div>
-      )}
+      {/* 5G n41 HPUE Coverage Test */}
+      <div className="category-section">
+        <h3 className="text-xl font-bold mb-4 text-gray-800">5G n41 HPUE Coverage Test</h3>
+        {[1, 2, 3, 4, 5].map(runNum => (
+          <RsrpChart key={runNum} runNumber={runNum} />
+        ))}
+      </div>
 
       {/* <BlankTable /> BlankTable component here don't touch*/}
     </div>
