@@ -3366,26 +3366,26 @@
             "Run1": [
                 {
                     "Device type": "PC2",
-                    "latitude": 47.150918,
-                    "longitude": -122.357333,
-                    "ul_tp_value": 5.242,
-                    "rsrp_value": -105.61
+                    "latitude": 47.128545,
+                    "longitude": -122.357437,
+                    "ul_tp_value": 9.437,
+                    "rsrp_value": -68.88
                 },
                 {
                     "Device type": "PC3",
-                    "latitude": 47.151398,
-                    "longitude": -122.357365,
-                    "ul_tp_value": 10.485,
-                    "rsrp_value": -98.05
+                    "latitude": 47.128308,
+                    "longitude": -122.357422,
+                    "ul_tp_value": 9.437,
+                    "rsrp_value": -76.57
                 }
             ],
             "Run2": [
                 {
                     "Device type": "PC2",
-                    "latitude": 47.148383,
-                    "longitude": -122.357185,
-                    "ul_tp_value": 0.233,
-                    "rsrp_value": -109.05
+                    "latitude": 47.14715,
+                    "longitude": -122.357228,
+                    "ul_tp_value": 4.194,
+                    "rsrp_value": -101.4
                 },
                 {
                     "Device type": "PC3",
@@ -3405,10 +3405,10 @@
                 },
                 {
                     "Device type": "PC3",
-                    "latitude": 47.146858,
-                    "longitude": -122.357262,
-                    "ul_tp_value": 0.263,
-                    "rsrp_value": -104.52
+                    "latitude": 47.146057,
+                    "longitude": -122.35728,
+                    "ul_tp_value": 6.291,
+                    "rsrp_value": -101.67
                 }
             ],
             "Run4": [
@@ -3430,17 +3430,17 @@
             "Run5": [
                 {
                     "Device type": "PC2",
-                    "latitude": 47.150075,
-                    "longitude": -122.357118,
-                    "ul_tp_value": 0.239,
-                    "rsrp_value": -105.42
+                    "latitude": 47.14905,
+                    "longitude": -122.357127,
+                    "ul_tp_value": 5.242,
+                    "rsrp_value": -109.51
                 },
                 {
                     "Device type": "PC3",
-                    "latitude": 47.149738,
+                    "latitude": 47.149223,
                     "longitude": -122.357125,
-                    "ul_tp_value": 0.308,
-                    "rsrp_value": -98.26
+                    "ul_tp_value": 9.437,
+                    "rsrp_value": -102.92
                 }
             ]
         }

@@ -50,30 +50,25 @@ def analyze_n41_coverage(folder_path, device_type_filter=None):
             device_type_match = re.search(r'(DUT\d+|REF\d+|PC\d+)', filename, re.IGNORECASE)
             device_type = device_type_match.group(0) if device_type_match else 'Unknown Device'
 
-            no_service_indices = df[df[serving_network_column].astype(str).str.contains('No service', case=False, na=False)].index.tolist()
-
             found_data_point = False
-            for no_service_idx in reversed(no_service_indices): # Iterate from the last 'No service' upwards
-                # Search upwards from the 'No service' index for the first non-zero UL TP
-                for ul_tp_idx in range(no_service_idx, -1, -1):
-                    ul_tp_value = df.loc[ul_tp_idx, ul_tp_column]
+            # Search from bottom to top for the first UL TP value > 1
+            for ul_tp_idx in range(len(df) - 1, -1, -1):
+                ul_tp_value = df.loc[ul_tp_idx, ul_tp_column]
+                
+                if pd.notna(ul_tp_value) and pd.to_numeric(ul_tp_value, errors='coerce') > 1:
+                    latitude = df.loc[ul_tp_idx, latitude_column]
+                    longitude = df.loc[ul_tp_idx, longitude_column]
+                    rsrp_value = df.loc[ul_tp_idx, rsrp_column]
                     
-                    if pd.notna(ul_tp_value) and pd.to_numeric(ul_tp_value, errors='coerce') > 0:
-                        latitude = df.loc[ul_tp_idx, latitude_column]
-                        longitude = df.loc[ul_tp_idx, longitude_column]
-                        rsrp_value = df.loc[ul_tp_idx, rsrp_column]
-                        
-                        results.append({
-                            'Device type': device_type,
-                            'latitude': latitude,
-                            'longitude': longitude,
-                            'ul_tp_value': ul_tp_value,
-                            'rsrp_value': rsrp_value
-                        })
-                        found_data_point = True
-                        break # Found UL TP for this 'No service', move to next 'No service'
-                if found_data_point:
-                    break # Found a data point for at least one 'No service', stop processing this file
+                    results.append({
+                        'Device type': device_type,
+                        'latitude': latitude,
+                        'longitude': longitude,
+                        'ul_tp_value': ul_tp_value,
+                        'rsrp_value': rsrp_value
+                    })
+                    found_data_point = True
+                    break # Found the first UL TP > 1, stop processing this file
             
             if not found_data_point:
                 pass # No relevant data point found for this file
