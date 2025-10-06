@@ -141,10 +141,15 @@ def extract_rsrp_to_csv(folder_path, output_folder='.', device_type_filters=None
             print(f"Error processing file {file_path}: {e}")
     
     if not all_rsrp_data.empty:
-        all_rsrp_data.dropna(inplace=True)
+        # Removed all_rsrp_data.dropna(inplace=True) to keep all rows,
+        # filling missing values with NaN if columns have different lengths.
+        # Removed all_rsrp_data.dropna(inplace=True) to keep all rows,
+        # filling missing values with NaN if columns have different lengths.
+        # Now, remove only rows where ALL values are NaN, as requested ("不要有空Row").
+        all_rsrp_data.dropna(how='all', inplace=True)
 
         if all_rsrp_data.empty:
-            print("No RSRP data remaining after removing empty rows.")
+            print("No RSRP data extracted to save after removing empty rows.")
             return
 
         os.makedirs(output_folder, exist_ok=True)

@@ -59,12 +59,12 @@ const RsrpChart = ({ runNumber }) => {
 
       // Determine point style based on whether it's a marker
       const getPointStyle = (dataPointY, markers) => {
-        return markers.includes(dataPointY) ? 'circle' : 'circle'; // Changed to circle
+        return markers.includes(dataPointY) ? 'rect' : 'circle'; // Changed to rect for drop points
       };
 
       // Prepare point styling for PC2
       const pc2PointRadius = chartData.pc2.map(dataPoint =>
-        rsrpMarkers.pc2.includes(dataPoint.y) ? 6 : 0 // Decreased radius by 50%
+        rsrpMarkers.pc2.includes(dataPoint.y) ? 10 : 0 // Increased radius for drop points
       );
       const pc2PointStyle = chartData.pc2.map(dataPoint =>
         getPointStyle(dataPoint.y, rsrpMarkers.pc2)
@@ -78,7 +78,7 @@ const RsrpChart = ({ runNumber }) => {
 
       // Prepare point styling for PC3
       const pc3PointRadius = chartData.pc3.map(dataPoint =>
-        rsrpMarkers.pc3.includes(dataPoint.y) ? 6 : 0 // Decreased radius by 50%
+        rsrpMarkers.pc3.includes(dataPoint.y) ? 10 : 0 // Increased radius for drop points
       );
       const pc3PointStyle = chartData.pc3.map(dataPoint =>
         getPointStyle(dataPoint.y, rsrpMarkers.pc3)
@@ -123,8 +123,8 @@ const RsrpChart = ({ runNumber }) => {
               borderColor: 'black', // Color for the legend icon
               pointBackgroundColor: 'black',
               pointBorderColor: 'black',
-              pointRadius: 6, // Decreased radius for legend icon by 50%
-              pointStyle: 'circle', // Changed to circle
+              pointRadius: 10, // Increased radius for legend icon
+              pointStyle: 'rect', // Changed to rect for drop points
               type: 'line', // Ensure it's treated as a line dataset for legend styling
             },
           ],
