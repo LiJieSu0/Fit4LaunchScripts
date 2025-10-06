@@ -410,6 +410,8 @@ if __name__ == "__main__":
                 print(f"\n--- Starting N41 Coverage analysis for directory: {n41_base_path} ---")
                 
                 n41_results_for_base_path = {}
+                all_n41_csv_results = [] # List to collect all N41 coverage results for CSV output
+
                 subfolders = [f.path for f in os.scandir(n41_base_path) if f.is_dir()]
 
                 if not subfolders:
@@ -425,6 +427,11 @@ if __name__ == "__main__":
                         n41_analysis_results = analyze_n41_coverage(folder, device_type_filter=device_type)
                         if n41_analysis_results:
                             n41_results_for_folder[device_type] = n41_analysis_results
+                            # Add folder_name and device_type to each result for CSV output
+                            for res in n41_analysis_results:
+                                res['folder_name'] = folder_name
+                                res['device_type'] = device_type
+                                all_n41_csv_results.append(res)
                         else:
                             print(f"No N41 coverage data found for {device_type} in {folder_name}.")
                     
@@ -436,6 +443,14 @@ if __name__ == "__main__":
                     print(f"N41 Coverage analysis for {n41_base_path} completed and added to results.")
                 else:
                     print(f"No N41 coverage data collected for {n41_base_path}.")
+                
+                # Also extract RSRP data for PC2 and PC3 for each subfolder
+                rsrp_output_base_folder = os.path.join("Scripts", "React", "frontend", "src") # Output to React frontend src folder
+                for folder in subfolders:
+                    print(f"Extracting RSRP data for {os.path.basename(folder)} (Device Types: PC2, PC3)")
+                    from Coverage.n41_coverage_analyzer import extract_rsrp_to_csv # Import here to avoid circular dependency if needed
+                    extract_rsrp_to_csv(folder, rsrp_output_base_folder, device_type_filters=["PC2", "PC3"])
+
             else:
                 print(f"Warning: N41 Coverage directory not found at {n41_base_path}. Skipping analysis.")
 
@@ -485,5 +500,14 @@ if __name__ == "__main__":
     else:
         print("No data collected to generate a report.")
     
+    # Output N41 Coverage results to a separate CSV file for React
+    if all_n41_csv_results:
+        n41_df = pd.DataFrame(all_n41_csv_results)
+        n41_csv_output_path = os.path.join("Scripts", "React", "frontend", "src", "n41_coverage_results.csv")
+        n41_df.to_csv(n41_csv_output_path, index=False)
+        print(f"\nN41 Coverage CSV data generated: {n41_csv_output_path}")
+    else:
+        print("No N41 Coverage data collected to generate a CSV report.")
+
     # Call check_empty_data.main with the output_dir
     check_empty_data.main(output_dir)

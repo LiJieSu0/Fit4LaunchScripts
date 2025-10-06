@@ -3376,7 +3376,9 @@
                     "filename": "PC2.csv",
                     "latitude": 47.128545,
                     "longitude": -122.357437,
-                    "ul_tp_value": 9.437
+                    "ul_tp_value": 9.437,
+                    "folder_name": "Run1",
+                    "device_type": "PC2"
                 }
             ],
             "PC3": [
@@ -3384,7 +3386,9 @@
                     "filename": "PC3.csv",
                     "latitude": 47.128308,
                     "longitude": -122.357422,
-                    "ul_tp_value": 9.437
+                    "ul_tp_value": 9.437,
+                    "folder_name": "Run1",
+                    "device_type": "PC3"
                 }
             ]
         },
@@ -3394,7 +3398,9 @@
                     "filename": "PC2.csv",
                     "latitude": 47.14715,
                     "longitude": -122.357228,
-                    "ul_tp_value": 4.194
+                    "ul_tp_value": 4.194,
+                    "folder_name": "Run2",
+                    "device_type": "PC2"
                 }
             ],
             "PC3": [
@@ -3402,7 +3408,9 @@
                     "filename": "PC3.csv",
                     "latitude": 47.148687,
                     "longitude": -122.357158,
-                    "ul_tp_value": 6.291
+                    "ul_tp_value": 6.291,
+                    "folder_name": "Run2",
+                    "device_type": "PC3"
                 }
             ]
         },
@@ -3412,7 +3420,9 @@
                     "filename": "PC2.csv",
                     "latitude": 47.14912,
                     "longitude": -122.357163,
-                    "ul_tp_value": 6.291
+                    "ul_tp_value": 6.291,
+                    "folder_name": "Run3",
+                    "device_type": "PC2"
                 }
             ],
             "PC3": [
@@ -3420,7 +3430,9 @@
                     "filename": "PC3.csv",
                     "latitude": 47.146057,
                     "longitude": -122.35728,
-                    "ul_tp_value": 6.291
+                    "ul_tp_value": 6.291,
+                    "folder_name": "Run3",
+                    "device_type": "PC3"
                 }
             ]
         },
@@ -3430,7 +3442,9 @@
                     "filename": "PC2.csv",
                     "latitude": 47.149213,
                     "longitude": -122.357152,
-                    "ul_tp_value": 9.437
+                    "ul_tp_value": 9.437,
+                    "folder_name": "Run4",
+                    "device_type": "PC2"
                 }
             ],
             "PC3": [
@@ -3438,7 +3452,9 @@
                     "filename": "PC3.csv",
                     "latitude": 47.149653,
                     "longitude": -122.357147,
-                    "ul_tp_value": 9.437
+                    "ul_tp_value": 9.437,
+                    "folder_name": "Run4",
+                    "device_type": "PC3"
                 }
             ]
         },
@@ -3448,7 +3464,9 @@
                     "filename": "PC2.csv",
                     "latitude": 47.14905,
                     "longitude": -122.357127,
-                    "ul_tp_value": 5.242
+                    "ul_tp_value": 5.242,
+                    "folder_name": "Run5",
+                    "device_type": "PC2"
                 }
             ],
             "PC3": [
@@ -3456,7 +3474,9 @@
                     "filename": "PC3.csv",
                     "latitude": 47.149223,
                     "longitude": -122.357125,
-                    "ul_tp_value": 9.437
+                    "ul_tp_value": 9.437,
+                    "folder_name": "Run5",
+                    "device_type": "PC3"
                 }
             ]
         }
