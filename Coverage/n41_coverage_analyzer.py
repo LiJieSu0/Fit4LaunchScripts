@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import glob
 import json
+import re
 
 def analyze_n41_coverage(folder_path, device_type_filter=None):
     """
@@ -45,6 +46,10 @@ def analyze_n41_coverage(folder_path, device_type_filter=None):
                 print(f"Warning: '{latitude_column}' or '{longitude_column}' not found in {filename}. Skipping.")
                 continue
 
+            # Extract device type from filename (e.g., "DUT1", "REF1", "PC2", "PC3")
+            device_type_match = re.search(r'(DUT\d+|REF\d+|PC\d+)', filename, re.IGNORECASE)
+            device_type = device_type_match.group(0) if device_type_match else 'Unknown Device'
+
             found_value = False
             for index in range(len(df) - 1, -1, -1):
                 ul_tp_value = df.loc[index, target_column]
@@ -53,7 +58,7 @@ def analyze_n41_coverage(folder_path, device_type_filter=None):
                     latitude = df.loc[index, latitude_column]
                     longitude = df.loc[index, longitude_column]
                     results.append({
-                        'filename': filename,
+                        'Device type': device_type, # Changed from 'filename' to 'Device type'
                         'latitude': latitude,
                         'longitude': longitude,
                         'ul_tp_value': ul_tp_value

@@ -1,12 +1,2 @@
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run1\PC2.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run1\PC3.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run2\PC2.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run2\PC3.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run3\PC2.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run3\PC3.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run4\PC2.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run4\PC3.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run5\PC2.csv
-Raw Data\Coverage Performance/5G n41 HPUE Coverage Test\Run5\PC3.csv
 Raw Data\Data Performance/5G AUTO DP\5G Auto Data Test MHS Drive\DUT MHS UDP Drive.csv
 Raw Data\Data Performance/5G AUTO DP\5G Auto Data Test MHS Drive\REF MHS UDP Drive.csv

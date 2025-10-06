@@ -93,17 +93,20 @@ def _determine_analysis_parameters(file_path):
         params["analysis_type_detected"] = "mrab_performance"
     elif "5g auto dp" in file_path_lower or "5g nsa dp" in file_path_lower:
         params["analysis_type_detected"] = "data_performance"
-    elif "coverage" in file_path_lower: # New condition for coverage analysis
+    elif "5g n41 hpue coverage test" in file_path_lower:
+        params["analysis_type_detected"] = "n41_coverage"
+    elif "coverage" in file_path_lower: # Generic condition for other coverage analysis
         params["analysis_type_detected"] = "coverage_coordinate"
 
     print(f"DEBUG: _determine_analysis_parameters - 'dut' in file_name: {'dut' in file_name}")
     print(f"DEBUG: _determine_analysis_parameters - 'ref' in file_name: {'ref' in file_name}")
 
-    if "dut" in file_name:
-        params["device_type_detected"] = "DUT"
-    elif "ref" in file_name:
-        params["device_type_detected"] = "REF"
-    
+    device_type_match = re.search(r'(DUT\d+|REF\d+|PC\d+)', file_name, re.IGNORECASE)
+    if device_type_match:
+        params["device_type_detected"] = device_type_match.group(0).upper() # Convert to uppercase for consistency
+    else:
+        params["device_type_detected"] = "Unknown" # Default to Unknown if no match
+
     print(f"DEBUG: _determine_analysis_parameters - device_type_detected (after logic): {params['device_type_detected']}")
     print(f"DEBUG: _determine_analysis_parameters - is_drive_path: {params['is_drive_path']}")
 

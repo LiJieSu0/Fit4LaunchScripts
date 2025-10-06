@@ -3,7 +3,7 @@
         "5G AUTO DP": {
             "5G Auto Data Test Drive": {
                 "DUT UDP DL": {
-                    "Device Type": "DUT",
+                    "Device Type": "Unknown",
                     "Analysis Direction": "DL",
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
@@ -20,16 +20,10 @@
                     },
                     "Error Ratio": {
                         "Mean": 3.9628764489323385
-                    },
-                    "Ping RTT": {
-                        "min": 38.0,
-                        "max": 1052.0,
-                        "avg": 115.558,
-                        "std_dev": 70.44666138434384
                     }
                 },
                 "REF UDP DL": {
-                    "Device Type": "REF",
+                    "Device Type": "Unknown",
                     "Analysis Direction": "DL",
                     "Protocol Type": "UDP",
                     "Network Type": "5G",
@@ -46,19 +40,13 @@
                     },
                     "Error Ratio": {
                         "Mean": 2.347114968588957
-                    },
-                    "Ping RTT": {
-                        "min": 43.0,
-                        "max": 788.0,
-                        "avg": 148.088,
-                        "std_dev": 106.62866218422886
                     }
                 }
             },
             "5G Auto Data Test MHS Stationary Location 1 DL": {
                 "Multi Stream HTTP Download for 30 seconds": {
                     "DUT MS HTTP DL for 30 seconds": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -72,7 +60,7 @@
                         }
                     },
                     "REF MS HTTP DL for 30 seconds": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -88,7 +76,7 @@
                 },
                 "Single Stream HTTP Download for 60 seconds": {
                     "DUT SS HTTP DL for 60 seconds": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -102,7 +90,7 @@
                         }
                     },
                     "REF SS HTTP DL for 60 seconds": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -118,7 +106,7 @@
                 },
                 "UDP Download Task at 200 Mbps for 10 seconds": {
                     "DUT UDP DL 200 Mbps for 10S": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -138,7 +126,7 @@
                         }
                     },
                     "REF UDP DL 200 Mbps for 10S": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -160,7 +148,7 @@
                 },
                 "UDP Download Task at 400 Mbps for 10 seconds": {
                     "DUT UDP DL 400 Mbps for 10S": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -180,7 +168,7 @@
                         }
                     },
                     "REF UDP DL 400 Mbps for 10S": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -204,7 +192,7 @@
             "5G Auto Data Test MHS Stationary Location 1 UL": {
                 "25x64 bytes PING (ICMP)": {
                     "_20250915_123553_CH01_TMO-DUT_5G MHS_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Protocol Type": "PING",
                         "Network Type": "5G",
                         "Analysis Type": "data_performance",
@@ -216,7 +204,7 @@
                         }
                     },
                     "_20250915_123553_CH02_TMO-Ref_5G MHS_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Protocol Type": "PING",
                         "Network Type": "5G",
                         "Analysis Type": "data_performance",
@@ -230,7 +218,7 @@
                 },
                 "Multi Stream HTTP Upload for 30 seconds": {
                     "_20250915_120237_CH01_TMO-DUT_5G MHS_Multi Stream HTTP Upload for 30 seconds_Good Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -244,7 +232,7 @@
                         }
                     },
                     "_20250915_120237_CH02_TMO-Ref_5G MHS_Multi Stream HTTP Upload for 30 seconds_Good Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -260,7 +248,7 @@
                 },
                 "Single Stream HTTP Upload of a 15 MB file": {
                     "_20250915_115630_CH01_TMO-DUT_5G MHS_Single Stream HTTP Upload of a 15 MB file_Good Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -274,7 +262,7 @@
                         }
                     },
                     "_20250915_115630_CH02_TMO-Ref_5G MHS_Single Stream HTTP Upload of a 15 MB file_Good Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -290,7 +278,7 @@
                 },
                 "UDP Upload Task at 10 Mbps for 10 seconds": {
                     "_20250915_121852_CH01_TMO-DUT_5G MHS_UDP Upload Task at 10 Mbps for 10 seconds_Good Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -311,7 +299,7 @@
                         }
                     },
                     "_20250915_121852_CH02_TMO-Ref_5G MHS_UDP Upload Task at 10 Mbps for 10 seconds_Good Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -334,7 +322,7 @@
                 },
                 "UDP Upload Task at 20 Mbps for 10 seconds": {
                     "_20250915_122724_CH01_TMO-DUT_5G MHS_UDP Upload Task at 20 Mbps for 10 seconds_Good Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -355,7 +343,7 @@
                         }
                     },
                     "_20250915_122724_CH02_TMO-Ref_5G MHS_UDP Upload Task at 20 Mbps for 10 seconds_Good Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -380,7 +368,7 @@
             "5G Auto Data Test MHS Stationary Location 2 DL": {
                 "Multi Stream HTTP Download for 30 seconds": {
                     "DUT MS HTTP DL 30s": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -394,7 +382,7 @@
                         }
                     },
                     "REF MS HTTP DL 30s": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -410,7 +398,7 @@
                 },
                 "Single Stream HTTP Download for 60 seconds": {
                     "DUT SS HTTP DL 60S": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -424,7 +412,7 @@
                         }
                     },
                     "REF SS HTTP DL 60S": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -440,7 +428,7 @@
                 },
                 "UDP Download Task at 200 Mbps for 10 seconds": {
                     "DUT UDP DL 200M 10s": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -460,7 +448,7 @@
                         }
                     },
                     "REF UDP DL 200M 10s": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -482,7 +470,7 @@
                 },
                 "UDP Download Task at 400 Mbps for 10 seconds": {
                     "DUT UDP DL 400 M 10s": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -502,7 +490,7 @@
                         }
                     },
                     "REF UDP DL 400 M 10s": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -526,7 +514,7 @@
             "5G Auto Data Test MHS Stationary Location 2 UL": {
                 "Multi Stream HTTP Upload for 30 seconds": {
                     "DUT MS HTTP UL 30S": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -540,7 +528,7 @@
                         }
                     },
                     "REF MS HTTP UL 30S": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -556,7 +544,7 @@
                 },
                 "Single Stream HTTP Upload of a 15 MB file": {
                     "_20250918_124924_CH01_TMO-dut_5G Auto_Single Stream HTTP Upload of a 15 MB file_Moderate Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -570,7 +558,7 @@
                         }
                     },
                     "_20250918_124924_CH02_TMO-ref_5G Auto_Single Stream HTTP Upload of a 15 MB file_Moderate Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -586,7 +574,7 @@
                 },
                 "UDP Upload Task at 20 Mbps for 10 seconds": {
                     "DUT UDP UL 20M": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -607,7 +595,7 @@
                         }
                     },
                     "REF UDP UL 20M": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -632,7 +620,7 @@
             "5G Auto Data Test Stationary Location 1 DL": {
                 "Multi Stream HTTP Download for 30 seconds_Good": {
                     "dut_5G auto_MS HTTP DL_Good": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -646,7 +634,7 @@
                         }
                     },
                     "ref_5G auto_MS HTTP DL_Good": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -662,7 +650,7 @@
                 },
                 "Single Stream HTTP Download for 60 seconds_Good": {
                     "dut_5G auto_SS HTTP DL_Good": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -676,7 +664,7 @@
                         }
                     },
                     "ref_5G auto_SS HTTP DL_Good": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -692,7 +680,7 @@
                 },
                 "UDP Download Task at 200 Mbps for 10 seconds": {
                     "dut_5G auto_UDP DL 200M 10sec_Good": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -712,7 +700,7 @@
                         }
                     },
                     "ref_5G auto_UDP DL 200M 10sec_Good": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -734,7 +722,7 @@
                 },
                 "UDP Download Task at 400 Mbps for 10 seconds": {
                     "dut_5G auto_UDP DL 400M 10sec_Good": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -754,7 +742,7 @@
                         }
                     },
                     "ref_5G auto_UDP DL 400M 10sec_Good": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -778,7 +766,7 @@
             "5G Auto Data Test Stationary Location 1 UL": {
                 "25x64 bytes PING (ICMP)": {
                     "_CH01_TMO-dut_5G auto_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Protocol Type": "PING",
                         "Network Type": "5G",
                         "Analysis Type": "data_performance",
@@ -790,7 +778,7 @@
                         }
                     },
                     "_CH02_TMO-ref_5G auto_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Protocol Type": "PING",
                         "Network Type": "5G",
                         "Analysis Type": "data_performance",
@@ -804,7 +792,7 @@
                 },
                 "Multi Stream HTTP Upload for 30 seconds": {
                     "_CH01_TMO-dut_5G auto_Multi Stream HTTP Upload for 30 seconds_Good Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -818,7 +806,7 @@
                         }
                     },
                     "_CH02_TMO-ref_5G auto_Multi Stream HTTP Upload for 30 seconds_Good Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -834,7 +822,7 @@
                 },
                 "Single Stream HTTP Upload of a 15 MB file": {
                     "_CH01_TMO-dut_5G auto_Single Stream HTTP Upload of a 15 MB file_Good Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -849,7 +837,7 @@
                         }
                     },
                     "_CH02_TMO-ref_5G auto_Single Stream HTTP Upload of a 15 MB file_Good Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -866,7 +854,7 @@
                 },
                 "UDP Upload Task at 10 Mbps for 10 seconds": {
                     "_CH01_TMO-dut_5G auto_UDP Upload Task at 10 Mbps for 10 seconds_Good Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -886,7 +874,7 @@
                         }
                     },
                     "_CH02_TMO-ref_5G auto_UDP Upload Task at 10 Mbps for 10 seconds_Good Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -908,7 +896,7 @@
                 },
                 "UDP Upload Task at 20 Mbps for 10 seconds": {
                     "_CH01_TMO-dut_5G auto_UDP Upload Task at 20 Mbps for 10 seconds_Good Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -928,7 +916,7 @@
                         }
                     },
                     "_CH02_TMO-ref_5G auto_UDP Upload Task at 20 Mbps for 10 seconds_Good Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -952,7 +940,7 @@
             "5G Auto Data Test Stationary Location 2 DL": {
                 "5G auto_Multi Stream HTTP Download for 30 seconds_moderate": {
                     "dut_5G auto_Multi Stream HTTP Download for 30 seconds": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -966,7 +954,7 @@
                         }
                     },
                     "ref_5G auto_Multi Stream HTTP Download for 30 seconds": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -982,7 +970,7 @@
                 },
                 "5G auto_Single Stream HTTP Download for 60 seconds_moderate": {
                     "dut_5G auto_Single Stream HTTP Download for 60 seconds": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -996,7 +984,7 @@
                         }
                     },
                     "ref_5G auto_Single Stream HTTP Download for 60 seconds": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -1012,7 +1000,7 @@
                 },
                 "5G auto_UDP Download Task at 200 Mbps for 10 seconds_moderate": {
                     "dut_5G auto_UDP Download Task at 200 Mbps for 10": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1032,7 +1020,7 @@
                         }
                     },
                     "ref_5G auto_UDP Download Task at 200 Mbps for 10": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1054,7 +1042,7 @@
                 },
                 "5G auto_UDP Download Task at 400 Mbps for 10 seconds_moderate": {
                     "dut_5G auto_UDP Download Task at 400 Mbps for 10 seconds": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1074,7 +1062,7 @@
                         }
                     },
                     "ref_5G auto_UDP Download Task at 400 Mbps for 10 seconds": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1098,7 +1086,7 @@
             "5G Auto Data Test Stationary Location 2 UL": {
                 "5G auto_25x64 bytes PING_moderate": {
                     "_CH01_TMO_5G auto_25x64 bytes PING_DUT_": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Protocol Type": "PING",
                         "Network Type": "5G",
                         "Analysis Type": "data_performance",
@@ -1110,7 +1098,7 @@
                         }
                     },
                     "_CH02_TMO_5G auto_25x64 bytes PING_REF_": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Protocol Type": "PING",
                         "Network Type": "5G",
                         "Analysis Type": "data_performance",
@@ -1124,7 +1112,7 @@
                 },
                 "5G auto_Multi Stream HTTP Upload for 30 seconds_moderate": {
                     "_CH01_TMO_5G auto_Multi Stream HTTP Upload for 30 seconds_DUT_": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -1138,7 +1126,7 @@
                         }
                     },
                     "_CH02_TMO_5G auto_Multi Stream HTTP Upload for 30 seconds_REF_": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -1154,7 +1142,7 @@
                 },
                 "5G auto_Single Stream HTTP Upload of a 15 MB file": {
                     "_20250919_110731_CH01_TMO-dut_5G Auto_Single Stream HTTP Upload of a 15 MB file_location2_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -1168,7 +1156,7 @@
                         }
                     },
                     "_20250919_110731_CH02_TMO-ref_5G Auto_Single Stream HTTP Upload of a 15 MB file_location2_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -1184,7 +1172,7 @@
                 },
                 "5G auto_UDP Upload Task at 10 Mbps for 10 seconds_moderate": {
                     "_CH01_TMO_5G auto_UDP Upload Task at 10 Mbps for 10 seconds_DUT_": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1204,7 +1192,7 @@
                         }
                     },
                     "_CH02_TMO_5G auto_UDP Upload Task at 10 Mbps for 10 seconds_REF_": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1226,7 +1214,7 @@
                 },
                 "5G auto_UDP Upload Task at 20 Mbps for 10 seconds_moderate": {
                     "DUT_5G auto_UDP Upload Task at 20 Mbps for 10 sec": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1246,7 +1234,7 @@
                         }
                     },
                     "REF_5G auto_UDP Upload Task at 20 Mbps for 10 sec": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1270,7 +1258,7 @@
             "5G Auto Data Test Stationary Location 3 DL": {
                 "Multi Stream HTTP Download for 30 seconds": {
                     "_CH01_TMO-dut_5G auto_Multi Stream HTTP Download for 30 seconds_Poor Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -1284,7 +1272,7 @@
                         }
                     },
                     "_CH02_TMO-ref_5G auto_Multi Stream HTTP Download for 30 seconds_Poor Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -1300,7 +1288,7 @@
                 },
                 "Single Stream HTTP Download for 60 seconds": {
                     "dut_5G auto_Single Stream HTTP Download for 60 seconds_Poor": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -1314,7 +1302,7 @@
                         }
                     },
                     "ref_5G auto_Single Stream HTTP Download for 60 seconds_Poor": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -1330,7 +1318,7 @@
                 },
                 "UDP Download Task at 200 Mbps for 10 seconds": {
                     "dut_5G auto_UDP Download Task at 200 Mbps for 10 seconds_Poor Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1350,7 +1338,7 @@
                         }
                     },
                     "ref_5G auto_UDP Download Task at 200 Mbps for 10 seconds_Poor Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1372,7 +1360,7 @@
                 },
                 "UDP Download Task at 400 Mbps for 10 seconds": {
                     "dut_5G auto_UDP Download Task at 400 Mbps for 10 seconds_Poor Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1392,7 +1380,7 @@
                         }
                     },
                     "ref_5G auto_UDP Download Task at 400 Mbps for 10 seconds_Poor Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1416,7 +1404,7 @@
             "5G Auto Data Test Stationary Location 3 UL": {
                 "25x64 bytes PING (ICMP)": {
                     "dut_5g auto_25x64 bytes PING (ICMP)_poor Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Protocol Type": "PING",
                         "Network Type": "5G",
                         "Analysis Type": "data_performance",
@@ -1428,7 +1416,7 @@
                         }
                     },
                     "ref_5g auto_25x64 bytes PING (ICMP)_poor Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Protocol Type": "PING",
                         "Network Type": "5G",
                         "Analysis Type": "data_performance",
@@ -1442,7 +1430,7 @@
                 },
                 "Multi Stream HTTP Upload for 30 seconds": {
                     "dut_5g auto_Multi Stream HTTP Upload for 30 seconds_poor Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -1456,7 +1444,7 @@
                         }
                     },
                     "ref_5g auto_Multi Stream HTTP Upload for 30 seconds_poor Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -1472,7 +1460,7 @@
                 },
                 "Single Stream HTTP Upload of a 15 MB file": {
                     "dut_5g auto_Single Stream HTTP Upload of a 15 MB file_poor Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -1486,7 +1474,7 @@
                         }
                     },
                     "ref_5g auto_Single Stream HTTP Upload of a 15 MB file_poor Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G",
@@ -1502,7 +1490,7 @@
                 },
                 "UDP Upload Task at 10 Mbps for 10 seconds": {
                     "_CH01_TMO-dut_5G auto_UDP Upload Task at 10 Mbps for 10 seconds_Poor Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1522,7 +1510,7 @@
                         }
                     },
                     "_CH02_TMO-ref_5G auto_UDP Upload Task at 10 Mbps for 10 seconds_Poor Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1544,7 +1532,7 @@
                 },
                 "UDP Upload Task at 20 Mbps for 10 seconds": {
                     "DUT UDP Upload Task at 20 Mbps for 10 seconds_poor Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1564,7 +1552,7 @@
                         }
                     },
                     "REF UDP Upload Task at 20 Mbps for 10 seconds_poor Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G",
@@ -1587,7 +1575,7 @@
             },
             "5G Auto Data Web-Kepler": {
                 "_CH01_TMO-dut_5G auto_ETSI Kepler web page hosted on Spirent mediaserver_Good Coverage_DA Test": {
-                    "Device Type": "DUT",
+                    "Device Type": "Unknown",
                     "Protocol Type": "WEB_PAGE",
                     "Network Type": "5G",
                     "Analysis Type": "data_performance",
@@ -1600,7 +1588,7 @@
                     }
                 },
                 "_CH02_TMO-ref_5G auto_ETSI Kepler web page hosted on Spirent mediaserver_Good Coverage_DA Test": {
-                    "Device Type": "REF",
+                    "Device Type": "Unknown",
                     "Protocol Type": "WEB_PAGE",
                     "Network Type": "5G",
                     "Analysis Type": "data_performance",
@@ -1615,7 +1603,7 @@
             },
             "5G VoNR MRAB Stationary": {
                 "DUT MRAB": {
-                    "Device Type": "DUT",
+                    "Device Type": "Unknown",
                     "Network Type": "5G",
                     "Analysis Type": "mrab_performance",
                     "MRAB Statistics": {
@@ -1640,7 +1628,7 @@
                     }
                 },
                 "REF MRAB": {
-                    "Device Type": "REF",
+                    "Device Type": "Unknown",
                     "Network Type": "5G",
                     "Analysis Type": "mrab_performance",
                     "MRAB Statistics": {
@@ -1669,7 +1657,7 @@
         "5G NSA DP": {
             "5G NSA Data Test Drive": {
                 "UDP DL DUT1_Data Test Drive": {
-                    "Device Type": "DUT",
+                    "Device Type": "DUT1",
                     "Analysis Direction": "DL",
                     "Protocol Type": "UDP",
                     "Network Type": "5G NSA",
@@ -1686,16 +1674,10 @@
                     },
                     "Error Ratio": {
                         "Mean": 1.0425411406088754
-                    },
-                    "Ping RTT": {
-                        "min": 38.0,
-                        "max": 1052.0,
-                        "avg": 115.558,
-                        "std_dev": 70.44666138434384
                     }
                 },
                 "UDP DL REF1_Data Test Drive": {
-                    "Device Type": "REF",
+                    "Device Type": "REF1",
                     "Analysis Direction": "DL",
                     "Protocol Type": "UDP",
                     "Network Type": "5G NSA",
@@ -1712,19 +1694,13 @@
                     },
                     "Error Ratio": {
                         "Mean": 1.1761252791537666
-                    },
-                    "Ping RTT": {
-                        "min": 43.0,
-                        "max": 788.0,
-                        "avg": 148.088,
-                        "std_dev": 106.62866218422886
                     }
                 }
             },
             "5G NSA Data Test Stationary Moderate RF DL": {
                 "Multi Stream HTTP Download for 30 seconds": {
                     "DUT_Multi Stream HTTP Download for 30 seconds": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -1738,7 +1714,7 @@
                         }
                     },
                     "REF_Multi Stream HTTP Download for 30 seconds": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -1754,7 +1730,7 @@
                 },
                 "Single Stream HTTP Download for 60 seconds": {
                     "DUT_Single Stream HTTP Download for 60 seconds": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -1768,7 +1744,7 @@
                         }
                     },
                     "REF Single Stream HTTP Download for 60 seconds": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -1784,7 +1760,7 @@
                 },
                 "UDP Download Task at 200 Mbps for 10 seconds": {
                     "_20250919_121427_CH01_TMO-dut_5G NSA_UDP DL 200 Mbps 10 s_location2_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -1804,7 +1780,7 @@
                         }
                     },
                     "_20250919_121427_CH02_TMO-ref_5G NSA_UDP DL 200 Mbps 10 s_location2_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -1826,7 +1802,7 @@
                 },
                 "UDP Download Task at 400 Mbps for 10 seconds": {
                     "DUT UDP DL 400 M 10s": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -1846,7 +1822,7 @@
                         }
                     },
                     "REF UDP DL 400 M 10s": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -1870,7 +1846,7 @@
             "5G NSA Data Test Stationary Moderate RF UL": {
                 "5G NSA_25x64 bytes PING_moderate": {
                     "_20250911_150928_CH01_TMO_5G NSA_Ping_DUT_": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Protocol Type": "PING",
                         "Network Type": "5G NSA",
                         "Analysis Type": "data_performance",
@@ -1882,7 +1858,7 @@
                         }
                     },
                     "_20250911_150928_CH02_TMO_5G NSA_Ping_REF_": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Protocol Type": "PING",
                         "Network Type": "5G NSA",
                         "Analysis Type": "data_performance",
@@ -1896,7 +1872,7 @@
                 },
                 "5G NSA_Multi Stream HTTP Upload for 30 seconds_moderate": {
                     "DUT 5G NSA_Multi Stream HTTP Upload for 30 seconds_moderate_": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -1910,7 +1886,7 @@
                         }
                     },
                     "REF 5G NSA_Multi Stream HTTP Upload for 30 seconds_moderate_": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -1926,7 +1902,7 @@
                 },
                 "5G NSA_Single Stream HTTP Upload of a 15 MB file": {
                     "_20250925_125722_CH01_TMO-dut_5G NSA_Single Stream HTTP Upload of a 15 MB file_location2_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -1940,7 +1916,7 @@
                         }
                     },
                     "_20250925_125722_CH02_TMO-ref_5G NSA_Single Stream HTTP Upload of a 15 MB file_location2_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -1956,7 +1932,7 @@
                 },
                 "5G NSA_UDP Upload Task at 10 Mbps for 10 seconds": {
                     "_20250930_144823_CH01_TMO-dut_5G NSA_UDP Upload Task at 10 Mbps for 10 seconds_location2_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -1976,7 +1952,7 @@
                         }
                     },
                     "_20250930_144823_CH02_TMO-ref_5G NSA_UDP Upload Task at 10 Mbps for 10 seconds_location2_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -1998,7 +1974,7 @@
                 },
                 "5G NSA_UDP Upload Task at 20 Mbps for 10 seconds": {
                     "_20250930_145837_CH01_TMO-dut_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_location2_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -2018,7 +1994,7 @@
                         }
                     },
                     "_20250930_145837_CH02_TMO-ref_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_location2_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -2042,7 +2018,7 @@
             "5G NSA Data Test Stationary Poor RF DL": {
                 "Multi Stream HTTP Download for 30 seconds": {
                     "DUT HTTP DL": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -2056,7 +2032,7 @@
                         }
                     },
                     "REF HTTP DL": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -2072,7 +2048,7 @@
                 },
                 "Single Stream HTTP Download for 60 seconds": {
                     "DUT HTTP DL": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -2086,7 +2062,7 @@
                         }
                     },
                     "REF HTTP DL": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -2102,7 +2078,7 @@
                 },
                 "UDP Download Task at 200 Mbps for 10 seconds": {
                     "dut_5G NSA_UDP Download Task at 200 Mbps for 10 seconds_Poor": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -2122,7 +2098,7 @@
                         }
                     },
                     "ref_5G NSA_UDP Download Task at 200 Mbps for 10 seconds_Poor": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -2144,7 +2120,7 @@
                 },
                 "UDP Download Task at 400 Mbps for 10 seconds": {
                     "DUT UDP DL": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -2164,7 +2140,7 @@
                         }
                     },
                     "REF UDP DL": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "DL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -2188,7 +2164,7 @@
             "5G NSA Data Test Stationary Poor RF UL": {
                 "25x64 bytes PING (ICMP)": {
                     "_CH01_TMO-dut_5G NSA_25x64 bytes PING (ICMP)_Poor Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Protocol Type": "PING",
                         "Network Type": "5G NSA",
                         "Analysis Type": "data_performance",
@@ -2200,7 +2176,7 @@
                         }
                     },
                     "_CH02_TMO-ref_5G NSA_25x64 bytes PING (ICMP)_Poor Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Protocol Type": "PING",
                         "Network Type": "5G NSA",
                         "Analysis Type": "data_performance",
@@ -2214,7 +2190,7 @@
                 },
                 "Multi Stream HTTP Upload for 30 seconds": {
                     "_CH01_TMO-dut_5G NSA_Multi Stream HTTP Upload for 30 seconds_Poor Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -2228,7 +2204,7 @@
                         }
                     },
                     "_CH02_TMO-ref_5G NSA_UDP UMulti Stream HTTP Upload for 30 second_Poor Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -2244,7 +2220,7 @@
                 },
                 "Single Stream HTTP Upload of a 15 MB file": {
                     "_CH01_TMO-dut_5G NSA_Single Stream HTTP Upload of a 15 MB file_Poor Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -2258,7 +2234,7 @@
                         }
                     },
                     "_CH02_TMO-ref_5G NSA_Single Stream HTTP Upload of a 15 MB file_Poor Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "HTTP",
                         "Network Type": "5G NSA",
@@ -2274,7 +2250,7 @@
                 },
                 "UDP Upload Task at 10 Mbps for 10 seconds": {
                     "dut_5G NSA_UDP Upload Task at 10 Mbps for 10 seconds_Poor": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -2294,7 +2270,7 @@
                         }
                     },
                     "ref_5G NSA_UDP Upload Task at 10 Mbps for 10 seconds_Poor": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -2316,7 +2292,7 @@
                 },
                 "UDP Upload Task at 20 Mbps for 10 seconds": {
                     "_20250914_144028_CH01_TMO-dut_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_Poor Coverage_DA Test": {
-                        "Device Type": "DUT",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -2336,7 +2312,7 @@
                         }
                     },
                     "_20250914_144028_CH02_TMO-ref_5G NSA_UDP Upload Task at 20 Mbps for 10 seconds_Poor Coverage_DA Test": {
-                        "Device Type": "REF",
+                        "Device Type": "Unknown",
                         "Analysis Direction": "UL",
                         "Protocol Type": "UDP",
                         "Network Type": "5G NSA",
@@ -3389,13 +3365,13 @@
         "5G n41 HPUE Coverage Test": {
             "Run1": [
                 {
-                    "filename": "PC2.csv",
+                    "Device type": "PC2",
                     "latitude": 47.128545,
                     "longitude": -122.357437,
                     "ul_tp_value": 9.437
                 },
                 {
-                    "filename": "PC3.csv",
+                    "Device type": "PC3",
                     "latitude": 47.128308,
                     "longitude": -122.357422,
                     "ul_tp_value": 9.437
@@ -3403,13 +3379,13 @@
             ],
             "Run2": [
                 {
-                    "filename": "PC2.csv",
+                    "Device type": "PC2",
                     "latitude": 47.14715,
                     "longitude": -122.357228,
                     "ul_tp_value": 4.194
                 },
                 {
-                    "filename": "PC3.csv",
+                    "Device type": "PC3",
                     "latitude": 47.148687,
                     "longitude": -122.357158,
                     "ul_tp_value": 6.291
@@ -3417,13 +3393,13 @@
             ],
             "Run3": [
                 {
-                    "filename": "PC2.csv",
+                    "Device type": "PC2",
                     "latitude": 47.14912,
                     "longitude": -122.357163,
                     "ul_tp_value": 6.291
                 },
                 {
-                    "filename": "PC3.csv",
+                    "Device type": "PC3",
                     "latitude": 47.146057,
                     "longitude": -122.35728,
                     "ul_tp_value": 6.291
@@ -3431,13 +3407,13 @@
             ],
             "Run4": [
                 {
-                    "filename": "PC2.csv",
+                    "Device type": "PC2",
                     "latitude": 47.149213,
                     "longitude": -122.357152,
                     "ul_tp_value": 9.437
                 },
                 {
-                    "filename": "PC3.csv",
+                    "Device type": "PC3",
                     "latitude": 47.149653,
                     "longitude": -122.357147,
                     "ul_tp_value": 9.437
@@ -3445,13 +3421,13 @@
             ],
             "Run5": [
                 {
-                    "filename": "PC2.csv",
+                    "Device type": "PC2",
                     "latitude": 47.14905,
                     "longitude": -122.357127,
                     "ul_tp_value": 5.242
                 },
                 {
-                    "filename": "PC3.csv",
+                    "Device type": "PC3",
                     "latitude": 47.149223,
                     "longitude": -122.357125,
                     "ul_tp_value": 9.437

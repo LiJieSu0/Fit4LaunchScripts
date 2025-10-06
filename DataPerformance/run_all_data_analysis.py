@@ -67,7 +67,8 @@ if __name__ == "__main__":
         "call_performance",
         "voice_quality",
         "audio_delay",
-        "coverage_coordinate"
+        "coverage_coordinate",
+        "n41_coverage" # Add n41_coverage to excluded list
     ]
 
     # Get all CSV file paths using the new data_path_reader script, excluding those handled separately
