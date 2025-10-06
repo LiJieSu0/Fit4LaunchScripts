@@ -13,40 +13,85 @@ function App() {
   const baseStationCoords = [47.128234, -122.356792];
 
   // Calculate average DUT coordinates for Last MOS Value
-  let dutMosLatSum = 0;
-  let dutMosLonSum = 0;
-  let dutMosCount = 0;
-
   const coverageData = data["Coverage Performance"]["5G VoNR Coverage Test"];
+  const n41HPUECoverageData = data["Coverage Performance"]["5G n41 HPUE Coverage Test"];
 
-  // Helper function to calculate average coordinates
-  const calculateAverageCoords = (devicePrefix, metricKey) => {
+  // Helper function to calculate average coordinates for a specific band, device type, and metric
+  const calculateAverageCoords = (band, deviceType, metricKey) => {
     let latSum = 0;
     let lonSum = 0;
     let count = 0;
 
-    for (let i = 1; i <= 3; i++) { // DUT1, DUT2, DUT3 or REF1, REF2, REF3
-      for (let j = 1; j <= 5; j++) { // Run1 to Run5
-        const key = `${devicePrefix}${i}_Run${j}`;
-        const coords = coverageData[key]?.[metricKey];
-        if (coords) {
-          latSum += parseFloat(coords.latitude);
-          lonSum += parseFloat(coords.longitude);
-          count++;
-        }
+    const bandData = coverageData[band];
+    if (!bandData || !bandData[deviceType]) {
+      return [0, 0];
+    }
+
+    // Iterate through runs (Run1 to Run5)
+    for (let i = 1; i <= 5; i++) {
+      const runKey = `Run${i}`;
+      const runData = bandData[deviceType][runKey];
+      if (runData && runData[metricKey]) {
+        latSum += parseFloat(runData[metricKey].latitude);
+        lonSum += parseFloat(runData[metricKey].longitude);
+        count++;
       }
     }
     return count > 0 ? [latSum / count, lonSum / count] : [0, 0];
   };
 
-  const avgDutMosCoords = calculateAverageCoords("DUT", "last_mos_value_coords");
-  const avgRefMosCoords = calculateAverageCoords("REF", "last_mos_value_coords");
-  const avgDutDropCoords = calculateAverageCoords("DUT", "voice_call_drop_coords");
-  const avgRefDropCoords = calculateAverageCoords("REF", "voice_call_drop_coords");
-  const avgDutDlTpCoords = calculateAverageCoords("DUT", "first_dl_tp_gt_1_coords");
-  const avgRefDlTpCoords = calculateAverageCoords("REF", "first_dl_tp_gt_1_coords");
-  const avgDutUlTpCoords = calculateAverageCoords("DUT", "first_ul_tp_gt_1_coords");
-  const avgRefUlTpCoords = calculateAverageCoords("REF", "first_ul_tp_gt_1_coords");
+  // Function to prepare data for CoverageTables component for a specific band
+  const getCoverageDataForBand = (band) => {
+    const bandData = coverageData[band];
+    if (!bandData) return null;
+
+    const metrics = {
+      "last_mos_value_coords": "Last MOS Value Distance (km)",
+      "voice_call_drop_coords": "Voice Call Drop Distance (km)",
+      "first_dl_tp_gt_1_coords": "DL TP < 1 Distance (km)",
+      "first_ul_tp_gt_1_coords": "UL TP < 1 Distance (km)",
+    };
+
+    const processedData = {};
+    const avgCoords = {};
+
+    for (const metricKey in metrics) {
+      processedData[metricKey] = {
+        DUT: {},
+        REF: {}
+      };
+      avgCoords[`avgDut${metricKey.replace(/_coords$/, '').split('_').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('')}`] = calculateAverageCoords(band, "DUT", metricKey);
+      avgCoords[`avgRef${metricKey.replace(/_coords$/, '').split('_').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('')}`] = calculateAverageCoords(band, "REF", metricKey);
+
+      const runs = ["Run1", "Run2", "Run3", "Run4", "Run5"];
+      const devices = ["DUT", "REF"];
+
+      devices.forEach(device => {
+        let sumDistance = 0;
+        let runCount = 0;
+        runs.forEach(run => {
+          const runData = bandData[device]?.[run]?.[metricKey];
+          if (runData && runData.distance_to_base_station_km !== undefined) {
+            const distance = parseFloat(runData.distance_to_base_station_km);
+            processedData[metricKey][device][run] = distance.toFixed(3);
+            sumDistance += distance;
+            runCount++;
+          } else {
+            processedData[metricKey][device][run] = 'N/A';
+          }
+        });
+        processedData[metricKey][device].Average = runCount > 0 ? (sumDistance / runCount).toFixed(3) : 'N/A';
+      });
+    }
+
+    return { processedData, avgCoords };
+  };
+
+  const bands = ["n25", "n41", "n71"];
+  const coverageReports = bands.map(band => ({
+    bandName: band,
+    data: getCoverageDataForBand(band)
+  })).filter(report => report.data !== null);
 
   // Calculate summary data for the SummaryTable
   const calculateSummaryData = () => {
@@ -76,20 +121,27 @@ function App() {
       <CallPerformanceReport /> {/* Render the CallPerformanceReport component */}
       <DataPerformanceReport />
       <VoiceQualityReport /> {/* Render the VoiceQualityReport component */}
-      <CoverageTables
-        categoryName="Coverage Performance"
-        testCaseName="5G VoNR Coverage Test"
-        rawCoverageData={coverageData}
-        avgDutMosCoords={avgDutMosCoords}
-        avgRefMosCoords={avgRefMosCoords}
-        avgDutDropCoords={avgDutDropCoords}
-        avgRefDropCoords={avgRefDropCoords}
-        avgDutDlTpCoords={avgDutDlTpCoords}
-        avgRefDlTpCoords={avgRefDlTpCoords}
-        avgDutUlTpCoords={avgDutUlTpCoords}
-        avgRefUlTpCoords={avgRefUlTpCoords}
-        baseStationCoords={baseStationCoords}
-      />
+      
+      {coverageReports.map((report, index) => (
+        <CoverageTables
+          key={report.bandName}
+          categoryName="Coverage Performance"
+          testCaseName={`5G VoNR Coverage Test - ${report.bandName.toUpperCase()}`}
+          processedCoverageData={report.data.processedData}
+          avgCoords={report.data.avgCoords}
+          baseStationCoords={baseStationCoords}
+          displayCategoryTitle={index === 0} // Only display for the first band (N25)
+        />
+      ))}
+
+      {/* 5G n41 HPUE Coverage Test - Placeholder, no action for now */}
+      {n41HPUECoverageData && (
+        <div className="category-section">
+          <h3 className="text-xl font-bold mb-4 text-gray-800">5G n41 HPUE Coverage Test</h3>
+          <p>Data for 5G n41 HPUE Coverage Test will be displayed here later.</p>
+        </div>
+      )}
+
       {/* <BlankTable /> BlankTable component here don't touch*/}
     </div>
   );
