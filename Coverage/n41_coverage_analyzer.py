@@ -35,40 +35,48 @@ def analyze_n41_coverage(folder_path, device_type_filter=None):
         try:
             df = pd.read_csv(file_path)
             
-            target_column = '[Call Test] [Throughput] Application UL TP'
+            ul_tp_column = '[Call Test] [Throughput] Application UL TP'
+            serving_network_column = '[General] Serving Network'
+            rsrp_column = '[NR5G] [RF] RSRP'
             latitude_column = '[General] [GPS] Latitude'
             longitude_column = '[General] [GPS] Longitude'
 
-            if target_column not in df.columns:
-                print(f"Warning: '{target_column}' not found in {filename}. Skipping.")
-                continue
-            if latitude_column not in df.columns or longitude_column not in df.columns:
-                print(f"Warning: '{latitude_column}' or '{longitude_column}' not found in {filename}. Skipping.")
+            required_columns = [ul_tp_column, serving_network_column, rsrp_column, latitude_column, longitude_column]
+            if not all(col in df.columns for col in required_columns):
+                missing_cols = [col for col in required_columns if col not in df.columns]
+                print(f"Warning: Missing columns {missing_cols} in {filename}. Skipping.")
                 continue
 
-            # Extract device type from filename (e.g., "DUT1", "REF1", "PC2", "PC3")
             device_type_match = re.search(r'(DUT\d+|REF\d+|PC\d+)', filename, re.IGNORECASE)
             device_type = device_type_match.group(0) if device_type_match else 'Unknown Device'
 
-            found_value = False
-            for index in range(len(df) - 1, -1, -1):
-                ul_tp_value = df.loc[index, target_column]
-                
-                if pd.notna(ul_tp_value) and pd.to_numeric(ul_tp_value, errors='coerce') > 1:
-                    latitude = df.loc[index, latitude_column]
-                    longitude = df.loc[index, longitude_column]
-                    results.append({
-                        'Device type': device_type, # Changed from 'filename' to 'Device type'
-                        'latitude': latitude,
-                        'longitude': longitude,
-                        'ul_tp_value': ul_tp_value
-                    })
-                    found_value = True
-                    break
-            
-            if not found_value:
-                pass
+            no_service_indices = df[df[serving_network_column].astype(str).str.contains('No service', case=False, na=False)].index.tolist()
 
+            found_data_point = False
+            for no_service_idx in reversed(no_service_indices): # Iterate from the last 'No service' upwards
+                # Search upwards from the 'No service' index for the first non-zero UL TP
+                for ul_tp_idx in range(no_service_idx, -1, -1):
+                    ul_tp_value = df.loc[ul_tp_idx, ul_tp_column]
+                    
+                    if pd.notna(ul_tp_value) and pd.to_numeric(ul_tp_value, errors='coerce') > 0:
+                        latitude = df.loc[ul_tp_idx, latitude_column]
+                        longitude = df.loc[ul_tp_idx, longitude_column]
+                        rsrp_value = df.loc[ul_tp_idx, rsrp_column]
+                        
+                        results.append({
+                            'Device type': device_type,
+                            'latitude': latitude,
+                            'longitude': longitude,
+                            'ul_tp_value': ul_tp_value,
+                            'rsrp_value': rsrp_value
+                        })
+                        found_data_point = True
+                        break # Found UL TP for this 'No service', move to next 'No service'
+                if found_data_point:
+                    break # Found a data point for at least one 'No service', stop processing this file
+            
+            if not found_data_point:
+                pass # No relevant data point found for this file
         except Exception as e:
             print(f"Error processing file {file_path}: {e}")
     
