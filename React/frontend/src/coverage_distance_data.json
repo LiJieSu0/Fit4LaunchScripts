@@ -1,0 +1,7 @@
+{
+  "headers": ["Device", "Run1", "Run2", "Run3", "Run4", "Run5"],
+  "rows": [
+    { "Device": "PC2", "Run1": 0.05, "Run2": 2.48, "Run3": 2.73, "Run4": 2.66, "Run5": 2.91 },
+    { "Device": "PC3", "Run1": 0.05, "Run2": 2.48, "Run3": 2.71, "Run4": 2.69, "Run5": 2.91 }
+  ]
+}

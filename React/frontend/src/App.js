@@ -8,6 +8,8 @@ import SummaryTable from './SummaryTable'; // Import the SummaryTable component
 import data from './data_analysis_results.json'; // Import the JSON data
 import './print.css'; // Import print-specific styles
 import RsrpChart from './RsrpChart'; // Import the RsrpChart component
+import CoverageDistanceTable from './CoverageDistanceTable'; // Import the new table component
+import coverageDistanceData from './coverage_distance_data.json'; // Import the processed data
 
 function App() {
   // Base station coordinate
@@ -138,6 +140,12 @@ function App() {
       {/* 5G n41 HPUE Coverage Test */}
       <div className="category-section">
         <h3 className="text-xl font-bold mb-4 text-gray-800">5G n41 HPUE Coverage Test</h3>
+        {/* New table for Coverage Distance */}
+        <CoverageDistanceTable 
+            title="Distance to Base Station (km)" 
+            headers={coverageDistanceData.headers} 
+            rows={coverageDistanceData.rows} 
+        />
         {[1, 2, 3, 4, 5].map(runNum => (
           <RsrpChart key={runNum} runNumber={runNum} />
         ))}
