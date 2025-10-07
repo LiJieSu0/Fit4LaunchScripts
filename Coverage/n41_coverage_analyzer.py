@@ -82,9 +82,9 @@ def analyze_n41_coverage(folder_path, device_type_filter=None):
     
     return results
 
-def extract_rsrp_to_csv(folder_path, output_folder='.', device_type_filters=None):
+def extract_coverage_data_to_csv(folder_path, output_folder='.', device_type_filters=None, data_column_name='[NR5G] [RF] RSRP', output_suffix='Analysis'):
     """
-    Extracts the '[NR5G] [RF] RSRP' column from all CSV files in a specified folder,
+    Extracts a specified column from all CSV files in a specified folder,
     uses the filename as the new header, and saves all extracted columns to a new CSV file.
 
     Args:
@@ -92,8 +92,10 @@ def extract_rsrp_to_csv(folder_path, output_folder='.', device_type_filters=None
         output_folder (str): The folder where the output CSV will be saved.
         device_type_filters (list, optional): A list of device types (strings) to filter by.
                                               Only process files containing any of these device types in their name.
+        data_column_name (str): The name of the column to extract (e.g., '[NR5G] [RF] RSRP').
+        output_suffix (str): Suffix for the output filename (e.g., 'RSRP_Analysis', 'TxPower_Analysis').
     """
-    all_rsrp_data = pd.DataFrame()
+    all_extracted_data = pd.DataFrame()
     csv_files = glob.glob(os.path.join(folder_path, '*.csv'))
 
     if not csv_files:
@@ -116,11 +118,10 @@ def extract_rsrp_to_csv(folder_path, output_folder='.', device_type_filters=None
         try:
             df = pd.read_csv(file_path)
             filename_without_ext = os.path.splitext(filename)[0]
-            rsrp_column_name = '[NR5G] [RF] RSRP'
-
+            
             serving_network_column = '[General] Serving Network'
             if serving_network_column not in df.columns:
-                print(f"Warning: '{serving_network_column}' not found in {filename_without_ext}. Cannot filter RSRP by 'No service'. Extracting full column.")
+                print(f"Warning: '{serving_network_column}' not found in {filename_without_ext}. Cannot filter data by 'No service'. Extracting full column.")
                 no_service_idx = len(df) # Process entire column if 'No service' column is missing
             else:
                 no_service_indices = df[df[serving_network_column].astype(str).str.contains('No service', case=False, na=False)].index
@@ -129,37 +130,95 @@ def extract_rsrp_to_csv(folder_path, output_folder='.', device_type_filters=None
                 else:
                     no_service_idx = len(df) # No 'No service' found, process entire column
 
-            # Extract RSRP data up to the first 'No service' entry (exclusive of the 'No service' row)
-            rsrp_data = df.iloc[:no_service_idx, :][[rsrp_column_name]].rename(columns={rsrp_column_name: filename_without_ext})
-            
-            if all_rsrp_data.empty:
-                all_rsrp_data = rsrp_data
+            # Extract data up to the first 'No service' entry (exclusive of the 'No service' row)
+            if data_column_name in df.columns:
+                extracted_data = df.iloc[:no_service_idx, :][[data_column_name]].rename(columns={data_column_name: filename_without_ext})
+                
+                if all_extracted_data.empty:
+                    all_extracted_data = extracted_data
+                else:
+                    all_extracted_data = pd.concat([all_extracted_data, extracted_data], axis=1)
             else:
-                all_rsrp_data = pd.concat([all_rsrp_data, rsrp_data], axis=1)
+                print(f"Warning: Column '{data_column_name}' not found in {filename_without_ext}. Skipping.")
 
         except Exception as e:
             print(f"Error processing file {file_path}: {e}")
     
-    if not all_rsrp_data.empty:
-        # Removed all_rsrp_data.dropna(inplace=True) to keep all rows,
-        # filling missing values with NaN if columns have different lengths.
-        # Removed all_rsrp_data.dropna(inplace=True) to keep all rows,
-        # filling missing values with NaN if columns have different lengths.
-        # Now, remove only rows where ALL values are NaN, as requested ("不要有空Row").
-        all_rsrp_data.dropna(how='all', inplace=True)
+    if not all_extracted_data.empty:
+        # Clean up Tx Power data: remove rows where Tx Power is 0 or NaN
+        if data_column_name == '[NR5G] [Power] Tx power (Total Actual)':
+            # Create a copy to avoid SettingWithCopyWarning and ensure independent operation
+            temp_df = all_extracted_data.copy()
+            
+            # Convert all columns to numeric, coercing errors will turn non-numeric into NaN
+            for col in temp_df.columns:
+                temp_df[col] = pd.to_numeric(temp_df[col], errors='coerce')
+            
+            # Filter out rows where any value is NaN or 0
+            # We use .any(axis=1) to check if *any* column in a row meets the condition
+            # and then invert the boolean to keep rows that *do not* have NaN or 0
+            rows_to_keep = ~(temp_df.isna().any(axis=1) | (temp_df == 0).any(axis=1))
+            all_extracted_data = all_extracted_data[rows_to_keep]
 
-        if all_rsrp_data.empty:
-            print("No RSRP data extracted to save after removing empty rows.")
+        all_extracted_data.dropna(how='all', inplace=True)
+
+        if all_extracted_data.empty:
+            print(f"No {data_column_name} data extracted to save after removing empty rows or 0 values.")
             return
 
         os.makedirs(output_folder, exist_ok=True)
         
         # Construct filename based on folder and combined device types
         device_types_str = "_".join(device_type_filters) if device_type_filters else "All"
-        output_filename = os.path.basename(os.path.normpath(folder_path)) + f"_{device_types_str}_RSRP_Analysis.csv"
+        output_filename = os.path.basename(os.path.normpath(folder_path)) + f"_{device_types_str}_{output_suffix}.csv"
         output_path = os.path.join(output_folder, output_filename)
         
-        all_rsrp_data.to_csv(output_path, index=False)
-        print(f"\nSuccessfully extracted RSRP data to: {output_path}")
+        all_extracted_data.to_csv(output_path, index=False)
+        print(f"\nSuccessfully extracted {data_column_name} data to: {output_path}")
     else:
-        print("No RSRP data extracted to save.")
+        print(f"No {data_column_name} data extracted to save.")
+
+def run_all_coverage_analysis(base_folder, output_base_folder='public'):
+    """
+    Runs coverage analysis for all 5 runs, extracting both RSRP and Tx Power data
+    for PC2 and PC3 devices and saving them to separate CSV files.
+
+    Args:
+        base_folder (str): The base path to the '5G n41 HPUE Coverage Test' folder.
+        output_base_folder (str): The base folder where output CSVs will be saved.
+    """
+    device_filters = ['PC2', 'PC3']
+    
+    for i in range(1, 6): # For Run1 to Run5
+        run_folder = os.path.join(base_folder, f'Run{i}')
+        
+        print(f"\n--- Processing {os.path.basename(run_folder)} ---")
+
+        # Extract RSRP data
+        extract_coverage_data_to_csv(
+            folder_path=run_folder,
+            output_folder=output_base_folder,
+            device_type_filters=device_filters,
+            data_column_name='[NR5G] [RF] RSRP',
+            output_suffix='RSRP_Analysis'
+        )
+
+        # Extract Tx Power data
+        extract_coverage_data_to_csv(
+            folder_path=run_folder,
+            output_folder=output_base_folder,
+            device_type_filters=device_filters,
+            data_column_name='[NR5G] [Power] Tx power (Total Actual)',
+            output_suffix='TxPower_Analysis'
+        )
+
+if __name__ == '__main__':
+    # Example usage for analyze_n41_coverage (original functionality)
+    # folder_to_analyze = 'path/to/your/csv/files'
+    # results = analyze_n41_coverage(folder_to_analyze, device_type_filter='PC2')
+    # for res in results:
+    #     print(res)
+
+    # New functionality: Extract RSRP and Tx Power for 5 runs
+    base_coverage_path = 'Raw Data/Coverage Performance/5G n41 HPUE Coverage Test'
+    run_all_coverage_analysis(base_coverage_path, output_base_folder='Scripts/React/frontend/public')

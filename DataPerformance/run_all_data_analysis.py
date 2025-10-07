@@ -22,7 +22,7 @@ from CallPerformance.call_analyze import analyze_directory, _calculate_fisher_ex
 from VoiceQuality.voice_quality_analyzer import process_directory as analyze_voice_quality_directory # Import process_directory from voice_quality_analyzer.py
 from VoiceQuality.audio_delay_analyzer import process_directory as analyze_audio_delay_directory # Import process_directory from audio_delay_analyzer.py
 from Coverage.coverage_coordinate_analyzer import analyze_coverage_coordinates, find_dut_ref_files, compare_analysis_results # Import the coverage analysis functions
-from Coverage.n41_coverage_analyzer import analyze_n41_coverage, extract_rsrp_to_csv # Import the n41 coverage analyzer and RSRP extractor
+from Coverage.n41_coverage_analyzer import analyze_n41_coverage, extract_coverage_data_to_csv # Import the n41 coverage analyzer and generic data extractor
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -450,20 +450,38 @@ if __name__ == "__main__":
             else:
                 print(f"Warning: N41 Coverage directory not found at {n41_base_path}. Skipping analysis.")
 
-    # After all other analyses, extract RSRP to CSV
+    # After all other analyses, extract RSRP and Tx Power to CSV
     rsrp_output_folder = os.path.join(scripts_parent_dir, "React", "frontend", "public", "rsrp_data")
-    os.makedirs(rsrp_output_folder, exist_ok=True) # Ensure the output directory exists
+    tx_power_output_folder = os.path.join(scripts_parent_dir, "React", "frontend", "public", "tx_power_data")
+    
+    os.makedirs(rsrp_output_folder, exist_ok=True) # Ensure the RSRP output directory exists
+    os.makedirs(tx_power_output_folder, exist_ok=True) # Ensure the Tx Power output directory exists
 
     n41_hpue_coverage_test_path = os.path.join(base_raw_data_dir, "Coverage Performance", "5G n41 HPUE Coverage Test")
     if os.path.isdir(n41_hpue_coverage_test_path):
-        print(f"\n--- Starting RSRP extraction for directory: {n41_hpue_coverage_test_path} ---")
+        print(f"\n--- Starting RSRP and Tx Power extraction for directory: {n41_hpue_coverage_test_path} ---")
         for run_folder_name in os.listdir(n41_hpue_coverage_test_path):
             run_folder_path = os.path.join(n41_hpue_coverage_test_path, run_folder_name)
             if os.path.isdir(run_folder_path) and run_folder_name.startswith("Run"):
                 print(f"Extracting RSRP for {run_folder_name}...")
-                extract_rsrp_to_csv(run_folder_path, rsrp_output_folder, device_type_filters=['PC2', 'PC3'])
+                extract_coverage_data_to_csv(
+                    folder_path=run_folder_path,
+                    output_folder=rsrp_output_folder,
+                    device_type_filters=['PC2', 'PC3'],
+                    data_column_name='[NR5G] [RF] RSRP',
+                    output_suffix='RSRP_Analysis'
+                )
+                
+                print(f"Extracting Tx Power for {run_folder_name}...")
+                extract_coverage_data_to_csv(
+                    folder_path=run_folder_path,
+                    output_folder=tx_power_output_folder,
+                    device_type_filters=['PC2', 'PC3'],
+                    data_column_name='[NR5G] [Power] Tx power (Total Actual)',
+                    output_suffix='TxPower_Analysis'
+                )
     else:
-        print(f"Warning: 5G n41 HPUE Coverage Test directory not found at {n41_hpue_coverage_test_path}. Skipping RSRP extraction.")
+        print(f"Warning: 5G n41 HPUE Coverage Test directory not found at {n41_hpue_coverage_test_path}. Skipping RSRP and Tx Power extraction.")
 
     # Write the collected list of CSV files to a TXT file using the new data_path_reader script
     # Note: all_csv_files_processed only contains paths for data_performance and mrab_performance.

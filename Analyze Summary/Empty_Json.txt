@@ -1,1 +1,4 @@
-No empty collections found.
+Empty collections found in JSON:
+- Coverage Performance
+    - 5G VoNR Coverage Test
+        - Empty Dictionary
