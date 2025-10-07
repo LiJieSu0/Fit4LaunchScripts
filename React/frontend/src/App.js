@@ -8,6 +8,7 @@ import SummaryTable from './SummaryTable'; // Import the SummaryTable component
 import data from './data_analysis_results.json'; // Import the JSON data
 import './print.css'; // Import print-specific styles
 import RsrpChart from './RsrpChart'; // Import the RsrpChart component
+import TxPowerChart from './TxPowerChart'; // Import the TxPowerChart component
 import CoverageDistanceTable from './CoverageDistanceTable'; // Import the new table component
 import coverageDistanceData from './coverage_distance_data.json'; // Import the processed data
 
@@ -148,6 +149,10 @@ function App() {
         />
         {[1, 2, 3, 4, 5].map(runNum => (
           <RsrpChart key={runNum} runNumber={runNum} />
+        ))}
+        <h3 className="text-xl font-bold mb-4 text-gray-800 mt-8">Tx Power Analysis</h3>
+        {[1, 2, 3, 4, 5].map(runNum => (
+          <TxPowerChart key={`tx-${runNum}`} runNumber={runNum} />
         ))}
       </div>
 
