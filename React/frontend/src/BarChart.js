@@ -103,7 +103,7 @@ const BarChart = ({ testCaseData, testCaseName, isPing }) => {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        aspectRatio: 1, // Adjusted to make chart more square
+        aspectRatio: 0.8, // Increased height by 20% (1 / 1.2)
         layout: {
           padding: {
             left: 10,
