@@ -23,6 +23,7 @@ from VoiceQuality.voice_quality_analyzer import process_directory as analyze_voi
 from VoiceQuality.audio_delay_analyzer import process_directory as analyze_audio_delay_directory # Import process_directory from audio_delay_analyzer.py
 from Coverage.coverage_coordinate_analyzer import analyze_coverage_coordinates, find_dut_ref_files, compare_analysis_results # Import the coverage analysis functions
 from Coverage.n41_coverage_analyzer import analyze_n41_coverage, extract_coverage_data_to_csv # Import the n41 coverage analyzer and generic data extractor
+from DataPerformance.google_throughput_analyzer import analyze_throughput as google_analyze_throughput # Import the google throughput analyzer
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -44,6 +45,7 @@ if __name__ == "__main__":
         {"path": "Voice Quality", "analysis_type": "audio_delay"}, # Add Audio Delay directory, using the same base path
         {"path": "Coverage Performance", "analysis_type": "coverage_coordinate"}, # Add Coverage Coordinate directory
         {"path": "Coverage Performance/5G n41 HPUE Coverage Test", "analysis_type": "n41_coverage"}, # Add N41 Coverage directory
+        {"path": "Data Performance/5G AUTO DP/5G Auto Data Play-store app DL Stationary", "analysis_type": "google_throughput_analysis"}, # Add Google Throughput Analysis directory
     ]
     
     all_collected_results = {}
@@ -68,7 +70,8 @@ if __name__ == "__main__":
         "voice_quality",
         "audio_delay",
         "coverage_coordinate",
-        "n41_coverage" # Add n41_coverage to excluded list
+        "n41_coverage", # Add n41_coverage to excluded list
+        "google_throughput_analysis" # Add google_throughput_analysis to excluded list
     ]
 
     # Get all CSV file paths using the new data_path_reader script, excluding those handled separately
@@ -449,6 +452,66 @@ if __name__ == "__main__":
                     print(f"No N41 Coverage data collected for {n41_base_path}.")
             else:
                 print(f"Warning: N41 Coverage directory not found at {n41_base_path}. Skipping analysis.")
+        
+        elif directory_info["analysis_type"] == "google_throughput_analysis":
+            google_throughput_base_path = os.path.join(base_raw_data_dir, directory_info["path"])
+            if os.path.isdir(google_throughput_base_path):
+                print(f"\n--- Starting Google Throughput analysis for directory: {google_throughput_base_path} ---")
+                
+                google_throughput_results = {}
+                
+                # Regex to extract Test Content and Device Type from filenames
+                # Example filename: _20251003_153046_CH01_TMO_5GNR_APP-100M_DUT_TC-115.csv
+                filename_pattern = re.compile(r".*APP-(\d+M)_(DUT|REF)_.*\.csv", re.IGNORECASE)
+                # Regex to extract Location from directory path
+                # Example path: ...5G Auto Data Play-store app DL Stationary Location 1
+                location_pattern = re.compile(r"Location (\d+)", re.IGNORECASE)
+
+                for root, _, files in os.walk(google_throughput_base_path):
+                    # Extract location from the current root directory path
+                    location = "unknown_location"
+                    location_match = location_pattern.search(root)
+                    if location_match:
+                        location = f"location{location_match.group(1)}"
+
+                    for file_name in files:
+                        if file_name.lower().endswith(".csv"):
+                            match = filename_pattern.match(file_name)
+                            if match:
+                                test_content = match.group(1).upper()
+                                device_type = match.group(2).upper()
+                                
+                                file_path = os.path.join(root, file_name)
+                                print(f"Analyzing Google Throughput for: {file_path}")
+                                
+                                average_throughput = google_analyze_throughput(file_path)
+                                
+                                if average_throughput is not None:
+                                    # Structure results: Location -> Device Type -> Test Content -> Filename
+                                    if location not in google_throughput_results:
+                                        google_throughput_results[location] = {}
+                                    if device_type not in google_throughput_results[location]:
+                                        google_throughput_results[location][device_type] = {}
+                                    if test_content not in google_throughput_results[location][device_type]:
+                                        google_throughput_results[location][device_type][test_content] = {}
+                                    
+                                    google_throughput_results[location][device_type][test_content][os.path.splitext(file_name)[0]] = {
+                                        "average_throughput": average_throughput
+                                    }
+                                else:
+                                    print(f"No valid throughput data found for {file_name}.")
+                            else:
+                                print(f"Filename '{file_name}' does not match expected pattern for Google Throughput analysis. Skipping.")
+                
+                if google_throughput_results:
+                    # Correctly insert into nested dictionary structure
+                    path_components_for_insertion = directory_info["path"].replace("\\", "/").split('/')
+                    _insert_into_nested_dict(all_collected_results, path_components_for_insertion, google_throughput_results)
+                    print(f"Google Throughput analysis for {google_throughput_base_path} completed and added to results.")
+                else:
+                    print(f"No Google Throughput data collected for {google_throughput_base_path}.")
+            else:
+                print(f"Warning: Google Throughput directory not found at {google_throughput_base_path}. Skipping analysis.")
 
     # After all other analyses, extract RSRP and Tx Power to CSV
     rsrp_output_folder = os.path.join(scripts_parent_dir, "React", "frontend", "public", "rsrp_data")

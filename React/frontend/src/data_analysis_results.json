@@ -1652,6 +1652,106 @@
                         }
                     }
                 }
+            },
+            "5G Auto Data Play-store app DL Stationary": {
+                "location1": {
+                    "DUT": {
+                        "100M": {
+                            "_20251003_153046_CH01_TMO_5GNR_APP-100M_DUT_TC-115": {
+                                "average_throughput": 160.24095453102453
+                            }
+                        },
+                        "60M": {
+                            "_20251003_154403_CH01_TMO_5GNR_APP-60M_DUT_TC-115": {
+                                "average_throughput": 218.9020091666667
+                            }
+                        },
+                        "30M": {
+                            "_20251003_155451_CH01_TMO_5GNR_APP-30M_DUT_TC-115": {
+                                "average_throughput": 77.13687753968254
+                            }
+                        }
+                    },
+                    "REF": {
+                        "100M": {
+                            "_20251003_153046_CH02_TMO_5GNR_APP-100M_REF_TC-115": {
+                                "average_throughput": 385.16610785714283
+                            }
+                        },
+                        "60M": {
+                            "_20251003_154403_CH02_TMO_5GNR_APP-60M_REF_TC-115": {
+                                "average_throughput": 302.13023333333336
+                            }
+                        },
+                        "30M": {
+                            "_20251003_155451_CH02_TMO_5GNR_APP-30M_REF_TC-115": {
+                                "average_throughput": 104.79456613095238
+                            }
+                        }
+                    }
+                },
+                "location2": {
+                    "DUT": {
+                        "60M": {
+                            "_20251003_131621_CH01_TMO_5GNR_APP-60M_DUT_TC-116": {
+                                "average_throughput": 54.4106702534581
+                            }
+                        },
+                        "100M": {
+                            "_20251003_134032_CH01_TMO_5GNR_APP-100M_DUT_TC-116": {
+                                "average_throughput": 57.230706291351304
+                            }
+                        }
+                    },
+                    "REF": {
+                        "60M": {
+                            "_20251003_131621_CH02_TMO_5GNR_APP-60M_REF_TC-116": {
+                                "average_throughput": 107.5267632001507
+                            }
+                        },
+                        "100M": {
+                            "_20251003_134032_CH02_TMO_5GNR_APP-100M_REF_TC-116": {
+                                "average_throughput": 134.8502865438927
+                            }
+                        }
+                    }
+                },
+                "location3": {
+                    "DUT": {
+                        "100M": {
+                            "_20251003_143006_CH01_TMO_5GNR_APP-100M_DUT_TC-117": {
+                                "average_throughput": 176.4487095021645
+                            }
+                        },
+                        "60M": {
+                            "_20251003_144426_CH01_TMO_5GNR_APP-60M_DUT_TC-117": {
+                                "average_throughput": 189.93027083333334
+                            }
+                        },
+                        "30M": {
+                            "_20251003_145510_CH01_TMO_5GNR_APP-30M_DUT_TC-117": {
+                                "average_throughput": 63.491279404761904
+                            }
+                        }
+                    },
+                    "REF": {
+                        "100M": {
+                            "_20251003_143006_CH02_TMO_5GNR_APP-100M_REF_TC-117": {
+                                "average_throughput": 295.1449812358277
+                            }
+                        },
+                        "60M": {
+                            "_20251003_144426_CH02_TMO_5GNR_APP-60M_REF_TC-117": {
+                                "average_throughput": 261.0141291666667
+                            }
+                        },
+                        "30M": {
+                            "_20251003_145510_CH02_TMO_5GNR_APP-30M_REF_TC-117": {
+                                "average_throughput": 102.93887222222223
+                            }
+                        }
+                    }
+                }
             }
         },
         "5G NSA DP": {
