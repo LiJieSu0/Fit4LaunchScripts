@@ -6,6 +6,7 @@
   body {
     margin: 20px !important; /* Added a small left/right margin for print */
     padding-top: 10px !important; /* Reduced padding for print top margin */
+    padding-bottom: 20px !important; /* Adjusted padding at the bottom to make space for the @page footer (approx 10px for content + 10px for margin) */
     -webkit-print-color-adjust: exact !important; /* Ensures background colors and images are printed */
     print-color-adjust: exact !important;
     min-height: 100vh !important; /* Ensure body takes full viewport height for proper page breaks */
@@ -29,6 +30,7 @@
     padding: 0 !important; /* Remove all padding for print */
     width: 100% !important; /* Ensure full width */
     max-width: none !important; /* Override any max-width from container */
+    page-break-after: avoid !important; /* Try to keep main content and footer together */
   }
 
   /* Ensure h1, h2 have appropriate margins */
@@ -104,5 +106,22 @@
 
   .page-break-avoid {
     page-break-inside: avoid !important;
+  }
+
+  .print-footer {
+    /* This class is no longer needed as @page handles the footer content and styling */
+    display: none !important;
+  }
+}
+
+@page {
+  margin-bottom: 15px; /* Set a smaller margin for the page itself */
+
+  @bottom-right {
+    content: "atmcl.com   Page " counter(page) "--" ; /* Display atmcl.com and page numbers, aligned right */
+    font-size: 10px; /* Explicitly set font size to target 10px height */
+    color: #555;
+    line-height: 1; /* Ensure minimal line height */
+    margin-top: -20px; /* Move text up slightly */
   }
 }
