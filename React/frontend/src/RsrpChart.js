@@ -132,6 +132,12 @@ const RsrpChart = ({ runNumber }) => {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          layout: {
+            padding: {
+              left: 0,
+              right: 50, // Adjust this value to move the plot further left or right
+            },
+          },
           plugins: {
             title: {
               display: true,
@@ -178,7 +184,7 @@ const RsrpChart = ({ runNumber }) => {
   if (chartData.pc2.length === 0 && chartData.pc3.length === 0) return <div>No data available for Run {runNumber}.</div>;
 
   return (
-    <div style={{ width: '100%', height: '400px', marginBottom: '20px' }}>
+    <div style={{ width: '80%', height: '400px', marginBottom: '20px' }}>
       <canvas ref={chartRef}></canvas>
     </div>
   );

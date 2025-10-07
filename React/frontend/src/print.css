@@ -4,7 +4,7 @@
   }
 
   body {
-    margin: 10px 10mm !important; /* Added a small left/right margin for print */
+    margin: 20px !important; /* Added a small left/right margin for print */
     padding-top: 10px !important; /* Reduced padding for print top margin */
     -webkit-print-color-adjust: exact !important; /* Ensures background colors and images are printed */
     print-color-adjust: exact !important;
