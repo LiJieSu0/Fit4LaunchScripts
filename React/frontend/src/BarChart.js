@@ -103,7 +103,7 @@ const BarChart = ({ testCaseData, testCaseName, isPing }) => {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        aspectRatio: 1.5, // Adjusted to make chart narrower
+        aspectRatio: 1, // Adjusted to make chart more square
         layout: {
           padding: {
             left: 10,
@@ -171,7 +171,7 @@ const BarChart = ({ testCaseData, testCaseName, isPing }) => {
   }, [testCaseData, testCaseName, isPing]);
 
   return (
-    <div className="BarChart-container" style={{ maxWidth: '400px' }}> {/* Removed margin: 'auto' */}
+    <div className="BarChart-container" style={{ maxWidth: '1100px' }}> {/* Increased maxWidth for larger chart */}
       <canvas ref={chartRef}></canvas>
     </div>
   );
