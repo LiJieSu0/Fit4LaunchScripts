@@ -2,6 +2,7 @@ import React from 'react';
 import allResults from './data_analysis_results.json';
 import BarChart from './BarChart';
 import MrabStatisticsTable from './MrabStatisticsTable'; // Import MrabStatisticsTable
+import PlaystoreAppDLStationaryTable from './PlaystoreAppDLStationaryTable'; // Import PlaystoreAppDLStationaryTable
 
 // Helper function to recursively extract test cases
 const extractTestCases = (data, currentPath = []) => {
@@ -15,8 +16,22 @@ const extractTestCases = (data, currentPath = []) => {
       isMrab: true,
       isCallPerformance: false,
       isVoiceQuality: false,
+      isPlaystoreAppDLStationary: false,
     });
     return extracted; // Stop further recursion for this branch as we've found the MRAB data
+  }
+
+  // Check for "5G Auto Data Play-store app DL Stationary"
+  if (currentPath.includes("5G Auto Data Play-store app DL Stationary")) {
+    extracted.push({
+      name: currentPath.join(" - "),
+      data: data,
+      isMrab: false,
+      isCallPerformance: false,
+      isVoiceQuality: false,
+      isPlaystoreAppDLStationary: true,
+    });
+    return extracted; // Stop further recursion for this branch
   }
 
 
@@ -47,6 +62,7 @@ const extractTestCases = (data, currentPath = []) => {
       isCallPerformance: false,
       isVoiceQuality: false,
       isAudioDelay: false,
+      isPlaystoreAppDLStationary: false,
     });
     // Do not recurse into children if we've identified this as a data performance container
     return extracted;
@@ -238,7 +254,14 @@ const DataPerformanceReport = () => {
                   <MrabStatisticsTable mrabData={testCase.data} />
                 </div>
               );
-            } else {
+            } else if (testCase.isPlaystoreAppDLStationary) {
+              return (
+                <div key={testCase.name} className="report-section">
+                  <PlaystoreAppDLStationaryTable data={allResults} />
+                </div>
+              );
+            }
+            else {
               // Render DataPerformanceReport and BarChart for other test cases
               const dutData = testCase.data.DUT || {};
               const refData = testCase.data.REF || {};
