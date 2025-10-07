@@ -92,7 +92,7 @@ def analyze_throughput(file_path):
         overall_average = sum(interval_averages) / len(interval_averages)
         print(f"Individual interval averages: {interval_averages}")
         print(f"Overall average of all interval averages: {overall_average}")
-        return overall_average
+        return {"overall_average": overall_average, "interval_averages": interval_averages}
     else:
         print("No valid intervals found to calculate averages.")
         return None

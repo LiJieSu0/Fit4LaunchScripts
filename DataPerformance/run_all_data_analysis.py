@@ -484,9 +484,9 @@ if __name__ == "__main__":
                                 file_path = os.path.join(root, file_name)
                                 print(f"Analyzing Google Throughput for: {file_path}")
                                 
-                                average_throughput = google_analyze_throughput(file_path)
+                                throughput_analysis_results = google_analyze_throughput(file_path)
                                 
-                                if average_throughput is not None:
+                                if throughput_analysis_results is not None:
                                     # Structure results: Location -> Device Type -> Test Content -> Filename
                                     if location not in google_throughput_results:
                                         google_throughput_results[location] = {}
@@ -496,7 +496,8 @@ if __name__ == "__main__":
                                         google_throughput_results[location][device_type][test_content] = {}
                                     
                                     google_throughput_results[location][device_type][test_content][os.path.splitext(file_name)[0]] = {
-                                        "average_throughput": average_throughput
+                                        "overall_average_throughput": throughput_analysis_results["overall_average"],
+                                        "individual_interval_averages": throughput_analysis_results["interval_averages"]
                                     }
                                 else:
                                     print(f"No valid throughput data found for {file_name}.")
