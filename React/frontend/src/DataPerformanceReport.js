@@ -237,8 +237,7 @@ const DataPerformanceReport = () => {
                             <tr key="throughput-difference-percentage" className="bg-table-body-bg">
                               <td className="py-2 px-4 border border-table-grid text-center"></td>
                               <td className="py-2 px-4 border border-table-grid text-center">Difference % Compare to REF</td>
-                              <td className="py-2 px-4 border border-table-grid text-center">{differencePercentage}</td>
-                              <td className="py-2 px-4 border border-table-grid text-center">{differencePercentage}</td>
+                              <td className="py-2 px-4 border border-table-grid text-center" colSpan={2}>{differencePercentage}</td>
                             </tr>
                           );
                         })()
