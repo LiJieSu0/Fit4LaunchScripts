@@ -28,8 +28,8 @@ const CallPerformanceSummaryTable = () => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          <tr className="bg-yellow-50"> {/* Using a light yellow/beige color similar to #F5F5DC */}
-            <td className="px-2 py-1 whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-300">Tests</td>
+          <tr className="bg-yellow-50">
+            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">VoLTE CP MO Drive</td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
@@ -41,7 +41,7 @@ const CallPerformanceSummaryTable = () => {
             <td className="border border-gray-300"></td>
           </tr>
           <tr className="bg-yellow-50">
-            <td className="px-2 py-1 whitespace-nowrap text-sm text-gray-500 border border-gray-300">VoLTE CP MO Drive</td>
+            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">VoLTE CP MT Drive</td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
@@ -53,7 +53,7 @@ const CallPerformanceSummaryTable = () => {
             <td className="border border-gray-300"></td>
           </tr>
           <tr className="bg-yellow-50">
-            <td className="px-2 py-1 whitespace-nowrap text-sm text-gray-500 border border-gray-300">VoLTE CP MT Drive</td>
+            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">5G Auto VoNR Enabled CP MO Drive</td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
@@ -65,7 +65,7 @@ const CallPerformanceSummaryTable = () => {
             <td className="border border-gray-300"></td>
           </tr>
           <tr className="bg-yellow-50">
-            <td className="px-2 py-1 whitespace-nowrap text-sm text-gray-500 border border-gray-300">5G Auto VoNR Enabled CP MO Drive</td>
+            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">5G Auto VoNR Disabled CP MO Drive</td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
@@ -77,7 +77,7 @@ const CallPerformanceSummaryTable = () => {
             <td className="border border-gray-300"></td>
           </tr>
           <tr className="bg-yellow-50">
-            <td className="px-2 py-1 whitespace-nowrap text-sm text-gray-500 border border-gray-300">5G Auto VoNR Disabled CP MO Drive</td>
+            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">5G Auto VoNR Enabled CP MT Drive</td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
@@ -89,19 +89,7 @@ const CallPerformanceSummaryTable = () => {
             <td className="border border-gray-300"></td>
           </tr>
           <tr className="bg-yellow-50">
-            <td className="px-2 py-1 whitespace-nowrap text-sm text-gray-500 border border-gray-300">5G Auto VoNR Enabled CP MT Drive</td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-          </tr>
-          <tr className="bg-yellow-50">
-            <td className="px-2 py-1 whitespace-nowrap text-sm text-gray-500 border border-gray-300">5G Auto VoNR Disabled CP MT Drive</td>
+            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">5G Auto VoNR Disabled CP MT Drive</td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
@@ -114,7 +102,7 @@ const CallPerformanceSummaryTable = () => {
           </tr>
           {/* Rows from the second table */}
           <tr className="bg-yellow-50">
-            <td className="px-2 py-1 whitespace-nowrap text-sm text-gray-500 border border-gray-300">Disabled CP MT Drive</td>
+            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">Disabled CP MT Drive</td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
@@ -126,7 +114,7 @@ const CallPerformanceSummaryTable = () => {
             <td className="border border-gray-300"></td>
           </tr>
           <tr className="bg-yellow-50">
-            <td className="px-2 py-1 whitespace-nowrap text-sm text-gray-500 border border-gray-300">5G Auto CP MO Drive</td>
+            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">5G Auto CP MO Drive</td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
@@ -138,7 +126,7 @@ const CallPerformanceSummaryTable = () => {
             <td className="border border-gray-300"></td>
           </tr>
           <tr className="bg-yellow-50">
-            <td className="px-2 py-1 whitespace-nowrap text-sm text-gray-500 border border-gray-300">5G Auto CP MT Drive</td>
+            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">5G Auto CP MT Drive</td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
             <td className="border border-gray-300"></td>
