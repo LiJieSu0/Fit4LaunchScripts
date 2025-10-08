@@ -1,5 +1,6 @@
 import React from 'react';
 import data from './data_analysis_results.json';
+import { getPValueColor } from './PValueTable'; // Import getPValueColor
 
 export const getCallSetupTimeStatusAndClass = (dutAvg, refAvg) => {
   if (dutAvg === 'N/A' || refAvg === 'N/A') {
@@ -62,10 +63,10 @@ const CallPerformanceSummaryTable = () => {
                 <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{testCase}</td>
                 <td className={`border border-gray-300 text-center ${callSetupBgClass}`}>{dutAvgSetupTime.toFixed(2)}</td>
                 <td className={`border border-gray-300 text-center ${callSetupBgClass}`}>{refAvgSetupTime.toFixed(2)}</td>
-                <td className="border border-gray-300 text-center">{calculatePercentage(values.DUT.total_initiation_successes, values.DUT.total_attempts)}</td>
-                <td className="border border-gray-300 text-center">{calculatePercentage(values.REF.total_initiation_successes, values.REF.total_attempts)}</td>
-                <td className="border border-gray-300 text-center">{calculatePercentage(values.DUT.total_attempts - values.DUT.total_retention_failures, values.DUT.total_attempts)}</td>
-                <td className="border border-gray-300 text-center">{calculatePercentage(values.REF.total_attempts - values.REF.total_retention_failures, values.REF.total_attempts)}</td>
+                <td className={`border border-gray-300 text-center ${getPValueColor(values.initiation_p_value, values.DUT.total_initiation_failures / values.DUT.total_attempts * 100)}`}>{calculatePercentage(values.DUT.total_initiation_successes, values.DUT.total_attempts)}</td>
+                <td className={`border border-gray-300 text-center ${getPValueColor(values.initiation_p_value, values.REF.total_initiation_failures / values.REF.total_attempts * 100)}`}>{calculatePercentage(values.REF.total_initiation_successes, values.REF.total_attempts)}</td>
+                <td className={`border border-gray-300 text-center ${values.retention_p_value !== undefined && values.retention_p_value !== null && !testCase.includes("MT") ? getPValueColor(values.retention_p_value, values.DUT.total_retention_failures / values.DUT.total_attempts * 100) : ''}`}>{calculatePercentage(values.DUT.total_attempts - values.DUT.total_retention_failures, values.DUT.total_attempts)}</td>
+                <td className={`border border-gray-300 text-center ${values.retention_p_value !== undefined && values.retention_p_value !== null && !testCase.includes("MT") ? getPValueColor(values.retention_p_value, values.REF.total_retention_failures / values.REF.total_attempts * 100) : ''}`}>{calculatePercentage(values.REF.total_attempts - values.REF.total_retention_failures, values.REF.total_attempts)}</td>
                 <td className="border border-gray-300 text-center">5G Auto VoNR</td>
                 <td className="border border-gray-300 text-center"></td>
               </tr>

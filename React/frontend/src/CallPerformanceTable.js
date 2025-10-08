@@ -1,5 +1,6 @@
 import React from 'react';
 import { getCallSetupTimeStatusAndClass } from './CallPerformanceSummaryTable'; // Import the helper function
+import { getPValueColor } from './PValueTable'; // Import getPValueColor
 
 const CallPerformanceTable = ({ callPerformanceData }) => {
   if (!callPerformanceData) {
@@ -46,7 +47,7 @@ const CallPerformanceTable = ({ callPerformanceData }) => {
             <td>{dutTotalAttempts}</td>
             <td className={callSetupBgClass}>{DUT.mean_setup_time.toFixed(2)}</td>
             <td>{dutSuccessfulInitiations}</td>
-            <td>{dutSuccessfulInitiationsPercentage}%</td>
+            <td className={getPValueColor(callPerformanceData.initiation_p_value, dutFailedInitiationsPercentage)}>{dutSuccessfulInitiationsPercentage}%</td>
             <td>{dutFailedInitiations}</td>
             <td>{dutFailedInitiationsPercentage}%</td>
           </tr>
@@ -55,7 +56,7 @@ const CallPerformanceTable = ({ callPerformanceData }) => {
             <td>{refTotalAttempts}</td>
             <td className={callSetupBgClass}>{REF.mean_setup_time.toFixed(2)}</td>
             <td>{refSuccessfulInitiations}</td>
-            <td>{refSuccessfulInitiationsPercentage}%</td>
+            <td className={getPValueColor(callPerformanceData.initiation_p_value, refFailedInitiationsPercentage)}>{refSuccessfulInitiationsPercentage}%</td>
             <td>{refFailedInitiations}</td>
             <td>{refFailedInitiationsPercentage}%</td>
           </tr>

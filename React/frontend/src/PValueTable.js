@@ -1,32 +1,32 @@
 import React from 'react';
 
-const PValueTable = ({ callType, initiationPValue, retentionPValue, dutFailurePercentage }) => {
-
-  const getPValueColor = (pValue, dutFailurePercentage) => {
-    if (pValue === undefined || pValue === null) {
-      return "bg-performance-unknown";
-    }
-
-    // Condition for Excellent
-    if (pValue > 0.99) {
-      return "bg-performance-excellent";
-    }
-    // Condition for Pass
-    if (pValue >= 0.05 && pValue <= 0.99) {
-      return "bg-performance-pass";
-    }
-    // Condition for Fail
-    if (pValue < 0.05) {
-      // Check for Marginal Fail condition if dutFailurePercentage is provided
-      // The user specified: "If Fail condition is satisfied but % MO/MT Failures (DUT) < 1%:Marginal Fail"
-      // This implies that pValue < 0.05 AND dutFailurePercentage < 1%
-      if (dutFailurePercentage !== undefined && dutFailurePercentage < 1) {
-        return "bg-performance-marginal-fail";
-      }
-      return "bg-performance-fail";
-    }
+export const getPValueColor = (pValue, dutFailurePercentage) => {
+  if (pValue === undefined || pValue === null) {
     return "bg-performance-unknown";
-  };
+  }
+
+  // Condition for Excellent
+  if (pValue > 0.99) {
+    return "bg-performance-excellent";
+  }
+  // Condition for Pass
+  if (pValue >= 0.05 && pValue <= 0.99) {
+    return "bg-performance-pass";
+  }
+  // Condition for Fail
+  if (pValue < 0.05) {
+    // Check for Marginal Fail condition if dutFailurePercentage is provided
+    // The user specified: "If Fail condition is satisfied but % MO/MT Failures (DUT) < 1%:Marginal Fail"
+    // This implies that pValue < 0.05 AND dutFailurePercentage < 1%
+    if (dutFailurePercentage !== undefined && dutFailurePercentage < 1) {
+      return "bg-performance-marginal-fail";
+    }
+    return "bg-performance-fail";
+  }
+  return "bg-performance-unknown";
+};
+
+const PValueTable = ({ callType, initiationPValue, retentionPValue, dutFailurePercentage }) => {
 
   return (
     <div className="mb-6 table-container w-1/3">
