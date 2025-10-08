@@ -3,6 +3,7 @@ import allResults from './data_analysis_results.json'; // Assuming data_analysis
 import CallPerformanceTable from './CallPerformanceTable';
 import CallCategoriesChart from './CallCategoriesChart';
 import PValueTable from './PValueTable';
+import CallPerformanceSummaryTable from './CallPerformanceSummaryTable';
 
 // Helper function to extract only Call Performance test cases
 const extractCallPerformanceTestCases = (data, currentPath = []) => {
@@ -45,6 +46,7 @@ const CallPerformanceReport = () => {
   return (
     <>
       <img src="/call_performance_criteria.png" alt="Call Performance Criteria" className="mx-auto block mb-8" style={{ width: '110%' }} />
+      <CallPerformanceSummaryTable />
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
           {testCases.map(testCase => {
