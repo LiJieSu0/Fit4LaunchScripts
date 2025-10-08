@@ -20,7 +20,7 @@
     background-color: #f0f0f0 !important; /* Ensure header background matches main content */
     z-index: 1000 !important; /* Ensure header is above other content */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important; /* Increase shadow thickness for print */
-    padding-bottom: 10px !important; /* Add some space below the header content */
+    padding-bottom: 1px !important; /* Add some space below the header content */
     border-bottom: 1px solid #eee !important; /* Optional: a subtle line below header */
   }
 
