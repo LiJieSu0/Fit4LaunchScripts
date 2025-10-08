@@ -210,16 +210,40 @@ const DataPerformanceReport = () => {
                   }
 
                   return (
-                    <tr key={`${metric}-${stat}`} className="bg-table-body-bg">
-                      <td className="py-2 px-4 border border-table-grid text-center">{rowMetric}</td>
-                      <td className="py-2 px-4 border border-table-grid text-center">{stat}</td>
-                      <td className={`py-2 px-4 border border-table-grid text-center ${bgColor}`}>
-                        {typeof dutValue === 'number' ? `${dutValue.toFixed(2)} ${unit}`.trim() : 'N/A'}
-                      </td>
-                      <td className={`py-2 px-4 border border-table-grid text-center ${bgColor}`}>
-                        {typeof refValue === 'number' ? `${refValue.toFixed(2)} ${unit}`.trim() : 'N/A'}
-                      </td>
-                    </tr>
+                    <React.Fragment key={`${metric}-${stat}-fragment`}>
+                      <tr key={`${metric}-${stat}`} className="bg-table-body-bg">
+                        <td className="py-2 px-4 border border-table-grid text-center">{rowMetric}</td>
+                        <td className="py-2 px-4 border border-table-grid text-center">{stat}</td>
+                        <td className={`py-2 px-4 border border-table-grid text-center ${bgColor}`}>
+                          {typeof dutValue === 'number' ? `${dutValue.toFixed(2)} ${unit}`.trim() : 'N/A'}
+                        </td>
+                        <td className={`py-2 px-4 border border-table-grid text-center ${bgColor}`}>
+                          {typeof refValue === 'number' ? `${refValue.toFixed(2)} ${unit}`.trim() : 'N/A'}
+                        </td>
+                      </tr>
+                      {metric === "Throughput" && stat === "Mean" && (
+                        (() => {
+                          const refThroughputMean = refData["Throughput"]?.["Mean"];
+                          const dutThroughputMean = dutData["Throughput"]?.["Mean"];
+                          let differencePercentage = 'N/A';
+
+                          if (typeof refThroughputMean === 'number' && typeof dutThroughputMean === 'number' && refThroughputMean !== 0) {
+                            differencePercentage = (((refThroughputMean - dutThroughputMean) / refThroughputMean) * 100).toFixed(2) + '%';
+                          } else if (refThroughputMean === 0 && typeof dutThroughputMean === 'number') {
+                            differencePercentage = 'N/A (REF Throughput Mean is 0)';
+                          }
+
+                          return (
+                            <tr key="throughput-difference-percentage" className="bg-table-body-bg">
+                              <td className="py-2 px-4 border border-table-grid text-center"></td>
+                              <td className="py-2 px-4 border border-table-grid text-center">Difference % Compare to REF</td>
+                              <td className="py-2 px-4 border border-table-grid text-center">{differencePercentage}</td>
+                              <td className="py-2 px-4 border border-table-grid text-center">{differencePercentage}</td>
+                            </tr>
+                          );
+                        })()
+                      )}
+                    </React.Fragment>
                   );
                 })}
               </React.Fragment>
