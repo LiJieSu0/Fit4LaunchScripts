@@ -97,7 +97,16 @@ const renderTable = (title, data) => {
                             {runs.map(run => (
                                 <td key={`${device}-${run}`}>{data[device][run]}</td>
                             ))}
-                            <td>{data[device].Average}</td>
+                            {(() => {
+                                const dutAverage = parseFloat(data.DUT?.Average);
+                                const refAverage = parseFloat(data.REF?.Average);
+                                const isPass = dutAverage >= 0.95 * refAverage;
+                                const bgColor = isPass ? 'var(--performance-pass)' : 'var(--performance-fail)';
+
+                                return (
+                                    <td style={{ backgroundColor: bgColor }}>{data[device].Average}</td>
+                                );
+                            })()}
                         </tr>
                     ))}
                 </tbody>
