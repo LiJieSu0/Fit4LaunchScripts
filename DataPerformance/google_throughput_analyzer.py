@@ -31,7 +31,9 @@ def analyze_throughput(file_path):
         print(f"Error: Column '{throughput_column}' not found in the CSV file.")
         return None
 
+    print(f"DEBUG: Analyzing file: {file_path}")
     throughput_data = df[throughput_column].dropna().tolist()
+    print(f"DEBUG: Raw throughput_data length: {len(throughput_data)}")
     
     # Convert throughput data to numeric, handling potential non-numeric values
     numeric_throughput_data = []
@@ -41,6 +43,9 @@ def analyze_throughput(file_path):
         except ValueError:
             # Skip non-numeric values
             continue
+    print(f"DEBUG: Numeric throughput_data length: {len(numeric_throughput_data)}")
+    print(f"DEBUG: First 20 numeric throughput values: {numeric_throughput_data[:20]}")
+    print(f"DEBUG: Last 20 numeric throughput values: {numeric_throughput_data[-20:]}")
 
     if not numeric_throughput_data:
         print("No valid numeric throughput data found.")
@@ -88,14 +93,25 @@ def analyze_throughput(file_path):
         # We don't have 3 consecutive low values to end it, so we average all of it.
         interval_averages.append(sum(current_interval_data) / len(current_interval_data))
 
+    print(f"DEBUG: Final interval_averages: {interval_averages}")
+
     if interval_averages:
         overall_average = sum(interval_averages) / len(interval_averages)
         print(f"Individual interval averages: {interval_averages}")
         print(f"Overall average of all interval averages: {overall_average}")
         return {"overall_average": overall_average, "interval_averages": interval_averages}
     else:
-        print("No valid intervals found to calculate averages.")
-        return None
+        # Fallback: If no valid intervals are found, calculate the average of all non-zero throughput values
+        non_zero_throughput = [val for val in numeric_throughput_data if val > 0]
+        print(f"DEBUG: Non-zero throughput for fallback: {non_zero_throughput[:20]}...")
+        if non_zero_throughput:
+            overall_average = sum(non_zero_throughput) / len(non_zero_throughput)
+            print("No valid intervals found using the defined criteria. Calculating overall average of all non-zero throughput values as a fallback.")
+            print(f"Fallback overall average throughput: {overall_average}")
+            return {"overall_average": overall_average, "interval_averages": []} # Return empty list for individual averages
+        else:
+            print("No valid intervals found and no non-zero throughput data to calculate a fallback average.")
+            return None
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Analyze PDSCH Throughput from a CSV file.")

@@ -39,7 +39,17 @@ const blueCircleIcon = L.divIcon({
 });
 
 const MapComponent = ({ dutCoords, refCoords, baseStationCoords }) => {
-  const center = [(dutCoords[0] + refCoords[0] + baseStationCoords[0]) / 3, (dutCoords[1] + refCoords[1] + baseStationCoords[1]) / 3];
+  let validCoords = [baseStationCoords];
+  if (dutCoords && dutCoords[0] !== null) {
+    validCoords.push(dutCoords);
+  }
+  if (refCoords && refCoords[0] !== null) {
+    validCoords.push(refCoords);
+  }
+
+  const centerLat = validCoords.reduce((sum, coords) => sum + coords[0], 0) / validCoords.length;
+  const centerLon = validCoords.reduce((sum, coords) => sum + coords[1], 0) / validCoords.length;
+  const center = [centerLat, centerLon];
 
   return (
     <div className="map-container" style={{ height: '500px', width: '500px', margin: '20px 0' }}>
@@ -48,12 +58,12 @@ const MapComponent = ({ dutCoords, refCoords, baseStationCoords }) => {
           attribution=""
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {dutCoords[0] !== 0 && (
+        {dutCoords && dutCoords[0] !== null && (
           <Marker position={dutCoords} icon={redCircleIcon}>
             <Popup>Average DUT Location</Popup>
           </Marker>
         )}
-        {refCoords[0] !== 0 && (
+        {refCoords && refCoords[0] !== null && (
           <Marker position={refCoords} icon={blueCircleIcon}>
             <Popup>Average REF Location</Popup>
           </Marker>

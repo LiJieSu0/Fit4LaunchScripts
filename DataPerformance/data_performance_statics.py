@@ -101,7 +101,7 @@ def _determine_analysis_parameters(file_path):
     print(f"DEBUG: _determine_analysis_parameters - 'dut' in file_name: {'dut' in file_name}")
     print(f"DEBUG: _determine_analysis_parameters - 'ref' in file_name: {'ref' in file_name}")
 
-    device_type_match = re.search(r'(DUT\d+|REF\d+|PC\d+)', file_name, re.IGNORECASE)
+    device_type_match = re.search(r'(DUT|REF|PC\d+)', file_name, re.IGNORECASE) # Modified regex to match DUT/REF without digits
     if device_type_match:
         params["device_type_detected"] = device_type_match.group(0).upper() # Convert to uppercase for consistency
     else:
