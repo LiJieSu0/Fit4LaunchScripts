@@ -50,7 +50,7 @@ function App() {
 
   return (
     <div className="container mx-auto p-4 main-content">
-      <h1 className="text-4xl font-bold text-center my-8">ATMCL Field Performance Test Report</h1>
+      <h1 className="text-4xl font-bold text-center my-8">Samsung Galaxy Fold S34 Performance Test Report</h1>
       <SummaryTable summaryData={summaryTableData} />
       <CategoryPage title="Call Performance Summary" />
       <CallPerformanceReport /> {/* Render the CallPerformanceReport component */}

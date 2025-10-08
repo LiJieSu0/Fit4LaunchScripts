@@ -5,7 +5,7 @@
 
   body {
     margin: 20px !important; /* Added a small left/right margin for print */
-    padding-top: 10px !important; /* Reduced padding for print top margin */
+    padding-top: 20px !important; /* Adjusted padding for print top margin to accommodate header */
     padding-bottom: 20px !important; /* Adjusted padding at the bottom to make space for the @page footer (approx 10px for content + 10px for margin) */
     -webkit-print-color-adjust: exact !important; /* Ensures background colors and images are printed */
     print-color-adjust: exact !important;
@@ -13,15 +13,12 @@
   }
 
   .print-header {
-    position: fixed !important; /* Revert to fixed for header on every page */
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
+    /* Header will only appear on the first page by default if not fixed */
     background-color: #f0f0f0 !important; /* Ensure header background matches main content */
-    z-index: 1000 !important; /* Ensure header is above other content */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important; /* Increase shadow thickness for print */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important; Increase shadow thickness for print */
     padding-bottom: 1px !important; /* Add some space below the header content */
     border-bottom: 1px solid #eee !important; /* Optional: a subtle line below header */
+    margin-bottom: 20px !important; /* Add margin below header to separate from content */
   }
 
   /* Remove any conflicting margins/paddings from main-content */
