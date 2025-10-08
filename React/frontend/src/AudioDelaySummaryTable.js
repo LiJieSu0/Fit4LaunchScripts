@@ -1,9 +1,9 @@
 import React from 'react';
 
-const VoiceQualitySummaryTable = () => {
+const AudioDelaySummaryTable = () => {
   return (
-    <div className="voice-quality-summary-table-container mb-8">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">Voice Quality Summary</h2>
+    <div className="audio-delay-summary-table-container mb-8">
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">Audio Delay Summary</h2>
       <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
         <thead className="bg-gray-600 text-white">
           <tr>
@@ -29,8 +29,8 @@ const VoiceQualitySummaryTable = () => {
         </thead>
         <tbody className="divide-y divide-gray-200">
           {[
-            "5G Auto VoNR Enabled AMR NB VQ",
-            "5G Auto VoNR Enabled AMR WB VQ",
+            "5G Auto VoNR Disabled Audio Delay",
+            "5G Auto VoNR Enabled Audio Delay",
           ].map((testCase, index) => (
             <tr key={index} className="bg-yellow-50">
               <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{testCase}</td>
@@ -51,4 +51,4 @@ const VoiceQualitySummaryTable = () => {
   );
 };
 
-export default VoiceQualitySummaryTable;
+export default AudioDelaySummaryTable;

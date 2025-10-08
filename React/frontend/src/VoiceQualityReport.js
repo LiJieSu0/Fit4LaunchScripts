@@ -3,6 +3,7 @@ import allResults from './data_analysis_results.json'; // Assuming data_analysis
 import VoiceQualityTable from './VoiceQualityTable';
 import AudioDelayTable from './AudioDelayTable';
 import VoiceQualitySummaryTable from './VoiceQualitySummaryTable';
+import AudioDelaySummaryTable from './AudioDelaySummaryTable';
 
 // Helper function to extract only Voice Quality and Audio Delay test cases
 const extractVoiceQualityTestCases = (data, currentPath = []) => {
@@ -78,7 +79,8 @@ const VoiceQualityReport = () => {
     <>
       <img src="/voice_quality_criteria1.png" alt="Voice Quality Criteria 1" className="mx-auto block mb-8" style={{ width: '110%' }} />
       <img src="/voice_quality_criteria2.png" alt="Voice Quality Criteria 2" className="mx-auto block mb-8" style={{ width: '110%' }} />
-      <VoiceQualitySummaryTable /> {/* Add the new table here */}
+      <VoiceQualitySummaryTable />
+      <AudioDelaySummaryTable />
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
           {testCases.map(testCase => {
