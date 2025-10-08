@@ -46,7 +46,6 @@ const CallPerformanceReport = () => {
     <>
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
-          <h2 className="text-2xl font-bold mb-6 text-blue-700">{categoryName}</h2>
           {testCases.map(testCase => {
             if (testCase.isCallPerformance) {
               console.log("Call Performance Test Case:", testCase.name, "Initiation P-Value:", testCase.data.initiation_p_value, "Retention P-Value:", testCase.data.retention_p_value);

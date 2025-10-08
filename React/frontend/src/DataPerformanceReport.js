@@ -244,7 +244,6 @@ const DataPerformanceReport = () => {
     <>
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
-          <h2 className="text-2xl font-bold mb-6 text-blue-700">{categoryName}</h2>
           {testCases.map(testCase => {
             if (testCase.isMrab) {
               // Render MrabStatisticsTable for MRAB test cases
