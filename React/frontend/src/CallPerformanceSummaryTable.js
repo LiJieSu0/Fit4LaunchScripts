@@ -9,6 +9,23 @@ const CallPerformanceSummaryTable = () => {
     return ((numerator / denominator) * 100).toFixed(2) + '%';
   };
 
+  const getCallSetupTimeStatusAndClass = (dutAvg, refAvg) => {
+    if (dutAvg === 'N/A' || refAvg === 'N/A') {
+      return { status: 'N/A', className: 'bg-performance-unknown' };
+    }
+
+    if (dutAvg < refAvg) {
+      return { status: 'Excellent', className: 'bg-performance-excellent' };
+    } else if (dutAvg >= refAvg && dutAvg < 1.1 * refAvg) {
+      return { status: 'PASS', className: 'bg-performance-pass' };
+    } else if (dutAvg >= 1.1 * refAvg && dutAvg < 1.25 * refAvg) {
+      return { status: 'Marginal Fail', className: 'bg-performance-marginal-fail' };
+    } else if (dutAvg >= 1.25 * refAvg) {
+      return { status: 'Fail', className: 'bg-performance-fail' };
+    }
+    return { status: 'N/A', className: 'bg-performance-unknown' };
+  };
+
   return (
     <div className="call-performance-summary-table-container mb-8">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">Call Performance Summary -Seattle Market</h2>
@@ -18,7 +35,6 @@ const CallPerformanceSummaryTable = () => {
             <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Test Cases</th>
             <th colSpan="6" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">KPI for Call Performance Mobility</th>
             <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Network Tech.</th>
-            <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Pass/Fail</th>
             <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Comments/Links</th>
           </tr>
           <tr>
@@ -36,20 +52,25 @@ const CallPerformanceSummaryTable = () => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {Object.entries(callPerformanceData).map(([testCase, values]) => (
-            <tr key={testCase} className="bg-yellow-50">
-              <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{testCase}</td>
-              <td className="border border-gray-300 text-center">{values.DUT.mean_setup_time.toFixed(2)}</td>
-              <td className="border border-gray-300 text-center">{values.REF.mean_setup_time.toFixed(2)}</td>
-              <td className="border border-gray-300 text-center">{calculatePercentage(values.DUT.total_initiation_successes, values.DUT.total_attempts)}</td>
-              <td className="border border-gray-300 text-center">{calculatePercentage(values.REF.total_initiation_successes, values.REF.total_attempts)}</td>
-              <td className="border border-gray-300 text-center">{calculatePercentage(values.DUT.total_attempts - values.DUT.total_retention_failures, values.DUT.total_attempts)}</td>
-              <td className="border border-gray-300 text-center">{calculatePercentage(values.REF.total_attempts - values.REF.total_retention_failures, values.REF.total_attempts)}</td>
-              <td className="border border-gray-300 text-center">5G Auto VoNR</td>
-              <td className="border border-gray-300 text-center">PASS</td>
-              <td className="border border-gray-300 text-center"></td>
-            </tr>
-          ))}
+          {Object.entries(callPerformanceData).map(([testCase, values]) => {
+            const dutAvgSetupTime = values.DUT.mean_setup_time;
+            const refAvgSetupTime = values.REF.mean_setup_time;
+            const { status: callSetupStatus, className: callSetupBgClass } = getCallSetupTimeStatusAndClass(dutAvgSetupTime, refAvgSetupTime);
+
+            return (
+              <tr key={testCase} className="bg-yellow-50">
+                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{testCase}</td>
+                <td className={`border border-gray-300 text-center ${callSetupBgClass}`}>{dutAvgSetupTime.toFixed(2)}</td>
+                <td className={`border border-gray-300 text-center ${callSetupBgClass}`}>{refAvgSetupTime.toFixed(2)}</td>
+                <td className="border border-gray-300 text-center">{calculatePercentage(values.DUT.total_initiation_successes, values.DUT.total_attempts)}</td>
+                <td className="border border-gray-300 text-center">{calculatePercentage(values.REF.total_initiation_successes, values.REF.total_attempts)}</td>
+                <td className="border border-gray-300 text-center">{calculatePercentage(values.DUT.total_attempts - values.DUT.total_retention_failures, values.DUT.total_attempts)}</td>
+                <td className="border border-gray-300 text-center">{calculatePercentage(values.REF.total_attempts - values.REF.total_retention_failures, values.REF.total_attempts)}</td>
+                <td className="border border-gray-300 text-center">5G Auto VoNR</td>
+                <td className="border border-gray-300 text-center"></td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
