@@ -4,6 +4,7 @@ import CallPerformanceReport from './CallPerformanceReport'; // Import the CallP
 import VoiceQualityReport from './VoiceQualityReport'; // Import the VoiceQualityReport component
 import BlankTable from './BlankTable'; // Import the BlankTable component
 import CoverageTables from './CoverageTables'; // Import the CoverageTables component
+import CategoryPage from './CategoryPage'; // Import the CategoryPage component
 import SummaryTable from './SummaryTable'; // Import the SummaryTable component
 import data from './data_analysis_results.json'; // Import the JSON data
 import './print.css'; // Import print-specific styles
@@ -51,10 +52,13 @@ function App() {
     <div className="container mx-auto p-4 main-content">
       <h1 className="text-4xl font-bold text-center my-8">ATMCL Field Performance Test Report</h1>
       <SummaryTable summaryData={summaryTableData} />
+      <CategoryPage title="Call Performance Summary" />
       <CallPerformanceReport /> {/* Render the CallPerformanceReport component */}
+      <CategoryPage title="Data Performance Summary" />
       <DataPerformanceReport />
+      <CategoryPage title="Voice Quality Summary" />
       <VoiceQualityReport /> {/* Render the VoiceQualityReport component */}
-      
+      <CategoryPage title="Coverage Performance Summary" />
         <CoverageTables
           categoryName="Coverage Performance"
           testCaseName="5G VoNR Coverage Test - N25, N41, N71"
