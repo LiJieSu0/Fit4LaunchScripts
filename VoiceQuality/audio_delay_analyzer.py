@@ -114,10 +114,10 @@ def main():
         file_name = os.path.basename(stats["file_path"])
         device_type = stats["device_type"] # Get device type
         print(f"\n--- File: {file_name} ({device_type}) ---")
-        print(f"  Mean: {stats['mean_ms']:.2f} ms")
-        print(f"  Standard Deviation: {stats['std_dev_ms']:.2f} ms")
-        print(f"  Min: {stats['min_ms']:.2f} ms")
-        print(f"  Max: {stats['max_ms']:.2f} ms")
+        print(f"  Mean: {stats['mean']:.2f} ms")
+        print(f"  Standard Deviation: {stats['std_dev']:.2f} ms")
+        print(f"  Min: {stats['min']:.2f} ms")
+        print(f"  Max: {stats['max']:.2f} ms")
         print(f"  Occurrences: {stats['occurrences']}")
 
 if __name__ == "__main__":
