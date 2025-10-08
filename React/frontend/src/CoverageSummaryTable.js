@@ -10,7 +10,6 @@ const CoverageSummaryTable = ({ summaryData }) => {
             <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Test Cases</th>
             <th colSpan="8" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">KPI for Coverage Performance Mobility</th>
             <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Network Tech.</th>
-            <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Pass/Fail</th>
             <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Comments/Links</th>
           </tr>
           <tr>
@@ -49,16 +48,31 @@ const CoverageSummaryTable = ({ summaryData }) => {
             return (
               <tr key={index} className="bg-yellow-50">
                 <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{testCase}</td>
-                <td className="border border-gray-300 text-center">{mosDUT}</td>
-                <td className="border border-gray-300 text-center">{mosREF}</td>
-                <td className="border border-gray-300 text-center">{callDropDUT}</td>
-                <td className="border border-gray-300 text-center">{callDropREF}</td>
-                <td className="border border-gray-300 text-center">{dlTpDUT}</td>
-                <td className="border border-gray-300 text-center">{dlTpREF}</td>
-                <td className="border border-gray-300 text-center">{ulTpDUT}</td>
-                <td className="border border-gray-300 text-center">{ulTpREF}</td>
-                <td className="border border-gray-300 text-center">{networkKey.toUpperCase()}</td> {/* Network Tech. */}
-                <td className="border border-gray-300 text-center"></td> {/* Pass/Fail */}
+                {(() => {
+                  const isMosPass = parseFloat(mosDUT) >= 0.95 * parseFloat(mosREF);
+                  const isCallDropPass = parseFloat(callDropDUT) >= 0.95 * parseFloat(callDropREF);
+                  const isDlTpPass = parseFloat(dlTpDUT) >= 0.95 * parseFloat(dlTpREF);
+                  const isUlTpPass = parseFloat(ulTpDUT) >= 0.95 * parseFloat(ulTpREF);
+
+                  const mosBgColor = isMosPass ? 'var(--performance-pass)' : 'var(--performance-fail)';
+                  const callDropBgColor = isCallDropPass ? 'var(--performance-pass)' : 'var(--performance-fail)';
+                  const dlTpBgColor = isDlTpPass ? 'var(--performance-pass)' : 'var(--performance-fail)';
+                  const ulTpBgColor = isUlTpPass ? 'var(--performance-pass)' : 'var(--performance-fail)';
+
+                  return (
+                    <>
+                      <td className="border border-gray-300 text-center" style={{ backgroundColor: mosBgColor }}>{mosDUT}</td>
+                      <td className="border border-gray-300 text-center" style={{ backgroundColor: mosBgColor }}>{mosREF}</td>
+                      <td className="border border-gray-300 text-center" style={{ backgroundColor: callDropBgColor }}>{callDropDUT}</td>
+                      <td className="border border-gray-300 text-center" style={{ backgroundColor: callDropBgColor }}>{callDropREF}</td>
+                      <td className="border border-gray-300 text-center" style={{ backgroundColor: dlTpBgColor }}>{dlTpDUT}</td>
+                      <td className="border border-gray-300 text-center" style={{ backgroundColor: dlTpBgColor }}>{dlTpREF}</td>
+                      <td className="border border-gray-300 text-center" style={{ backgroundColor: ulTpBgColor }}>{ulTpDUT}</td>
+                      <td className="border border-gray-300 text-center" style={{ backgroundColor: ulTpBgColor }}>{ulTpREF}</td>
+                      <td className="border border-gray-300 text-center">{networkKey.toUpperCase()}</td> {/* Network Tech. */}
+                    </>
+                  );
+                })()}
                 <td className="border border-gray-300 text-center"></td> {/* Comments/Links */}
               </tr>
             );
