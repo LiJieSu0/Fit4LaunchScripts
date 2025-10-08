@@ -52,8 +52,8 @@ const AudioDelayTable = ({ data, testName }) => {
                     <tr>
                         <th></th>
                         <th>DUT1</th>
-                        <th>REF1</th>
                         <th>DUT2</th>
+                        <th>REF1</th>
                         <th>REF2</th>
                     </tr>
                 </thead>
@@ -62,8 +62,8 @@ const AudioDelayTable = ({ data, testName }) => {
                         <tr key={index}>
                             <td>{metric.label}</td>
                             <td>{getMetricValue(devices.DUT1, metric.key)}</td>
-                            <td>{getMetricValue(devices.REF1, metric.key)}</td>
                             <td>{getMetricValue(devices.DUT2, metric.key)}</td>
+                            <td>{getMetricValue(devices.REF1, metric.key)}</td>
                             <td>{getMetricValue(devices.REF2, metric.key)}</td>
                         </tr>
                     ))}
