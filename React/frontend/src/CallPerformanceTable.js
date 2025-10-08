@@ -1,4 +1,5 @@
 import React from 'react';
+import { getCallSetupTimeStatusAndClass } from './CallPerformanceSummaryTable'; // Import the helper function
 
 const CallPerformanceTable = ({ callPerformanceData }) => {
   if (!callPerformanceData) {
@@ -21,6 +22,10 @@ const CallPerformanceTable = ({ callPerformanceData }) => {
   const refSuccessfulInitiationsPercentage = (refTotalAttempts > 0) ? ((refSuccessfulInitiations / refTotalAttempts) * 100).toFixed(2) : "0.00";
   const refFailedInitiationsPercentage = (refTotalAttempts > 0) ? ((refFailedInitiations / refTotalAttempts) * 100).toFixed(2) : "0.00";
 
+  const dutAvgSetupTime = callPerformanceData.DUT.mean_setup_time;
+  const refAvgSetupTime = callPerformanceData.REF.mean_setup_time;
+  const { className: callSetupBgClass } = getCallSetupTimeStatusAndClass(dutAvgSetupTime, refAvgSetupTime);
+
   return (
     <div className="overflow-x-auto mb-6 table-container">
       <table className="common-table">
@@ -39,7 +44,7 @@ const CallPerformanceTable = ({ callPerformanceData }) => {
           <tr>
             <td>DUT</td>
             <td>{dutTotalAttempts}</td>
-            <td>{DUT.mean_setup_time.toFixed(2)}</td>
+            <td className={callSetupBgClass}>{DUT.mean_setup_time.toFixed(2)}</td>
             <td>{dutSuccessfulInitiations}</td>
             <td>{dutSuccessfulInitiationsPercentage}%</td>
             <td>{dutFailedInitiations}</td>
@@ -48,7 +53,7 @@ const CallPerformanceTable = ({ callPerformanceData }) => {
           <tr>
             <td>REF</td>
             <td>{refTotalAttempts}</td>
-            <td>{REF.mean_setup_time.toFixed(2)}</td>
+            <td className={callSetupBgClass}>{REF.mean_setup_time.toFixed(2)}</td>
             <td>{refSuccessfulInitiations}</td>
             <td>{refSuccessfulInitiationsPercentage}%</td>
             <td>{refFailedInitiations}</td>

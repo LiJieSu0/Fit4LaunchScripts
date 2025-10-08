@@ -1,29 +1,29 @@
 import React from 'react';
 import data from './data_analysis_results.json';
 
+export const getCallSetupTimeStatusAndClass = (dutAvg, refAvg) => {
+  if (dutAvg === 'N/A' || refAvg === 'N/A') {
+    return { status: 'N/A', className: 'bg-performance-unknown' };
+  }
+
+  if (dutAvg < refAvg) {
+    return { status: 'Excellent', className: 'bg-performance-excellent' };
+  } else if (dutAvg >= refAvg && dutAvg < 1.1 * refAvg) {
+    return { status: 'PASS', className: 'bg-performance-pass' };
+  } else if (dutAvg >= 1.1 * refAvg && dutAvg < 1.25 * refAvg) {
+    return { status: 'Marginal Fail', className: 'bg-performance-marginal-fail' };
+  } else if (dutAvg >= 1.25 * refAvg) {
+    return { status: 'Fail', className: 'bg-performance-fail' };
+  }
+  return { status: 'N/A', className: 'bg-performance-unknown' };
+};
+
 const CallPerformanceSummaryTable = () => {
   const callPerformanceData = data['Call Performance'];
 
   const calculatePercentage = (numerator, denominator) => {
     if (denominator === 0) return 'N/A';
     return ((numerator / denominator) * 100).toFixed(2) + '%';
-  };
-
-  const getCallSetupTimeStatusAndClass = (dutAvg, refAvg) => {
-    if (dutAvg === 'N/A' || refAvg === 'N/A') {
-      return { status: 'N/A', className: 'bg-performance-unknown' };
-    }
-
-    if (dutAvg < refAvg) {
-      return { status: 'Excellent', className: 'bg-performance-excellent' };
-    } else if (dutAvg >= refAvg && dutAvg < 1.1 * refAvg) {
-      return { status: 'PASS', className: 'bg-performance-pass' };
-    } else if (dutAvg >= 1.1 * refAvg && dutAvg < 1.25 * refAvg) {
-      return { status: 'Marginal Fail', className: 'bg-performance-marginal-fail' };
-    } else if (dutAvg >= 1.25 * refAvg) {
-      return { status: 'Fail', className: 'bg-performance-fail' };
-    }
-    return { status: 'N/A', className: 'bg-performance-unknown' };
   };
 
   return (
