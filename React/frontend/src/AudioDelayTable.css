@@ -9,3 +9,20 @@
 .audio-delay-table {
     margin-top: 10px;
 }
+
+/* Performance-based background colors */
+.bg-performance-excellent {
+  background-color: var(--performance-excellent);
+}
+
+.bg-performance-pass {
+  background-color: var(--performance-pass);
+}
+
+.bg-performance-marginal-fail {
+  background-color: var(--performance-marginal-fail);
+}
+
+.bg-performance-fail {
+  background-color: var(--performance-fail);
+}
