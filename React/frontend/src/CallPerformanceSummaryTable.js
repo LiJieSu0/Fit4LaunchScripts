@@ -7,7 +7,7 @@ const CallPerformanceSummaryTable = () => {
       <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
         <thead className="bg-gray-600 text-white">
           <tr>
-            <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Call Performance Summary</th>
+            <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Test Cases</th>
             <th colSpan="6" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">KPI for Call Performance Mobility</th>
             <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Network Tech.</th>
             <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Pass/Fail</th>
@@ -29,113 +29,52 @@ const CallPerformanceSummaryTable = () => {
         </thead>
         <tbody className="divide-y divide-gray-200">
           <tr className="bg-yellow-50">
-            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">VoLTE CP MO Drive</td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
+            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">5G Auto VoNR Enabled CP MO Drive</td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
           </tr>
           <tr className="bg-yellow-50">
-            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">VoLTE CP MT Drive</td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
+            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">5G Auto VoNR Disabled CP MO Drive</td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
           </tr>
           <tr className="bg-yellow-50">
-            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">5G Auto VoNR Enabled CP MO Drive</td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
+            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">5G Auto VoNR Enabled CP MT Drive</td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
           </tr>
           <tr className="bg-yellow-50">
-            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">5G Auto VoNR Disabled CP MO Drive</td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-          </tr>
-          <tr className="bg-yellow-50">
-            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">5G Auto VoNR Enabled CP MT Drive</td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-          </tr>
-          <tr className="bg-yellow-50">
-            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">5G Auto VoNR Disabled CP MT Drive</td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-          </tr>
-          {/* Rows from the second table */}
-          <tr className="bg-yellow-50">
-            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">Disabled CP MT Drive</td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-          </tr>
-          <tr className="bg-yellow-50">
-            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">5G Auto CP MO Drive</td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-          </tr>
-          <tr className="bg-yellow-50">
-            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300">5G Auto CP MT Drive</td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
-            <td className="border border-gray-300"></td>
+            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">5G Auto VoNR Disabled CP MT Drive</td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
+            <td className="border border-gray-300 text-center"></td>
           </tr>
         </tbody>
       </table>
