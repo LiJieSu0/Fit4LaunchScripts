@@ -35,11 +35,6 @@ const CoverageSummaryTable = () => {
             "5G VoNR Coverage Test n25",
             "5G VoNR Coverage Test n41",
             "5G VoNR Coverage Test n71",
-            "5G n41 HPUE Coverage Test Run1",
-            "5G n41 HPUE Coverage Test Run2",
-            "5G n41 HPUE Coverage Test Run3",
-            "5G n41 HPUE Coverage Test Run4",
-            "5G n41 HPUE Coverage Test Run5",
           ].map((testCase, index) => (
             <tr key={index} className="bg-yellow-50">
               <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{testCase}</td>
