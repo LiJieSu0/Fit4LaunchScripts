@@ -1,6 +1,14 @@
 import React from 'react';
+import data from './data_analysis_results.json';
 
 const CallPerformanceSummaryTable = () => {
+  const callPerformanceData = data['Call Performance'];
+
+  const calculatePercentage = (numerator, denominator) => {
+    if (denominator === 0) return 'N/A';
+    return ((numerator / denominator) * 100).toFixed(2) + '%';
+  };
+
   return (
     <div className="call-performance-summary-table-container mb-8">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">Call Performance Summary -Seattle Market</h2>
@@ -28,54 +36,20 @@ const CallPerformanceSummaryTable = () => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          <tr className="bg-yellow-50">
-            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">5G Auto VoNR Enabled CP MO Drive</td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-          </tr>
-          <tr className="bg-yellow-50">
-            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">5G Auto VoNR Disabled CP MO Drive</td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-          </tr>
-          <tr className="bg-yellow-50">
-            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">5G Auto VoNR Enabled CP MT Drive</td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-          </tr>
-          <tr className="bg-yellow-50">
-            <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">5G Auto VoNR Disabled CP MT Drive</td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-            <td className="border border-gray-300 text-center"></td>
-          </tr>
+          {Object.entries(callPerformanceData).map(([testCase, values]) => (
+            <tr key={testCase} className="bg-yellow-50">
+              <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{testCase}</td>
+              <td className="border border-gray-300 text-center">{values.DUT.mean_setup_time.toFixed(2)}</td>
+              <td className="border border-gray-300 text-center">{values.REF.mean_setup_time.toFixed(2)}</td>
+              <td className="border border-gray-300 text-center">{calculatePercentage(values.DUT.total_initiation_successes, values.DUT.total_attempts)}</td>
+              <td className="border border-gray-300 text-center">{calculatePercentage(values.REF.total_initiation_successes, values.REF.total_attempts)}</td>
+              <td className="border border-gray-300 text-center">{calculatePercentage(values.DUT.total_attempts - values.DUT.total_retention_failures, values.DUT.total_attempts)}</td>
+              <td className="border border-gray-300 text-center">{calculatePercentage(values.REF.total_attempts - values.REF.total_retention_failures, values.REF.total_attempts)}</td>
+              <td className="border border-gray-300 text-center">5G Auto VoNR</td>
+              <td className="border border-gray-300 text-center">PASS</td>
+              <td className="border border-gray-300 text-center"></td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
