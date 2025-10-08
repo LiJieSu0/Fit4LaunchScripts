@@ -8,29 +8,36 @@ const DataPerformanceSummaryTable = () => {
         <thead className="bg-gray-600 text-white">
           <tr>
             <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Test Cases</th>
-            <th colSpan="10" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">KPI for Data Performance Mobility</th>
-            <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Network Tech.</th>
-            <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Pass/Fail</th>
-            <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Comments/Links</th>
+            <th colSpan="16" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">KPI for Data Performance Mobility</th>
+            <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Pass/Fail & Links</th>
           </tr>
           <tr>
-            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">Throughput (Mbps)</th>
-            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">Jitter (ms)</th>
-            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">Error Ratio (%)</th>
-            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">Web Page Load Time (s)</th>
-            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">Ping RTT (ms)</th>
+            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">HTTP SS Tput</th>
+            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">HTTP MS Tput</th>
+            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">UDP Tput</th>
+            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">UDP Jitter</th>
+            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">UDP Latency</th>
+            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">UDP Packet Loss</th>
+            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">PING</th>
+            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">Webpage Load time</th>
           </tr>
           <tr>
-            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT Avg.</th>
-            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF Avg.</th>
-            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT Avg.</th>
-            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF Avg.</th>
-            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT Avg.</th>
-            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF Avg.</th>
-            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT Avg.</th>
-            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF Avg.</th>
-            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT Avg.</th>
-            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF Avg.</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT</th>
+            <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
@@ -58,6 +65,10 @@ const DataPerformanceSummaryTable = () => {
           ].map((testCase, index) => (
             <tr key={index} className="bg-yellow-50">
               <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{testCase}</td>
+              <td className="border border-gray-300 text-center"></td>
+              <td className="border border-gray-300 text-center"></td>
+              <td className="border border-gray-300 text-center"></td>
+              <td className="border border-gray-300 text-center"></td>
               <td className="border border-gray-300 text-center"></td>
               <td className="border border-gray-300 text-center"></td>
               <td className="border border-gray-300 text-center"></td>
