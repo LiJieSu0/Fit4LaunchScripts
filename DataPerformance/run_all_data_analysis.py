@@ -23,6 +23,7 @@ from VoiceQuality.voice_quality_analyzer import process_directory as analyze_voi
 from VoiceQuality.audio_delay_analyzer import process_directory as analyze_audio_delay_directory # Import process_directory from audio_delay_analyzer.py
 from Coverage.coverage_coordinate_analyzer import analyze_coverage_coordinates, find_dut_ref_files, compare_analysis_results # Import the coverage analysis functions
 from Coverage.n41_coverage_analyzer import analyze_n41_coverage, extract_coverage_data_to_csv # Import the n41 coverage analyzer and generic data extractor
+from Coverage.coverage_performance_analyzer import analyze_csv as analyze_vonr_coverage_performance # Import the new VoNR coverage performance analyzer
 from DataPerformance.google_throughput_analyzer import analyze_throughput as google_analyze_throughput # Import the google throughput analyzer
 
 if __name__ == "__main__":
@@ -45,6 +46,7 @@ if __name__ == "__main__":
         {"path": "Voice Quality", "analysis_type": "audio_delay"}, # Add Audio Delay directory, using the same base path
         {"path": "Coverage Performance", "analysis_type": "coverage_coordinate"}, # Add Coverage Coordinate directory
         {"path": "Coverage Performance/5G n41 HPUE Coverage Test", "analysis_type": "n41_coverage"}, # Add N41 Coverage directory
+        {"path": "Coverage Performance/5G VoNR Coverage Test", "analysis_type": "vonr_coverage_performance"}, # Add 5G VoNR Coverage Test directory
         {"path": "Data Performance/5G AUTO DP/5G Auto Data Play-store app DL Stationary", "analysis_type": "google_throughput_analysis"}, # Add Google Throughput Analysis directory
     ]
     
@@ -71,6 +73,7 @@ if __name__ == "__main__":
         "audio_delay",
         "coverage_coordinate",
         "n41_coverage", # Add n41_coverage to excluded list
+        "vonr_coverage_performance", # Add vonr_coverage_performance to excluded list
         "google_throughput_analysis" # Add google_throughput_analysis to excluded list
     ]
 
@@ -453,6 +456,57 @@ if __name__ == "__main__":
             else:
                 print(f"Warning: N41 Coverage directory not found at {n41_base_path}. Skipping analysis.")
         
+        elif directory_info["analysis_type"] == "vonr_coverage_performance":
+            vonr_coverage_base_path = os.path.join(base_raw_data_dir, directory_info["path"])
+            if os.path.isdir(vonr_coverage_base_path):
+                print(f"\n--- Starting 5G VoNR Coverage Performance analysis for directory: {vonr_coverage_base_path} ---")
+
+                vonr_coverage_results_by_band = {}
+
+                # Iterate through subdirectories (n25, n41, n71)
+                for band_folder_name in os.listdir(vonr_coverage_base_path):
+                    band_folder_path = os.path.join(vonr_coverage_base_path, band_folder_name)
+                    if os.path.isdir(band_folder_path) and band_folder_name.startswith("n"): # Assuming bands are named nXX
+                        print(f"Analyzing VoNR coverage performance data in band: {band_folder_path}")
+                        
+                        band_results = {"DUT": {}, "REF": {}}
+                        
+                        # Directly iterate through files within the band folder
+                        for file_name in os.listdir(band_folder_path):
+                            if file_name.lower().endswith(".csv"):
+                                file_path = os.path.join(band_folder_path, file_name)
+                                print(f"Analyzing {file_name}...")
+                                analysis_results = analyze_vonr_coverage_performance(file_path)
+                                
+                                if analysis_results:
+                                    # Determine device type (DUT or REF) from filename
+                                    device_type_match = re.match(r"(DUT|REF)\d+", file_name, re.IGNORECASE)
+                                    device_type = device_type_match.group(1).upper() if device_type_match else "Unknown"
+
+                                    # Extract run number from filename (e.g., DUT1_Run1.csv -> Run1)
+                                    run_match = re.search(r"Run(\d+)\.csv", file_name, re.IGNORECASE)
+                                    run_name = f"Run{run_match.group(1)}" if run_match else os.path.splitext(file_name)[0]
+                                    
+                                    if device_type in band_results:
+                                        band_results[device_type][run_name] = analysis_results
+                                    else:
+                                        print(f"Warning: Unknown device type '{device_type}' for file {file_name}. Skipping.")
+                                else:
+                                    print(f"No analysis results for {file_name}.")
+                        
+                        if band_results["DUT"] or band_results["REF"]:
+                            vonr_coverage_results_by_band[band_folder_name] = band_results
+                        else:
+                            print(f"No CSV files with 'DUT' or 'REF' found in band {band_folder_name}.")
+
+                if vonr_coverage_results_by_band:
+                    _insert_into_nested_dict(all_collected_results, directory_info["path"].replace("\\", "/").split('/'), vonr_coverage_results_by_band)
+                    print(f"5G VoNR Coverage Performance analysis for {vonr_coverage_base_path} completed and added to results.")
+                else:
+                    print(f"No 5G VoNR Coverage Performance data collected for {vonr_coverage_base_path}.")
+            else:
+                print(f"Warning: 5G VoNR Coverage Performance directory not found at {vonr_coverage_base_path}. Skipping analysis.")
+
         elif directory_info["analysis_type"] == "google_throughput_analysis":
             google_throughput_base_path = os.path.join(base_raw_data_dir, directory_info["path"])
             if os.path.isdir(google_throughput_base_path):

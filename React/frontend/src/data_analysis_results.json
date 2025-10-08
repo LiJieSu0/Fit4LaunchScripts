@@ -512,6 +512,32 @@
                 }
             },
             "5G Auto Data Test MHS Stationary Location 2 UL": {
+                "25x64 bytes PING (ICMP)": {
+                    "TMO_Ping_DUT_TC-104-4": {
+                        "Device Type": "Unknown",
+                        "Protocol Type": "PING",
+                        "Network Type": "5G",
+                        "Analysis Type": "data_performance",
+                        "Ping RTT": {
+                            "min": 24.0,
+                            "max": 467.0,
+                            "avg": 82.60921843687375,
+                            "std_dev": 51.126286623674176
+                        }
+                    },
+                    "TMO_Ping_REF_TC-104-4": {
+                        "Device Type": "Unknown",
+                        "Protocol Type": "PING",
+                        "Network Type": "5G",
+                        "Analysis Type": "data_performance",
+                        "Ping RTT": {
+                            "min": 43.0,
+                            "max": 997.0,
+                            "avg": 164.05,
+                            "std_dev": 159.24382780311072
+                        }
+                    }
+                },
                 "Multi Stream HTTP Upload for 30 seconds": {
                     "DUT MS HTTP UL 30S": {
                         "Device Type": "Unknown",
@@ -569,6 +595,50 @@
                             "Minimum": 5.9422,
                             "Maximum": 14.155750000000001,
                             "Number of Intervals": 20
+                        }
+                    }
+                },
+                "UDP Upload Task at 10 Mbps for 10 seconds": {
+                    "dut_5G Auto_UDP Upload Task at 10 M": {
+                        "Device Type": "Unknown",
+                        "Analysis Direction": "UL",
+                        "Protocol Type": "UDP",
+                        "Network Type": "5G",
+                        "Analysis Type": "data_performance",
+                        "Throughput": {
+                            "Mean": 3.7028407000000003,
+                            "Standard Deviation": 2.905165576148496,
+                            "Minimum": 0.0,
+                            "Maximum": 7.044976,
+                            "Number of Intervals": 20,
+                            "Note": "Calculated overall sum divided by number of detected intervals due to no valid interval data. Limited to last 20 rows if applicable."
+                        },
+                        "Jitter": {
+                            "Mean": 0.94465625
+                        },
+                        "Error Ratio": {
+                            "Mean": 28.312282619047622
+                        }
+                    },
+                    "ref_5G Auto_UDP Upload Task at 10 M": {
+                        "Device Type": "Unknown",
+                        "Analysis Direction": "UL",
+                        "Protocol Type": "UDP",
+                        "Network Type": "5G",
+                        "Analysis Type": "data_performance",
+                        "Throughput": {
+                            "Mean": 1.6999913999999996,
+                            "Standard Deviation": 0.837129241742931,
+                            "Minimum": 0.570328,
+                            "Maximum": 3.380896,
+                            "Number of Intervals": 20,
+                            "Note": "Calculated overall sum divided by number of detected intervals due to no valid interval data. Limited to last 20 rows if applicable."
+                        },
+                        "Jitter": {
+                            "Mean": 8.430857142857143
+                        },
+                        "Error Ratio": {
+                            "Mean": 75.03836662857142
                         }
                     }
                 },
@@ -3151,7 +3221,566 @@
         }
     },
     "Coverage Performance": {
-        "5G VoNR Coverage Test": {},
+        "5G VoNR Coverage Test": {
+            "n25": {
+                "DUT": {
+                    "Run1": {
+                        "mos_before_drop": [
+                            47.146212,
+                            -122.35731
+                        ],
+                        "call_drop": [
+                            47.147595,
+                            -122.357257
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.14415,
+                            -122.357327
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.14415,
+                            -122.357327
+                        ]
+                    },
+                    "Run2": {
+                        "mos_before_drop": [
+                            47.148943,
+                            -122.35721
+                        ],
+                        "call_drop": [
+                            47.149857,
+                            -122.357205
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.145997,
+                            -122.357313
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.145685,
+                            -122.357318
+                        ]
+                    },
+                    "Run3": {
+                        "mos_before_drop": [
+                            47.149588,
+                            -122.357208
+                        ],
+                        "call_drop": [
+                            47.14999,
+                            -122.357202
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.147635,
+                            -122.357265
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.147347,
+                            -122.357282
+                        ]
+                    },
+                    "Run4": {
+                        "mos_before_drop": [
+                            47.15021,
+                            -122.357212
+                        ],
+                        "call_drop": [
+                            47.150355,
+                            -122.357207
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.14683,
+                            -122.357288
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.146405,
+                            -122.357303
+                        ]
+                    },
+                    "Run5": {
+                        "mos_before_drop": [
+                            47.147903,
+                            -122.357212
+                        ],
+                        "call_drop": [
+                            47.149065,
+                            -122.357143
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.146368,
+                            -122.357287
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.1462,
+                            -122.357295
+                        ]
+                    }
+                },
+                "REF": {
+                    "Run1": {
+                        "mos_before_drop": [
+                            47.150115,
+                            -122.357223
+                        ],
+                        "call_drop": [
+                            47.150115,
+                            -122.357223
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.148357,
+                            -122.357232
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.143685,
+                            -122.357327
+                        ]
+                    },
+                    "Run2": {
+                        "mos_before_drop": [
+                            47.149915,
+                            -122.357213
+                        ],
+                        "call_drop": [
+                            47.149915,
+                            -122.357213
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.148252,
+                            -122.357233
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.145408,
+                            -122.357322
+                        ]
+                    },
+                    "Run3": {
+                        "mos_before_drop": [
+                            47.150025,
+                            -122.357193
+                        ],
+                        "call_drop": [
+                            47.150025,
+                            -122.357193
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.148292,
+                            -122.357238
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.144018,
+                            -122.357358
+                        ]
+                    },
+                    "Run4": {
+                        "mos_before_drop": [
+                            47.150355,
+                            -122.357202
+                        ],
+                        "call_drop": [
+                            47.150355,
+                            -122.357202
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.148438,
+                            -122.35722
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.145,
+                            -122.35735
+                        ]
+                    },
+                    "Run5": {
+                        "mos_before_drop": [
+                            47.1485,
+                            -122.357162
+                        ],
+                        "call_drop": [
+                            47.150073,
+                            -122.357145
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.147258,
+                            -122.357242
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.143857,
+                            -122.357312
+                        ]
+                    }
+                }
+            },
+            "n41": {
+                "DUT": {
+                    "Run1": {
+                        "mos_before_drop": [
+                            47.153447,
+                            -122.357128
+                        ],
+                        "call_drop": [
+                            47.153982,
+                            -122.357142
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.150115,
+                            -122.357223
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.149238,
+                            -122.357208
+                        ]
+                    },
+                    "Run2": {
+                        "mos_before_drop": [
+                            47.153057,
+                            -122.35715
+                        ],
+                        "call_drop": [
+                            47.153587,
+                            -122.357118
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.150577,
+                            -122.357187
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.149915,
+                            -122.357213
+                        ]
+                    },
+                    "Run3": {
+                        "mos_before_drop": [
+                            47.150025,
+                            -122.357193
+                        ],
+                        "call_drop": [
+                            47.150025,
+                            -122.357193
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.150508,
+                            -122.35725
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.150508,
+                            -122.35725
+                        ]
+                    },
+                    "Run4": {
+                        "mos_before_drop": [
+                            47.153377,
+                            -122.357125
+                        ],
+                        "call_drop": [
+                            47.153743,
+                            -122.357128
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.15052,
+                            -122.35719
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.150442,
+                            -122.357187
+                        ]
+                    },
+                    "Run5": {
+                        "mos_before_drop": [
+                            47.150565,
+                            -122.357137
+                        ],
+                        "call_drop": [
+                            47.150565,
+                            -122.357137
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.148665,
+                            -122.357153
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.147835,
+                            -122.357215
+                        ]
+                    }
+                },
+                "REF": {
+                    "Run1": {
+                        "mos_before_drop": [
+                            47.150115,
+                            -122.357223
+                        ],
+                        "call_drop": [
+                            47.150115,
+                            -122.357223
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.148512,
+                            -122.357228
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.14382,
+                            -122.357325
+                        ]
+                    },
+                    "Run2": {
+                        "mos_before_drop": [
+                            47.149915,
+                            -122.357213
+                        ],
+                        "call_drop": [
+                            47.149915,
+                            -122.357213
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.149627,
+                            -122.357207
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.148822,
+                            -122.357212
+                        ]
+                    },
+                    "Run3": {
+                        "mos_before_drop": [
+                            47.150027,
+                            -122.357197
+                        ],
+                        "call_drop": [
+                            47.150025,
+                            -122.357193
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.149655,
+                            -122.357207
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.148478,
+                            -122.35723
+                        ]
+                    },
+                    "Run4": {
+                        "mos_before_drop": [
+                            47.150355,
+                            -122.357202
+                        ],
+                        "call_drop": [
+                            47.150355,
+                            -122.357202
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.149763,
+                            -122.357213
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.14683,
+                            -122.357288
+                        ]
+                    },
+                    "Run5": {
+                        "mos_before_drop": [
+                            47.150565,
+                            -122.357137
+                        ],
+                        "call_drop": [
+                            47.150565,
+                            -122.357137
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.148427,
+                            -122.357165
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.148018,
+                            -122.357203
+                        ]
+                    }
+                }
+            },
+            "n71": {
+                "DUT": {
+                    "Run1": {
+                        "mos_before_drop": [
+                            47.149363,
+                            -122.357208
+                        ],
+                        "call_drop": [
+                            47.150112,
+                            -122.357222
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.147123,
+                            -122.357272
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.146212,
+                            -122.35731
+                        ]
+                    },
+                    "Run2": {
+                        "mos_before_drop": [
+                            47.148943,
+                            -122.35721
+                        ],
+                        "call_drop": [
+                            47.149857,
+                            -122.357205
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.145837,
+                            -122.357317
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.14466,
+                            -122.357317
+                        ]
+                    },
+                    "Run3": {
+                        "mos_before_drop": [
+                            47.149588,
+                            -122.357208
+                        ],
+                        "call_drop": [
+                            47.149973,
+                            -122.357202
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.144538,
+                            -122.357355
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.144193,
+                            -122.357358
+                        ]
+                    },
+                    "Run4": {
+                        "mos_before_drop": [
+                            47.15021,
+                            -122.357212
+                        ],
+                        "call_drop": [
+                            47.150357,
+                            -122.357203
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.144723,
+                            -122.357368
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.144028,
+                            -122.357372
+                        ]
+                    },
+                    "Run5": {
+                        "mos_before_drop": [
+                            47.149548,
+                            -122.357143
+                        ],
+                        "call_drop": [
+                            47.149815,
+                            -122.357147
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.144938,
+                            -122.357303
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.143677,
+                            -122.357317
+                        ]
+                    }
+                },
+                "REF": {
+                    "Run1": {
+                        "mos_before_drop": [
+                            47.149363,
+                            -122.357208
+                        ],
+                        "call_drop": [
+                            47.150115,
+                            -122.357223
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.144788,
+                            -122.357325
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.143685,
+                            -122.357327
+                        ]
+                    },
+                    "Run2": {
+                        "mos_before_drop": [
+                            47.148943,
+                            -122.35721
+                        ],
+                        "call_drop": [
+                            47.149928,
+                            -122.357207
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.145997,
+                            -122.357313
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.144793,
+                            -122.357317
+                        ]
+                    },
+                    "Run3": {
+                        "mos_before_drop": [
+                            47.149588,
+                            -122.357208
+                        ],
+                        "call_drop": [
+                            47.15001,
+                            -122.357203
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.144712,
+                            -122.357352
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.14296,
+                            -122.357353
+                        ]
+                    },
+                    "Run4": {
+                        "mos_before_drop": [
+                            47.15021,
+                            -122.357212
+                        ],
+                        "call_drop": [
+                            47.150357,
+                            -122.357205
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.143407,
+                            -122.357368
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.143092,
+                            -122.357368
+                        ]
+                    },
+                    "Run5": {
+                        "mos_before_drop": [
+                            47.1485,
+                            -122.357162
+                        ],
+                        "call_drop": [
+                            47.150515,
+                            -122.357142
+                        ],
+                        "first_dl_tp_gt_1": [
+                            47.143677,
+                            -122.357317
+                        ],
+                        "first_ul_tp_gt_1": [
+                            47.142942,
+                            -122.357317
+                        ]
+                    }
+                }
+            }
+        },
         "5G n41 HPUE Coverage Test": {
             "Run1": [
                 {
