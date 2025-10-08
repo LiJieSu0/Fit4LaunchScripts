@@ -44,6 +44,7 @@ const CallPerformanceReport = () => {
 
   return (
     <>
+      <img src="/call_performance_criteria.png" alt="Call Performance Criteria" className="mx-auto block mb-8" style={{ width: '110%' }} />
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
           {testCases.map(testCase => {

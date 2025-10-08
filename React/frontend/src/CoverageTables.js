@@ -119,6 +119,7 @@ const CoverageTables = ({ categoryName, testCaseName, coverageData, baseStationC
 
     return (
         <div className="category-section">
+            <img src="/coverage_criteria.png" alt="Coverage Criteria" className="mx-auto block mb-8" style={{ width: '110%' }} />
             {displayCategoryTitle && <h2 className="text-2xl font-bold mb-6 text-blue-700">{categoryName}</h2>}
             <h3 className="text-xl font-bold mb-4 text-gray-800">{testCaseName}</h3>
             

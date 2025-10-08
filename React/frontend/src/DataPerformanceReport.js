@@ -265,6 +265,10 @@ const DataPerformanceReport = () => {
 
   return (
     <>
+      <img src="/data_performance_criteria1.png" alt="Data Performance Criteria 1" className="mx-auto block mb-8" style={{ width: '110%' }} />
+      <img src="/data_performance_criteria2.png" alt="Data Performance Criteria 2" className="mx-auto block mb-8" style={{ width: '110%' }} />
+      <img src="/data_performance_criteria3.png" alt="Data Performance Criteria 3" className="mx-auto block mb-8" style={{ width: '110%' }} />
+      <img src="/data_performance_criteria4.png" alt="Data Performance Criteria 4" className="mx-auto block mb-8" style={{ width: '110%' }} />
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
           {testCases.map(testCase => {
