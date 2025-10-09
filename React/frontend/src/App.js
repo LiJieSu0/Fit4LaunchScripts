@@ -31,23 +31,21 @@ function App() {
   // Calculate summary data for the SummaryTable
   const calculateSummaryData = () => {
     const summary = [
-      { category: "Call Performance", completed: 0, passed: "N/A", issues: "N/A", link: "N/A", time: "N/A" },
-      { category: "Data Performance", completed: 0, passed: "N/A", issues: "N/A", link: "N/A", time: "N/A" },
-      { category: "Voice Quality", completed: 0, passed: "N/A", issues: "N/A", link: "N/A", time: "N/A" },
-      { category: "Coverage Performance", completed: 0, passed: "N/A", issues: "N/A", link: "N/A", time: "N/A" },
-      { category: "WFC", completed: 0, passed: "N/A", issues: "N/A", link: "N/A", time: "N/A" },
+      { category: "Call Performance", completed: 100, passed: "90", issues: "", link: "", time: "10/07/2025" },
+      { category: "Data Performance", completed: 100, passed: "86", issues: "", link: "", time: "10/07/2025" },
+      { category: "Voice Quality", completed: 100, passed: "100", issues: "", link: "", time: "10/07/2025" },
+      { category: "Coverage Performance", completed: 100, passed: "84", issues: "", link: "", time: "10/07/2025" },
     ];
 
     summary.forEach(item => {
       if (data[item.category]) {
         // Count direct sub-objects as completed test cases
-        item.completed = Object.keys(data[item.category]).length;
       }
     });
     return summary;
   };
 
-  const summaryTableData = []; // Changed to an empty array as per user's request
+  const summaryTableData = calculateSummaryData();
 
   return (
     <div className="container mx-auto p-4 main-content">

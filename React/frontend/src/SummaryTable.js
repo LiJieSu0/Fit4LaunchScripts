@@ -41,7 +41,6 @@ const SummaryTable = ({ summaryData }) => {
               <th>% Completed</th>
               <th>% Passed</th>
               <th>Issues</th>
-              <th>Link to Issue Page</th>
               <th>Time to complete</th>
             </tr>
           </thead>
@@ -51,15 +50,13 @@ const SummaryTable = ({ summaryData }) => {
               "Data Performance",
               "Voice Quality",
               "Coverage Performance",
-              "WFC",
             ].map((category, index) => {
               const item = summaryData.find(dataItem => dataItem.category === category) || {};
               return (
                 <tr key={index}>
                   <td>{category}</td>
-                  <td>{item.completed ? (item.completed > 0 ? `${item.completed} Test Cases` : 'N/A') : ''}</td>
+                  <td>{item.completed || ''}</td>
                   <td>{item.passed || ''}</td>
-                  <td>{item.issues || ''}</td>
                   <td>{item.link || ''}</td>
                   <td>{item.time || ''}</td>
                 </tr>
