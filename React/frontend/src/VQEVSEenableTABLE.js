@@ -78,15 +78,15 @@ const VQEVSEenableTABLE = () => {
       cellColors: {}
     },
     {
-      metric: "% MOS < 2.0",
-      downlinkDUT1: formatPercentage(evsEnableData["Mobile"]["vonr enable evs wb DUT1 mobile"]["% MOS < 2.0"]),
-      downlinkDUT2: formatPercentage(evsEnableData["Mobile"]["vonr enable evs wb DUT2 mobile"]["% MOS < 2.0"]),
-      downlinkREF1: formatPercentage(evsEnableData["Mobile"]["vonr enable evs wb REF1 mobile"]["% MOS < 2.0"]),
-      downlinkREF2: formatPercentage(evsEnableData["Mobile"]["vonr enable evs wb REF2 mobile"]["% MOS < 2.0"]),
-      uplinkDUT1: formatPercentage(evsEnableData["Base"]["vonr enable evs wb DUT1 base"]["% MOS < 2.0"]),
-      uplinkDUT2: formatPercentage(evsEnableData["Base"]["vonr enable evs wb DUT2 base"]["% MOS < 2.0"]),
-      uplinkREF1: formatPercentage(evsEnableData["Base"]["vonr enable evs wb REF1 base"]["% MOS < 2.0"]),
-      uplinkREF2: formatPercentage(evsEnableData["Base"]["vonr enable evs wb REF2 base"]["% MOS < 2.0"]),
+      metric: "% MOS < 3.4",
+      downlinkDUT1: formatPercentage(evsEnableData["Mobile"]["vonr enable evs wb DUT1 mobile"]["% MOS < 3.4"]),
+      downlinkDUT2: formatPercentage(evsEnableData["Mobile"]["vonr enable evs wb DUT2 mobile"]["% MOS < 3.4"]),
+      downlinkREF1: formatPercentage(evsEnableData["Mobile"]["vonr enable evs wb REF1 mobile"]["% MOS < 3.4"]),
+      downlinkREF2: formatPercentage(evsEnableData["Mobile"]["vonr enable evs wb REF2 mobile"]["% MOS < 3.4"]),
+      uplinkDUT1: formatPercentage(evsEnableData["Base"]["vonr enable evs wb DUT1 base"]["% MOS < 3.4"]),
+      uplinkDUT2: formatPercentage(evsEnableData["Base"]["vonr enable evs wb DUT2 base"]["% MOS < 3.4"]),
+      uplinkREF1: formatPercentage(evsEnableData["Base"]["vonr enable evs wb REF1 base"]["% MOS < 3.4"]),
+      uplinkREF2: formatPercentage(evsEnableData["Base"]["vonr enable evs wb REF2 base"]["% MOS < 3.4"]),
       cellColors: {}
     },
   ];

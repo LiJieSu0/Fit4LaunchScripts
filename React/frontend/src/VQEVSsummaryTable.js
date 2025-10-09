@@ -8,7 +8,7 @@ const VQEVSsummaryTable = () => {
     }
     return {};
   };
-
+ //TODO 不知道怎麼搞
   const data = [
     {
       testCase: "5G Auto VoNR Disabled EVS WB VQ",
@@ -21,7 +21,11 @@ const VQEVSsummaryTable = () => {
       comments: "",
       cellColors: {
         mosAverage: "#FF00FF",
-        mosLessThan3_4_DUT: "lightcoral"
+        mosRefAverage:"#FF00FF",
+        mosLessThan3_4_DUT: "#FF00FF",
+        mosLessThan3_4_REF: "#FF00FF",
+        mosLessThan3_0_DUT: "#FF00FF",
+        mosLessThan3_0_REF: "#FF00FF",
       }
     },
     {
@@ -34,8 +38,12 @@ const VQEVSsummaryTable = () => {
       mosLessThan3_0_REF: "0.1%",
       comments: "",
       cellColors: {
-        mosAverage: "lightgreen",
-        mosLessThan3_4_DUT: "lightgreen"
+        mosAverage: "#FF00FF",
+        mosRefAverage:"#FF00FF",
+        mosLessThan3_4_DUT: "#FF00FF",
+        mosLessThan3_4_REF: "#FF00FF",
+        mosLessThan3_0_DUT: "#FF00FF",
+        mosLessThan3_0_REF: "#FF00FF",
       }
     },
     // Add more data as needed
@@ -65,14 +73,14 @@ const VQEVSsummaryTable = () => {
           <tbody className="divide-y divide-gray-200">
             {data.map((row, index) => (
               <tr key={index} className="bg-yellow-50">
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'testCase')}>{row.testCase}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'mosAverage')}>{row.mosAverage}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'mosRefAverage')}>{row.mosRefAverage}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'mosLessThan3_4_DUT')}>{row.mosLessThan3_4_DUT}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'mosLessThan3_4_REF')}>{row.mosLessThan3_4_REF}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'mosLessThan3_0_DUT')}>{row.mosLessThan3_0_DUT}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'mosLessThan3_0_REF')}>{row.mosLessThan3_0_REF}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'comments')}>{row.comments}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'testCase')}>{row.testCase}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'mosAverage')}>{row.mosAverage}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'mosRefAverage')}>{row.mosRefAverage}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'mosLessThan3_4_DUT')}>{row.mosLessThan3_4_DUT}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'mosLessThan3_4_REF')}>{row.mosLessThan3_4_REF}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'mosLessThan3_0_DUT')}>{row.mosLessThan3_0_DUT}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'mosLessThan3_0_REF')}>{row.mosLessThan3_0_REF}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'comments')}>{row.comments}</td>
               </tr>
             ))}
           </tbody>

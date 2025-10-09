@@ -57,7 +57,7 @@ const VQAmrWBTable = () => {
     },
     {
       metric: "% MOS < 3.0",
-      downlinkReference: formatPercentage(amrWbData["Base"]["vonr enable amr wb REF base"]["% MOS < 3.0"] / 100),
+      downlinkReference: formatPercentage(amrWbData["Base"]["vonr enable amr wb REF base"]["% MOS < 3.0"]),
       downlinkWingtech1: formatPercentage(amrWbData["Base"]["vonr enable amr wb DUT1 base"]["% MOS < 3.0"]),
       downlinkWingtech2: formatPercentage(amrWbData["Base"]["vonr enable amr wb DUT2 base"]["% MOS < 3.0"]),
       uplinkReference: formatPercentage(amrWbData["Mobile"]["vonr enable amr wb REF mobile"]["% MOS < 3.0"]),
