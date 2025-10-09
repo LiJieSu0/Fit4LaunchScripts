@@ -3,74 +3,217 @@ import React from 'react';
 function DirectoryPage() {
   return (
     <div className="directory-page container mx-auto p-4">
-      <h1 className="text-center text-3xl font-bold mb-4">Contents</h1>
+      <h1 className="text-3xl font-bold mb-4">Table of Contents</h1>
       <p></p>
-      <ul className="list-disc pl-5 space-y-2">
-        <li><a className="font-bold text-lg">Data Performance</a>
+      <li className="flex items-baseline">
+          <span className="font-bold text-lg flex-shrink-0">Call Performance</span>
+          <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+          <span className="flex-shrink-0">3</span>
+        </li>
+        <ul className="list-disc ml-5 space-y-1">
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G Auto VoNR Disabled CP MO Drive</span>
+            <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+            <span className="flex-shrink-0">5</span>
+          </li>
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G Auto VoNR Disabled CP MT Drive</span>
+            <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+            <span className="flex-shrink-0">6</span>
+          </li>
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G Auto VoNR Enabled CP MO Drive</span>
+            <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+            <span className="flex-shrink-0">7</span>
+          </li>
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G Auto VoNR Enabled CP MT Drive</span>
+            <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+            <span className="flex-shrink-0">8</span>
+          </li>
+      </ul>
+
+
+      <ul className="list-none pl-0 space-y-2">
+        <li className="flex items-baseline">
+          <span className="font-bold text-lg flex-shrink-0">Data Performance</span>
+          <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+          <span className="flex-shrink-0">9</span>
+        </li>
+        <ul className="list-disc ml-5 space-y-1">
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G AUTO DP</span>
+
+          </li>
           <ul className="list-disc ml-5 space-y-1">
-            <li><a>5G AUTO DP</a>
-              <ul className="list-disc ml-5 space-y-1">
-                <li><a>5G Auto Data Test Drive</a></li>
-                <li><a>5G Auto Data Test MHS Drive</a></li>
-                <li><a>5G Auto Data Test MHS Stationary Location 1 DL</a></li>
-                <li><a>5G Auto Data Test MHS Stationary Location 1 UL</a></li>
-                <li><a>5G Auto Data Test MHS Stationary Location 2 DL</a></li>
-                <li><a>5G Auto Data Test MHS Stationary Location 2 UL</a></li>
-                <li><a>5G Auto Data Test Stationary Location 1 DL</a></li>
-                <li><a>5G Auto Data Test Stationary Location 1 UL</a></li>
-                <li><a>5G Auto Data Test Stationary Location 2 DL</a></li>
-                <li><a>5G Auto Data Test Stationary Location 2 UL</a></li>
-                <li><a>5G Auto Data Test Stationary Location 3 DL</a></li>
-                <li><a>5G Auto Data Test Stationary Location 3 UL</a></li>
-                <li><a>5G Auto Data Web-Kepler</a></li>
-                <li><a>5G VoNR MRAB Stationary</a></li>
-                <li><a>5G Auto Data Play-store app DL Stationary</a></li>
-              </ul>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Test Drive</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">15</span>
             </li>
-            <li><a>5G NSA DP</a>
-              <ul className="list-disc ml-5 space-y-1">
-                <li><a>5G NSA Data Test Drive</a></li>
-                <li><a>5G NSA Data Test Stationary Moderate RF DL</a></li>
-                <li><a>5G NSA Data Test Stationary Moderate RF UL</a></li>
-                <li><a>5G NSA Data Test Stationary Moderate RF UL</a></li>
-                <li><a>5G NSA Data Test Stationary Poor RF DL</a></li>
-                <li><a>5G NSA Data Test Stationary Poor RF UL</a></li>
-              </ul>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Test MHS Drive</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">16</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Test MHS Stationary Location 1 DL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">17</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Test MHS Stationary Location 1 UL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">21</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Test MHS Stationary Location 2 DL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">26</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Test MHS Stationary Location 2 UL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">30</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Test Stationary Location 1 DL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">35</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Test Stationary Location 1 UL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">39</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Test Stationary Location 2 DL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">44</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Test Stationary Location 2 UL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">48</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Test Stationary Location 3 DL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">53</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Test Stationary Location 3 UL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">57</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Web-Kepler</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">62</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G VoNR MRAB Stationary</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">63</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G Auto Data Play-store app DL Stationary</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">64</span>
             </li>
           </ul>
-        </li>
-        <li>
-          <a className="font-bold text-lg">Call Performance</a>
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G NSA DP</span>
+          </li>
           <ul className="list-disc ml-5 space-y-1">
-            <li><a>5G Auto VoNR Disabled CP MO Drive</a></li>
-            <li><a>5G Auto VoNR Disabled CP MT Drive</a></li>
-            <li><a>5G Auto VoNR Enabled CP MO Drive</a></li>
-            <li><a>5G Auto VoNR Enabled CP MT Drive</a></li>
-          </ul>
-        </li>
-        <li><a className="font-bold text-lg">Voice Quality</a>
-          <ul className="list-disc ml-5 space-y-1">
-            <li><a>5G Auto VoNR Enabled AMR NB VQ</a></li>
-            <li><a>5G Auto VoNR Enabled AMR WB VQ</a></li>
-            <li><a>5G Auto VoNR Disabled EVS WB VQ</a></li>
-            <li><a>5G Auto VoNR Enabled EVS WB VQ</a></li>
-                <li><a>5G Auto VoNR Disabled Audio Delay</a></li>
-            <li><a>5G Auto VoNR Enabled Audio Delay</a></li>
-          </ul>
-        </li>
-        <li><a className="font-bold text-lg">Coverage Performance</a>
-          <ul className="list-disc ml-5 space-y-1">
-            <li><a>5G VoNR Coverage Test</a>
-              <ul className="list-disc ml-5 space-y-1">
-                <li><a>5G VoNR Coverage Test-n25</a></li>
-                <li><a>5G VoNR Coverage Test-n41</a></li>
-                <li><a>5G VoNR Coverage Test-n71</a></li>
-              </ul>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G NSA Data Test Drive</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">65</span>
             </li>
-            <li><a>5G n41 HPUE Coverage Test</a>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G NSA Data Test Stationary Moderate RF DL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">66</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G NSA Data Test Stationary Moderate RF UL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">70</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G NSA Data Test Stationary Poor RF DL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">75</span>
+            </li>
+            <li className="flex items-baseline">
+              <span className="flex-shrink-0">5G NSA Data Test Stationary Poor RF UL</span>
+              <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+              <span className="flex-shrink-0">79</span>
             </li>
           </ul>
+        </ul>
+        
+
+
+        <li className="flex items-baseline">
+          <span className="font-bold text-lg flex-shrink-0">Voice Quality</span>
+          <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+          <span className="flex-shrink-0">84</span>
         </li>
+        <ul className="list-disc ml-5 space-y-1">
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G Auto VoNR Enabled AMR NB VQ</span>
+            <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+            <span className="flex-shrink-0">86</span>
+          </li>
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G Auto VoNR Enabled AMR WB VQ</span>
+            <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+            <span className="flex-shrink-0">86</span>
+          </li>
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G Auto VoNR Disabled EVS WB VQ</span>
+            <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+            <span className="flex-shrink-0">86</span>
+          </li>
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G Auto VoNR Enabled EVS WB VQ</span>
+            <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+            <span className="flex-shrink-0">86</span>
+          </li>
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G Auto VoNR Disabled Audio Delay</span>
+            <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+            <span className="flex-shrink-0">87</span>
+          </li>
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G Auto VoNR Enabled Audio Delay</span>
+            <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+            <span className="flex-shrink-0">87</span>
+          </li>
+        </ul>
+
+
+
+        <li className="flex items-baseline">
+          <span className="font-bold text-lg flex-shrink-0">Coverage Performance</span>
+          <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+          <span className="flex-shrink-0">88</span>
+        </li>
+        <ul className="list-disc ml-5 space-y-1">
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G VoNR Coverage Test</span>
+            <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+            <span className="flex-shrink-0">88</span>
+          </li>
+          <li className="flex items-baseline">
+            <span className="flex-shrink-0">5G n41 HPUE Coverage Test</span>
+            <span className="flex-grow border-b-2 border-dotted border-gray-400 mx-2"></span>
+            <span className="flex-shrink-0">95</span>
+          </li>
+          
+        </ul>
       </ul>
     </div>
   );
