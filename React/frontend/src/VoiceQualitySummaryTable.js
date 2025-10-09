@@ -14,9 +14,9 @@ const VoiceQualitySummaryTable = () => {
             <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Comments/Links</th>
           </tr>
           <tr>
-            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">MOS UL</th>
-            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">MOS DL</th>
-            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">Audio Delay (ms)</th>
+            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">MOS Average</th>
+            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">% MOS &lt; 3.0</th>
+            <th colSpan="2" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">% MOS &lt; 2.0</th>
           </tr>
           <tr>
             <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT Avg.</th>
@@ -30,7 +30,6 @@ const VoiceQualitySummaryTable = () => {
         <tbody className="divide-y divide-gray-200">
           {[
             "5G Auto VoNR Enabled AMR NB VQ",
-            "5G Auto VoNR Enabled AMR WB VQ",
           ].map((testCase, index) => (
             <tr key={index} className="bg-yellow-50">
               <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{testCase}</td>
