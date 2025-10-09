@@ -9,6 +9,8 @@ import VQAmrNBTable from './VQAmrNBTable';
 import VQAmrWBTable from './VQAmrWBTable'; // Import the new AMR WB table
 import VQEVSDisableTable from './VQEVSDisableTable';
 import VQEVSEenableTABLE from './VQEVSEenableTABLE';
+import VQAudioDisableTable from './VQAudioDisableTable';
+import VQAudioEnableTable from './VQAudioEnableTable';
 
 // Helper function to extract only Voice Quality and Audio Delay test cases
 const extractVoiceQualityTestCases = (data, currentPath = []) => {
@@ -147,6 +149,10 @@ const VoiceQualityReport = () => {
       <VQEVSDisableTable/>
       <h2>Voice Quality - 5G Auto VoNR Enabled EVS WB VQ </h2>
       <VQEVSEenableTABLE/>
+      <h2>Voice Quality - 5G Auto VoNR Disabled Audio Delay </h2>
+      <VQAudioDisableTable/>
+      <h2>Voice Quality - 5G Auto VoNR Enabled Audio Delay </h2>
+      <VQAudioEnableTable/>
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
           {testCases.map(testCase => {

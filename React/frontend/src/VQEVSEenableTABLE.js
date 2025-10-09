@@ -25,7 +25,9 @@ const VQEVSEenableTABLE = () => {
       uplinkDUT2: formatNumber(evsEnableData["Base"]["vonr enable evs wb DUT2 base"]["MOS Average"]),
       uplinkREF1: formatNumber(evsEnableData["Base"]["vonr enable evs wb REF1 base"]["MOS Average"]),
       uplinkREF2: formatNumber(evsEnableData["Base"]["vonr enable evs wb REF2 base"]["MOS Average"]),
-      cellColors: {}
+      cellColors: {
+        
+      }
     },
     {
       metric: "MOS Stdev",
