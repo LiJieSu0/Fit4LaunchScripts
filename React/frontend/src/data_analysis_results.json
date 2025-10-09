@@ -3140,45 +3140,6 @@
         }
     },
     "Voice Quality": {
-        "5G Auto VoNR Disabled Audio Delay": {
-            "DUT1": {
-                "_20250925_153348_CH03_TMO_5G Auto_VoNR Disabled Audio Delay_DUT1 Mobile_5G Auto VoNR Disabled Audio Delay": {
-                    "mean": 333.2319965034965,
-                    "std_dev": 13.02754330872966,
-                    "min": 278.41900000000004,
-                    "max": 365.409,
-                    "occurrences": 286
-                }
-            },
-            "REF1": {
-                "_20250925_153348_CH04_TMO_5G Auto_VoNR Disabled Audio Delay_REF1 Mobile_5G Auto VoNR Disabled Audio Delay": {
-                    "mean": 323.2025454545455,
-                    "std_dev": 16.700418290572898,
-                    "min": 274.78000000000003,
-                    "max": 415.753,
-                    "occurrences": 286
-                }
-            },
-            "DUT2": {
-                "_20250925_153348_CH05_TMO_5G Auto_VoNR Disabled Audio Delay_DUT2 Mobile_5G Auto VoNR Disabled Audio Delay": {
-                    "mean": 326.46682456140354,
-                    "std_dev": 13.565217189591925,
-                    "min": 298.174,
-                    "max": 367.906,
-                    "occurrences": 285
-                }
-            },
-            "REF2": {
-                "_20250925_153348_CH06_TMO_5G Auto_VoNR Disabled Audio Delay_REF2 Mobile_5G Auto VoNR Disabled Audio Delay": {
-                    "mean": 328.30592280701757,
-                    "std_dev": 51.00205562490566,
-                    "min": 285.326,
-                    "max": 1157.071,
-                    "occurrences": 285
-                }
-            }
-        },
-        
         "5G Auto VoNR Enabled AMR NB VQ": {
             "DUT1": {
                 "ul_mos_stats": {
@@ -3359,44 +3320,6 @@
                 }
             }
         },
-        "5G Auto VoNR Enabled Audio Delay": {
-            "DUT1": {
-                "_20250925_142050_CH03_TMO_5G Auto_VoNR Enabled Audio Delay_DUT1 Mobile_5G Auto VoNR Enabled Audio Delay": {
-                    "mean": 310.82476241134754,
-                    "std_dev": 10.87546542202582,
-                    "min": 282.539,
-                    "max": 397.868,
-                    "occurrences": 282
-                }
-            },
-            "REF1": {
-                "_20250925_142050_CH04_TMO_5G Auto_VoNR Enabled Audio Delay_REF1 Mobile_5G Auto VoNR Enabled Audio Delay": {
-                    "mean": 331.5639042553192,
-                    "std_dev": 15.653645221636893,
-                    "min": 279.678,
-                    "max": 388.018,
-                    "occurrences": 282
-                }
-            },
-            "DUT2": {
-                "_20250925_142050_CH05_TMO_5G Auto_VoNR Enabled Audio Delay_DUT2 Mobile_5G Auto VoNR Enabled Audio Delay": {
-                    "mean": 299.9631245551601,
-                    "std_dev": 14.764469427018174,
-                    "min": 266.911,
-                    "max": 386.295,
-                    "occurrences": 281
-                }
-            },
-            "REF2": {
-                "_20250925_142050_CH06_TMO_5G Auto_VoNR Enabled Audio Delay_REF2 Mobile_5G Auto VoNR Enabled Audio Delay": {
-                    "mean": 335.2975678571429,
-                    "std_dev": 34.54949461748995,
-                    "min": 296.00100000000003,
-                    "max": 823.2009999999999,
-                    "occurrences": 280
-                }
-            }
-        },
         "5G Auto VoNR Enabled EVS WB VQ": {
             "Base": {
                 "vonr enable evs wb DUT1 base": {
@@ -3466,7 +3389,84 @@
                     "% MOS < 2.0": 3.9603960396039604
                 }
             }
+        },
+        "5G Auto VoNR Disabled Audio Delay": {
+            "DUT1": {
+                "_20250925_153348_CH03_TMO_5G Auto_VoNR Disabled Audio Delay_DUT1 Mobile_5G Auto VoNR Disabled Audio Delay": {
+                    "mean": 333.2319965034965,
+                    "std_dev": 13.02754330872966,
+                    "min": 278.41900000000004,
+                    "max": 365.409,
+                    "occurrences": 286
+                }
+            },
+            "REF1": {
+                "_20250925_153348_CH04_TMO_5G Auto_VoNR Disabled Audio Delay_REF1 Mobile_5G Auto VoNR Disabled Audio Delay": {
+                    "mean": 323.2025454545455,
+                    "std_dev": 16.700418290572898,
+                    "min": 274.78000000000003,
+                    "max": 415.753,
+                    "occurrences": 286
+                }
+            },
+            "DUT2": {
+                "_20250925_153348_CH05_TMO_5G Auto_VoNR Disabled Audio Delay_DUT2 Mobile_5G Auto VoNR Disabled Audio Delay": {
+                    "mean": 326.46682456140354,
+                    "std_dev": 13.565217189591925,
+                    "min": 298.174,
+                    "max": 367.906,
+                    "occurrences": 285
+                }
+            },
+            "REF2": {
+                "_20250925_153348_CH06_TMO_5G Auto_VoNR Disabled Audio Delay_REF2 Mobile_5G Auto VoNR Disabled Audio Delay": {
+                    "mean": 328.30592280701757,
+                    "std_dev": 51.00205562490566,
+                    "min": 285.326,
+                    "max": 1157.071,
+                    "occurrences": 285
+                }
+            }
+        },
+        "5G Auto VoNR Enabled Audio Delay": {
+            "DUT1": {
+                "_20250925_142050_CH03_TMO_5G Auto_VoNR Enabled Audio Delay_DUT1 Mobile_5G Auto VoNR Enabled Audio Delay": {
+                    "mean": 310.82476241134754,
+                    "std_dev": 10.87546542202582,
+                    "min": 282.539,
+                    "max": 397.868,
+                    "occurrences": 282
+                }
+            },
+            "REF1": {
+                "_20250925_142050_CH04_TMO_5G Auto_VoNR Enabled Audio Delay_REF1 Mobile_5G Auto VoNR Enabled Audio Delay": {
+                    "mean": 331.5639042553192,
+                    "std_dev": 15.653645221636893,
+                    "min": 279.678,
+                    "max": 388.018,
+                    "occurrences": 282
+                }
+            },
+            "DUT2": {
+                "_20250925_142050_CH05_TMO_5G Auto_VoNR Enabled Audio Delay_DUT2 Mobile_5G Auto VoNR Enabled Audio Delay": {
+                    "mean": 299.9631245551601,
+                    "std_dev": 14.764469427018174,
+                    "min": 266.911,
+                    "max": 386.295,
+                    "occurrences": 281
+                }
+            },
+            "REF2": {
+                "_20250925_142050_CH06_TMO_5G Auto_VoNR Enabled Audio Delay_REF2 Mobile_5G Auto VoNR Enabled Audio Delay": {
+                    "mean": 335.2975678571429,
+                    "std_dev": 34.54949461748995,
+                    "min": 296.00100000000003,
+                    "max": 823.2009999999999,
+                    "occurrences": 280
+                }
+            }
         }
+        
     },
     "Coverage Performance": {
         "5G VoNR Coverage Test": {

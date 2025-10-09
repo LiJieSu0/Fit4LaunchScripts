@@ -4,8 +4,8 @@ import VoiceQualityTable from './VoiceQualityTable';
 import AudioDelayTable from './AudioDelayTable';
 import VoiceQualitySummaryTable from './VoiceQualitySummaryTable';
 import AudioDelaySummaryTable from './AudioDelaySummaryTable';
-import VoiceQualityNBTable from './VoiceQualityNBTable';
-import VoiceQualityAdditionalTable from './VoiceQualityAdditionalTable';
+import VQAmrSummaryTable from './VQAmrSummaryTable';
+import VQEVSSummaryTable from './VQ EVS summary table';
 import VoiceQualityWBTable from './VoiceQualityWBTable'; // Import the new WB table component
 
 // Helper function to extract only Voice Quality and Audio Delay test cases
@@ -120,7 +120,7 @@ const extractVoiceQualityTestCases = (data, currentPath = []) => {
   return extracted;
 };
 
-const VoiceQualityReport = () => {
+const VQAmrTable = () => {
   const voiceQualityTestCases = extractVoiceQualityTestCases(allResults);
 
   // Group test cases by their top-level category for rendering headers
@@ -138,7 +138,7 @@ const VoiceQualityReport = () => {
       <img src="/voice_quality_criteria1.png" alt="Voice Quality Criteria 1" className="mx-auto block mb-8" style={{ width: '110%' }} />
       <img src="/voice_quality_criteria2.png" alt="Voice Quality Criteria 2" className="mx-auto block mb-8" style={{ width: '110%' }} />
       <VoiceQualitySummaryTable />
-      <VoiceQualityAdditionalTable /> {/* Render the new additional table */}
+      <VQEVSSummaryTable /> {/* Render the new additional table */}
       <AudioDelaySummaryTable />
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
@@ -166,7 +166,7 @@ const VoiceQualityReport = () => {
             } else if (testCase.isVoiceQualityNB) {
               return (
                 <div key={testCase.name} className="report-section">
-                  <VoiceQualityNBTable data={testCase.data} testName={testCase.name} />
+                  <VQAmrSummaryTable data={testCase.data} testName={testCase.name} />
                 </div>
               );
             }
@@ -178,4 +178,4 @@ const VoiceQualityReport = () => {
   );
 };
 
-export default VoiceQualityReport;
+export default VQAmrTable;
