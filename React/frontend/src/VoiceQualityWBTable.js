@@ -7,7 +7,7 @@ const VoiceQualityWBTable = ({ data, testName }) => {
 
   // Transform the data to match the expected structure for WB tables
   const transformedData = {};
-  const deviceKeys = ["DUT1", "DUT2", "REF1", "REF2"]; // Order of devices
+  const deviceKeys = ["DUT1", "DUT2", "REF"]; // Order of devices
 
   deviceKeys.forEach(device => {
     transformedData[device] = {
@@ -70,8 +70,8 @@ const VoiceQualityWBTable = ({ data, testName }) => {
   };
 
   const getRefMos = (statsType) => {
-    // Assuming REF1 is the primary reference for comparison
-    return transformedData["REF1"]?.[statsType]?.mean;
+    // Assuming REF is the primary reference for comparison
+    return transformedData["REF"]?.[statsType]?.mean;
   };
 
   const worstDutMosAverageMobile = getWorstDutMos("dl_mos_stats");

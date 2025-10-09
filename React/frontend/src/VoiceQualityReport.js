@@ -14,7 +14,8 @@ const extractVoiceQualityTestCases = (data, currentPath = []) => {
 
   // Check if the current data object is a Voice Quality WB test case
   const isVoiceQualityWBTest = (currentPath.includes("5G Auto VoNR Disabled EVS WB VQ") ||
-                                currentPath.includes("5G Auto VoNR Enabled EVS WB VQ")) && // Removed "5G Auto VoNR Enabled AMR WB VQ"
+                                currentPath.includes("5G Auto VoNR Enabled EVS WB VQ") ||
+                                currentPath.includes("5G Auto VoNR Enabled AMR WB VQ")) &&
                                Object.keys(data).includes("Base") &&
                                Object.keys(data).includes("Mobile") &&
                                Object.values(data.Base || {}).every(deviceData =>
@@ -25,11 +26,6 @@ const extractVoiceQualityTestCases = (data, currentPath = []) => {
                                  typeof deviceData === 'object' && deviceData !== null &&
                                  deviceData["MOS Average"] !== undefined
                                );
-
-  // Exclude the specific test case "5G Auto VoNR Enabled AMR WB VQ"
-  if (currentPath.includes("5G Auto VoNR Enabled AMR WB VQ")) {
-    return extracted; // Do not include this test case
-  }
 
   if (isVoiceQualityWBTest) {
     extracted.push({
