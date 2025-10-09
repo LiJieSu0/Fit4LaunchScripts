@@ -6,12 +6,40 @@ import VoiceQualitySummaryTable from './VoiceQualitySummaryTable';
 import AudioDelaySummaryTable from './AudioDelaySummaryTable';
 import VoiceQualityNBTable from './VoiceQualityNBTable';
 import VoiceQualityAdditionalTable from './VoiceQualityAdditionalTable';
+import VoiceQualityWBTable from './VoiceQualityWBTable'; // Import the new WB table component
 
 // Helper function to extract only Voice Quality and Audio Delay test cases
 const extractVoiceQualityTestCases = (data, currentPath = []) => {
   let extracted = [];
 
-  // Check if the current data object is a Voice Quality test case
+  // Check if the current data object is a Voice Quality WB test case
+  const isVoiceQualityWBTest = (currentPath.includes("5G Auto VoNR Disabled EVS WB VQ") ||
+                                currentPath.includes("5G Auto VoNR Enabled EVS WB VQ") ||
+                                currentPath.includes("5G Auto VoNR Enabled AMR WB VQ")) &&
+                               Object.keys(data).includes("Base") &&
+                               Object.keys(data).includes("Mobile") &&
+                               Object.values(data.Base || {}).every(deviceData =>
+                                 typeof deviceData === 'object' && deviceData !== null &&
+                                 deviceData["MOS Average"] !== undefined
+                               ) &&
+                               Object.values(data.Mobile || {}).every(deviceData =>
+                                 typeof deviceData === 'object' && deviceData !== null &&
+                                 deviceData["MOS Average"] !== undefined
+                               );
+
+  if (isVoiceQualityWBTest) {
+    extracted.push({
+      name: currentPath.join(" - "),
+      data: data,
+      isVoiceQuality: false,
+      isAudioDelay: false,
+      isVoiceQualityNB: false,
+      isVoiceQualityWB: true,
+    });
+    return extracted; // Stop further recursion for this branch
+  }
+
+  // Check if the current data object is a Voice Quality NB test case
   const isVoiceQualityNBTest = currentPath.includes("5G Auto VoNR Enabled AMR NB VQ") &&
                                Object.keys(data).some(key => key.startsWith("DUT")) &&
                                Object.keys(data).some(key => key.startsWith("REF")) &&
@@ -27,6 +55,7 @@ const extractVoiceQualityTestCases = (data, currentPath = []) => {
       isVoiceQuality: false,
       isAudioDelay: false,
       isVoiceQualityNB: true,
+      isVoiceQualityWB: false,
     });
     return extracted; // Stop further recursion for this branch
   }
@@ -45,6 +74,7 @@ const extractVoiceQualityTestCases = (data, currentPath = []) => {
       isVoiceQuality: true,
       isAudioDelay: false,
       isVoiceQualityNB: false,
+      isVoiceQualityWB: false,
     });
     return extracted; // Stop further recursion for this branch
   }
@@ -69,6 +99,8 @@ const extractVoiceQualityTestCases = (data, currentPath = []) => {
       data: data,
       isVoiceQuality: false,
       isAudioDelay: true,
+      isVoiceQualityNB: false,
+      isVoiceQualityWB: false,
     });
     return extracted; // Stop further recursion for this branch
   }
@@ -119,6 +151,12 @@ const VoiceQualityReport = () => {
                 <div key={testCase.name} className="report-section">
                   <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
                   <AudioDelayTable data={testCase.data} testName={testCase.name} />
+                </div>
+              );
+            } else if (testCase.isVoiceQualityWB) { // New condition for WB tables
+              return (
+                <div key={testCase.name} className="report-section">
+                  <VoiceQualityWBTable data={testCase.data} testName={testCase.name} />
                 </div>
               );
             } else if (testCase.isVoiceQualityNB) {

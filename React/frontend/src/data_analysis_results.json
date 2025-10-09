@@ -3178,6 +3178,63 @@
                 }
             }
         },
+        
+        "5G Auto VoNR Enabled AMR NB VQ": {
+            "DUT1": {
+                "ul_mos_stats": {
+                    "count": 510,
+                    "mean": 4.307019607843137,
+                    "std_dev": 0.35017837106218785,
+                    "max": 4.5,
+                    "percent_less_than_2": 0.39215686274509803,
+                    "percent_less_than_3": 1.9607843137254901
+                },
+                "dl_mos_stats": {
+                    "count": 512,
+                    "mean": 4.3306686796875,
+                    "std_dev": 0.1585078157183774,
+                    "max": 4.492305,
+                    "percent_less_than_2": 0.0,
+                    "percent_less_than_3": 0.390625
+                }
+            },
+            "DUT2": {
+                "ul_mos_stats": {
+                    "count": 509,
+                    "mean": 4.328506876227898,
+                    "std_dev": 0.22477401260813717,
+                    "max": 4.5,
+                    "percent_less_than_2": 0.0,
+                    "percent_less_than_3": 0.5893909626719057
+                },
+                "dl_mos_stats": {
+                    "count": 510,
+                    "mean": 4.323119366666666,
+                    "std_dev": 0.18692181324757462,
+                    "max": 4.480864,
+                    "percent_less_than_2": 0.0,
+                    "percent_less_than_3": 0.5882352941176471
+                }
+            },
+            "REF": {
+                "ul_mos_stats": {
+                    "count": 510,
+                    "mean": 4.283862745098039,
+                    "std_dev": 0.35909373592840543,
+                    "max": 4.5,
+                    "percent_less_than_2": 0.39215686274509803,
+                    "percent_less_than_3": 1.5686274509803921
+                },
+                "dl_mos_stats": {
+                    "count": 512,
+                    "mean": 4.294230353515625,
+                    "std_dev": 0.26122524303475264,
+                    "max": 4.465755,
+                    "percent_less_than_2": 0.390625,
+                    "percent_less_than_3": 0.9765625
+                }
+            }
+        },
         "5G Auto VoNR Disabled EVS WB VQ": {
             "Base": {
                 "vonr disable evs wb DUT1 base": {
@@ -3245,62 +3302,6 @@
                     "Counts": 515,
                     "% MOS < 3.0": 15.922330097087379,
                     "% MOS < 2.0": 3.6893203883495143
-                }
-            }
-        },
-        "5G Auto VoNR Enabled AMR NB VQ": {
-            "DUT1": {
-                "ul_mos_stats": {
-                    "count": 510,
-                    "mean": 4.307019607843137,
-                    "std_dev": 0.35017837106218785,
-                    "max": 4.5,
-                    "percent_less_than_2": 0.39215686274509803,
-                    "percent_less_than_3": 1.9607843137254901
-                },
-                "dl_mos_stats": {
-                    "count": 512,
-                    "mean": 4.3306686796875,
-                    "std_dev": 0.1585078157183774,
-                    "max": 4.492305,
-                    "percent_less_than_2": 0.0,
-                    "percent_less_than_3": 0.390625
-                }
-            },
-            "DUT2": {
-                "ul_mos_stats": {
-                    "count": 509,
-                    "mean": 4.328506876227898,
-                    "std_dev": 0.22477401260813717,
-                    "max": 4.5,
-                    "percent_less_than_2": 0.0,
-                    "percent_less_than_3": 0.5893909626719057
-                },
-                "dl_mos_stats": {
-                    "count": 510,
-                    "mean": 4.323119366666666,
-                    "std_dev": 0.18692181324757462,
-                    "max": 4.480864,
-                    "percent_less_than_2": 0.0,
-                    "percent_less_than_3": 0.5882352941176471
-                }
-            },
-            "REF": {
-                "ul_mos_stats": {
-                    "count": 510,
-                    "mean": 4.283862745098039,
-                    "std_dev": 0.35909373592840543,
-                    "max": 4.5,
-                    "percent_less_than_2": 0.39215686274509803,
-                    "percent_less_than_3": 1.5686274509803921
-                },
-                "dl_mos_stats": {
-                    "count": 512,
-                    "mean": 4.294230353515625,
-                    "std_dev": 0.26122524303475264,
-                    "max": 4.465755,
-                    "percent_less_than_2": 0.390625,
-                    "percent_less_than_3": 0.9765625
                 }
             }
         },
