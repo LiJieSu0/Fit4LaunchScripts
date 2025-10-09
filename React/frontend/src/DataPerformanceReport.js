@@ -3,7 +3,7 @@ import allResults from './data_analysis_results.json';
 import BarChart from './BarChart';
 import MrabStatisticsTable from './MrabStatisticsTable'; // Import MrabStatisticsTable
 import PlaystoreAppDLStationaryTable from './PlaystoreAppDLStationaryTable'; // Import PlaystoreAppDLStationaryTable
-import DataPerformanceSummaryTable from './DataPerformanceSummaryTable'; // Import DataPerformanceSummaryTable
+import DataPerformanceSummary from './DataPerformanceSummary'; // Import DataPerformanceSummary
 
 // Helper function to recursively extract test cases
 const extractTestCases = (data, currentPath = []) => {
@@ -270,7 +270,7 @@ const DataPerformanceReport = () => {
       <img src="/data_performance_criteria2.png" alt="Data Performance Criteria 2" className="mx-auto block mb-8" style={{ width: '110%' }} />
       <img src="/data_performance_criteria3.png" alt="Data Performance Criteria 3" className="mx-auto block mb-8" style={{ width: '110%' }} />
       <img src="/data_performance_criteria4.png" alt="Data Performance Criteria 4" className="mx-auto block mb-8" style={{ width: '110%' }} />
-      <DataPerformanceSummaryTable /> {/* Add the new table here */}
+      <DataPerformanceSummary />
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
           {testCases.map(testCase => {
