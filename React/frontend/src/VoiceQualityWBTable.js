@@ -16,7 +16,7 @@ const VoiceQualityWBTable = ({ data, testName }) => {
     };
 
     // Extract data for Mobile (Downlink)
-    const mobileDataKey = Object.keys(data.Mobile || {}).find(key => key.includes(device.toLowerCase()));
+    const mobileDataKey = Object.keys(data.Mobile || {}).find(key => key.includes(device));
     if (mobileDataKey && data.Mobile[mobileDataKey]) {
       transformedData[device].dl_mos_stats = {
         mean: data.Mobile[mobileDataKey]["MOS Average"],
@@ -29,7 +29,7 @@ const VoiceQualityWBTable = ({ data, testName }) => {
     }
 
     // Extract data for Base (Uplink)
-    const baseDataKey = Object.keys(data.Base || {}).find(key => key.includes(device.toLowerCase()));
+    const baseDataKey = Object.keys(data.Base || {}).find(key => key.includes(device));
     if (baseDataKey && data.Base[baseDataKey]) {
       transformedData[device].ul_mos_stats = {
         mean: data.Base[baseDataKey]["MOS Average"],
