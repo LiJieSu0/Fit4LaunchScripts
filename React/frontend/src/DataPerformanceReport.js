@@ -254,6 +254,113 @@ const DataPerformanceReport = () => {
     );
   };
 
+  const renderMhsDriveTable = (title, data) => {
+    if (!data || Object.keys(data).length === 0) {
+      return <p className="text-gray-600">No comparable data found for this subdirectory.</p>;
+    }
+
+    const dutData = data.DUT || {};
+    const refData = data.REF || {};
+
+    const mhsDriveMetrics = [
+      { label: "Throughput DL Mean", metricKey: "Throughput", direction: "DL", statKey: "Mean", unit: "Mbps", type: "throughput" },
+      { label: "Throughput UL Mean", metricKey: "Throughput", direction: "UL", statKey: "Mean", unit: "Mbps", type: "throughput" },
+      { label: "Jitter DL Mean", metricKey: "Jitter", direction: "DL", statKey: "DL Mean", unit: "ms", type: "jitter" },
+      { label: "Jitter UL Mean", metricKey: "Jitter", direction: "UL", statKey: "UL Mean", unit: "ms", type: "jitter" },
+      { label: "Error Ratio DL Mean", metricKey: "Error Ratio", direction: "DL", statKey: "DL Mean", unit: "%", type: "error_ratio" },
+      { label: "Error Ratio UL Mean", metricKey: "Error Ratio", direction: "UL", statKey: "UL Mean", unit: "%", type: "error_ratio" },
+      { label: "Ping RTT Mean", metricKey: "Ping RTT", direction: null, statKey: "avg", unit: "ms", type: "ping_rtt" },
+    ];
+
+    // getPerformanceColor function (copy-pasted from renderStatisticsTable, as it's a helper)
+    const getPerformanceColor = (dutValue, refValue, metricType) => {
+      // Special handling for Error Ratio when both DUT and REF values are 0
+      if (metricType === "error_ratio" && dutValue === 0 && refValue === 0) {
+        return "bg-performance-pass"; // Always purple for 0% error
+      }
+
+      if (refValue === 0) return "bg-gray-300"; // Cannot evaluate for other metrics
+
+      let performanceResult = "Unknown";
+      if (metricType === "throughput") {
+        if (dutValue > 1.1 * refValue) performanceResult = "Excellent";
+        else if (dutValue >= 0.9 * refValue && dutValue <= 1.1 * refValue) performanceResult = "Pass";
+        else if (dutValue >= 0.8 * refValue && dutValue < 0.9 * refValue) performanceResult = "Marginal Fail";
+        else if (dutValue < 0.8 * refValue) performanceResult = "Fail";
+      } else if (metricType === "jitter" || metricType === "ping_rtt" || metricType === "web_page_load_time") { // Lower is better
+        if (dutValue < 0.9 * refValue) performanceResult = "Excellent";
+        else if (dutValue >= 0.9 * refValue && dutValue <= 1.1 * refValue) performanceResult = "Pass";
+        else if (dutValue > 1.1 * refValue && dutValue <= 1.20 * refValue) performanceResult = "Marginal Fail";
+        else if (dutValue > 1.20 * refValue) performanceResult = "Fail";
+      } else if (metricType === "error_ratio") { // Lower is better
+        if (dutValue < refValue) performanceResult = "Excellent";
+        else if (dutValue <= 5.0 || (dutValue - refValue) <= 10.0) performanceResult = "Pass";
+        else if (10.0 < (dutValue - refValue) && (dutValue - refValue) <= 20.0) performanceResult = "Marginal Fail";
+        else if ((dutValue - refValue) > 20.0) performanceResult = "Fail";
+      }
+
+      switch (performanceResult) {
+        case "Excellent": return "bg-performance-excellent";
+        case "Pass": return "bg-performance-pass";
+        case "Marginal Fail": return "bg-performance-marginal-fail";
+        case "Fail": return "bg-performance-fail";
+        case "Cannot evaluate: Reference throughput is zero.": return "bg-performance-cannot-evaluate";
+        default: return "bg-performance-unknown";
+      }
+    };
+
+    return (
+      <div className="overflow-x-auto mb-6 table-container">
+        <table className="min-w-full border border-table-grid">
+          <thead>
+            <tr className="bg-table-header-bg text-table-header-text font-bold">
+              <th className="py-2 px-4 border border-table-grid">Metric</th>
+              <th className="py-2 px-4 border border-table-grid">DUT Value</th>
+              <th className="py-2 px-4 border border-table-grid">REF Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {mhsDriveMetrics.map((item, index) => {
+              let dutValue, refValue;
+
+              if (item.metricKey === "Throughput") {
+                dutValue = dutData[item.metricKey]?.[item.direction]?.[item.statKey];
+                refValue = refData[item.metricKey]?.[item.direction]?.[item.statKey];
+              } else if (item.metricKey === "Jitter" || item.metricKey === "Error Ratio") {
+                dutValue = dutData[item.metricKey]?.[item.statKey];
+                refValue = refData[item.metricKey]?.[item.statKey];
+              } else if (item.metricKey === "Ping RTT") {
+                dutValue = dutData[item.metricKey]?.[item.statKey];
+                refValue = refData[item.metricKey]?.[item.statKey];
+              }
+
+              const bgColor = getPerformanceColor(dutValue, refValue, item.type);
+
+              const isDutNA = typeof dutValue !== 'number';
+              const isRefNA = typeof refValue !== 'number';
+
+              if (isDutNA && isRefNA) {
+                return null;
+              }
+
+              return (
+                <tr key={index} className="bg-table-body-bg">
+                  <td className="py-2 px-4 border border-table-grid text-center">{item.label}</td>
+                  <td className={`py-2 px-4 border border-table-grid text-center ${bgColor}`}>
+                    {typeof dutValue === 'number' ? `${dutValue.toFixed(2)} ${item.unit}`.trim() : 'N/A'}
+                  </td>
+                  <td className={`py-2 px-4 border border-table-grid text-center ${bgColor}`}>
+                    {typeof refValue === 'number' ? `${refValue.toFixed(2)} ${item.unit}`.trim() : 'N/A'}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
   // Group test cases by their top-level category for rendering headers
   const groupedByCategories = allFlattenedTestCases.reduce((acc, testCase) => {
     const category = testCase.name.split(' - ')[0];
@@ -312,24 +419,38 @@ const DataPerformanceReport = () => {
               // More robust check for Data Performance categories
               const shouldRenderDetailedTable = testCase.name.startsWith("Data Performance - 5G AUTO DP") || testCase.name.startsWith("Data Performance - 5G NSA DP");
 
-              return (
-                <div key={testCase.name} className="report-section">
-                  <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
-                  {shouldRenderDetailedTable && (
+              if (testCase.name === "Data Performance - 5G AUTO DP - 5G Auto Data Test MHS Drive") {
+                return (
+                  <div key={testCase.name} className="report-section">
+                    <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
                     <div className="table-chart-container">
-                      {renderStatisticsTable(testCase.name, testCase.data, metricsToDisplayForTable)}
+                      {renderMhsDriveTable(testCase.name, testCase.data)}
                       <div className="charts-container">
-                        {(hasThroughputData || hasJitterData || hasErrorRatioData || hasWebPageLoadTimeData) && (
-                          <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={false} />
-                        )}
-                        {hasPingRttData && (
-                          <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={true} />
-                        )}
+                        <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={false} throughputDirections={['DL', 'UL']} />
                       </div>
                     </div>
-                  )}
-                </div>
-              );
+                  </div>
+                );
+              } else {
+                return (
+                  <div key={testCase.name} className="report-section">
+                    <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
+                    {shouldRenderDetailedTable && (
+                      <div className="table-chart-container">
+                        {renderStatisticsTable(testCase.name, testCase.data, metricsToDisplayForTable)}
+                        <div className="charts-container">
+                          {(hasThroughputData || hasJitterData || hasErrorRatioData || hasWebPageLoadTimeData) && (
+                            <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={false} />
+                          )}
+                          {hasPingRttData && (
+                            <BarChart testCaseData={testCase.data} testCaseName={testCase.name} isPing={true} />
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
             }
           })}
         </div>

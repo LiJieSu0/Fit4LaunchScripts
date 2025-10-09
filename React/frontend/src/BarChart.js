@@ -5,7 +5,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'; // 確保導入插件
 // 註冊插件
 Chart.register(ChartDataLabels);
 
-const BarChart = ({ testCaseData, testCaseName, isPing }) => {
+const BarChart = ({ testCaseData, testCaseName, isPing, throughputDirections }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
@@ -16,24 +16,61 @@ const BarChart = ({ testCaseData, testCaseName, isPing }) => {
 
     const ctx = chartRef.current.getContext('2d');
 
-    const labels = ['DUT', 'REF'];
-    const isWebKepler = testCaseName.includes("Web-Kepler");
-    console.log("BarChart - testCaseName:", testCaseName, "isWebKepler:", isWebKepler);
+    let labels = ['DUT', 'REF'];
+    let chartData = [];
+    let chartLabel = '';
+    let yAxisTitle = '';
+    let unit = '';
+    let maxDataValue = 0;
 
-    let dutValue, refValue;
-    if (isWebKepler) {
-      dutValue = testCaseData?.DUT?.["Web Page Load Time"]?.Mean || 0;
-      refValue = testCaseData?.REF?.["Web Page Load Time"]?.Mean || 0;
+    const isWebKepler = testCaseName.includes("Web-Kepler");
+
+    if (throughputDirections && throughputDirections.length > 0) {
+      // Handle specific DL/UL Throughput display
+      labels = [];
+      const dutDlThroughput = testCaseData?.DUT?.Throughput?.DL?.Mean || 0;
+      const refDlThroughput = testCaseData?.REF?.Throughput?.DL?.Mean || 0;
+      const dutUlThroughput = testCaseData?.DUT?.Throughput?.UL?.Mean || 0;
+      const refUlThroughput = testCaseData?.REF?.Throughput?.UL?.Mean || 0;
+
+      if (throughputDirections.includes('DL')) {
+        labels.push('DUT DL', 'REF DL');
+        chartData.push(dutDlThroughput, refDlThroughput);
+      }
+      if (throughputDirections.includes('UL')) {
+        labels.push('DUT UL', 'REF UL');
+        chartData.push(dutUlThroughput, refUlThroughput);
+      }
+
+      maxDataValue = Math.max(...chartData);
+      chartLabel = 'Throughput (Mbps)';
+      yAxisTitle = 'Throughput (Mbps)';
+      unit = 'Mbps';
+
+    } else if (isWebKepler) {
+      // Existing Web-Kepler logic
+      const dutValue = testCaseData?.DUT?.["Web Page Load Time"]?.Mean || 0;
+      const refValue = testCaseData?.REF?.["Web Page Load Time"]?.Mean || 0;
+      chartData = [dutValue, refValue];
+      maxDataValue = Math.max(dutValue, refValue);
+      chartLabel = 'Web Page Load Time (s)';
+      yAxisTitle = 'Time (s)';
+      unit = 's';
     } else {
-      dutValue = isPing ? testCaseData?.DUT?.["Ping RTT"]?.avg || 0 : testCaseData?.DUT?.Throughput?.Mean || 0;
-      refValue = isPing ? testCaseData?.REF?.["Ping RTT"]?.avg || 0 : testCaseData?.REF?.Throughput?.Mean || 0;
+      // Existing Ping or general Throughput logic
+      const dutValue = isPing ? testCaseData?.DUT?.["Ping RTT"]?.avg || 0 : testCaseData?.DUT?.Throughput?.Mean || 0;
+      const refValue = isPing ? testCaseData?.REF?.["Ping RTT"]?.avg || 0 : testCaseData?.REF?.Throughput?.Mean || 0;
+      chartData = [dutValue, refValue];
+      maxDataValue = Math.max(dutValue, refValue);
+      chartLabel = isPing ? 'Mean Ping RTT (ms)' : 'Mean Throughput (Mbps)';
+      yAxisTitle = isPing ? 'Time (ms)' : 'Throughput (Mbps)';
+      unit = isPing ? 'ms' : 'Mbps';
     }
 
-    const maxDataValue = Math.max(dutValue, refValue);
-    const minGridLines = 4; // 最少顯示4格
+    const minGridLines = 4;
     const throughputStepSizes = [250, 100, 50, 25, 10, 5, 1];
     const pingStepSizes = [100, 50, 25, 5, 1];
-    const webKeplerStepSizes = [0.5, 0.2, 0.1, 0.05]; // New step sizes for Web-Kepler
+    const webKeplerStepSizes = [0.5, 0.2, 0.1, 0.05];
     
     const currentStepSizes = isWebKepler 
       ? webKeplerStepSizes 
@@ -53,7 +90,6 @@ const BarChart = ({ testCaseData, testCaseName, isPing }) => {
         yAxisMax = minGridLines * currentStepSizes[currentStepSizes.length - 1];
         tickStep = currentStepSizes[currentStepSizes.length - 1];
       } else {
-        // Find the largest step that results in a reasonable number of intervals
         for (let step of currentStepSizes) {
           const numIntervalsIfMaxIsYMax = maxDataValue / step;
 
@@ -73,26 +109,29 @@ const BarChart = ({ testCaseData, testCaseName, isPing }) => {
       }
     }
 
-    const chartLabel = isWebKepler ? 'Web Page Load Time (s)' : (isPing ? 'Mean Ping RTT (ms)' : 'Mean Throughput (Mbps)');
-    const yAxisTitle = isWebKepler ? 'Time (s)' : (isPing ? 'Time (ms)' : 'Throughput (Mbps)');
-    const unit = isWebKepler ? 's' : (isPing ? 'ms' : 'Mbps');
+    const backgroundColors = [
+      'rgba(75, 192, 192, 0.6)', // Color for DUT DL / DUT (general)
+      'rgba(255, 159, 64, 0.6)', // Color for REF DL / REF (general)
+      'rgba(54, 162, 235, 0.6)', // Color for DUT UL
+      'rgba(255, 206, 86, 0.6)', // Color for REF UL
+    ];
+    const borderColors = [
+      'rgba(75, 192, 192, 1)',
+      'rgba(255, 159, 64, 1)',
+      'rgba(54, 162, 235, 1)',
+      'rgba(255, 206, 86, 1)',
+    ];
 
     const data = {
       labels: labels,
       datasets: [
         {
           label: chartLabel,
-          data: [dutValue, refValue],
-          backgroundColor: [
-            'rgba(75, 192, 192, 0.6)', // Color for DUT
-            'rgba(255, 159, 64, 0.6)', // Color for REF
-          ],
-          borderColor: [
-            'rgba(75, 192, 192, 1)',
-            'rgba(255, 159, 64, 1)',
-          ],
+          data: chartData,
+          backgroundColor: backgroundColors.slice(0, chartData.length),
+          borderColor: borderColors.slice(0, chartData.length),
           borderWidth: 1,
-          barThickness: 30, // Reduced thickness for narrower bars
+          barThickness: 30,
         },
       ],
     };
@@ -168,7 +207,7 @@ const BarChart = ({ testCaseData, testCaseName, isPing }) => {
         chartInstance.current.destroy();
       }
     };
-  }, [testCaseData, testCaseName, isPing]);
+  }, [testCaseData, testCaseName, isPing, throughputDirections]);
 
   return (
     <div className="BarChart-container" style={{ maxWidth: '1100px' }}> {/* Increased maxWidth for larger chart */}
