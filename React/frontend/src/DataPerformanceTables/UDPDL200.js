@@ -17,7 +17,7 @@ const UDPDL200Table = () => {
         </thead>
         <tbody>
           <tr className="bg-yellow-50">
-            <td className="py-2 px-4 border border-table-grid text-center align-middle">5G Auto Data Test Stationary Location 1</td>
+            <td className="py-2 px-4 border border-table-grid text-center align-middle" >5G Auto Data Test Stationary Location 1</td>
             <td className="py-2 px-4 border border-table-grid text-center bg-yellow-50 text-black-700 font-bold">Results</td>
             <td className="py-2 px-4 border border-table-grid text-center bg-yellow-50 text-black-700 font-bold">Results</td>
             <td className="py-2 px-4 border border-table-grid text-center bg-yellow-50 text-black-700 font-bold">Results</td>
