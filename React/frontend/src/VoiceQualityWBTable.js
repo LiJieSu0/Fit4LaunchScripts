@@ -54,6 +54,56 @@ const VoiceQualityWBTable = ({ data, testName }) => {
 
   const metricDisplayNames = Object.keys(metricMap);
 
+  // Calculate Worst DUT Average MOS for Mobile and Base
+  const dutDevices = devices.filter(device => device.startsWith("DUT"));
+  const refDevices = devices.filter(device => device.startsWith("REF"));
+
+  const getWorstDutMos = (statsType) => {
+    let minMos = Infinity;
+    dutDevices.forEach(device => {
+      const mos = transformedData[device]?.[statsType]?.mean;
+      if (mos !== undefined && mos < minMos) {
+        minMos = mos;
+      }
+    });
+    return minMos === Infinity ? undefined : minMos;
+  };
+
+  const getRefMos = (statsType) => {
+    // Assuming REF1 is the primary reference for comparison
+    return transformedData["REF1"]?.[statsType]?.mean;
+  };
+
+  const worstDutMosAverageMobile = getWorstDutMos("dl_mos_stats");
+  const refMosAverageMobile = getRefMos("dl_mos_stats");
+
+  const worstDutMosAverageBase = getWorstDutMos("ul_mos_stats");
+  const refMosAverageBase = getRefMos("ul_mos_stats");
+
+  const getMosColorStyle = (worstDutMos, refMos) => {
+    if (worstDutMos === undefined || refMos === undefined) {
+      return {}; // No data, no special coloring
+    }
+
+    // Condition 1: Excellent (maps to --performance-pass color)
+    if (worstDutMos > refMos) {
+      return { backgroundColor: 'var(--performance-pass)' };
+    }
+    // Condition 2: PASS (maps to --performance-marginal-fail color)
+    if (worstDutMos > (refMos - 0.1)) {
+      return { backgroundColor: 'var(--performance-marginal-fail)' };
+    }
+    // Condition 4: FAIL
+    if (worstDutMos < (refMos - 0.25)) {
+      return { backgroundColor: 'var(--performance-fail)' };
+    }
+    // Condition 3: If PASS or FAIL not satisfied (default no color or specific neutral color)
+    return {}; // Default style if no condition met
+  };
+
+  const mobileMosColorStyle = getMosColorStyle(worstDutMosAverageMobile, refMosAverageMobile);
+  const baseMosColorStyle = getMosColorStyle(worstDutMosAverageBase, refMosAverageBase);
+
   return (
     <div className="voice-quality-nb-table-container mb-8">
       <h3 className="text-xl font-bold mb-4 text-gray-800">{testName} - WB Voice Quality</h3>
@@ -82,9 +132,13 @@ const VoiceQualityWBTable = ({ data, testName }) => {
                 <td className="px-2 py-1 text-sm text-gray-800 border border-gray-300 text-left bg-yellow-50">{metricName}</td>
                 {/* Mobile Data (Downlink) */}
                 {devices.map(device => {
-                  const cellClassName = `border border-gray-300 text-center text-sm text-gray-700 bg-yellow-50`;
+                  const baseCellClassName = `border border-gray-300 text-center text-sm text-gray-700`;
                   return (
-                    <td key={`dl-${device}-${metricName}-data`} className={cellClassName}>
+                    <td
+                      key={`dl-${device}-${metricName}-data`}
+                      className={baseCellClassName + (metricName === "MOS Average" ? '' : ' bg-yellow-50')}
+                      style={metricName === "MOS Average" ? mobileMosColorStyle : {}}
+                    >
                       {transformedData[device]?.dl_mos_stats?.[originalStatKey] !== undefined
                         ? (originalStatKey.startsWith('percent')
                           ? `${(transformedData[device].dl_mos_stats[originalStatKey]).toFixed(1)}%`
@@ -96,17 +150,24 @@ const VoiceQualityWBTable = ({ data, testName }) => {
                   );
                 })}
                 {/* Base Data (Uplink) */}
-                {devices.map(device => (
-                  <td key={`ul-${device}-${metricName}-data`} className="border border-gray-300 text-center text-sm text-gray-700 bg-yellow-50">
-                    {transformedData[device]?.ul_mos_stats?.[originalStatKey] !== undefined
-                      ? (originalStatKey.startsWith('percent')
-                        ? `${(transformedData[device].ul_mos_stats[originalStatKey]).toFixed(1)}%`
-                        : (originalStatKey === 'count'
-                          ? parseInt(transformedData[device].ul_mos_stats[originalStatKey]).toString()
-                          : transformedData[device].ul_mos_stats[originalStatKey].toFixed(2)))
-                      : 'N/A'}
-                  </td>
-                ))}
+                {devices.map(device => {
+                  const baseCellClassName = `border border-gray-300 text-center text-sm text-gray-700`;
+                  return (
+                    <td
+                      key={`ul-${device}-${metricName}-data`}
+                      className={baseCellClassName + (metricName === "MOS Average" ? '' : ' bg-yellow-50')}
+                      style={metricName === "MOS Average" ? baseMosColorStyle : {}}
+                    >
+                      {transformedData[device]?.ul_mos_stats?.[originalStatKey] !== undefined
+                        ? (originalStatKey.startsWith('percent')
+                          ? `${(transformedData[device].ul_mos_stats[originalStatKey]).toFixed(1)}%`
+                          : (originalStatKey === 'count'
+                            ? parseInt(transformedData[device].ul_mos_stats[originalStatKey]).toString()
+                            : transformedData[device].ul_mos_stats[originalStatKey].toFixed(2)))
+                        : 'N/A'}
+                    </td>
+                  );
+                })}
               </tr>
             );
           })}

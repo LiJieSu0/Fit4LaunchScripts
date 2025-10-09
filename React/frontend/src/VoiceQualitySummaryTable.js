@@ -28,6 +28,7 @@ const VoiceQualitySummaryTable = () => {
         <tbody className="divide-y divide-gray-200">
           {[
             "5G Auto VoNR Enabled AMR NB VQ",
+            "5G Auto VoNR Enabled AMR WB VQ"
           ].map((testCase, index) => (
             <tr key={index} className="bg-yellow-50">
               <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{testCase}</td>

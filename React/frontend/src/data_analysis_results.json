@@ -3235,6 +3235,60 @@
                 }
             }
         },
+        "5G Auto VoNR Enabled AMR WB VQ": {
+            "Base": {
+                "vonr enable amr wb DUT1 base": {
+                    "MOS Average": 3.5576914641434265,
+                    "MOS Stdev": 0.20250107407514298,
+                    "Maximum MOS": 3.817328,
+                    "Counts": 502,
+                    "% MOS < 3.0": 2.788844621513944,
+                    "% MOS < 2.0": 0.199203187250996
+                },
+                "vonr enable amr wb DUT2 base": {
+                    "MOS Average": 3.51926564612326,
+                    "MOS Stdev": 0.2544094109059098,
+                    "Maximum MOS": 3.825206,
+                    "Counts": 503,
+                    "% MOS < 3.0": 4.3737574552683895,
+                    "% MOS < 2.0": 0.0
+                },
+                "vonr enable amr wb REF base": {
+                    "MOS Average": 3.3582622549800796,
+                    "MOS Stdev": 0.4396106242115759,
+                    "Maximum MOS": 3.772906,
+                    "Counts": 502,
+                    "% MOS < 3.0": 14.741035856573706,
+                    "% MOS < 2.0": 2.3904382470119523
+                }
+            },
+            "Mobile": {
+                "vonr enable amr wb DUT1 mobile": {
+                    "MOS Average": 3.487255839603961,
+                    "MOS Stdev": 0.33615156184940986,
+                    "Maximum MOS": 3.835027,
+                    "Counts": 505,
+                    "% MOS < 3.0": 8.712871287128712,
+                    "% MOS < 2.0": 0.39603960396039606
+                },
+                "vonr enable amr wb DUT2 mobile": {
+                    "MOS Average": 3.567763613861386,
+                    "MOS Stdev": 0.23397643346100977,
+                    "Maximum MOS": 3.807065,
+                    "Counts": 505,
+                    "% MOS < 3.0": 4.752475247524752,
+                    "% MOS < 2.0": 0.0
+                },
+                "vonr enable amr wb REF mobile": {
+                    "MOS Average": 3.422579637623762,
+                    "MOS Stdev": 0.4892298365700669,
+                    "Maximum MOS": 3.798488,
+                    "Counts": 505,
+                    "% MOS < 3.0": 12.277227722772277,
+                    "% MOS < 2.0": 2.9702970297029703
+                }
+            }
+        },
         "5G Auto VoNR Disabled EVS WB VQ": {
             "Base": {
                 "vonr disable evs wb DUT1 base": {
@@ -3302,60 +3356,6 @@
                     "Counts": 515,
                     "% MOS < 3.0": 15.922330097087379,
                     "% MOS < 2.0": 3.6893203883495143
-                }
-            }
-        },
-        "5G Auto VoNR Enabled AMR WB VQ": {
-            "Base": {
-                "vonr enable amr wb DUT1 base": {
-                    "MOS Average": 3.5576914641434265,
-                    "MOS Stdev": 0.20250107407514298,
-                    "Maximum MOS": 3.817328,
-                    "Counts": 502,
-                    "% MOS < 3.0": 2.788844621513944,
-                    "% MOS < 2.0": 0.199203187250996
-                },
-                "vonr enable amr wb DUT2 base": {
-                    "MOS Average": 3.51926564612326,
-                    "MOS Stdev": 0.2544094109059098,
-                    "Maximum MOS": 3.825206,
-                    "Counts": 503,
-                    "% MOS < 3.0": 4.3737574552683895,
-                    "% MOS < 2.0": 0.0
-                },
-                "vonr enable amr wb REF base": {
-                    "MOS Average": 3.3582622549800796,
-                    "MOS Stdev": 0.4396106242115759,
-                    "Maximum MOS": 3.772906,
-                    "Counts": 502,
-                    "% MOS < 3.0": 14.741035856573706,
-                    "% MOS < 2.0": 2.3904382470119523
-                }
-            },
-            "Mobile": {
-                "vonr enable amr wb DUT1 mobile": {
-                    "MOS Average": 3.487255839603961,
-                    "MOS Stdev": 0.33615156184940986,
-                    "Maximum MOS": 3.835027,
-                    "Counts": 505,
-                    "% MOS < 3.0": 8.712871287128712,
-                    "% MOS < 2.0": 0.39603960396039606
-                },
-                "vonr enable amr wb DUT2 mobile": {
-                    "MOS Average": 3.567763613861386,
-                    "MOS Stdev": 0.23397643346100977,
-                    "Maximum MOS": 3.807065,
-                    "Counts": 505,
-                    "% MOS < 3.0": 4.752475247524752,
-                    "% MOS < 2.0": 0.0
-                },
-                "vonr enable amr wb REF mobile": {
-                    "MOS Average": 3.422579637623762,
-                    "MOS Stdev": 0.4892298365700669,
-                    "Maximum MOS": 3.798488,
-                    "Counts": 505,
-                    "% MOS < 3.0": 12.277227722772277,
-                    "% MOS < 2.0": 2.9702970297029703
                 }
             }
         },

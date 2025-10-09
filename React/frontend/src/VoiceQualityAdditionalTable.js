@@ -22,17 +22,6 @@ const VoiceQualityAdditionalTable = () => {
       refMosLessThan2: "N/A",
       comments: ""
     },
-    {
-      case: "5G Auto VoNR Enabled AMR WB VQ",
-      dutAvgMos: "N/A",
-      refAvgMos: "N/A",
-      dutMosLessThan3: "N/A",
-      refMosLessThan3: "N/A",
-      dutMosLessThan2: "N/A",
-      refMosLessThan2: "N/A",
-      comments: ""
-    },
-    
   ];
 
   return (

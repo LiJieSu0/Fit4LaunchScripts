@@ -60,17 +60,21 @@ const VoiceQualityNBTable = ({ data, testName }) => {
                   );
                 })}
                 {/* Uplink Data */}
-                {devices.map(device => (
-                  <td key={`ul-${device}-${metricName}-data`} className="border border-gray-300 text-center text-sm text-gray-700">
-                    {data[device]?.ul_mos_stats?.[originalStatKey] !== undefined
-                      ? (originalStatKey.startsWith('percent')
-                        ? `${(data[device].ul_mos_stats[originalStatKey]).toFixed(1)}%`
-                        : (originalStatKey === 'count'
-                          ? parseInt(data[device].ul_mos_stats[originalStatKey]).toString()
-                          : data[device].ul_mos_stats[originalStatKey].toFixed(2)))
-                      : 'N/A'}
-                  </td>
-                ))}
+                {devices.map(device => {
+                  const isPerformanceExcellent = ["MOS Average", "% MOS < 3.0", "% MOS < 2.0"].includes(metricName);
+                  const cellClassName = `border border-gray-300 text-center text-sm text-gray-700 ${isPerformanceExcellent ? 'bg-[var(--performance-excellent)]' : ''}`;
+                  return (
+                    <td key={`ul-${device}-${metricName}-data`} className={cellClassName}>
+                      {data[device]?.ul_mos_stats?.[originalStatKey] !== undefined
+                        ? (originalStatKey.startsWith('percent')
+                          ? `${(data[device].ul_mos_stats[originalStatKey]).toFixed(1)}%`
+                          : (originalStatKey === 'count'
+                            ? parseInt(data[device].ul_mos_stats[originalStatKey]).toString()
+                            : data[device].ul_mos_stats[originalStatKey].toFixed(2)))
+                        : 'N/A'}
+                    </td>
+                  );
+                })}
               </tr>
             );
           })}
