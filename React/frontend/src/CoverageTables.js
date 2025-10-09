@@ -119,7 +119,7 @@ const CoverageTables = ({ categoryName, testCaseName, coverageData, baseStationC
     const { processedData, averagedCoords } = calculateDistancesAndAverages(coverageData, baseStationCoords);
 
     const metricsMap = {
-        "mos_before_drop": "Last MOS Value Distance (km)",
+        "mos_before_drop": "Last MOS Before Call Drop (km)",
         "call_drop": "Voice Call Drop Distance (km)",
         "first_dl_tp_gt_1": "DL TP > 1 Distance (km)",
         "first_ul_tp_gt_1": "UL TP > 1 Distance (km)",
