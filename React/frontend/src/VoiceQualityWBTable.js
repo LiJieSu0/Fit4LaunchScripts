@@ -78,12 +78,11 @@ const VoiceQualityWBTable = ({ data, testName }) => {
             const originalStatKey = metricMap[metricName];
 
             return (
-              <tr key={metricName} className="bg-yellow-50">
-                <td className="px-2 py-1 text-sm text-gray-800 border border-gray-300 text-left">{metricName}</td>
+              <tr key={metricName}>
+                <td className="px-2 py-1 text-sm text-gray-800 border border-gray-300 text-left bg-yellow-50">{metricName}</td>
                 {/* Mobile Data (Downlink) */}
                 {devices.map(device => {
-                  const isPerformanceExcellent = ["MOS Average", "% MOS < 3.0", "% MOS < 2.0"].includes(metricName);
-                  const cellClassName = `border border-gray-300 text-center text-sm text-gray-700 ${isPerformanceExcellent ? 'bg-[var(--performance-excellent)]' : ''}`;
+                  const cellClassName = `border border-gray-300 text-center text-sm text-gray-700 bg-yellow-50`;
                   return (
                     <td key={`dl-${device}-${metricName}-data`} className={cellClassName}>
                       {transformedData[device]?.dl_mos_stats?.[originalStatKey] !== undefined
@@ -98,7 +97,7 @@ const VoiceQualityWBTable = ({ data, testName }) => {
                 })}
                 {/* Base Data (Uplink) */}
                 {devices.map(device => (
-                  <td key={`ul-${device}-${metricName}-data`} className="border border-gray-300 text-center text-sm text-gray-700">
+                  <td key={`ul-${device}-${metricName}-data`} className="border border-gray-300 text-center text-sm text-gray-700 bg-yellow-50">
                     {transformedData[device]?.ul_mos_stats?.[originalStatKey] !== undefined
                       ? (originalStatKey.startsWith('percent')
                         ? `${(transformedData[device].ul_mos_stats[originalStatKey]).toFixed(1)}%`
