@@ -4,12 +4,32 @@ import VoiceQualityTable from './VoiceQualityTable';
 import AudioDelayTable from './AudioDelayTable';
 import VoiceQualitySummaryTable from './VoiceQualitySummaryTable';
 import AudioDelaySummaryTable from './AudioDelaySummaryTable';
+import VoiceQualityNBTable from './VoiceQualityNBTable';
 
 // Helper function to extract only Voice Quality and Audio Delay test cases
 const extractVoiceQualityTestCases = (data, currentPath = []) => {
   let extracted = [];
 
   // Check if the current data object is a Voice Quality test case
+  const isVoiceQualityNBTest = currentPath.includes("5G Auto VoNR Enabled AMR NB VQ") &&
+                               Object.keys(data).some(key => key.startsWith("DUT")) &&
+                               Object.keys(data).some(key => key.startsWith("REF")) &&
+                               Object.values(data).every(deviceData => 
+                                 typeof deviceData === 'object' && deviceData !== null &&
+                                 deviceData.ul_mos_stats && deviceData.dl_mos_stats
+                               );
+
+  if (isVoiceQualityNBTest) {
+    extracted.push({
+      name: currentPath.join(" - "),
+      data: data,
+      isVoiceQuality: false,
+      isAudioDelay: false,
+      isVoiceQualityNB: true,
+    });
+    return extracted; // Stop further recursion for this branch
+  }
+
   const isVoiceQualityTest = Object.keys(data).some(key => key.startsWith("DUT")) &&
                              Object.keys(data).some(key => key.startsWith("REF")) &&
                              Object.values(data).every(deviceData => 
@@ -23,6 +43,7 @@ const extractVoiceQualityTestCases = (data, currentPath = []) => {
       data: data,
       isVoiceQuality: true,
       isAudioDelay: false,
+      isVoiceQualityNB: false,
     });
     return extracted; // Stop further recursion for this branch
   }
@@ -96,6 +117,12 @@ const VoiceQualityReport = () => {
                 <div key={testCase.name} className="report-section">
                   <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
                   <AudioDelayTable data={testCase.data} testName={testCase.name} />
+                </div>
+              );
+            } else if (testCase.isVoiceQualityNB) {
+              return (
+                <div key={testCase.name} className="report-section">
+                  <VoiceQualityNBTable data={testCase.data} testName={testCase.name} />
                 </div>
               );
             }

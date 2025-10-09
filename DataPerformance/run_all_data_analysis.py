@@ -19,8 +19,9 @@ import mrab_statistics # Import the mrab_statistics module
 import data_path_reader # Import the new path reader script
 import check_empty_data # Import check_empty_data directly
 from CallPerformance.call_analyze import analyze_directory, _calculate_fisher_exact_criteria # Import analyze_directory and _calculate_fisher_exact_criteria
-from VoiceQuality.voice_quality_analyzer import process_directory as analyze_voice_quality_directory # Import process_directory from voice_quality_analyzer.py
+from VoiceQuality.voice_quality_analyzer import process_directory as analyze_nb_voice_quality_directory # Import process_directory from voice_quality_analyzer.py for NB
 from VoiceQuality.audio_delay_analyzer import process_directory as analyze_audio_delay_directory # Import process_directory from audio_delay_analyzer.py
+from VoiceQuality.wb_voice_quality_analyzer import analyze_wb_voice_quality # Import the new WB voice quality analyzer
 from Coverage.coverage_coordinate_analyzer import analyze_coverage_coordinates, find_dut_ref_files, compare_analysis_results # Import the coverage analysis functions
 from Coverage.n41_coverage_analyzer import analyze_n41_coverage, extract_coverage_data_to_csv # Import the n41 coverage analyzer and generic data extractor
 from Coverage.coverage_performance_analyzer import analyze_csv as analyze_vonr_coverage_performance # Import the new VoNR coverage performance analyzer
@@ -42,8 +43,7 @@ if __name__ == "__main__":
         {"path": "5G VoNR MRAB Stationary", "analysis_type": "mrab_performance"}, # Add MRAB directory
         {"path": "TestInvalid", "analysis_type": "data_performance"}, # Add the new test directory
         {"path": "Call Performance", "analysis_type": "call_performance"}, # Add Call Performance directory
-        {"path": "Voice Quality", "analysis_type": "voice_quality"}, # Add Voice Quality directory
-        {"path": "Voice Quality", "analysis_type": "audio_delay"}, # Add Audio Delay directory, using the same base path
+        {"path": "Voice Quality", "analysis_type": "voice_quality_combined"}, # Combine voice quality and audio delay handling
         {"path": "Coverage Performance", "analysis_type": "coverage_coordinate"}, # Add Coverage Coordinate directory
         {"path": "Coverage Performance/5G n41 HPUE Coverage Test", "analysis_type": "n41_coverage"}, # Add N41 Coverage directory
         {"path": "Coverage Performance/5G VoNR Coverage Test", "analysis_type": "vonr_coverage_performance"}, # Add 5G VoNR Coverage Test directory
@@ -180,7 +180,7 @@ if __name__ == "__main__":
                 # This block will be skipped for individual CSVs, and handled after the loop.
                 pass
             # Voice Quality analysis will also be handled after the loop, so skip here
-            elif params["analysis_type_detected"] == "voice_quality":
+            elif params["analysis_type_detected"] == "voice_quality" or params["analysis_type_detected"] == "audio_delay":
                 pass
 
             # Determine if the file is invalid: it's invalid if no statistical data was collected
@@ -282,90 +282,73 @@ if __name__ == "__main__":
             else:
                 print(f"Warning: Call Performance directory not found at {call_performance_path}. Skipping analysis.")
         
-        elif directory_info["analysis_type"] == "voice_quality":
-            voice_quality_path = os.path.join(base_raw_data_dir, directory_info["path"])
-            if os.path.isdir(voice_quality_path):
-                print(f"\n--- Starting Voice Quality analysis for directory: {voice_quality_path} ---")
-                # Pass the subdir_filter to process_directory
-                voice_quality_results = analyze_voice_quality_directory(voice_quality_path, subdir_filter="VQ")
-                print(f"Raw voice_quality_results: {voice_quality_results}") # Debug print
+        elif directory_info["analysis_type"] == "voice_quality_combined":
+            base_voice_quality_path = os.path.join(base_raw_data_dir, "Voice Quality")
+            if os.path.isdir(base_voice_quality_path):
+                print(f"\n--- Starting Combined Voice Quality analysis for directory: {base_voice_quality_path} ---")
                 
-                if voice_quality_results:
-                    # Organize results by subdirectory and then by device type
-                    organized_vq_results = {}
-                    for file_stats in voice_quality_results:
-                        # Extract the subdirectory name from the file_path
-                        # Example: Raw Data/Voice Quality/5G Auto VoNR Enabled AMR NB VQ/DUT1.csv
-                        # We want "5G Auto VoNR Enabled AMR NB VQ"
-                        relative_path_to_vq_dir = os.path.relpath(file_stats["file_path"], voice_quality_path)
-                        
-                        # Handle cases where the file is directly in the voice_quality_path
-                        if os.sep not in relative_path_to_vq_dir:
-                            # If the file is directly in the voice_quality_path, use its parent directory name
-                            # which is the voice_quality_path itself, or a more generic name like "Root"
-                            sub_dir_name = os.path.basename(voice_quality_path)
-                        else:
-                            sub_dir_name = relative_path_to_vq_dir.split(os.sep)[0] # Get the first directory after voice_quality_path
+                voice_quality_combined_results = {}
 
-                        if sub_dir_name not in organized_vq_results:
-                            organized_vq_results[sub_dir_name] = {}
-                        
-                        # Use device_type (DUT1, DUT2, REF) as keys under the subdirectory
-                        organized_vq_results[sub_dir_name][file_stats["device_type"]] = {
-                            "ul_mos_stats": file_stats["ul_mos_stats"],
-                            "dl_mos_stats": file_stats["dl_mos_stats"]
-                        }
+                for sub_dir_name in os.listdir(base_voice_quality_path):
+                    sub_dir_full_path = os.path.join(base_voice_quality_path, sub_dir_name)
                     
-                    print(f"Organized VQ Results before insertion: {organized_vq_results}") # Debug print
-                    _insert_into_nested_dict(all_collected_results, [directory_info["path"]], organized_vq_results)
-                    print(f"Voice Quality analysis for {voice_quality_path} completed and added to results.")
-                    print(f"All collected results after VQ insertion: {all_collected_results.get(directory_info['path'])}") # Debug print
-                else:
-                    print(f"No voice quality data collected for {voice_quality_path}.")
-            else:
-                print(f"Warning: Voice Quality directory not found at {voice_quality_path}. Skipping analysis.")
-        
-        elif directory_info["analysis_type"] == "audio_delay":
-            audio_delay_path = os.path.join(base_raw_data_dir, directory_info["path"])
-            print(f"Debug: Checking audio_delay_path: {audio_delay_path}, exists: {os.path.isdir(audio_delay_path)}")
-            if os.path.isdir(audio_delay_path):
-                print(f"\n--- Starting Audio Delay analysis for directory: {audio_delay_path} ---")
-                # Pass the subdir_filter to process_directory
-                audio_delay_results = analyze_audio_delay_directory(audio_delay_path, subdir_filter="Audio Delay")
-                print(f"Debug: Raw audio_delay_results: {audio_delay_results}") # Debug print
+                    if os.path.isdir(sub_dir_full_path):
+                        print(f"Processing Voice Quality subfolder: {sub_dir_name}")
+                        
+                        if "5G Auto VoNR Enabled AMR NB VQ" in sub_dir_name:
+                            print(f"Calling analyze_nb_voice_quality_directory for {sub_dir_name}")
+                            nb_vq_results = analyze_nb_voice_quality_directory(sub_dir_full_path, subdir_filter="VQ")
+                            if nb_vq_results:
+                                organized_nb_vq_results = {}
+                                for file_stats in nb_vq_results:
+                                    # Directly assign to device_type key, avoiding double nesting
+                                    organized_nb_vq_results[file_stats["device_type"]] = {
+                                        "ul_mos_stats": file_stats["ul_mos_stats"],
+                                        "dl_mos_stats": file_stats["dl_mos_stats"]
+                                    }
+                                voice_quality_combined_results[sub_dir_name] = organized_nb_vq_results
+                                print(f"NB VQ analysis for {sub_dir_name} completed.")
+                            else:
+                                print(f"No NB VQ data collected for {sub_dir_name}.")
+
+                        elif "Audio Delay" in sub_dir_name:
+                            print(f"Calling analyze_audio_delay_directory for {sub_dir_name}")
+                            ad_results = analyze_audio_delay_directory(sub_dir_full_path, subdir_filter="Audio Delay")
+                            if ad_results:
+                                organized_ad_results = {}
+                                for file_stats in ad_results:
+                                    if file_stats["device_type"] not in organized_ad_results:
+                                        organized_ad_results[file_stats["device_type"]] = {}
+                                    organized_ad_results[file_stats["device_type"]][os.path.splitext(os.path.basename(file_stats["file_path"]))[0]] = {
+                                        "mean": file_stats["mean"],
+                                        "std_dev": file_stats["std_dev"],
+                                        "min": file_stats["min"],
+                                        "max": file_stats["max"],
+                                        "occurrences": file_stats["occurrences"]
+                                    }
+                                voice_quality_combined_results[sub_dir_name] = organized_ad_results
+                                print(f"Audio Delay analysis for {sub_dir_name} completed.")
+                            else:
+                                print(f"No Audio Delay data collected for {sub_dir_name}.")
+
+                        elif "WB" in sub_dir_name:
+                            print(f"Calling analyze_wb_voice_quality for {sub_dir_name}")
+                            wb_vq_results = analyze_wb_voice_quality(sub_dir_full_path)
+                            if wb_vq_results:
+                                voice_quality_combined_results[sub_dir_name] = wb_vq_results
+                                print(f"WB VQ analysis for {sub_dir_name} completed.")
+                            else:
+                                print(f"No WB VQ data collected for {sub_dir_name}.")
+                        else:
+                            print(f"Skipping subfolder {sub_dir_name}: Does not match any known voice quality analysis type.")
                 
-                if audio_delay_results:
-                    # Organize results by subdirectory
-                    organized_ad_results = {}
-                    for file_stats in audio_delay_results:
-                        # Extract the subdirectory name from the file_path
-                        relative_path_to_ad_dir = os.path.relpath(file_stats["file_path"], audio_delay_path)
-                        
-                        if os.sep not in relative_path_to_ad_dir:
-                            sub_dir_name = os.path.basename(audio_delay_path)
-                        else:
-                            sub_dir_name = relative_path_to_ad_dir.split(os.sep)[0]
-
-                        if sub_dir_name not in organized_ad_results:
-                            organized_ad_results[sub_dir_name] = {} # Change to dictionary for device types
-                        
-                        # Use device_type (DUT1, DUT2, REF1, REF2) as keys under the subdirectory
-                        organized_ad_results[sub_dir_name][file_stats["device_type"]] = {
-                            "mean": file_stats["mean"],
-                            "std_dev": file_stats["std_dev"],
-                            "min": file_stats["min"],
-                            "max": file_stats["max"],
-                            "occurrences": file_stats["occurrences"]
-                        }
-                    
-                    print(f"Debug: Organized AD Results before insertion: {organized_ad_results}") # Debug print
-                    _insert_into_nested_dict(all_collected_results, [directory_info["path"], "Audio Delay"], organized_ad_results)
-                    print(f"Debug: all_collected_results after AD insertion: {all_collected_results.get(directory_info['path'])}") # Debug print
-                    print(f"Audio Delay analysis for {audio_delay_path} completed and added to results.")
+                if voice_quality_combined_results:
+                    _insert_into_nested_dict(all_collected_results, ["Voice Quality"], voice_quality_combined_results)
+                    print(f"Combined Voice Quality analysis for {base_voice_quality_path} completed and added to results.")
                 else:
-                    print(f"No audio delay data collected for {audio_delay_path}.")
+                    print(f"No combined voice quality data collected for {base_voice_quality_path}.")
             else:
-                print(f"Warning: Audio Delay directory not found at {audio_delay_path}. Skipping analysis.")
+                print(f"Warning: Voice Quality base directory not found at {base_voice_quality_path}. Skipping analysis.")
         
         elif directory_info["analysis_type"] == "coverage_coordinate":
             # The user specified the target directory as D:\Fit4Launch\Raw Data\Coverage Performance\5G VoNR Coverage Test

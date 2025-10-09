@@ -3140,6 +3140,114 @@
         }
     },
     "Voice Quality": {
+        "5G Auto VoNR Disabled Audio Delay": {
+            "DUT1": {
+                "_20250925_153348_CH03_TMO_5G Auto_VoNR Disabled Audio Delay_DUT1 Mobile_5G Auto VoNR Disabled Audio Delay": {
+                    "mean": 333.2319965034965,
+                    "std_dev": 13.02754330872966,
+                    "min": 278.41900000000004,
+                    "max": 365.409,
+                    "occurrences": 286
+                }
+            },
+            "REF1": {
+                "_20250925_153348_CH04_TMO_5G Auto_VoNR Disabled Audio Delay_REF1 Mobile_5G Auto VoNR Disabled Audio Delay": {
+                    "mean": 323.2025454545455,
+                    "std_dev": 16.700418290572898,
+                    "min": 274.78000000000003,
+                    "max": 415.753,
+                    "occurrences": 286
+                }
+            },
+            "DUT2": {
+                "_20250925_153348_CH05_TMO_5G Auto_VoNR Disabled Audio Delay_DUT2 Mobile_5G Auto VoNR Disabled Audio Delay": {
+                    "mean": 326.46682456140354,
+                    "std_dev": 13.565217189591925,
+                    "min": 298.174,
+                    "max": 367.906,
+                    "occurrences": 285
+                }
+            },
+            "REF2": {
+                "_20250925_153348_CH06_TMO_5G Auto_VoNR Disabled Audio Delay_REF2 Mobile_5G Auto VoNR Disabled Audio Delay": {
+                    "mean": 328.30592280701757,
+                    "std_dev": 51.00205562490566,
+                    "min": 285.326,
+                    "max": 1157.071,
+                    "occurrences": 285
+                }
+            }
+        },
+        "5G Auto VoNR Disabled EVS WB VQ": {
+            "Base": {
+                "vonr disable evs wb DUT1 base": {
+                    "MOS Average": 3.6820942270916333,
+                    "MOS Stdev": 0.440604442658722,
+                    "Maximum MOS": 4.015316,
+                    "Counts": 502,
+                    "% MOS < 3.0": 9.362549800796813,
+                    "% MOS < 2.0": 1.7928286852589643
+                },
+                "vonr disable evs wb DUT2 base": {
+                    "MOS Average": 3.2432554851485147,
+                    "MOS Stdev": 0.3039377208661697,
+                    "Maximum MOS": 3.515229,
+                    "Counts": 505,
+                    "% MOS < 3.0": 7.920792079207921,
+                    "% MOS < 2.0": 1.3861386138613863
+                },
+                "vonr disable evs wb REF1 base": {
+                    "MOS Average": 3.792883865612648,
+                    "MOS Stdev": 0.39462507195026547,
+                    "Maximum MOS": 4.037276,
+                    "Counts": 506,
+                    "% MOS < 3.0": 5.33596837944664,
+                    "% MOS < 2.0": 0.7905138339920948
+                },
+                "vonr disable evs wb REF2 base": {
+                    "MOS Average": 3.556124416996047,
+                    "MOS Stdev": 0.3348686617352636,
+                    "Maximum MOS": 3.917643,
+                    "Counts": 506,
+                    "% MOS < 3.0": 6.521739130434782,
+                    "% MOS < 2.0": 0.592885375494071
+                }
+            },
+            "Mobile": {
+                "vonr disable evs wb DUT1 mobile": {
+                    "MOS Average": 3.6101857181996087,
+                    "MOS Stdev": 0.5471383011983914,
+                    "Maximum MOS": 4.005613,
+                    "Counts": 511,
+                    "% MOS < 3.0": 10.567514677103718,
+                    "% MOS < 2.0": 3.326810176125244
+                },
+                "vonr disable evs wb DUT2 mobile": {
+                    "MOS Average": 3.2706621245136187,
+                    "MOS Stdev": 0.5020334085976661,
+                    "Maximum MOS": 3.675431,
+                    "Counts": 514,
+                    "% MOS < 3.0": 14.202334630350194,
+                    "% MOS < 2.0": 4.669260700389105
+                },
+                "vonr disable evs wb REF1 mobile": {
+                    "MOS Average": 3.6920767747572816,
+                    "MOS Stdev": 0.5997735094054074,
+                    "Maximum MOS": 4.083777,
+                    "Counts": 515,
+                    "% MOS < 3.0": 10.29126213592233,
+                    "% MOS < 2.0": 4.271844660194175
+                },
+                "vonr disable evs wb REF2 mobile": {
+                    "MOS Average": 3.3257216621359222,
+                    "MOS Stdev": 0.5251054274546115,
+                    "Maximum MOS": 3.931064,
+                    "Counts": 515,
+                    "% MOS < 3.0": 15.922330097087379,
+                    "% MOS < 2.0": 3.6893203883495143
+                }
+            }
+        },
         "5G Auto VoNR Enabled AMR NB VQ": {
             "DUT1": {
                 "ul_mos_stats": {
@@ -3197,123 +3305,164 @@
             }
         },
         "5G Auto VoNR Enabled AMR WB VQ": {
-            "DUT1": {
-                "ul_mos_stats": {
-                    "count": 0,
-                    "mean": 0.0,
-                    "std_dev": 0.0,
-                    "max": 0.0,
-                    "min": 0.0,
-                    "percent_less_than_2": 0.0,
-                    "percent_less_than_3": 0.0
+            "Base": {
+                "vonr enable amr wb DUT1 base": {
+                    "MOS Average": 3.5576914641434265,
+                    "MOS Stdev": 0.20250107407514298,
+                    "Maximum MOS": 3.817328,
+                    "Counts": 502,
+                    "% MOS < 3.0": 2.788844621513944,
+                    "% MOS < 2.0": 0.199203187250996
                 },
-                "dl_mos_stats": {
-                    "count": 505,
-                    "mean": 3.487255839603961,
-                    "std_dev": 0.33615156184940986,
-                    "max": 3.835027,
-                    "percent_less_than_2": 0.39603960396039606,
-                    "percent_less_than_3": 8.712871287128712
+                "vonr enable amr wb DUT2 base": {
+                    "MOS Average": 3.51926564612326,
+                    "MOS Stdev": 0.2544094109059098,
+                    "Maximum MOS": 3.825206,
+                    "Counts": 503,
+                    "% MOS < 3.0": 4.3737574552683895,
+                    "% MOS < 2.0": 0.0
+                },
+                "vonr enable amr wb REF base": {
+                    "MOS Average": 3.3582622549800796,
+                    "MOS Stdev": 0.4396106242115759,
+                    "Maximum MOS": 3.772906,
+                    "Counts": 502,
+                    "% MOS < 3.0": 14.741035856573706,
+                    "% MOS < 2.0": 2.3904382470119523
                 }
             },
-            "DUT2": {
-                "ul_mos_stats": {
-                    "count": 0,
-                    "mean": 0.0,
-                    "std_dev": 0.0,
-                    "max": 0.0,
-                    "min": 0.0,
-                    "percent_less_than_2": 0.0,
-                    "percent_less_than_3": 0.0
+            "Mobile": {
+                "vonr enable amr wb DUT1 mobile": {
+                    "MOS Average": 3.487255839603961,
+                    "MOS Stdev": 0.33615156184940986,
+                    "Maximum MOS": 3.835027,
+                    "Counts": 505,
+                    "% MOS < 3.0": 8.712871287128712,
+                    "% MOS < 2.0": 0.39603960396039606
                 },
-                "dl_mos_stats": {
-                    "count": 505,
-                    "mean": 3.567763613861386,
-                    "std_dev": 0.23397643346100977,
-                    "max": 3.807065,
-                    "percent_less_than_2": 0.0,
-                    "percent_less_than_3": 4.752475247524752
-                }
-            },
-            "REF": {
-                "ul_mos_stats": {
-                    "count": 0,
-                    "mean": 0.0,
-                    "std_dev": 0.0,
-                    "max": 0.0,
-                    "min": 0.0,
-                    "percent_less_than_2": 0.0,
-                    "percent_less_than_3": 0.0
+                "vonr enable amr wb DUT2 mobile": {
+                    "MOS Average": 3.567763613861386,
+                    "MOS Stdev": 0.23397643346100977,
+                    "Maximum MOS": 3.807065,
+                    "Counts": 505,
+                    "% MOS < 3.0": 4.752475247524752,
+                    "% MOS < 2.0": 0.0
                 },
-                "dl_mos_stats": {
-                    "count": 505,
-                    "mean": 3.422579637623762,
-                    "std_dev": 0.4892298365700669,
-                    "max": 3.798488,
-                    "percent_less_than_2": 2.9702970297029703,
-                    "percent_less_than_3": 12.277227722772277
+                "vonr enable amr wb REF mobile": {
+                    "MOS Average": 3.422579637623762,
+                    "MOS Stdev": 0.4892298365700669,
+                    "Maximum MOS": 3.798488,
+                    "Counts": 505,
+                    "% MOS < 3.0": 12.277227722772277,
+                    "% MOS < 2.0": 2.9702970297029703
                 }
             }
         },
-        "Audio Delay": {
-            "5G Auto VoNR Disabled Audio Delay": {
-                "DUT1": {
-                    "mean": 333.2319965034965,
-                    "std_dev": 13.02754330872966,
-                    "min": 278.41900000000004,
-                    "max": 365.409,
-                    "occurrences": 286
-                },
-                "REF1": {
-                    "mean": 323.2025454545455,
-                    "std_dev": 16.700418290572898,
-                    "min": 274.78000000000003,
-                    "max": 415.753,
-                    "occurrences": 286
-                },
-                "DUT2": {
-                    "mean": 326.46682456140354,
-                    "std_dev": 13.565217189591925,
-                    "min": 298.174,
-                    "max": 367.906,
-                    "occurrences": 285
-                },
-                "REF2": {
-                    "mean": 328.30592280701757,
-                    "std_dev": 51.00205562490566,
-                    "min": 285.326,
-                    "max": 1157.071,
-                    "occurrences": 285
-                }
-            },
-            "5G Auto VoNR Enabled Audio Delay": {
-                "DUT1": {
+        "5G Auto VoNR Enabled Audio Delay": {
+            "DUT1": {
+                "_20250925_142050_CH03_TMO_5G Auto_VoNR Enabled Audio Delay_DUT1 Mobile_5G Auto VoNR Enabled Audio Delay": {
                     "mean": 310.82476241134754,
                     "std_dev": 10.87546542202582,
                     "min": 282.539,
                     "max": 397.868,
                     "occurrences": 282
-                },
-                "REF1": {
+                }
+            },
+            "REF1": {
+                "_20250925_142050_CH04_TMO_5G Auto_VoNR Enabled Audio Delay_REF1 Mobile_5G Auto VoNR Enabled Audio Delay": {
                     "mean": 331.5639042553192,
                     "std_dev": 15.653645221636893,
                     "min": 279.678,
                     "max": 388.018,
                     "occurrences": 282
-                },
-                "DUT2": {
+                }
+            },
+            "DUT2": {
+                "_20250925_142050_CH05_TMO_5G Auto_VoNR Enabled Audio Delay_DUT2 Mobile_5G Auto VoNR Enabled Audio Delay": {
                     "mean": 299.9631245551601,
                     "std_dev": 14.764469427018174,
                     "min": 266.911,
                     "max": 386.295,
                     "occurrences": 281
-                },
-                "REF2": {
+                }
+            },
+            "REF2": {
+                "_20250925_142050_CH06_TMO_5G Auto_VoNR Enabled Audio Delay_REF2 Mobile_5G Auto VoNR Enabled Audio Delay": {
                     "mean": 335.2975678571429,
                     "std_dev": 34.54949461748995,
                     "min": 296.00100000000003,
                     "max": 823.2009999999999,
                     "occurrences": 280
+                }
+            }
+        },
+        "5G Auto VoNR Enabled EVS WB VQ": {
+            "Base": {
+                "vonr enable evs wb DUT1 base": {
+                    "MOS Average": 3.7046520650887573,
+                    "MOS Stdev": 0.5082408148835041,
+                    "Maximum MOS": 4.059177,
+                    "Counts": 507,
+                    "% MOS < 3.0": 8.875739644970414,
+                    "% MOS < 2.0": 3.155818540433925
+                },
+                "vonr enable evs wb DUT2 base": {
+                    "MOS Average": 3.217658954365079,
+                    "MOS Stdev": 0.6367734253827634,
+                    "Maximum MOS": 3.887904,
+                    "Counts": 504,
+                    "% MOS < 3.0": 27.579365079365083,
+                    "% MOS < 2.0": 7.341269841269842
+                },
+                "vonr enable evs wb REF1 base": {
+                    "MOS Average": 3.7061315425742576,
+                    "MOS Stdev": 0.6628695901921692,
+                    "Maximum MOS": 4.144065,
+                    "Counts": 505,
+                    "% MOS < 3.0": 12.07920792079208,
+                    "% MOS < 2.0": 5.346534653465347
+                },
+                "vonr enable evs wb REF2 base": {
+                    "MOS Average": 3.3672196338582676,
+                    "MOS Stdev": 0.6596979885693196,
+                    "Maximum MOS": 3.869712,
+                    "Counts": 508,
+                    "% MOS < 3.0": 17.913385826771652,
+                    "% MOS < 2.0": 7.480314960629922
+                }
+            },
+            "Mobile": {
+                "vonr enable evs wb DUT1 mobile": {
+                    "MOS Average": 3.651754255445544,
+                    "MOS Stdev": 0.61923685318672,
+                    "Maximum MOS": 4.081547,
+                    "Counts": 505,
+                    "% MOS < 3.0": 11.08910891089109,
+                    "% MOS < 2.0": 4.554455445544554
+                },
+                "vonr enable evs wb DUT2 mobile": {
+                    "MOS Average": 3.452152057768924,
+                    "MOS Stdev": 0.6207910838603383,
+                    "Maximum MOS": 3.895892,
+                    "Counts": 502,
+                    "% MOS < 3.0": 14.54183266932271,
+                    "% MOS < 2.0": 5.179282868525896
+                },
+                "vonr enable evs wb REF1 mobile": {
+                    "MOS Average": 3.728700084812623,
+                    "MOS Stdev": 0.7081281950548579,
+                    "Maximum MOS": 4.187403,
+                    "Counts": 507,
+                    "% MOS < 3.0": 13.41222879684418,
+                    "% MOS < 2.0": 4.733727810650888
+                },
+                "vonr enable evs wb REF2 mobile": {
+                    "MOS Average": 3.4939804396039604,
+                    "MOS Stdev": 0.5133816771405768,
+                    "Maximum MOS": 3.856212,
+                    "Counts": 505,
+                    "% MOS < 3.0": 8.712871287128712,
+                    "% MOS < 2.0": 3.9603960396039604
                 }
             }
         }
