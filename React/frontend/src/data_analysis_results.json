@@ -4108,14 +4108,14 @@
         "5G n41 HPUE Coverage Test": {
             "Run1": [
                 {
-                    "Device type": "PC2",
+                    "Device type": "Power Class 2",
                     "latitude": 47.149302,
                     "longitude": -122.357162,
                     "ul_tp_value": 8.388,
                     "rsrp_value": -101.89
                 },
                 {
-                    "Device type": "PC3",
+                    "Device type": "Power Class 3",
                     "latitude": 47.149765,
                     "longitude": -122.357163,
                     "ul_tp_value": 3.145,
@@ -4124,14 +4124,14 @@
             ],
             "Run2": [
                 {
-                    "Device type": "PC2",
+                    "Device type": "Power Class 2",
                     "latitude": 47.14715,
                     "longitude": -122.357228,
                     "ul_tp_value": 4.194,
                     "rsrp_value": -101.4
                 },
                 {
-                    "Device type": "PC3",
+                    "Device type": "Power Class 3",
                     "latitude": 47.148687,
                     "longitude": -122.357158,
                     "ul_tp_value": 6.291,
@@ -4140,14 +4140,14 @@
             ],
             "Run3": [
                 {
-                    "Device type": "PC2",
+                    "Device type": "Power Class 2",
                     "latitude": 47.14912,
                     "longitude": -122.357163,
                     "ul_tp_value": 6.291,
                     "rsrp_value": -105.15
                 },
                 {
-                    "Device type": "PC3",
+                    "Device type": "Power Class 3",
                     "latitude": 47.146057,
                     "longitude": -122.35728,
                     "ul_tp_value": 6.291,
@@ -4156,14 +4156,14 @@
             ],
             "Run4": [
                 {
-                    "Device type": "PC2",
+                    "Device type": "Power Class 2",
                     "latitude": 47.149213,
                     "longitude": -122.357152,
                     "ul_tp_value": 9.437,
                     "rsrp_value": -102.75
                 },
                 {
-                    "Device type": "PC3",
+                    "Device type": "Power Class 3",
                     "latitude": 47.149653,
                     "longitude": -122.357147,
                     "ul_tp_value": 9.437,
@@ -4172,14 +4172,14 @@
             ],
             "Run5": [
                 {
-                    "Device type": "PC2",
+                    "Device type": "Power Class 2",
                     "latitude": 47.14905,
                     "longitude": -122.357127,
                     "ul_tp_value": 5.242,
                     "rsrp_value": -109.51
                 },
                 {
-                    "Device type": "PC3",
+                    "Device type": "Power Class 3",
                     "latitude": 47.149223,
                     "longitude": -122.357125,
                     "ul_tp_value": 9.437,
