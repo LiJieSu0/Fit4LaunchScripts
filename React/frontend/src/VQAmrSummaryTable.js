@@ -9,7 +9,7 @@ const VQAMRSummaryTable = () => {
       mosRefAverage: "3.6",
       mosMin: "2.8",
       mosRefMin: "2.9",
-      comments: "5G Auto VoNR"
+      comments: ""
     },
     {
       testCase: "5G Auto VoNR Enabled AMR WB VQ",
@@ -17,21 +17,20 @@ const VQAMRSummaryTable = () => {
       mosRefAverage: "3.9",
       mosMin: "3.1",
       mosRefMin: "3.2",
-      comments: "5G Auto VoNR"
+      comments: ""
     },
     // Add more data as needed
   ];
 
   return (
-    <div className="w-full mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">VQAMR Summary</h2>
+    <div className="audio-delay-summary-table-container mb-8">
       <div className="overflow-x-auto">
-        <table className="min-w-full border-collapse">
-          <thead>
+        <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
+          <thead className="bg-gray-600 text-white">
             <tr>
               <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">TEST CASES</th>
               <th colSpan="4" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">KPI FOR VOICE QUALITY PERFORMANCE MOBILITY</th>
-              <th rowSpan="3" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">COMMENTS/LINKS</th>
+              <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">COMMENTS/LINKS</th>
             </tr>
             <tr>
               <th colSpan="4" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">MOS (Mean Opinion Score)</th>
@@ -43,15 +42,15 @@ const VQAMRSummaryTable = () => {
               <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF MIN.</th>
             </tr>
           </thead>
-          <tbody className="text-gray-700 text-sm">
+          <tbody className="divide-y divide-gray-200">
             {data.map((row, index) => (
-              <tr key={index} className="bg-yellow-50 border-b border-gray-200">
-                <td className="py-3 px-4 text-left whitespace-nowrap border border-gray-300">{row.testCase}</td>
-                <td className="py-3 px-4 text-center border border-gray-300">{row.mosAverage}</td>
-                <td className="py-3 px-4 text-center border border-gray-300">{row.mosRefAverage}</td>
-                <td className="py-3 px-4 text-center border border-gray-300">{row.mosMin}</td>
-                <td className="py-3 px-4 text-center border border-gray-300">{row.mosRefMin}</td>
-                <td className="py-3 px-4 text-left border border-gray-300">{row.comments}</td>
+              <tr key={index} className="bg-yellow-50">
+                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{row.testCase}</td>
+                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{row.mosAverage}</td>
+                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{row.mosRefAverage}</td>
+                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{row.mosMin}</td>
+                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{row.mosRefMin}</td>
+                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{row.comments}</td>
               </tr>
             ))}
           </tbody>
