@@ -54,11 +54,11 @@ function App() {
       <h1 className="text-4xl font-bold text-center my-8">TMO Field Test Report</h1>
       <SummaryTable summaryData={summaryTableData} />
       <DirectoryPage /> {/* Render the new DirectoryPage component */}
-      <CategoryPage title="Call Performance Summary" />
+      <CategoryPage title="Call Performance Report" />
       <CallPerformanceReport /> {/* Render the CallPerformanceReport component */}
-      <CategoryPage title="Data Performance Summary" />
+      <CategoryPage title="Data Performance Report" />
       <DataPerformanceReport />
-      <CategoryPage title="Voice Quality Summary" />
+      <CategoryPage title="Voice Quality Report" />
       <VoiceQualityReport /> {/* Render the VoiceQualityReport component */}
       <CoverageTables
           categoryName="Coverage Performance"

@@ -139,7 +139,7 @@ const VoiceQualityReport = () => {
       <img src="/voice_quality_criteria3.png" alt="Voice Quality Criteria 2" className="mx-auto block mb-8" style={{ width: '110%' }} />
       <img src="/voice_quality_criteria2.png" alt="Voice Quality Criteria 2" className="mx-auto block mb-8" style={{ width: '110%' }} />
 
-      <h2>Voice Quality Summary</h2>
+      <h2>Voice Quality Summary - Seattle Market</h2>
       <VQAMRSummaryTable />
       <VQEVSsummaryTable /> {/* Render the new EVS summary table */}
       <AudioDelaySummaryTable />
