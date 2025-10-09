@@ -1,12 +1,9 @@
 import React from 'react';
 import allResults from './data_analysis_results.json'; // Assuming data_analysis_results.json is the source
-import VoiceQualityTable from './VoiceQualityTable';
+
 import AudioDelayTable from './AudioDelayTable';
-import VoiceQualitySummaryTable from './VoiceQualitySummaryTable';
 import AudioDelaySummaryTable from './AudioDelaySummaryTable';
-import VoiceQualityNBTable from './VoiceQualityNBTable';
-import VoiceQualityAdditionalTable from './VoiceQualityAdditionalTable';
-import VoiceQualityWBTable from './VoiceQualityWBTable'; // Import the new WB table component
+import VQAMRSummaryTable from './VQAMRSummaryTable';
 
 // Helper function to extract only Voice Quality and Audio Delay test cases
 const extractVoiceQualityTestCases = (data, currentPath = []) => {
@@ -133,36 +130,16 @@ const VoiceQualityReport = () => {
     <>
       <img src="/voice_quality_criteria1.png" alt="Voice Quality Criteria 1" className="mx-auto block mb-8" style={{ width: '110%' }} />
       <img src="/voice_quality_criteria2.png" alt="Voice Quality Criteria 2" className="mx-auto block mb-8" style={{ width: '110%' }} />
-      <VoiceQualitySummaryTable />
-      <VoiceQualityAdditionalTable /> {/* Render the new additional table */}
+      <VQAMRSummaryTable />
       <AudioDelaySummaryTable />
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
           {testCases.map(testCase => {
-            if (testCase.isVoiceQuality) {
-              return (
-                <div key={testCase.name} className="report-section">
-                  <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
-                  <VoiceQualityTable data={testCase.data} testName={testCase.name} />
-                </div>
-              );
-            } else if (testCase.isAudioDelay) {
+            if (testCase.isAudioDelay) {
               return (
                 <div key={testCase.name} className="report-section">
                   <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>
                   <AudioDelayTable data={testCase.data} testName={testCase.name} />
-                </div>
-              );
-            } else if (testCase.isVoiceQualityWB) { // New condition for WB tables
-              return (
-                <div key={testCase.name} className="report-section">
-                  <VoiceQualityWBTable data={testCase.data} testName={testCase.name} />
-                </div>
-              );
-            } else if (testCase.isVoiceQualityNB) {
-              return (
-                <div key={testCase.name} className="report-section">
-                  <VoiceQualityNBTable data={testCase.data} testName={testCase.name} />
                 </div>
               );
             }

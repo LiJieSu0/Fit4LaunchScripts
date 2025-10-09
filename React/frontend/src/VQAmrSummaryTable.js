@@ -1,87 +1,64 @@
 import React from 'react';
 
-const VQAmrSummaryTable = ({ data, testName }) => {
-  if (!data) {
-    return <div>No data available for {testName}</div>;
-  }
-
-  const devices = Object.keys(data);
-  const metricMap = {
-    "MOS Average": "mean",
-    "MOS Stdev": "std_dev",
-    "Maximum MOS": "max",
-    "Count": "count",
-    "% MOS < 3.0": "percent_less_than_3",
-    "% MOS < 2.0": "percent_less_than_2",
-  };
-
-  const metricDisplayNames = Object.keys(metricMap);
+const VQAMRSummaryTable = () => {
+  // This data would typically come from props or a data source
+  const data = [
+    {
+      testCase: "5G Auto VoNR Enabled AMR NB VQ",
+      mosAverage: "3.5",
+      mosRefAverage: "3.6",
+      mosMin: "2.8",
+      mosRefMin: "2.9",
+      comments: "5G Auto VoNR"
+    },
+    {
+      testCase: "5G Auto VoNR Enabled AMR WB VQ",
+      mosAverage: "3.8",
+      mosRefAverage: "3.9",
+      mosMin: "3.1",
+      mosRefMin: "3.2",
+      comments: "5G Auto VoNR"
+    },
+    // Add more data as needed
+  ];
 
   return (
-    <div className="voice-quality-nb-table-container mb-8">
-      <h3 className="text-xl font-bold mb-4 text-gray-800">{testName} - NB Voice Quality</h3>
-      <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
-        <thead className="bg-gray-700 text-white">
-          <tr>
-            <th rowSpan="2" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300"></th>
-            <th colSpan={devices.length} className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">Downlink</th>
-            <th colSpan={devices.length} className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">Uplink</th>
-          </tr>
-          <tr>
-            {devices.map(device => (
-              <th key={`dl-${device}`} className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">{device}</th>
-            ))}
-            {devices.map(device => (
-              <th key={`ul-${device}`} className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">{device}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200">
-          {metricDisplayNames.map((metricName, index) => {
-            const originalStatKey = metricMap[metricName];
-
-            return (
-              <tr key={metricName} className="bg-yellow-50">
-                <td className="px-2 py-1 text-sm text-gray-800 border border-gray-300 text-left">{metricName}</td>
-                {/* Downlink Data */}
-                {devices.map(device => {
-                  const isPerformanceExcellent = ["MOS Average", "% MOS < 3.0", "% MOS < 2.0"].includes(metricName);
-                  const cellClassName = `border border-gray-300 text-center text-sm text-gray-700 ${isPerformanceExcellent ? 'bg-[var(--performance-excellent)]' : ''}`;
-                  return (
-                    <td key={`dl-${device}-${metricName}-data`} className={cellClassName}>
-                      {data[device]?.dl_mos_stats?.[originalStatKey] !== undefined
-                        ? (originalStatKey.startsWith('percent')
-                          ? `${(data[device].dl_mos_stats[originalStatKey]).toFixed(1)}%`
-                          : (originalStatKey === 'count'
-                            ? parseInt(data[device].dl_mos_stats[originalStatKey]).toString()
-                            : data[device].dl_mos_stats[originalStatKey].toFixed(2)))
-                        : 'N/A'}
-                    </td>
-                  );
-                })}
-                {/* Uplink Data */}
-                {devices.map(device => {
-                  const isPerformanceExcellent = ["MOS Average", "% MOS < 3.0", "% MOS < 2.0"].includes(metricName);
-                  const cellClassName = `border border-gray-300 text-center text-sm text-gray-700 ${isPerformanceExcellent ? 'bg-[var(--performance-excellent)]' : ''}`;
-                  return (
-                    <td key={`ul-${device}-${metricName}-data`} className={cellClassName}>
-                      {data[device]?.ul_mos_stats?.[originalStatKey] !== undefined
-                        ? (originalStatKey.startsWith('percent')
-                          ? `${(data[device].ul_mos_stats[originalStatKey]).toFixed(1)}%`
-                          : (originalStatKey === 'count'
-                            ? parseInt(data[device].ul_mos_stats[originalStatKey]).toString()
-                            : data[device].ul_mos_stats[originalStatKey].toFixed(2)))
-                        : 'N/A'}
-                    </td>
-                  );
-                })}
+    <div className="w-full mx-auto">
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">VQAMR Summary</h2>
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-collapse">
+          <thead>
+            <tr>
+              <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">TEST CASES</th>
+              <th colSpan="4" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">KPI FOR VOICE QUALITY PERFORMANCE MOBILITY</th>
+              <th rowSpan="3" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">COMMENTS/LINKS</th>
+            </tr>
+            <tr>
+              <th colSpan="4" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">MOS (Mean Opinion Score)</th>
+            </tr>
+            <tr>
+              <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT AVG.</th>
+              <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF AVG.</th>
+              <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">DUT MIN.</th>
+              <th className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">REF MIN.</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-700 text-sm">
+            {data.map((row, index) => (
+              <tr key={index} className="bg-yellow-50 border-b border-gray-200">
+                <td className="py-3 px-4 text-left whitespace-nowrap border border-gray-300">{row.testCase}</td>
+                <td className="py-3 px-4 text-center border border-gray-300">{row.mosAverage}</td>
+                <td className="py-3 px-4 text-center border border-gray-300">{row.mosRefAverage}</td>
+                <td className="py-3 px-4 text-center border border-gray-300">{row.mosMin}</td>
+                <td className="py-3 px-4 text-center border border-gray-300">{row.mosRefMin}</td>
+                <td className="py-3 px-4 text-left border border-gray-300">{row.comments}</td>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
 
-export default VQAmrSummaryTable;
+export default VQAMRSummaryTable;
