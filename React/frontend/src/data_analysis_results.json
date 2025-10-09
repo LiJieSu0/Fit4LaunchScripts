@@ -525,7 +525,7 @@
             },
             "5G Auto Data Test MHS Stationary Location 2 UL": {
                 "25x64 bytes PING (ICMP)": {
-                    "TMO_Ping_DUT_TC-104-4": {
+                    "_20250915_123553_CH01_TMO-DUT_5G_25x64 bytes PING (ICMP)_moderate Coverage_DA Test": {
                         "Device Type": "DUT",
                         "Protocol Type": "PING",
                         "Network Type": "5G",
@@ -537,7 +537,7 @@
                             "std_dev": 51.126286623674176
                         }
                     },
-                    "TMO_Ping_REF_TC-104-4": {
+                    "_20250915_123553_CH01_TMO-REF_5G_25x64 bytes PING (ICMP)_moderate Coverage_DA Test": {
                         "Device Type": "REF",
                         "Protocol Type": "PING",
                         "Network Type": "5G",

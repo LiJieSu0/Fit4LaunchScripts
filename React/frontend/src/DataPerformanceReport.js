@@ -309,7 +309,8 @@ const DataPerformanceReport = () => {
               }
 
               // The categoryName is "Data Performance", but the detailed categories are in testCase.name
-              const shouldRenderDetailedTable = testCase.name.includes("5G AUTO DP") || testCase.name.includes("5G NSA DP");
+              // More robust check for Data Performance categories
+              const shouldRenderDetailedTable = testCase.name.startsWith("Data Performance - 5G AUTO DP") || testCase.name.startsWith("Data Performance - 5G NSA DP");
 
               return (
                 <div key={testCase.name} className="report-section">

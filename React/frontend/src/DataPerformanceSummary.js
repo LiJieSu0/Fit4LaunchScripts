@@ -8,6 +8,9 @@ import HttpMsULTable from './DataPerformanceTables/HTTPMSUL';
 import UDPUL10Table from './DataPerformanceTables/UDPUL10';
 import UDPUL20Table from './DataPerformanceTables/UDPUL20';
 import PingTable from './DataPerformanceTables/PingTable';
+import TestDriveTable from './DataPerformanceTables/TestDrive';
+import WebpageLoadTable from './DataPerformanceTables/WebpageLoadTable';
+import MrabTable from './DataPerformanceTables/Mrab';
 
 const DataPerformanceSummary = () => {
   return (
@@ -21,6 +24,9 @@ const DataPerformanceSummary = () => {
       <UDPUL10Table />
       <UDPUL20Table />
       <PingTable />
+      <TestDriveTable />
+      <WebpageLoadTable />
+      <MrabTable />
     </div>
   );
 };
