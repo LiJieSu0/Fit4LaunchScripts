@@ -11,6 +11,7 @@ import PingTable from './DataPerformanceTables/PingTable';
 import TestDriveTable from './DataPerformanceTables/TestDrive';
 import WebpageLoadTable from './DataPerformanceTables/WebpageLoadTable';
 import MrabTable from './DataPerformanceTables/Mrab';
+import MHSDriveTable from './DataPerformanceTables/MHSDrive';
 
 const DataPerformanceSummary = () => {
   return (
@@ -27,6 +28,7 @@ const DataPerformanceSummary = () => {
       <TestDriveTable />
       <WebpageLoadTable />
       <MrabTable />
+      <MHSDriveTable />
     </div>
   );
 };
