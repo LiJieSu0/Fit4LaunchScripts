@@ -39,6 +39,14 @@ const VQAudioDisableTable = () => {
       cellColors: {}
     },
     {
+      metric: "Minimum (ms)",
+      downlinkDUT1: formatNumber(Object.values(audioDisableData["DUT1"]).find(item => item.hasOwnProperty('min') && Object.keys(audioDisableData["DUT1"])[0].includes('Mobile'))?.min || 0),
+      downlinkDUT2: formatNumber(Object.values(audioDisableData["DUT2"]).find(item => item.hasOwnProperty('min') && Object.keys(audioDisableData["DUT2"])[0].includes('Mobile'))?.min || 0),
+      downlinkREF1: formatNumber(Object.values(audioDisableData["REF1"]).find(item => item.hasOwnProperty('min') && Object.keys(audioDisableData["REF1"])[0].includes('Mobile'))?.min || 0),
+      downlinkREF2: formatNumber(Object.values(audioDisableData["REF2"]).find(item => item.hasOwnProperty('min') && Object.keys(audioDisableData["REF2"])[0].includes('Mobile'))?.min || 0),
+      cellColors: {}
+    },
+    {
       metric: "Count",
       downlinkDUT1: (Object.values(audioDisableData["DUT1"]).find(item => item.hasOwnProperty('occurrences') && Object.keys(audioDisableData["DUT1"])[0].includes('Mobile'))?.occurrences || 0).toString(),
       downlinkDUT2: (Object.values(audioDisableData["DUT2"]).find(item => item.hasOwnProperty('occurrences') && Object.keys(audioDisableData["DUT2"])[0].includes('Mobile'))?.occurrences || 0).toString(),
