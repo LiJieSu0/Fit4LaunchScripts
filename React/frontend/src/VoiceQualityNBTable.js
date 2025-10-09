@@ -44,17 +44,21 @@ const VoiceQualityNBTable = ({ data, testName }) => {
               <tr key={metricName} className="bg-yellow-50">
                 <td className="px-2 py-1 text-sm text-gray-800 border border-gray-300 text-left">{metricName}</td>
                 {/* Downlink Data */}
-                {devices.map(device => (
-                  <td key={`dl-${device}-${metricName}-data`} className="border border-gray-300 text-center text-sm text-gray-700">
-                    {data[device]?.dl_mos_stats?.[originalStatKey] !== undefined
-                      ? (originalStatKey.startsWith('percent')
-                        ? `${(data[device].dl_mos_stats[originalStatKey]).toFixed(1)}%`
-                        : (originalStatKey === 'count'
-                          ? parseInt(data[device].dl_mos_stats[originalStatKey]).toString()
-                          : data[device].dl_mos_stats[originalStatKey].toFixed(2)))
-                      : 'N/A'}
-                  </td>
-                ))}
+                {devices.map(device => {
+                  const isPerformanceExcellent = ["MOS Average", "% MOS < 3.0", "% MOS < 2.0"].includes(metricName);
+                  const cellClassName = `border border-gray-300 text-center text-sm text-gray-700 ${isPerformanceExcellent ? 'bg-[var(--performance-excellent)]' : ''}`;
+                  return (
+                    <td key={`dl-${device}-${metricName}-data`} className={cellClassName}>
+                      {data[device]?.dl_mos_stats?.[originalStatKey] !== undefined
+                        ? (originalStatKey.startsWith('percent')
+                          ? `${(data[device].dl_mos_stats[originalStatKey]).toFixed(1)}%`
+                          : (originalStatKey === 'count'
+                            ? parseInt(data[device].dl_mos_stats[originalStatKey]).toString()
+                            : data[device].dl_mos_stats[originalStatKey].toFixed(2)))
+                        : 'N/A'}
+                    </td>
+                  );
+                })}
                 {/* Uplink Data */}
                 {devices.map(device => (
                   <td key={`ul-${device}-${metricName}-data`} className="border border-gray-300 text-center text-sm text-gray-700">
