@@ -23,7 +23,11 @@ const VQAmrWBTable = () => {
       uplinkReference: formatNumber(amrWbData["Mobile"]["vonr enable amr wb REF mobile"]["MOS Average"]),
       uplinkWingtech1: formatNumber(amrWbData["Mobile"]["vonr enable amr wb DUT1 mobile"]["MOS Average"]),
       uplinkWingtech2: formatNumber(amrWbData["Mobile"]["vonr enable amr wb DUT2 mobile"]["MOS Average"]),
-      cellColors: {}
+      cellColors: {
+        downlinkReference: "#FF00FF",
+        downlinkWingtech1: "#FF00FF",
+        downlinkWingtech2: "#FF00FF",
+      }
     },
     {
       metric: "MOS Stdev",
@@ -63,7 +67,11 @@ const VQAmrWBTable = () => {
       uplinkReference: formatPercentage(amrWbData["Mobile"]["vonr enable amr wb REF mobile"]["% MOS < 3.0"]),
       uplinkWingtech1: formatPercentage(amrWbData["Mobile"]["vonr enable amr wb DUT1 mobile"]["% MOS < 3.0"]),
       uplinkWingtech2: formatPercentage(amrWbData["Mobile"]["vonr enable amr wb DUT2 mobile"]["% MOS < 3.0"]),
-      cellColors: {}
+      cellColors: {
+        downlinkReference: "#FF00FF",
+        downlinkWingtech1: "#FF00FF",
+        downlinkWingtech2: "#FF00FF",
+      }
     },
     {
       metric: "% MOS < 2.0",
@@ -73,7 +81,11 @@ const VQAmrWBTable = () => {
       uplinkReference: formatPercentage(amrWbData["Mobile"]["vonr enable amr wb REF mobile"]["% MOS < 2.0"]),
       uplinkWingtech1: formatPercentage(amrWbData["Mobile"]["vonr enable amr wb DUT1 mobile"]["% MOS < 2.0"]),
       uplinkWingtech2: formatPercentage(amrWbData["Mobile"]["vonr enable amr wb DUT2 mobile"]["% MOS < 2.0"]),
-      cellColors: {}
+      cellColors: {
+        downlinkReference: "#FF00FF",
+        downlinkWingtech1: "#FF00FF",
+        downlinkWingtech2: "#FF00FF",
+      }
     },
   ];
 
@@ -99,13 +111,13 @@ const VQAmrWBTable = () => {
           <tbody className="divide-y divide-gray-200">
             {tableData.map((row, index) => (
               <tr key={index} className="bg-yellow-50">
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-left" style={getCellColorStyle(row, 'metric')}>{row.metric}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkReference')}>{row.downlinkReference}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkWingtech1')}>{row.downlinkWingtech1}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkWingtech2')}>{row.downlinkWingtech2}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkReference')}>{row.uplinkReference}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkWingtech1')}>{row.uplinkWingtech1}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkWingtech2')}>{row.uplinkWingtech2}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-left" style={getCellColorStyle(row, 'metric')}>{row.metric}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkReference')}>{row.downlinkReference}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkWingtech1')}>{row.downlinkWingtech1}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkWingtech2')}>{row.downlinkWingtech2}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkReference')}>{row.uplinkReference}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkWingtech1')}>{row.uplinkWingtech1}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkWingtech2')}>{row.uplinkWingtech2}</td>
               </tr>
             ))}
           </tbody>
