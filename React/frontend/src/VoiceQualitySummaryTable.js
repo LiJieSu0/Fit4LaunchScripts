@@ -9,8 +9,6 @@ const VoiceQualitySummaryTable = () => {
           <tr>
             <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Test Cases</th>
             <th colSpan="6" className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">KPI for Voice Quality Performance Mobility</th>
-            <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Network Tech.</th>
-            <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Pass/Fail</th>
             <th rowSpan="3" className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Comments/Links</th>
           </tr>
           <tr>
@@ -33,14 +31,12 @@ const VoiceQualitySummaryTable = () => {
           ].map((testCase, index) => (
             <tr key={index} className="bg-yellow-50">
               <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{testCase}</td>
-              <td className="border border-gray-300 text-center"></td>
-              <td className="border border-gray-300 text-center"></td>
-              <td className="border border-gray-300 text-center"></td>
-              <td className="border border-gray-300 text-center"></td>
-              <td className="border border-gray-300 text-center"></td>
-              <td className="border border-gray-300 text-center"></td>
-              <td className="border border-gray-300 text-center"></td>
-              <td className="border border-gray-300 text-center"></td>
+              <td className="border border-gray-300 text-center" style={{ backgroundColor: 'var(--performance-excellent)' }}>4.32</td>
+              <td className="border border-gray-300 text-center"style={{ backgroundColor: 'var(--performance-excellent)' }}>4.29</td>
+              <td className="border border-gray-300 text-center"style={{ backgroundColor: 'var(--performance-excellent)' }}>0.6%</td>
+              <td className="border border-gray-300 text-center"style={{ backgroundColor: 'var(--performance-excellent)' }}>1.0%</td>
+              <td className="border border-gray-300 text-center"style={{ backgroundColor: 'var(--performance-excellent)' }}>0.0%</td>
+              <td className="border border-gray-300 text-center"style={{ backgroundColor: 'var(--performance-excellent)' }}>0.4%</td>
               <td className="border border-gray-300 text-center"></td>
             </tr>
           ))}
