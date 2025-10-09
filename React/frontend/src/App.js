@@ -58,14 +58,13 @@ function App() {
       <DataPerformanceReport />
       <CategoryPage title="Voice Quality Summary" />
       <VoiceQualityReport /> {/* Render the VoiceQualityReport component */}
-      <CategoryPage title="Coverage Performance Summary" />
-        <CoverageTables
+      <CoverageTables
           categoryName="Coverage Performance"
           testCaseName="5G VoNR Coverage Test - N25, N41, N71"
           coverageData={coverageData}
           baseStationCoords={baseStationCoords}
           displayCategoryTitle={false}
-        />
+      />
 
       {/* 5G n41 HPUE Coverage Test */}
       <div className="category-section">

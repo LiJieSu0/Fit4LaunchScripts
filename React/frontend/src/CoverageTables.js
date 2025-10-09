@@ -128,7 +128,7 @@ const CoverageTables = ({ categoryName, testCaseName, coverageData, baseStationC
     const networks = Object.keys(processedData);
 
     return (
-        <div className="category-section">
+        <div className="">
             <img src="/coverage_criteria.png" alt="Coverage Criteria" className="mx-auto block mb-8" style={{ width: '110%' }} />
             <CoverageSummaryTable summaryData={processedData} /> {/* Add the new table here */}
             {displayCategoryTitle && <h2 className="text-2xl font-bold mb-6 text-blue-700">{categoryName}</h2>}

@@ -55,6 +55,82 @@
                     }
                 }
             },
+            "5G Auto Data Test MHS Drive": {
+                "DUT MHS UDP Drive": {
+                    "Device Type": "DUT",
+                    "Analysis Direction": "DL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G",
+                    "Analysis Type": "data_performance",
+                    "Throughput": {
+                        "DL": {
+                            "Mean": 8.551996261682243,
+                            "Standard Deviation": 3.271599361523098,
+                            "Minimum": 0.0,
+                            "Maximum": 19.364,
+                            "Number of Intervals": 4280
+                        },
+                        "UL": {
+                            "Mean": 7.557662446428572,
+                            "Standard Deviation": 3.5474203485217197,
+                            "Minimum": 0.0,
+                            "Maximum": 10.000107,
+                            "Number of Intervals": 56
+                        }
+                    },
+                    "Jitter": {
+                        "DL Mean": 32.18264369158879,
+                        "UL Mean": 2.061875
+                    },
+                    "Error Ratio": {
+                        "UL Mean": 15.34987402,
+                        "DL Mean": 11.695616839485984
+                    },
+                    "Ping RTT": {
+                        "min": 34.0,
+                        "max": 843.0,
+                        "avg": 117.08741594620557,
+                        "std_dev": 58.700794116663204
+                    }
+                },
+                "REF MHS UDP Drive": {
+                    "Device Type": "REF",
+                    "Analysis Direction": "DL",
+                    "Protocol Type": "UDP",
+                    "Network Type": "5G",
+                    "Analysis Type": "data_performance",
+                    "Throughput": {
+                        "DL": {
+                            "Mean": 8.957230285961872,
+                            "Standard Deviation": 3.0027988493440763,
+                            "Minimum": 0.0,
+                            "Maximum": 20.285,
+                            "Number of Intervals": 4616
+                        },
+                        "UL": {
+                            "Mean": 7.834380395833333,
+                            "Standard Deviation": 3.6875610844655746,
+                            "Minimum": 0.0,
+                            "Maximum": 10.000169,
+                            "Number of Intervals": 48
+                        }
+                    },
+                    "Jitter": {
+                        "DL Mean": 23.852765164644715,
+                        "UL Mean": 3.426416666666667
+                    },
+                    "Error Ratio": {
+                        "UL Mean": 14.530980431818183,
+                        "DL Mean": 9.068985512781628
+                    },
+                    "Ping RTT": {
+                        "min": 36.0,
+                        "max": 1159.0,
+                        "avg": 98.23293079424059,
+                        "std_dev": 92.95520304132387
+                    }
+                }
+            },    
             "5G Auto Data Test MHS Stationary Location 1 DL": {
                 "Multi Stream HTTP Download for 30 seconds": {
                     "DUT MS HTTP DL for 30 seconds": {
