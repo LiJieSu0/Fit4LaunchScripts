@@ -1,26 +1,26 @@
 import React from 'react';
 
-const VQAMRSummaryTable = () => {
+const VQEVSsummaryTable = () => {
   // This data would typically come from props or a data source
   const data = [
     {
-      testCase: "5G Auto VoNR Enabled AMR NB VQ",
-      mosAverage: "3.5",
-      mosRefAverage: "3.6",
-      mosLessThan3_4_DUT: "5.0%",
-      mosLessThan3_4_REF: "4.5%",
-      mosLessThan3_0_DUT: "2.0%",
-      mosLessThan3_0_REF: "1.5%",
+      testCase: "5G Auto VoNR Disabled EVS WB VQ",
+      mosAverage: "4.0",
+      mosRefAverage: "4.1",
+      mosLessThan3_4_DUT: "2.0%",
+      mosLessThan3_4_REF: "1.5%",
+      mosLessThan3_0_DUT: "0.5%",
+      mosLessThan3_0_REF: "0.2%",
       comments: ""
     },
     {
-      testCase: "5G Auto VoNR Enabled AMR WB VQ",
-      mosAverage: "3.8",
-      mosRefAverage: "3.9",
-      mosLessThan3_4_DUT: "3.0%",
-      mosLessThan3_4_REF: "2.5%",
-      mosLessThan3_0_DUT: "1.0%",
-      mosLessThan3_0_REF: "0.5%",
+      testCase: "5G Auto VoNR Enabled EVS WB VQ",
+      mosAverage: "4.2",
+      mosRefAverage: "4.3",
+      mosLessThan3_4_DUT: "1.0%",
+      mosLessThan3_4_REF: "0.8%",
+      mosLessThan3_0_DUT: "0.3%",
+      mosLessThan3_0_REF: "0.1%",
       comments: ""
     },
     // Add more data as needed
@@ -67,4 +67,4 @@ const VQAMRSummaryTable = () => {
   );
 };
 
-export default VQAMRSummaryTable;
+export default VQEVSsummaryTable;

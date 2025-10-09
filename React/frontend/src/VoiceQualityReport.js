@@ -4,12 +4,13 @@ import allResults from './data_analysis_results.json'; // Assuming data_analysis
 import AudioDelayTable from './AudioDelayTable';
 import AudioDelaySummaryTable from './AudioDelaySummaryTable';
 import VQAMRSummaryTable from './VQAMRSummaryTable';
+import VQEVSsummaryTable from './VQEVSsummaryTable'; // Import the new EVS summary table
 
 // Helper function to extract only Voice Quality and Audio Delay test cases
 const extractVoiceQualityTestCases = (data, currentPath = []) => {
   let extracted = [];
 
-  // Check if the current data object is a Voice Quality WB test case
+  // Check if the current data object is a Voice Quality WB test case (AMR or EVS)
   const isVoiceQualityWBTest = (currentPath.includes("5G Auto VoNR Disabled EVS WB VQ") ||
                                 currentPath.includes("5G Auto VoNR Enabled EVS WB VQ") ||
                                 currentPath.includes("5G Auto VoNR Enabled AMR WB VQ")) &&
@@ -131,6 +132,7 @@ const VoiceQualityReport = () => {
       <img src="/voice_quality_criteria1.png" alt="Voice Quality Criteria 1" className="mx-auto block mb-8" style={{ width: '110%' }} />
       <img src="/voice_quality_criteria2.png" alt="Voice Quality Criteria 2" className="mx-auto block mb-8" style={{ width: '110%' }} />
       <VQAMRSummaryTable />
+      <VQEVSsummaryTable /> {/* Render the new EVS summary table */}
       <AudioDelaySummaryTable />
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
