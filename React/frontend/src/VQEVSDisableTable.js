@@ -25,7 +25,10 @@ const VQEVSDisableTable = () => {
       uplinkDUT2: formatNumber(evsDisableData["Base"]["vonr disable evs wb DUT2 base"]["MOS Average"]),
       uplinkREF1: formatNumber(evsDisableData["Base"]["vonr disable evs wb REF1 base"]["MOS Average"]),
       uplinkREF2: formatNumber(evsDisableData["Base"]["vonr disable evs wb REF2 base"]["MOS Average"]),
-      cellColors: {}
+      cellColors: {downlinkDUT1: "#FF00FF",
+        downlinkDUT2: "#FF00FF",
+        downlinkREF1: "#FF00FF",
+        downlinkREF2: "#FF00FF"}
     },
     {
       metric: "MOS Stdev",
@@ -73,7 +76,10 @@ const VQEVSDisableTable = () => {
       uplinkDUT2: formatPercentage(evsDisableData["Base"]["vonr disable evs wb DUT2 base"]["% MOS < 3.0"]),
       uplinkREF1: formatPercentage(evsDisableData["Base"]["vonr disable evs wb REF1 base"]["% MOS < 3.0"]),
       uplinkREF2: formatPercentage(evsDisableData["Base"]["vonr disable evs wb REF2 base"]["% MOS < 3.0"]),
-      cellColors: {}
+      cellColors: {downlinkDUT1: "#FF00FF",
+        downlinkDUT2: "#FF00FF",
+        downlinkREF1: "#FF00FF",
+        downlinkREF2: "#FF00FF"}
     },
     {
       metric: "% MOS < 3.4",
@@ -85,7 +91,10 @@ const VQEVSDisableTable = () => {
       uplinkDUT2: formatPercentage(evsDisableData["Base"]["vonr disable evs wb DUT2 base"]["% MOS < 3.4"]),
       uplinkREF1: formatPercentage(evsDisableData["Base"]["vonr disable evs wb REF1 base"]["% MOS < 3.4"]),
       uplinkREF2: formatPercentage(evsDisableData["Base"]["vonr disable evs wb REF2 base"]["% MOS < 3.4"]),
-      cellColors: {}
+      cellColors: {downlinkDUT1: "#FF00FF",
+        downlinkDUT2: "#FF00FF",
+        downlinkREF1: "#FF00FF",
+        downlinkREF2: "#FF00FF"}
     },
   ];
 
@@ -113,15 +122,15 @@ const VQEVSDisableTable = () => {
           <tbody className="divide-y divide-gray-200">
             {tableData.map((row, index) => (
               <tr key={index} className="bg-yellow-50">
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-left" style={getCellColorStyle(row, 'metric')}>{row.metric}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkDUT1')}>{row.downlinkDUT1}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkDUT2')}>{row.downlinkDUT2}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkREF1')}>{row.downlinkREF1}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkREF2')}>{row.downlinkREF2}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkDUT1')}>{row.uplinkDUT1}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkDUT2')}>{row.uplinkDUT2}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkREF1')}>{row.uplinkREF1}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkREF2')}>{row.uplinkREF2}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-left" style={getCellColorStyle(row, 'metric')}>{row.metric}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkDUT1')}>{row.downlinkDUT1}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkDUT2')}>{row.downlinkDUT2}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkREF1')}>{row.downlinkREF1}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkREF2')}>{row.downlinkREF2}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkDUT1')}>{row.uplinkDUT1}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkDUT2')}>{row.uplinkDUT2}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkREF1')}>{row.uplinkREF1}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'uplinkREF2')}>{row.uplinkREF2}</td>
               </tr>
             ))}
           </tbody>
