@@ -12,6 +12,7 @@ import RsrpChart from './RsrpChart'; // Import the RsrpChart component
 import TxPowerChart from './TxPowerChart'; // Import the TxPowerChart component
 import CoverageDistanceTable from './CoverageDistanceTable'; // Import the new table component
 import coverageDistanceData from './coverage_distance_data.json'; // Import the processed data
+import DirectoryPage from './DirectoryPage'; // Import the new DirectoryPage component
 
 function App() {
   // Base station coordinate
@@ -50,8 +51,9 @@ function App() {
 
   return (
     <div className="container mx-auto p-4 main-content">
-      <h1 className="text-4xl font-bold text-center my-8">TMO Field test Report</h1>
+      <h1 className="text-4xl font-bold text-center my-8">TMO Field Test Report</h1>
       <SummaryTable summaryData={summaryTableData} />
+      <DirectoryPage /> {/* Render the new DirectoryPage component */}
       <CategoryPage title="Call Performance Summary" />
       <CallPerformanceReport /> {/* Render the CallPerformanceReport component */}
       <CategoryPage title="Data Performance Summary" />
