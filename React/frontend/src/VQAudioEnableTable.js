@@ -23,6 +23,23 @@ const VQAudioEnableTable = () => {
       cellColors: {}
     },
     {
+      metric: "Average of 2 Devices (ms)",
+      downlinkDUT1: formatNumber((
+        (Object.values(audioEnableData["DUT1"]).find(item => item.hasOwnProperty('mean') && Object.keys(audioEnableData["DUT1"])[0].includes('Mobile'))?.mean || 0) +
+        (Object.values(audioEnableData["DUT2"]).find(item => item.hasOwnProperty('mean') && Object.keys(audioEnableData["DUT2"])[0].includes('Mobile'))?.mean || 0)
+      ) / 2),
+      downlinkDUT2: "",
+      downlinkREF1: formatNumber((
+        (Object.values(audioEnableData["REF1"]).find(item => item.hasOwnProperty('mean') && Object.keys(audioEnableData["REF1"])[0].includes('Mobile'))?.mean || 0) +
+        (Object.values(audioEnableData["REF2"]).find(item => item.hasOwnProperty('mean') && Object.keys(audioEnableData["REF2"])[0].includes('Mobile'))?.mean || 0)
+      ) / 2),
+      downlinkREF2: "",
+      cellColors: {
+        downlinkDUT1:"#99FA99",
+        downlinkREF1:"#99FA99"
+      }
+    },
+    {
       metric: "Stdev (ms)",
       downlinkDUT1: formatNumber(Object.values(audioEnableData["DUT1"]).find(item => item.hasOwnProperty('std_dev') && Object.keys(audioEnableData["DUT1"])[0].includes('Mobile'))?.std_dev || 0),
       downlinkDUT2: formatNumber(Object.values(audioEnableData["DUT2"]).find(item => item.hasOwnProperty('std_dev') && Object.keys(audioEnableData["DUT2"])[0].includes('Mobile'))?.std_dev || 0),
@@ -76,10 +93,19 @@ const VQAudioEnableTable = () => {
             {tableData.map((row, index) => (
               <tr key={index} className="bg-yellow-50">
                 <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-left" style={getCellColorStyle(row, 'metric')}>{row.metric}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkDUT1')}>{row.downlinkDUT1}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkDUT2')}>{row.downlinkDUT2}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkREF1')}>{row.downlinkREF1}</td>
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkREF2')}>{row.downlinkREF2}</td>
+                {row.metric === "Average of 2 Devices (ms)" ? (
+                  <>
+                    <td colSpan="2" className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkDUT1')}>{row.downlinkDUT1}</td>
+                    <td colSpan="2" className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkREF1')}>{row.downlinkREF1}</td>
+                  </>
+                ) : (
+                  <>
+                    <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkDUT1')}>{row.downlinkDUT1}</td>
+                    <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkDUT2')}>{row.downlinkDUT2}</td>
+                    <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkREF1')}>{row.downlinkREF1}</td>
+                    <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center" style={getCellColorStyle(row, 'downlinkREF2')}>{row.downlinkREF2}</td>
+                  </>
+                )}
               </tr>
             ))}
           </tbody>
