@@ -60,7 +60,7 @@ const CallPerformanceSummaryTable = () => {
 
             return (
               <tr key={testCase} className="bg-yellow-50">
-                <td className="px-2 py-4 text-sm text-gray-500 border border-gray-300 text-center">{testCase}</td>
+                <td className="px-2 py-4 text-sm text-black-500 border border-gray-300 text-center">{testCase}</td>
                 <td className={`border border-gray-300 text-center ${callSetupBgClass}`}>{dutAvgSetupTime.toFixed(2)}</td>
                 <td className={`border border-gray-300 text-center ${callSetupBgClass}`}>{refAvgSetupTime.toFixed(2)}</td>
                 <td className={`border border-gray-300 text-center ${getPValueColor(values.initiation_p_value, values.DUT.total_initiation_failures / values.DUT.total_attempts * 100)}`}>{calculatePercentage(values.DUT.total_initiation_successes, values.DUT.total_attempts)}</td>

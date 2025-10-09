@@ -74,6 +74,8 @@ const SummaryTable = ({ summaryData }) => {
           <p className="date-field">Date</p>
         </div>
       </div>
+      <div className='page-break-always'></div> 
+      {/* changing page when printing */}
     </div>
   );
 };
