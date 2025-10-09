@@ -3,8 +3,9 @@ import allResults from './data_analysis_results.json'; // Assuming data_analysis
 
 import AudioDelayTable from './AudioDelayTable';
 import AudioDelaySummaryTable from './AudioDelaySummaryTable';
-import VQAMRSummaryTable from './VQAMRSummaryTable';
+import VQAMRSummaryTable from './VQAmrSummaryTable';
 import VQEVSsummaryTable from './VQEVSsummaryTable'; // Import the new EVS summary table
+import VQAmrNBTable from './VQAmrNBTable';
 
 // Helper function to extract only Voice Quality and Audio Delay test cases
 const extractVoiceQualityTestCases = (data, currentPath = []) => {
@@ -135,6 +136,7 @@ const VoiceQualityReport = () => {
       <VQAMRSummaryTable />
       <VQEVSsummaryTable /> {/* Render the new EVS summary table */}
       <AudioDelaySummaryTable />
+      <VQAmrNBTable/>
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
           {testCases.map(testCase => {
