@@ -1,12 +1,12 @@
 import React from 'react';
 
-const DataThroughputSummaryTable = () => {
+const HttpssULTable = () => {
   return (
     <div className="overflow-x-auto mb-6 table-container">
       <table className="min-w-full border border-table-grid">
         <thead>
           <tr className="bg-gray-600 text-white font-bold">
-            <th className="py-2 px-4 border border-table-grid">File Transfer (HTTP) Single Stream DL Cases</th>
+            <th className="py-2 px-4 border border-table-grid">Single Stream HTTP Upload of a 15 MB file Cases</th>
             <th className="py-2 px-4 border border-table-grid">DUT Avg. (Mbps)</th>
             <th className="py-2 px-4 border border-table-grid">REF Avg. (Mbps)</th>
           </tr>
@@ -54,4 +54,4 @@ const DataThroughputSummaryTable = () => {
   );
 };
 
-export default DataThroughputSummaryTable;
+export default HttpssULTable;
