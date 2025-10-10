@@ -125,8 +125,8 @@
     /* Add logo to the left of the page number */
     background-image: url('../public/atmclogo.jpg');
     background-repeat: no-repeat;
-    background-position: right 70px center; /* Position 70px from the right edge, vertically centered */
-    background-size: 50px; /* Adjust size as needed */
+    background-position: right 60px center; 
+    background-size: 200px; /* Adjust size as needed */
     padding-right: 10px; /* Overall right padding for both logo and page number */
   }
 }
