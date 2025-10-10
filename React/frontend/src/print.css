@@ -115,7 +115,7 @@
   margin-bottom: 15px; /* Set a smaller margin for the page itself */
 
   @bottom-right {
-    content: "atmcl.com   Page " counter(page) "--" ; /* Display atmcl.com and page numbers, aligned right */
+    content: "Page " counter(page) "----" ; /* Display atmcl.com and page numbers, aligned right */
     font-size: 10px; /* Explicitly set font size to target 10px height */
     color: #555;
     line-height: 1; /* Ensure minimal line height */
