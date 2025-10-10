@@ -143,7 +143,6 @@ const PlaystoreAppDLStationaryTable = ({ data }) => {
             x: {
               title: {
                 display: true,
-                text: 'Performance Category',
               },
             },
             y: {

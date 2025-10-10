@@ -18,7 +18,7 @@ function RevisionPage() {
           <tr className="bg-yellow-50">
             <td className="py-2 px-4 border border-table-grid text-center align-middle">1.0</td>
             <td className="py-2 px-4 border border-table-grid text-center bg-yellow-50 text-black-700 font-bold">First Version</td>
-            <td className="py-2 px-4 border border-table-grid text-center bg-yellow-50 text-black-700 font-bold"></td>
+            <td className="py-2 px-4 border border-table-grid text-center bg-yellow-50 text-black-700 font-bold">Claude Li</td>
             <td className="py-2 px-4 border border-table-grid text-center bg-yellow-50 text-black-700 font-bold">10/09/2025</td>
           </tr>
           
