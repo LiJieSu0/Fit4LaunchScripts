@@ -14,9 +14,25 @@ const PlaystoreAppDLStationaryTable = ({ data }) => {
     const deviceData = playstoreData[location]?.[deviceType];
     if (deviceData && deviceData[fileSize]) {
       const testCaseKey = Object.keys(deviceData[fileSize])[0];
-      return deviceData[fileSize][testCaseKey]?.overall_average_throughput?.toFixed(2) || 'N/A';
+      return deviceData[fileSize][testCaseKey]?.overall_average_throughput;
     }
-    return 'N/A';
+    return null;
+  };
+
+  const getPerformanceClass = (dutTput, refTput) => {
+    if (dutTput === null || refTput === null || isNaN(dutTput) || isNaN(refTput) || refTput === 0) {
+      return 'performance-unknown';
+    }
+
+    if (dutTput > 1.1 * refTput) {
+      return 'performance-excellent';
+    } else if (dutTput >= 0.9 * refTput && dutTput <= 1.1 * refTput) {
+      return 'performance-pass';
+    } else if (dutTput >= 0.8 * refTput && dutTput < 0.9 * refTput) {
+      return 'performance-marginal-fail';
+    } else { // dutTput < 0.8 * refTput
+      return 'performance-fail';
+    }
   };
 
   const renderTable = (fileSize) => {
@@ -46,11 +62,11 @@ const PlaystoreAppDLStationaryTable = ({ data }) => {
                   <td className="py-2 px-4 border border-table-grid text-center">
                     {displayLocation}
                   </td>
-                  <td className="py-2 px-4 border border-table-grid text-center">
-                    {extractThroughput(location, "DUT", fileSize)}
+                  <td className={`py-2 px-4 border border-table-grid text-center ${getPerformanceClass(extractThroughput(location, "DUT", fileSize), extractThroughput(location, "REF", fileSize))}`}>
+                    {extractThroughput(location, "DUT", fileSize)?.toFixed(2) || 'N/A'}
                   </td>
-                  <td className="py-2 px-4 border border-table-grid text-center">
-                    {extractThroughput(location, "REF", fileSize)}
+                  <td className={`py-2 px-4 border border-table-grid text-center ${getPerformanceClass(extractThroughput(location, "DUT", fileSize), extractThroughput(location, "REF", fileSize))}`}>
+                    {extractThroughput(location, "REF", fileSize)?.toFixed(2) || 'N/A'}
                   </td>
                 </tr>
               );

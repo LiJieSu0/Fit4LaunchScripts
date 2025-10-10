@@ -70,6 +70,26 @@ th {
   --table-grid: #000000;
 }
 
+.performance-excellent {
+  background-color: var(--performance-excellent);
+}
+
+.performance-pass {
+  background-color: var(--performance-pass);
+}
+
+.performance-marginal-fail {
+  background-color: var(--performance-marginal-fail);
+}
+
+.performance-fail {
+  background-color: var(--performance-fail);
+}
+
+.performance-unknown {
+  background-color: var(--performance-unknown);
+}
+
 @media print {
   html {
     padding-top: 0 !important; /* Ensure no html padding */

@@ -12,6 +12,7 @@ import TestDriveTable from './DataPerformanceTables/TestDrive';
 import WebpageLoadTable from './DataPerformanceTables/WebpageLoadTable';
 import MrabTable from './DataPerformanceTables/Mrab';
 import MHSDriveTable from './DataPerformanceTables/MHSDrive';
+import AppStoreTable from './DataPerformanceTables/AppStoreTable';
 
 const DataPerformanceSummary = () => {
   return (
@@ -30,6 +31,7 @@ const DataPerformanceSummary = () => {
       <WebpageLoadTable />
       <MrabTable />
       <MHSDriveTable />
+      <AppStoreTable />
     </div>
   );
 };
