@@ -143,17 +143,17 @@ const VoiceQualityReport = () => {
       <VQAMRSummaryTable />
       <VQEVSsummaryTable /> {/* Render the new EVS summary table */}
       <AudioDelaySummaryTable />
-      <h2>Voice Quality - 5G Auto VoNR Enabled AMR NB VQ </h2>
+      <h2>Voice Quality - 3.1 5G Auto VoNR Enabled AMR NB VQ </h2>
       <VQAmrNBTable/>
-      <h2>Voice Quality - 5G Auto VoNR Enabled AMR WB VQ </h2>
+      <h2>Voice Quality - 3.2 5G Auto VoNR Enabled AMR WB VQ </h2>
       <VQAmrWBTable/>
-      <h2>Voice Quality - 5G Auto VoNR Disabled EVS WB VQ </h2>
+      <h2>Voice Quality - 3.3 5G Auto VoNR Disabled EVS WB VQ </h2>
       <VQEVSDisableTable/>
-      <h2>Voice Quality - 5G Auto VoNR Enabled EVS WB VQ </h2>
+      <h2>Voice Quality - 3.4 5G Auto VoNR Enabled EVS WB VQ </h2>
       <VQEVSEenableTABLE/>
-      <h2>Voice Quality - 5G Auto VoNR Disabled Audio Delay </h2>
+      <h2>Voice Quality - 3.5 5G Auto VoNR Disabled Audio Delay </h2>
       <VQAudioDisableTable/>
-      <h2>Voice Quality - 5G Auto VoNR Enabled Audio Delay </h2>
+      <h2>Voice Quality - 3.6 5G Auto VoNR Enabled Audio Delay </h2>
       <VQAudioEnableTable/>
       {Object.entries(groupedByCategories).map(([categoryName, testCases]) => (
         <div key={categoryName} className="category-section">
