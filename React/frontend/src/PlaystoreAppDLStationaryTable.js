@@ -164,7 +164,7 @@ const PlaystoreAppDLStationaryTable = ({ data }) => {
     }, [fileSize, chartData]);
 
     return (
-      <div style={{ width: '80%', height: '400px', marginBottom: '20px' }}>
+      <div style={{ width: '70%', height: '400px', marginBottom: '20px' }}>
         <canvas ref={chartRef}></canvas>
       </div>
     );
