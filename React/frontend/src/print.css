@@ -115,11 +115,18 @@
   margin-bottom: 15px; /* Set a smaller margin for the page itself */
 
   @bottom-right {
-    content: "Page " counter(page) "" ; /* Display atmcl.com and page numbers, aligned right */
-    font-size: 10px; /* Explicitly set font size to target 10px height */
+    content: "Page " counter(page) ""; /* Display page numbers, aligned right */
+    font-size: 10px;
     color: #555;
-    line-height: 1; /* Ensure minimal line height */
-    margin-top: -20px; /* Move text up slightly */
-    margin-right:20px;
+    line-height: 1;
+    margin-top: -30px;
+    margin-right: 0px; /* Adjust margin for the page number */
+
+    /* Add logo to the left of the page number */
+    background-image: url('../public/atmclogo.jpg');
+    background-repeat: no-repeat;
+    background-position: right 70px center; /* Position 70px from the right edge, vertically centered */
+    background-size: 50px; /* Adjust size as needed */
+    padding-right: 10px; /* Overall right padding for both logo and page number */
   }
 }
