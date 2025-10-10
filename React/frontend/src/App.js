@@ -54,15 +54,15 @@ function App() {
       <SummaryTable summaryData={summaryTableData} />
       <DirectoryPage /> {/* Render the new DirectoryPage component */}
       <RevisionPage />
-      <CategoryPage title="Call Performance Report" />
+      <CategoryPage title="1. Call Performance Report" />
       <CallPerformanceReport /> {/* Render the CallPerformanceReport component */}
-      <CategoryPage title="Data Performance Report" />
+      <CategoryPage title="2. Data Performance Report" />
       <DataPerformanceReport />
-      <CategoryPage title="Voice Quality Report" />
+      <CategoryPage title="3. Voice Quality Report" />
       <VoiceQualityReport /> {/* Render the VoiceQualityReport component */}
       <CoverageTables
           categoryName="Coverage Performance"
-          testCaseName="5G VoNR Coverage Test - N25, N41, N71"
+          testCaseName="4.1 5G VoNR Coverage Test - N25, N41, N71"
           coverageData={coverageData}
           baseStationCoords={baseStationCoords}
           displayCategoryTitle={false}
@@ -70,7 +70,7 @@ function App() {
 
       {/* 5G n41 HPUE Coverage Test */}
       <div className="category-section">
-        <h3 className="text-xl font-bold mb-4 text-gray-800">5G n41 HPUE Coverage Test</h3>
+        <h3 className="text-xl font-bold mb-4 text-gray-800">4.2 5G n41 HPUE Coverage Test</h3>
         {/* New table for Coverage Distance */}
         <CoverageDistanceTable 
             title="Distance to Base Station (km)" 

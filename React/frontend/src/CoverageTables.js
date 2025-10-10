@@ -129,7 +129,7 @@ const CoverageTables = ({ categoryName, testCaseName, coverageData, baseStationC
 
     return (
         <div className="">
-            <h2 className='text-center'>Coverage Report</h2>
+            <h2 className='text-center'>4. Coverage Performance Report</h2>
             <img src="/coverage_criteria.png" alt="Coverage Criteria" className="mx-auto block mb-8" style={{ width: '110%' }} />
             <CoverageSummaryTable summaryData={processedData} /> {/* Add the new table here */}
             {displayCategoryTitle && <h2 className="text-2xl font-bold mb-6 text-blue-700">{categoryName}</h2>}
