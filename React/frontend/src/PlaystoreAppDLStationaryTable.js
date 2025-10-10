@@ -172,7 +172,7 @@ const PlaystoreAppDLStationaryTable = ({ data }) => {
 
   return (
     <div className="category-section">
-      <h3 className="text-xl font-bold mb-4 text-gray-800">5G Auto Data Play-store app DL Stationary</h3>
+      <h3 className="text-xl font-bold mb-4 text-gray-800">5G Auto Data - 2.1.15 5G Auto Data Play-store app DL Stationary</h3>
       {fileSizes.map(fileSize => renderTable(fileSize))}
 
       {fileSizes.map(fileSize => (

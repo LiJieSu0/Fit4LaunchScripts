@@ -419,7 +419,7 @@ const DataPerformanceReport = () => {
               // More robust check for Data Performance categories
               const shouldRenderDetailedTable = testCase.name.startsWith("Data Performance - 5G AUTO DP") || testCase.name.startsWith("Data Performance - 5G NSA DP");
 
-              if (testCase.name === "Data Performance - 5G AUTO DP - 5G Auto Data Test MHS Drive") {
+              if (testCase.name === "Data Performance - 5G AUTO DP - 2.1.2 5G Auto Data Test MHS Drive") {
                 return (
                   <div key={testCase.name} className="report-section">
                     <h3 className="text-xl font-bold mb-4 text-gray-800">{testCase.name}</h3>

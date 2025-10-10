@@ -168,7 +168,7 @@
     },
     "Data Performance": {
         "5G AUTO DP": {
-            "5G Auto Data Test Drive": {
+            "2.1.1 5G Auto Data Test Drive": {
                 "DUT UDP DL": {
                     "Device Type": "DUT",
                     "Analysis Direction": "DL",
@@ -222,7 +222,7 @@
                     }
                 }
             },
-            "5G Auto Data Test MHS Drive": {
+            "2.1.2 5G Auto Data Test MHS Drive": {
                 "DUT MHS UDP Drive": {
                     "Device Type": "DUT",
                     "Analysis Direction": "DL",
@@ -298,7 +298,7 @@
                     }
                 }
             },    
-            "5G Auto Data Test MHS Stationary Location 1 DL": {
+            "2.1.3 5G Auto Data Test MHS Stationary Location 1 DL": {
                 "Multi Stream HTTP Download for 30 seconds": {
                     "DUT MS HTTP DL for 30 seconds": {
                         "Device Type": "DUT",
@@ -444,7 +444,7 @@
                     }
                 }
             },
-            "5G Auto Data Test MHS Stationary Location 1 UL": {
+            "2.1.4 5G Auto Data Test MHS Stationary Location 1 UL": {
                 "25x64 bytes PING (ICMP)": {
                     "_20250915_123553_CH01_TMO-DUT_5G MHS_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
                         "Device Type": "DUT",
@@ -620,7 +620,7 @@
                     }
                 }
             },
-            "5G Auto Data Test MHS Stationary Location 2 DL": {
+            "2.1.5 5G Auto Data Test MHS Stationary Location 2 DL": {
                 "Multi Stream HTTP Download for 30 seconds": {
                     "DUT MS HTTP DL 30s": {
                         "Device Type": "DUT",
@@ -766,7 +766,7 @@
                     }
                 }
             },
-            "5G Auto Data Test MHS Stationary Location 2 UL": {
+            "2.1.6 5G Auto Data Test MHS Stationary Location 2 UL": {
                 "25x64 bytes PING (ICMP)": {
                     "_20250915_123553_CH01_TMO-DUT_5G_25x64 bytes PING (ICMP)_moderate Coverage_DA Test": {
                         "Device Type": "DUT",
@@ -942,7 +942,7 @@
                     }
                 }
             },
-            "5G Auto Data Test Stationary Location 1 DL": {
+            "2.1.7 5G Auto Data Test Stationary Location 1 DL": {
                 "Multi Stream HTTP Download for 30 seconds_Good": {
                     "dut_5G auto_MS HTTP DL_Good": {
                         "Device Type": "DUT",
@@ -1088,7 +1088,7 @@
                     }
                 }
             },
-            "5G Auto Data Test Stationary Location 1 UL": {
+            "2.1.8 5G Auto Data Test Stationary Location 1 UL": {
                 "25x64 bytes PING (ICMP)": {
                     "_CH01_TMO-dut_5G auto_25x64 bytes PING (ICMP)_Good Coverage_DA Test": {
                         "Device Type": "DUT",
@@ -1262,7 +1262,7 @@
                     }
                 }
             },
-            "5G Auto Data Test Stationary Location 2 DL": {
+            "2.1.9 5G Auto Data Test Stationary Location 2 DL": {
                 "5G auto_Multi Stream HTTP Download for 30 seconds_moderate": {
                     "dut_5G auto_Multi Stream HTTP Download for 30 seconds": {
                         "Device Type": "DUT",
@@ -1408,7 +1408,7 @@
                     }
                 }
             },
-            "5G Auto Data Test Stationary Location 2 UL": {
+            "2.1.10 5G Auto Data Test Stationary Location 2 UL": {
                 "5G auto_25x64 bytes PING_moderate": {
                     "_CH01_TMO_5G auto_25x64 bytes PING_DUT_": {
                         "Device Type": "DUT",
@@ -1580,7 +1580,7 @@
                     }
                 }
             },
-            "5G Auto Data Test Stationary Location 3 DL": {
+            "2.1.11 5G Auto Data Test Stationary Location 3 DL": {
                 "Multi Stream HTTP Download for 30 seconds": {
                     "_CH01_TMO-dut_5G auto_Multi Stream HTTP Download for 30 seconds_Poor Coverage_DA Test": {
                         "Device Type": "DUT",
@@ -1726,7 +1726,7 @@
                     }
                 }
             },
-            "5G Auto Data Test Stationary Location 3 UL": {
+            "2.1.12 5G Auto Data Test Stationary Location 3 UL": {
                 "25x64 bytes PING (ICMP)": {
                     "dut_5g auto_25x64 bytes PING (ICMP)_poor Coverage_DA Test": {
                         "Device Type": "DUT",
@@ -1898,7 +1898,7 @@
                     }
                 }
             },
-            "5G Auto Data Web-Kepler": {
+            "2.1.13 5G Auto Data Web-Kepler": {
                 "_CH01_TMO-dut_5G auto_ETSI Kepler web page hosted on Spirent mediaserver_Good Coverage_DA Test": {
                     "Device Type": "DUT",
                     "Protocol Type": "WEB_PAGE",
@@ -1926,7 +1926,7 @@
                     }
                 }
             },
-            "5G VoNR MRAB Stationary": {
+            "2.1.14 5G VoNR MRAB Stationary": {
                 "DUT MRAB": {
                     "Device Type": "DUT",
                     "Network Type": "5G",
@@ -2523,7 +2523,7 @@
             }
         },
         "5G NSA DP": {
-            "5G NSA Data Test Drive": {
+            "2.2.1 5G NSA Data Test Drive": {
                 "UDP DL DUT1_Data Test Drive": {
                     "Device Type": "DUT",
                     "Analysis Direction": "DL",
@@ -2577,7 +2577,7 @@
                     }
                 }
             },
-            "5G NSA Data Test Stationary Moderate RF DL": {
+            "2.2.2 5G NSA Data Test Stationary Moderate RF DL": {
                 "Multi Stream HTTP Download for 30 seconds": {
                     "DUT_Multi Stream HTTP Download for 30 seconds": {
                         "Device Type": "DUT",
@@ -2723,7 +2723,7 @@
                     }
                 }
             },
-            "5G NSA Data Test Stationary Moderate RF UL": {
+            "2.2.3 5G NSA Data Test Stationary Moderate RF UL": {
                 "5G NSA_25x64 bytes PING_moderate": {
                     "_20250911_150928_CH01_TMO_5G NSA_Ping_DUT_": {
                         "Device Type": "DUT",
@@ -2895,7 +2895,7 @@
                     }
                 }
             },
-            "5G NSA Data Test Stationary Poor RF DL": {
+            "2.2.4 5G NSA Data Test Stationary Poor RF DL": {
                 "Multi Stream HTTP Download for 30 seconds": {
                     "DUT HTTP DL": {
                         "Device Type": "DUT",
@@ -3041,7 +3041,7 @@
                     }
                 }
             },
-            "5G NSA Data Test Stationary Poor RF UL": {
+            "2.2.5 5G NSA Data Test Stationary Poor RF UL": {
                 "25x64 bytes PING (ICMP)": {
                     "_CH01_TMO-dut_5G NSA_25x64 bytes PING (ICMP)_Poor Coverage_DA Test": {
                         "Device Type": "DUT",
